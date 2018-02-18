@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
- MatSidenavModule, MatListModule } from '@angular/material';
+ MatSidenavModule, MatListModule, MatCardModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -38,7 +38,8 @@ const ROUTES: Routes = [
     MatButtonModule, 
     MatIconModule, 
     MatSidenavModule, 
-    MatListModule
+    MatListModule, 
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
