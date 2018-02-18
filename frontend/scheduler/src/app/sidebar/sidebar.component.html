@@ -1,3 +1,23 @@
-<p>
-  sidebar works!
-</p>
+<mat-list class="spread">
+  <mat-list-item >
+    <a routerLink="/"><i class="material-icons">announcement</i> Announcements</a>
+  </mat-list-item>
+  
+  <mat-list-item>
+    <a routerLink="/notifications"><i class="material-icons">notifications</i>Notifications</a>
+  </mat-list-item>
+
+  <mat-list-item>
+    <a routerLink="/timetable"> <i class="material-icons">date_range</i> View Schedule </a>
+  </mat-list-item>
+
+  <mat-list-item>
+    <mat-icon matListIcon><i class="material-icons">chrome_reader_mode</i></mat-icon>
+    <h3 matLine> Submit courses </h3>
+  </mat-list-item>
+
+  <mat-list-item>
+    <mat-icon matListIcon><i class="material-icons">feedback</i></mat-icon>
+    <h3 matLine> Feedback </h3>
+  </mat-list-item>
+</mat-list>

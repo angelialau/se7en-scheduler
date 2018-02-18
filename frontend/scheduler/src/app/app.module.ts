@@ -1,13 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// material.angular imports
+import { MatToolbarModule, MatButtonModule, MatIconModule,
+ MatSidenavModule, MatListModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-
-// material.angular imports
-import { MatToolbarModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HomeComponent } from './home/home.component';
 import { NotifComponent } from './notif/notif.component';
@@ -31,10 +32,13 @@ const ROUTES: Routes = [
   ],
   imports: [
     BrowserModule, 
+    BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES), 
     MatToolbarModule, 
     MatButtonModule, 
-    MatIconModule
+    MatIconModule, 
+    MatSidenavModule, 
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
