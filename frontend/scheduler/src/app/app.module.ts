@@ -17,13 +17,15 @@ import { NotifComponent } from './notif/notif.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-form.component';
 
 const ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'timetable', component: TimetableComponent },
   { path: 'notifications', component: NotifComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'timetable-requirements-form', component: TimetableReqFormComponent },
 ];
 
 @NgModule({
@@ -35,7 +37,8 @@ const ROUTES: Routes = [
     NotifComponent,
     TimetableComponent,
     LoginComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    TimetableReqFormComponent
   ],
   imports: [
     BrowserModule, 
