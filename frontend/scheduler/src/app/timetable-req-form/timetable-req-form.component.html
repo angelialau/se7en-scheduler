@@ -1,0 +1,33 @@
+<div *ngIf="!name; else forminfo">
+  <form [formGroup]='rForm' (ngSubmit)='addPost(rForm.value)'>
+    <div class="form-container">
+      <div class="row columns">
+        <h1>Timetable Requirements Form</h1>
+        <label>Name
+          <!-- formControlName has to match specified in the formGroup -->
+          <input type="text" formControlName="name"> 
+        </label>
+        <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{titleAlert}}</div> 
+
+        <label>Description
+          <textarea formControlName="description"></textarea> 
+        </label>
+        <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">Must have between 30 and 50 characters</div> 
+
+        <label for="validate"> Min 3 Characters</label>
+        <input type="checkbox" name="validate" formControlName="validate" value="1"> On
+
+        <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #forminfo> 
+  <div class="form-container">
+    <div class="row columns">
+      <h1>name: {{name}}</h1>
+      <p>description: {{description}}</p>
+    </div>
+  </div>
+</ng-template>

@@ -10,7 +10,7 @@ export class NotifComponent implements OnInit {
   announcement : Announcement = {
     announcementId: 0,
     title: "Term 4 Schedule Planning",
-    content: "Dear Instructors, Kindly submit the deets. Thanks. ",
+    content: "Dear Facil, Please grant my request leh. Thanks. ",
     date: "18 Feb 2018",
     senderId: 1
   }
