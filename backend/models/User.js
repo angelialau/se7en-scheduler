@@ -26,9 +26,18 @@ var User = {
 	},
 
 	createUser:function(name, email, phone, employee_id, passwordHash, salt, admin, callback) {
-		return db.query("INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?,?)", 
-						[name, email, phone, employee_id, passwordHash, salt, admin],
-						callback)
+		return db.query("INSERT INTO " + 
+			TABLE_NAME + "(`" + 
+			COLUMN_NAME + "`,`" +
+			COLUMN_EMAIL + "`,`" +
+			COLUMN_PHONE + "`,`" + 
+			COLUMN_EMPLOYEE_ID + "`,`" + 
+			COLUMN_PASSWORD_HASH + "`,`" +
+			COLUMN_SALT + "`,`" + 
+			COLUMN_ADMIN + "`,`" +  
+			" VALUES(?,?,?,?,?,?,?)", 
+			[name, email, phone, employee_id, passwordHash, salt, admin],
+			callback)
 	}
 };
 
