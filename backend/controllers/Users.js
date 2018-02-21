@@ -36,8 +36,8 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 // Defining create User route
 router.post('/', function(req, res, next) {
 	if (req.body.name) {
-		var salt = genRanString(13);
-		var passwordHash = sha512(req.body.password, salt);
+		var salt = encrypt.genRanString(13);
+		var passwordHash = encrypt.sha512(req.body.password, salt);
 
 		User.createUser(
 			req.body.name, 
