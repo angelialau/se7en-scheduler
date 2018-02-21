@@ -1,6 +1,6 @@
 var express = require("express");
 var User = require("../models/User");
-var saltGen = require("../utils/encrypt");
+var encrypt = require("../utils/encrypt");
 var router = express.Router();
 
 // Defining get User route
@@ -36,14 +36,16 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 // Defining create User route
 router.post('/', function(req, res, next) {
 	if (req.body.name) {
-		var salt = saltGen(13);
+		var salt = encrypt.getRanString(13);
+		var passwordHash = encrypt.sha512(req.body.password, salt);
+
 		User.createUser(
 			req.body.name, 
 			req.body.email,
 			req.body.phone,
 			req.body.employee_id,
-			req.body.passwordHash,
-			req.body.salt,
+			passwordHash,
+			salt,
 			req.body.admin,
 			function(err, count) {
 				if (err) {
