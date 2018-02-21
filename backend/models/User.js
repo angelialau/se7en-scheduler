@@ -10,7 +10,7 @@ var COLUMN_PASSWORD_HASH = "passwordHash";
 var COLUMN_SALT = "salt";
 var COLUMN_ADMIN = "admin";
 
-var Users = {
+var User = {
 	getAllUsers:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME, callback);
 	},
