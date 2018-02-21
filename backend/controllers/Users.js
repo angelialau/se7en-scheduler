@@ -4,7 +4,7 @@ var router = express.Router();
 
 // Defining get User route
 router.get('/:id?:employee_id?', function(req, res, next) {
-	if (typeof req.params.id !== 'undefined') {
+	if (req.params.id) {
 		User.getUserById(req.params.id, function(err, rows) {
 			if (err) {
 				res.json(err);
@@ -12,7 +12,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 				res.json(rows);
 			}
 		});
-	} else if (typeof req.params.employee_id !== 'undefined') {
+	} else if (req.params.employee_id) {
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
 				res.json(err);
