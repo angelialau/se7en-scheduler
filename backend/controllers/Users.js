@@ -10,7 +10,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 			if (err) {
 				res.json(err);
 			} else {
-				res.json(rows);
+				res.json(rows[0]);
 			}
 		});
 	} else if (req.params.employee_id) {
@@ -18,7 +18,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 			if (err) {
 				res.json(err);
 			} else {
-				res.json(rows);
+				res.json(rows[0]);
 			}
 		});
 	} else {
@@ -26,7 +26,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 			if (err) {
 				res.json(err);
 			} else {
-				res.json(rows);
+				res.json(rows[0]);
 			}
 		});
 	}
@@ -72,7 +72,7 @@ router.post('/login', function(req, res, next) {
 				if (passwordHash !== rows[0].passwordHash) {
 					res.json({"message":"wrong password"});
 				} else {
-					res.json(rows);
+					res.json(rows[0]);
 				}
 			}
 		});
