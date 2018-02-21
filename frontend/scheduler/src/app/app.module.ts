@@ -12,20 +12,23 @@ import { MatToolbarModule, MatButtonModule, MatIconModule,
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { HomeComponent } from './home/home.component';
-import { NotifComponent } from './notif/notif.component';
-import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-form.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const ROUTES: Routes = [
+  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'timetable', component: TimetableComponent },
-  { path: 'notifications', component: NotifComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'timetable-requirements-form', component: TimetableReqFormComponent },
+  { path: 'home', component: NotificationsComponent },
+  { path: 'create-user', component: CreateUserComponent },
+  { path: 'schedules', component: ViewSchedulesComponent },
+  { path: 'password', component: ChangePasswordComponent },
+
+  { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated
 ];
 
 @NgModule({
@@ -33,12 +36,12 @@ const ROUTES: Routes = [
     AppComponent,
     NavbarComponent,
     SidebarComponent,
-    HomeComponent,
-    NotifComponent,
-    TimetableComponent,
     LoginComponent,
     CreateUserComponent,
-    TimetableReqFormComponent
+    TimetableReqFormComponent,
+    NotificationsComponent,
+    ViewSchedulesComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule, 

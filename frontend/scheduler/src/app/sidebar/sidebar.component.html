@@ -1,23 +1,20 @@
 <mat-list class="spread">
-  <mat-list-item >
-    <a routerLink="/"><i class="material-icons">announcement</i> Announcements</a>
-  </mat-list-item>
-  
+  <span class="spacer"></span>
   <mat-list-item>
-    <a routerLink="/notifications"><i class="material-icons">notifications</i>Notifications</a>
+    <a routerLink="/"><i class="material-icons">notifications</i> Notifications</a>
   </mat-list-item>
-
+  <br>
+  <span class="spacer"></span>
   <mat-list-item>
-    <a routerLink="/timetable"> <i class="material-icons">date_range</i> View Schedule </a>
+    <a routerLink="/create-user"><i class="material-icons">supervisor_account</i> Sign Up User</a>
   </mat-list-item>
-
+  <br>
+  <span class="spacer"></span>
   <mat-list-item>
-    <mat-icon matListIcon><i class="material-icons">chrome_reader_mode</i></mat-icon>
-    <h3 matLine> Submit courses </h3>
+    <a routerLink="/schedules"><i class="material-icons">date_range</i> View Schedules</a>
   </mat-list-item>
-
-  <mat-list-item>
-    <mat-icon matListIcon><i class="material-icons">feedback</i></mat-icon>
-    <h3 matLine> Feedback </h3>
-  </mat-list-item>
+  <br>
+  <!-- <mat-list-item class="mat-list-item">
+    <a routerLink="/password"> <i class="material-icons">settings</i>Change Password</a>
+  </mat-list-item> -->
 </mat-list>

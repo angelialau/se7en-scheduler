@@ -1,3 +1,28 @@
-<p>
-  create-user works!
-</p>
+<div class="container">
+  <h1>Create New User Form</h1>
+  <form>
+    <div class="form-group">
+      <label> User Type
+        <select class="form-control" id="admin" required>
+          <option value="0">Instructor</option>
+          <option value="1">Administrator</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label> Name
+        <input type="text" class="form-control" id="name" required>
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label> Email
+        <input type="email" class="form-control" id="email" required>
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+  </form>
+</div>
