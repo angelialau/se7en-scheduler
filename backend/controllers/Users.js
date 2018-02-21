@@ -3,7 +3,7 @@ var User = require("../models/User");
 var router = express.Router();
 
 // Defining get User route
-router.get('/', function(req, res, next) {
+router.get('/:id?:employee_id?', function(req, res, next) {
 	if (req.params.id) {
 		User.getUserById(req.params.id, function(err, rows) {
 			if (err) {
