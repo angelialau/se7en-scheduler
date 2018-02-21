@@ -1,4 +1,4 @@
-var db = require("../dbconnection"); //reference to db connection
+var db = require("../utils/dbconnection"); //reference to db connection
 
 var TABLE_NAME = "users";
 var COLUMN_ID = "id";
