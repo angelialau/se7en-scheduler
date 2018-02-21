@@ -14,7 +14,6 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 			}
 		});
 	} else if (req.params.employee_id) {
-		console.log(req.params.employee_id);
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
 				res.json(err);
@@ -55,6 +54,28 @@ router.post('/', function(req, res, next) {
 				}
 			}
 		);
+	} else {
+		res.json({"message":"post params empty"});
+	}
+});
+
+// Defining login route
+router.post('/login', function(req, res, next) {
+	if (req.body.employee_id) {
+		User.getUserByEmployeeId(req.body.employee_id, function(err, rows) {
+			if (err) {
+				// Cannot retrieve a row with employee id
+				res.json(err);
+			} else {
+				// Check if password matches
+				var passwordHash = encrypt.sha512(req.body.password, rows.salt);
+				if (passwordHash !== rows.passwordHash) {
+					res.json("message":"wrong password");
+				} else {
+					res.json(rows);
+				}
+			}
+		});
 	} else {
 		res.json({"message":"post params empty"});
 	}
