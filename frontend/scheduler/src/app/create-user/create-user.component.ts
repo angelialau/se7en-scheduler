@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewUser } from './../../models/newuser.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-create-user',
@@ -9,18 +10,31 @@ import { NewUser } from './../../models/newuser.model';
 })
 export class CreateUserComponent implements OnInit {
 
-  modelNewUser = new NewUser(1,'SampleNewAdmin', 'admin@sutd.edu.sg', 97921682, 0, 'password');
-  submitted = false;
+  modelNewUser= new NewUser(null,null,null,null,null,null);
+  submitted : boolean = false;
+  message : string = "User account created for ";
+  alertRequiredMessage : string = "This field is required";
 
   onSubmit(){ this.submitted = true};
+  
   get diagnostic() { return JSON.stringify(this.modelNewUser)};
 
 
-  constructor(private fb : FormBuilder) {
+  constructor(
+    private fb : FormBuilder,
+    public snackBar: MatSnackBar ) {
     
   };
 
   ngOnInit() {
   }
 
+  onClick(name: string){
+    let msg : string = this.message + name + "!";
+    // this.modelNewUser = new NewUser(-1,"","",-1,-1,"");
+    this.snackBar.open(msg, null, {
+      duration: 500;
+    });
+
+  }
 }

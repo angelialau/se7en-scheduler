@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
  MatSidenavModule, MatListModule, MatCardModule, MatFormFieldModule,
- MatInputModule } from '@angular/material';
+ MatInputModule, MatSnackBarModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -57,6 +57,7 @@ const ROUTES: Routes = [
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
