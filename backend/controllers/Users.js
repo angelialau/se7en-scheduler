@@ -34,13 +34,26 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 
 // Defining create User route
 router.post('/', function(req, res, next) {
-	User.createUser(req.body, function(err, count) {
-		if (err) {
-			res.json(err);
-		} else {
-			res.json({"success":true});
-		}
-	});
+	if (req.body.name) {
+		User.createUser(
+			req.body.name, 
+			req.body.email,
+			req.body.phone,
+			req.body.employee_id,
+			req.body.passwordHash,
+			req.body.salt,
+			req.body.admin,
+			function(err, count) {
+				if (err) {
+					res.json(err);
+				} else {
+					res.json(count);
+				}
+			}
+		);
+	} else {
+		res.json({"message":"post params empty"});
+	}
 });
 
 module.exports = router;
