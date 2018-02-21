@@ -6,7 +6,7 @@ app.get("/", function(req, res){
 })
 
 app.post("/createUser", function(req, res){
-	res.json({"id": req.params.id});
+	res.json({"id": req.body.id});
 })
 
 app.listen(6666, function(){
