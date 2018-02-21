@@ -12,7 +12,7 @@ var COLUMN_ADMIN = "admin";
 
 var User = {
 	getAllUsers:function(callback) {
-		return db.connection.query("SELECT * FROM " + TABLE_NAME, callback);
+		return db.connection.get().query("SELECT * FROM " + TABLE_NAME, callback);
 	},
 
 	getUserByEmployeeId:function(employee_id, callback) {
