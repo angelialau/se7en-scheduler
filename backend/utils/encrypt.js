@@ -19,3 +19,5 @@ var encrypt = {
 	    return value;
 	}
 };
+
+module.exports=encrypt;
