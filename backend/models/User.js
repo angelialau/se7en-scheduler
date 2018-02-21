@@ -22,7 +22,7 @@ var User = {
 
 	getUserById:function(id, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID +
-						" =?", [employee_id], callback);
+						" =?", [id], callback);
 	},
 
 	createUser:function(name, email, phone, employee_id, passwordHash, salt, admin, callback) {
