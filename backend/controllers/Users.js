@@ -1,5 +1,6 @@
 var express = require("express");
 var User = require("../models/User");
+var saltGen = require("../utils/encrypt");
 var router = express.Router();
 
 // Defining get User route
@@ -35,6 +36,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 // Defining create User route
 router.post('/', function(req, res, next) {
 	if (req.body.name) {
+		var salt = saltGen(13);
 		User.createUser(
 			req.body.name, 
 			req.body.email,
