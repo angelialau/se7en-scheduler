@@ -9,6 +9,6 @@ var connection=mysql.createConnection({
 });
  
 connection.connect(function(err) {
-	if (err) throw err
-	console.log('DB is now connected...')
-})
+	if (err) throw err;
+	console.log('DB is now connected...');
+});
