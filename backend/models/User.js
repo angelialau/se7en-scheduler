@@ -34,7 +34,7 @@ var User = {
 			COLUMN_EMPLOYEE_ID + "`,`" + 
 			COLUMN_PASSWORD_HASH + "`,`" +
 			COLUMN_SALT + "`,`" + 
-			COLUMN_ADMIN + "`,`" +  
+			COLUMN_ADMIN + "`)" +  
 			" VALUES(?,?,?,?,?,?,?)", 
 			[name, email, phone, employee_id, passwordHash, salt, admin],
 			callback)
