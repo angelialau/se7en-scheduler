@@ -13,6 +13,7 @@ router.get('/:id?:employee_id?', function(req, res, next) {
 			}
 		});
 	} else if (req.params.employee_id) {
+		console.log(req.params.employee_id);
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
 				res.json(err);
