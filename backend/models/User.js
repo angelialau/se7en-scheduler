@@ -13,23 +13,21 @@ var COLUMN_ADMIN = "admin";
 var Users = {
 	getAllUsers:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME, callback);
-	}
+	},
 
 	getUserByEmployeeId:function(employee_id, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMPLOYEE_ID +
 						" =?", [employee_id], callback);
-	}
+	},
 
 	getUserById:function(id, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID +
 						" =?", [employee_id], callback);
-	}
+	},
 
 	createUser:function(name, email, phone, employee_id, passwordHash, salt, admin, callback) {
 		return db.query("INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?,?)", 
 						[name, email, phone, employee_id, passwordHash, salt, admin],
 						callback)
 	}
-
-
 }
