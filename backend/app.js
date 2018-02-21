@@ -11,7 +11,6 @@ app.get("/", function(req, res){
 })
 
 app.post("/createUser", function(req, res){
-	console.log(req.body);
 	res.json({"id": req.body.id});
 })
 
