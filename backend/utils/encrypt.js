@@ -18,4 +18,4 @@ var encrypt = {
 	    var value = hash.digest('hex');
 	    return value;
 	}
-}
+};
