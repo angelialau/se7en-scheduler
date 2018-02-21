@@ -1,5 +1,5 @@
 var mysql=require('mysql');
-var connection=mysql.createConnection({
+var connection=mysql.createPool({
  
 	host:'devostrum.no-ip.info',
 	user:'rayson',
@@ -8,7 +8,4 @@ var connection=mysql.createConnection({
  
 });
  
-connection.connect(function(err) {
-	if (err) throw err;
-	console.log('DB is now connected...');
-});
+module.exports = connection;

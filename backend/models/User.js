@@ -12,21 +12,21 @@ var COLUMN_ADMIN = "admin";
 
 var User = {
 	getAllUsers:function(callback) {
-		return db.connection.get().query("SELECT * FROM " + TABLE_NAME, callback);
+		return db.query("SELECT * FROM " + TABLE_NAME, callback);
 	},
 
 	getUserByEmployeeId:function(employee_id, callback) {
-		return db.get().query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMPLOYEE_ID +
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_EMPLOYEE_ID +
 						" =?", [employee_id], callback);
 	},
 
 	getUserById:function(id, callback) {
-		return db.get().query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID +
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID +
 						" =?", [employee_id], callback);
 	},
 
 	createUser:function(name, email, phone, employee_id, passwordHash, salt, admin, callback) {
-		return db.post().query("INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?,?)", 
+		return db.query("INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?,?)", 
 						[name, email, phone, employee_id, passwordHash, salt, admin],
 						callback)
 	}
