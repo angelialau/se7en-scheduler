@@ -68,12 +68,13 @@ router.post('/login', function(req, res, next) {
 				res.json(err);
 			} else {
 				// Check if password matches
-				var passwordHash = encrypt.sha512(req.body.password, rows.salt);
-				if (passwordHash !== rows.passwordHash) {
-					res.json({"message":"wrong password"});
-				} else {
-					res.json(rows);
-				}
+				res.json(rows);
+				// var passwordHash = encrypt.sha512(req.body.password, rows.salt);
+				// if (passwordHash !== rows.passwordHash) {
+				// 	res.json({"message":"wrong password"});
+				// } else {
+				// 	res.json(rows);
+				// }
 			}
 		});
 	} else {
