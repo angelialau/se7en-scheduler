@@ -30,4 +30,6 @@ var User = {
 						[name, email, phone, employee_id, passwordHash, salt, admin],
 						callback)
 	}
-}
+};
+
+module.exports=User;
