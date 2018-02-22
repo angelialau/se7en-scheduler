@@ -24,6 +24,18 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.userService.postUserLogin(1002417, "password").subscribe(
+    //   success => {
+    //     // console.log("successfully posted new user!");
+    //     console.log(success);
+    //     this.snackBar.open("yay the post method works!", null, { duration: 800, });
+    //   },
+    //   error => {
+    //     // console.log("Error in postNewUser via CreateUserComponent");
+    //     console.log(error);
+    //     this.snackBar.open("Hhm, something went wrong. cannot login!", null, { duration: 800, });
+    //   }
+    // );
   }
 
   onSubmit(){ 
