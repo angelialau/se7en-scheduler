@@ -37,6 +37,24 @@ var Schedule = {
 						callback);
 	},
 
+	updateScheduleCourses:function(id, course, callback) {
+		this.getScheduleById(id, function(err, rows) {
+			if (err) {
+				callback (err, null);
+			} else {
+				var courses = rows[0].courses;
+				courses = courses + "," + course;
+				return db.query(
+					"UPDATE " + TABLE_NAME +
+					"SET `" + COLUMN_COURSES +
+					"` =? WHERE `" + COLUMN_ID +
+					"` =?",
+					[courses, id],
+					callback);
+			}
+		})
+	}
+
 	deleteSchedule:function(id, callback) {
 		return db.query("DELETE FROM " + TABLE_NAME + " WHERE `" + COLUMN_ID +
 						"` =?", [id], callback);

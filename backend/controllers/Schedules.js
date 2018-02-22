@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
 			}
 		}
 	});
-})
+});
 
 // defining route for getting one schedule by id
 router.get('/:id(\\d+)', function(req, res, next) {
