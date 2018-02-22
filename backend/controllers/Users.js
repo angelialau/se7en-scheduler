@@ -68,7 +68,7 @@ router.post('/', function(req, res, next) {
 			}
 		);
 	} else {
-		res.json({"message":"post params incomplete"});
+		res.json({"success":false, "message":"post params incomplete"});
 	}
 });
 
