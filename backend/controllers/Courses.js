@@ -78,22 +78,19 @@ router.post('/', function(req, res, next) {
 			req.body.locations,
 			req.body.term,
 			req.body.instructors,
-			function(err, count) {
+			function(create_err, count) {
 				// return error if any
-				if (err) {
-					err.success = false;
-					res.json(err);
+				if (create_err) {
+					create_err.success = false;
+					res.json(create_err);
 				} else {
 					// update schedule
 					Schedule.updateScheduleCourses(
 						req.body.schedule_id,
 						count.insertId,
-						function(err, count) {
-							if (err) {
-								err.success = false;
-								res.json(err);
-							} 
-						})
+						function(update_err, count) {}
+						)
+					console.log("insert id is " + count.insertId);
 					count.success = true;
 					res.json(count);
 				}
