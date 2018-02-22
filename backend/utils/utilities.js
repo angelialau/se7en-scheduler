@@ -1,3 +1,7 @@
-function isEmptyObject(obj) {
-  return !Object.keys(obj).length;
+var utilities = {
+	isEmptyObject:function(obj) {
+		return !Object.keys(obj).length;
+	}
 }
+
+module.exports=utilities;
