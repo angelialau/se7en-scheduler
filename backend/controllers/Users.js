@@ -9,6 +9,7 @@ router.get('/:employee_id(\\d+)', function(req, res, next) {
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
 				res.json(err);
+				res.json({"success":false});
 			} else {
 				res.json(rows[0]);
 			}
