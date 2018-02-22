@@ -29,8 +29,8 @@ var Schedule = {
 	updateSchedule:function(id, courses, year, trimester, callback) {
 		return db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_COURSES +
-						"` =? `" + COLUMN_YEAR + 
-						"` =? `" + COLUMN_TRIMESTER +
+						"` =?, `" + COLUMN_YEAR + 
+						"` =?, `" + COLUMN_TRIMESTER +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
 						[courses, year, trimester, id],
