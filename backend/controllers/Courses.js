@@ -87,7 +87,7 @@ router.post('/', function(req, res, next) {
 					// update schedule
 					Schedule.updateScheduleCourses(
 						req.body.schedule_id,
-						count.insertId,
+						create_count.insertId,
 						function(update_err, update_count) {
 							if (update_err) {
 								res.json(update_err);
