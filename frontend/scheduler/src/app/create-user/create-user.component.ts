@@ -11,7 +11,7 @@ import { UserService } from './../services/user.service'
 })
 export class CreateUserComponent implements OnInit {
 
-  modelNewUser= new NewUser(null,null,null,null,null,null);
+  modelNewUser = new NewUser(null,null,null,null,null,null);
   submitted : boolean = false;
   message : string = "User account created for ";
   alertRequiredMessage : string = "This field is required";
@@ -32,13 +32,19 @@ export class CreateUserComponent implements OnInit {
 
   openSnackBar(name: string){
     let msg : string = this.message + this.modelNewUser.name + "!";
-    this.snackBar.open(msg, null, {
-      duration: 500,
-    });
-
     this.userService.postNewUser(this.modelNewUser)
-    .subscribe(response => console.log(response));
+    .subscribe(
+      success => {
+        console.log("successfully posted new user!");
+        this.snackBar.open(msg, null, { duration: 500, });
+      },
+      error => {
+        console.log("Error in postNewUser via CreateUserComponent");
+        console.log(error);
+        this.snackBar.open("Hhm, something went wrong. Really sorry but please try again!", null, { duration: 800, });
+      }
+    );
   }
 
-  get diagnostic() { return JSON.stringify(this.modelNewUser)};
+  // get diagnostic() { return JSON.stringify(this.modelNewUser)};
 }
