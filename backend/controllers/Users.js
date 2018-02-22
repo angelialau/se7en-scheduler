@@ -31,6 +31,7 @@ router.get('/', function(req, res, next) {
 			res.json(err);
 		} else {
 			if (!utils.isEmptyObject(rows)) {
+				rows.success = true;
 				res.json(rows);
 			} else {
 				res.json({"success":false, "message":"no rows found"});
@@ -61,8 +62,10 @@ router.post('/', function(req, res, next) {
 			req.body.admin,
 			function(err, count) {
 				if (err) {
+					err.success = false;
 					res.json(err);
 				} else {
+					count.success = true;
 					res.json(count);
 				}
 			}
@@ -79,6 +82,7 @@ router.post('/Login', function(req, res, next) {
 		User.getUserByEmployeeId(req.body.employee_id, function(err, rows) {
 			if (err) {
 				// Cannot retrieve a row with employee id
+				err.success = false;
 				res.json(err);
 			} else {
 				if (!utils.isEmptyObject(rows)) {
@@ -86,7 +90,7 @@ router.post('/Login', function(req, res, next) {
 					var passwordHash = encrypt.sha512(req.body.password, rows[0].salt);
 					if (passwordHash !== rows[0].passwordHash) {
 						res.json({"success":false, "message":"wrong password"});
-						
+
 					} else {
 						// Return success along with user details
 						rows[0].success = true;
