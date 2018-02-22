@@ -10,6 +10,10 @@ import { MatToolbarModule, MatButtonModule, MatIconModule,
  MatSidenavModule, MatListModule, MatCardModule, MatFormFieldModule,
  MatInputModule, MatSnackBarModule } from '@angular/material';
 
+// service imports 
+import { UserService } from './services/user.service'; 
+import { ScheduleService } from './services/schedule.service'; 
+
 // component imports 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -20,9 +24,7 @@ import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-fo
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-
-// service imports 
-import { UserService } from './services/user.service'
+import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component'
 
 const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
@@ -31,6 +33,7 @@ const ROUTES: Routes = [
   { path: 'home', component: NotificationsComponent },
   { path: 'create-user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
+  { path: 'schedules/details', component: ScheduleDetailsComponent },
   { path: 'password', component: ChangePasswordComponent },
 
   { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated
@@ -46,7 +49,8 @@ const ROUTES: Routes = [
     TimetableReqFormComponent,
     NotificationsComponent,
     ViewSchedulesComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ScheduleDetailsComponent
   ],
   imports: [
     BrowserModule, 
@@ -65,7 +69,7 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     MatSnackBarModule,
   ],
-  providers: [UserService],
+  providers: [UserService, ScheduleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NewUser } from './../../models/newuser.model';
 import { MatSnackBar } from '@angular/material';
-import { UserService } from './../services/user.service'
+import { UserService } from './../services/user.service';
 
 @Component({
   selector: 'app-create-user',
@@ -17,25 +16,12 @@ export class CreateUserComponent implements OnInit {
   alertRequiredMessage : string = "This field is required";
 
   constructor(
-    private fb : FormBuilder,
     public snackBar: MatSnackBar, 
     private userService: UserService ) {
     
   }
 
   ngOnInit() {
-    // this.userService.postUserLogin(1002417, "password").subscribe(
-    //   success => {
-    //     // console.log("successfully posted new user!");
-    //     console.log(success);
-    //     this.snackBar.open("yay the post method works!", null, { duration: 800, });
-    //   },
-    //   error => {
-    //     // console.log("Error in postNewUser via CreateUserComponent");
-    //     console.log(error);
-    //     this.snackBar.open("Hhm, something went wrong. cannot login!", null, { duration: 800, });
-    //   }
-    // );
   }
 
   onSubmit(){ 

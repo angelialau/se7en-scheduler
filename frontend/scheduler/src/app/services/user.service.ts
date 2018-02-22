@@ -34,7 +34,7 @@ export class UserService {
   }
   
   // log in -> if success, returns all user details 
-  postUserLogin(employee_id : number, password : string ) : Observable<any>{
+  postLogin(employee_id : number, password : string ) : Observable<any>{
     let body = new URLSearchParams(); 
     body.set('employee_id', String(employee_id)); 
     body.set('password', password); 

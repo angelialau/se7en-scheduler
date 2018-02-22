@@ -1,15 +1,15 @@
-<section class="mat-typography">
 <div class="container">
-  <h1 style="text-align: center; margin:10px;" class="mat-headline"> - NOTIFICATIONS - </h1>
+  <div class="card-body">
+    <h5 class="card-title text-center">Notifications</h5>
+  </div>
   <div *ngFor="let notification of notifications">
-    <mat-card>
-      <mat-card-title> {{notification.title}} </mat-card-title>
-      <mat-card-subtitle> on {{notification.date}} by {{senderName}}</mat-card-subtitle>
-      <mat-card-content> {{notification.content}} </mat-card-content>
-    </mat-card>
-    <br>
-    <mat-divider></mat-divider>
-    <br>
+    <div class="card" style="margin: 0 5% 5% 5%;">
+      <h5 class="card-header">{{notification.title}}</h5>
+      <div class="card-body">
+        <p class="card-text"><small class="text-muted">on {{notification.date}} by {{senderName}}</small></p>
+        <p class="card-text">{{notification.content}}</p>    
+      </div>
+    </div>
   </div>
 </div>
-</section>  
+
