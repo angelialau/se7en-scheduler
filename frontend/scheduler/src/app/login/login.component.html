@@ -9,13 +9,13 @@
 
     <div class="form-group">
       <label for="password"> Password </label>
-      <input type="text" class="form-control" id="password" required minlength="5"
+      <input type="password" class="form-control" id="password" required minlength="5"
       [(ngModel)]="model.password" name="password">
     </div>
 
   	<button type="submit" class="btn btn-primary btn-lg btn-block"
   	[disabled]="!LoginForm.form.valid"
   	(click)="login()"> Submit </button>
-    
+
   </form>
 </div>

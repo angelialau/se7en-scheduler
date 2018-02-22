@@ -2,7 +2,11 @@
   SE7EN <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor>Instructor</ng-template>
   <span class="spacer"></span>
     <!-- sign out -->
+    
     <button mat-icon-button routerLink="/login">
-      <i class="material-icons">exit_to_app</i>
+      <i class="fas fa-sign-in-alt"></i>
+    </button>
+    <button mat-icon-button (click)="signOut()" routerLink="/login">
+      <i class="fas fa-sign-out-alt"></i>
     </button>
 </mat-toolbar>

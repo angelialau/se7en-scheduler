@@ -32,13 +32,13 @@ export class LoginComponent implements OnInit {
   login(){
     this.temp = JSON.parse(localStorage.getItem("currentUser"));
     if (this.temp != null){
-      this.snackBar.open("Plese login again", null, {duration:500,})
+      this.snackBar.open("Login invalid", null, {duration:500,})
     }
     else{
       this.userService.postLogin(this.model.employee_id, this.model.password)
       .map((data:any) => data)
       .subscribe(userData => {
-        if (userData.success){
+        if (userData){
            this.user.employee_id = userData.employee_id;
            this.user.email = userData.email;
            this.user.name = userData.name;
