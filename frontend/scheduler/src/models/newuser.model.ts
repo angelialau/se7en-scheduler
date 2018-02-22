@@ -1,5 +1,4 @@
 export class NewUser{
-  
   constructor(
     public admin: number,
     public name: string,

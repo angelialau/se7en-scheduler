@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './../../models/user.model';
+import { NewUser } from './../../models/newuser.model';
 import { MatDialogRef,MatSnackBar } from '@angular/material';
 import { UserService } from './../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,11 +12,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   hide = true;
-  user: User;
-  temp: User;
-  model: any = {};
-  submitted: boolean = false;
+  user: NewUser;
+  temp: User = new User(null,null);
+  model: User = new User(null,null);
   returnURL: string;
+  submitted = false;
 
   constructor(
     private userService: UserService,
@@ -25,12 +26,7 @@ export class LoginComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.user = new User();
-    this.returnURL = this.route.snapshot.queryParams['']
-  }
-
-  onSubmit(){
-    this.submitted = true;
+    this.user = new NewUser(null,null,null,null,null,null);
   }
 
   login(){
@@ -39,18 +35,16 @@ export class LoginComponent implements OnInit {
       this.snackBar.open("Plese login again", null, {duration:500,})
     }
     else{
-      this.userService.postUserLogin(this.model.employee_id, this.model.password)
+      this.userService.postLogin(this.model.employee_id, this.model.password)
       .map((data:any) => data)
       .subscribe(userData => {
         if (userData.success){
            this.user.employee_id = userData.employee_id;
            this.user.email = userData.email;
            this.user.name = userData.name;
-           this.user.id = userData.id;
            this.user.phone = userData.phone;
            localStorage.setItem("currentUser", JSON.stringify(this.user));
-           this.snackBar.open("Your have login", null, { duration: 1000, })
-
+           this.snackBar.open("Your have login", null, { duration: 1000, });
            this.router.navigateByUrl('/home');
         }
         else{
@@ -62,6 +56,10 @@ export class LoginComponent implements OnInit {
       () => console.log(this.user),
       );
     }
+  }
+
+  onSubmit(){
+    this.submitted = true;
   }
 
 }
