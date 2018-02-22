@@ -39,6 +39,7 @@ var Schedule = {
 
 	updateScheduleCourses:function(id, course, callback) {
 		this.getScheduleById(id, function(err, rows) {
+			console.log(err);
 			if (!err) {
 				var courses = rows[0].courses;
 				courses = courses + "," + course;
