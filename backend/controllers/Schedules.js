@@ -62,7 +62,7 @@ router.post('/', function(req, res, next) {
 });
 
 // defining route for updating a schedule
-route.post('/Update', function(req, res, next) {
+router.post('/Update', function(req, res, next) {
 	if (req.body.id && req.body.courses && req.body.year && req.body.trimester) {
 
 		Schedule.updateSchedule(
@@ -83,10 +83,10 @@ route.post('/Update', function(req, res, next) {
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
 	}
-})
+});
 
 // defining route for deleting a schedule
-route.post('/Delete', function(req, res, next) {
+router.post('/Delete', function(req, res, next) {
 	if (req.body.id) {
 
 		Schedule.deleteSchedule(
@@ -104,6 +104,6 @@ route.post('/Delete', function(req, res, next) {
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
 	}
-})
+});
 
 module.exports = router;
