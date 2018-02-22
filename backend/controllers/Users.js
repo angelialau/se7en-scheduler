@@ -1,3 +1,4 @@
+import "../utils/utilities"
 var express = require("express");
 var User = require("../models/User");
 var encrypt = require("../utils/encrypt");
@@ -12,7 +13,7 @@ router.get('/:employee_id(\\d+)', function(req, res, next) {
 				res.json(err);
 				console.log("error");
 			} else {
-				if (rows) {
+				if (!isEmptyObject(rows)) {
 					res.json(rows[0]);
 					console.log("no error");
 				} else {
