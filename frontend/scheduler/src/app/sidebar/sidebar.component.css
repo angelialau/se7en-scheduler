@@ -1,9 +1,9 @@
 a {
   text-decoration: none;
 }
-
 .spread{
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  max-width: 230px;
+  word-wrap: break-word;
 }

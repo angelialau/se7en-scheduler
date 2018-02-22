@@ -1,33 +1,73 @@
 <div *ngIf="!name; else forminfo">
-  <form [formGroup]='rForm' (ngSubmit)='addPost(rForm.value)'>
+  <form [formGroup]='reqForm' (ngSubmit)='addPost(reqForm.value)'>
     <div class="form-container">
       <div class="row columns">
-        <h1>Timetable Requirements Form</h1>
+        <section class="mat-typography">
+        <h1  style="text-align: center;">Timetable Requirements Form</h1>
+        <!-- term -->
+        <label>Term
+          <select formControlName="term">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+          </select>
+        </label>
+        <div class="alert" *ngIf="!reqForm.controls['term'].valid && reqForm.controls['term'].touched">{{titleAlert}}</div> 
+
+        <!-- type of course -->
+        <label>Core/Elective
+          <select formControlName="courseType">
+            <option value="Core">Core</option>
+            <option value="Elective">Elective</option>
+          </select>
+        </label>
+        <div class="alert" *ngIf="!reqForm.controls['courseType'].valid && reqForm.controls['courseType'].touched">{{titleAlert}}</div> 
+
+        <!-- subject code --> 
+        <!-- maybe after user keys in subject code we can show the corresponding subject name -->
+        <label>Core/Elective (e.g. 50.021)
+          <input type="text" formControlName="subjectCode" (keydown)="keyDownFunction($event)" > 
+        </label>
+        <div class="alert" *ngIf="!reqForm.controls['subjectCode'].valid && reqForm.controls['subjectCode'].touched">{{titleAlert}}</div> 
+        <div *ngIf="reqForm.controls['subjectCode'].valid && reqForm.controls['subjectCode'].touched">The course you have entered is: {{subjectName}}</div> 
+
+        <!-- prof name -->
         <label>Name
           <!-- formControlName has to match specified in the formGroup -->
           <input type="text" formControlName="name"> 
         </label>
-        <div class="alert" *ngIf="!rForm.controls['name'].valid && rForm.controls['name'].touched">{{titleAlert}}</div> 
+        <div class="alert" *ngIf="!reqForm.controls['name'].valid && reqForm.controls['name'].touched">{{titleAlert}}</div> 
 
         <label>Description
           <textarea formControlName="description"></textarea> 
         </label>
-        <div class="alert" *ngIf="!rForm.controls['description'].valid && rForm.controls['description'].touched">Must have between 30 and 50 characters</div> 
+        <div class="alert" *ngIf="!reqForm.controls['description'].valid && reqForm.controls['description'].touched">Must have between 30 and 50 characters</div> 
 
         <label for="validate"> Min 3 Characters</label>
         <input type="checkbox" name="validate" formControlName="validate" value="1"> On
 
-        <input type="submit" class="button expanded" value="Submit Form" [disabled]="!rForm.valid">
+        <input type="submit" class="button expanded" value="Submit Form" [disabled]="!reqForm.valid">
+      </section>
       </div>
     </div>
   </form>
 </div>
 
+
+<section class="mat-typography">
 <ng-template #forminfo> 
   <div class="form-container">
     <div class="row columns">
-      <h1>name: {{name}}</h1>
+      <h3 style="text-align: center;">Your form has been submitted.</h3>
+      <p>Term: {{term}}</p>
+      <p>Name: {{name}}</p>
       <p>description: {{description}}</p>
     </div>
   </div>
 </ng-template>
+</section>

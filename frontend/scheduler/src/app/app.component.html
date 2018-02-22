@@ -1,3 +1,6 @@
+<div *ngIf="!loggedin else loggedin"><app-login></app-login></div>
+
+<ng-template #loggedin>
 <app-navbar></app-navbar>
 <mat-sidenav-container class="mat-sidenav-container" autosize>
   <!-- sidenav content -->
@@ -9,5 +12,6 @@
     <router-outlet></router-outlet>  
   </mat-sidenav-content>
 </mat-sidenav-container>
+</ng-template>
 
 

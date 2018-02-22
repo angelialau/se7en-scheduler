@@ -1,0 +1,21 @@
+40.001 Probability
+40.002 Optimisation
+40.004 Statistics
+40.011 Data and Business Analytics
+40.012 Manufacturing and Service Operations
+40.013 Network Analysis and Control
+40.014 Engineering Systems Architecture
+40.015 Simulation Modelling and Analysis
+40.220 The Analytics Edge
+40.230 Sustainable Engineering
+40.232 Water Resources Management
+40.240 Investment Science
+40.242 Derivative Pricing and Risk Management
+40.260 Supply Chain Management
+40.302 Advanced Topics in Optimisation
+40.305 Advanced Topics in Stochastic Modelling
+40.316 Game Theory
+40.317 Financial Systems Design
+40.318 Global Trade and Logistics
+01.102 Energy Systems and Management
+01.104 Networked Life
