@@ -4,7 +4,7 @@ var encrypt = require("../utils/encrypt");
 var router = express.Router();
 
 // Defining get User by employee id route
-router.get('/:employee_id(\d+)', function(req, res, next) {
+router.get('/:employee_id', function(req, res, next) {
 	if (req.params.employee_id) {
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
