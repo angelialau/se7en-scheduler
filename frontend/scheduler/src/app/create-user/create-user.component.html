@@ -1,4 +1,4 @@
-<div *ngIf="!submitted else elseblock">
+
 <div class="container">
   <h1>Create New User Form</h1>
   <form (ngSubmit)="onSubmit()" #newUserForm="ngForm">
@@ -7,14 +7,16 @@
     <div class="form-group">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" id="instructor" 
-        [(ngModel)]="modelNewUser.admin" name="admin" value="0">
+        [(ngModel)]="modelNewUser.admin" name="admin" value="0"
+        required >
         <label class="form-check-label" for="instructor">
           Instructor
         </label>
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" id="admin"
-        [(ngModel)]="modelNewUser.admin" name="admin"  value="1">
+        [(ngModel)]="modelNewUser.admin" name="admin"  value="1"
+        required >
         <label class="form-check-label" for="admin">
           Administrator
         </label>
@@ -40,40 +42,27 @@
 
     <div class="form-group">
       <label for="phone"> Phone Number * </label>
-        <input type="number" class="form-control" id="phone" 
-        required
+        <input type="tel" class="form-control" id="phone" 
+        required minlength="8" 
         [(ngModel)]="modelNewUser.phone" name="phone">
+    </div>
+
+    <div class="form-group">
+      <label for="employee_id"> Employee ID * </label>
+        <input type="tel" class="form-control" id="employee_id" 
+        required minlength="5" maxlength="5" 
+        [(ngModel)]="modelNewUser.employee_id" name="employee_id">
     </div>
 
     <div class="form-group">
       <label for="password"> Password * </label>
         <input type="text" class="form-control" id="password" 
-        required
+        required minlength="5" 
         [(ngModel)]="modelNewUser.password" name="password">
     </div>
 
     <button type="submit" class="btn btn-success" 
     [disabled]="!newUserForm.form.valid" 
-    (click)="onClick(modelNewUser.name); newUserForm.reset()">Submit</button>
+    (click)="openSnackBar(modelNewUser.name); newUserForm.reset()">Submit</button>
   </form>
-</div>
-</div>
-
-<div #elseblock>
-  <ng-template>
-  <h2>You submitted the following:</h2>
-  <div class="row">
-    <div class="col-xs-3">Name</div>
-    <div class="col-xs-9  pull-left">{{ modelNewUser.name }}</div>
-  </div>
-  <div class="row">
-    <div class="col-xs-3">Email</div>
-    <div class="col-xs-9 pull-left">{{ modelNewUser.email }}</div>
-  </div>
-  <div class="row">
-    <div class="col-xs-3">Phone Number</div>
-    <div class="col-xs-9 pull-left">{{ modelNewUser.phone }}</div>
-  </div>
-  <br>
-  <button class="btn btn-primary" (click)="submitted=false">Edit</button></ng-template>
 </div>

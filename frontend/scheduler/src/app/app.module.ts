@@ -3,12 +3,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
  MatSidenavModule, MatListModule, MatCardModule, MatFormFieldModule,
  MatInputModule, MatSnackBarModule } from '@angular/material';
 
+// component imports 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -18,6 +20,9 @@ import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-fo
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+
+// service imports 
+import { UserService } from './services/user.service'
 
 const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
@@ -45,6 +50,7 @@ const ROUTES: Routes = [
   ],
   imports: [
     BrowserModule, 
+    HttpClientModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES), 
     MatToolbarModule, 
@@ -59,7 +65,7 @@ const ROUTES: Routes = [
     ReactiveFormsModule,
     MatSnackBarModule,
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
