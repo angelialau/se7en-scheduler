@@ -1,14 +1,22 @@
-<div fullscreen>
-<form class="form-container">
-  <mat-form-field class="field-container">
-    <input matInput placeholder="Enter your email" [formControl]="email" required>
-    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
+<div class="form-container">
+<h1> Login </h1>
+<form (ngSubmit)="onSubmit()" #LoginForm="ngForm">
+	<div class="form-group">
+		<label for="employee_id"> ID* </label>	
+		<input type="text" class="form-control" id="employee_id" required minlength="5"
+		maxlength="5"
+		[(ngModel)]="user.employee_id" name="employee_id">
+	</div>
 
-   <mat-form-field class="field-container">
-    <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
-    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-  </mat-form-field>
-  <button mat-button routerLink="/notifications">Login</button>
+	<div class="form-group">
+		<label for="password"> Password </label>
+		<input type="text" class="form-control" id="password" required minlength="5"
+		[(ngModel)]="user.password" name="password">
+	</div>
+
+	<button type="Login" class="btn btn-primary btn-lg btn-block" 
+	style="margin: 0 auto;"
+	[disabled] = "!LoginForm.form.valid"
+	(click)="login()"> Submit </button>
 </form>
 </div>

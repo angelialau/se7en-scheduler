@@ -38,7 +38,7 @@ export class UserService {
     let body = new URLSearchParams(); 
     body.set('employee_id', String(employee_id)); 
     body.set('password', password); 
-    let extension = this.url + '/Users/login';
+    let extension = this.url + '/Users/Login';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
