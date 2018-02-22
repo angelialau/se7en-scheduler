@@ -37,14 +37,24 @@ var Schedule = {
 						callback);
 	},
 
-	updateScheduleCourses:function(id, course, callback) {
+	updateScheduleCourses:function(id, course, operation, callback) {
 		this.getScheduleById(id, function(err, rows) {
 			if (err == null) {
 				var courses = rows[0].courses;
 				if (courses == null) {
 					courses = course;
 				} else {
-					courses = courses + "," + course;
+					if (operation > 0) {
+						// positive operation means adding a course
+						courses = courses + "," + course;
+					} else {
+						// negative or zero operation means removing a course
+						var array = courses.split(',')
+						var index = array.indexOf(course);
+						array.splice(index, 1);
+						courses = array.join();
+					}
+					
 				}
 				return db.query(
 					"UPDATE " + TABLE_NAME +

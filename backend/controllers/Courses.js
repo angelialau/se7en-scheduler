@@ -88,6 +88,7 @@ router.post('/', function(req, res, next) {
 					Schedule.updateScheduleCourses(
 						req.body.schedule_id,
 						create_count.insertId,
+						1,
 						function(update_err, update_count) {
 							if (update_err) {
 								res.json(update_err);
@@ -95,7 +96,73 @@ router.post('/', function(req, res, next) {
 								create_count.success = true;
 								res.json(create_count);
 							}
-						})
+						});
+				}
+			}
+		);
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for updating a course
+router.post('/Update', function(req, res, next) {
+	if (
+		req.body.core && 
+		req.body.no_sessions && 
+		req.body.session_hrs && 
+		req.body.locations &&
+		req.body.term &&
+		req.body.instructors
+	) {
+
+		Course.updateCourse(
+			req.body.core,
+			req.body.no_sessions,
+			req.body.session_hrs, 
+			req.body.locations,
+			req.body.term,
+			req.body.instructors,
+			function(err, count) {
+				if (err) {
+					err.success = false;
+					res.json(err);
+				} else {
+					count.success = true;
+					res.json(count);
+				}
+			}
+		);
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for deleting a course
+router.post('/Delete', function(req, res, next) {
+	if (req.body.id && req.body.schedule_id) {
+
+		Course.deleteCourse(
+			req.body.id,
+			function(err, count) {
+				if (err) {
+					err.success = false;
+					res.json(err);
+				} else {
+					// update schedule
+					Schedule.updateScheduleCourses(
+						req.body.schedule_id,
+						req.body.id,
+						-1,
+						function(update_err, update_count) {
+							if (update_err) {
+								update_err.success = false;
+								res.json(update_err);
+							} else {
+								count.success = true;
+								res.json(count);
+							}
+						});
 				}
 			}
 		);
