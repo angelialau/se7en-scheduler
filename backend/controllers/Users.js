@@ -27,16 +27,27 @@ router.get('/:employee_id(\\d+)', function(req, res, next) {
 router.get('/', function(req, res, next) {
 	User.getAllUsers(function(err, rows) {
 		if (err) {
+			err.success = false;
 			res.json(err);
 		} else {
-			res.json(rows);
+			if (!utils.isEmptyObject(rows)) {
+				res.json(rows);
+			} else {
+				res.json({"success":false, "message":"no rows found"});
+			}
 		}
 	});
 })
 
 // Defining create User route
 router.post('/', function(req, res, next) {
-	if (req.body.name) {
+	if (req.body.name && 
+		req.body.email && 
+		req.body.phone && 
+		req.body.employee_id &&
+		req.body.password &&
+		req.body.admin) {
+
 		var salt = encrypt.genRanString(13);
 		var passwordHash = encrypt.sha512(req.body.password, salt);
 
@@ -57,7 +68,7 @@ router.post('/', function(req, res, next) {
 			}
 		);
 	} else {
-		res.json({"message":"post params empty"});
+		res.json({"message":"post params incomplete"});
 	}
 });
 
