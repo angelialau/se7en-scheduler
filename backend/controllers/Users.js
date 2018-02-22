@@ -3,8 +3,8 @@ var User = require("../models/User");
 var encrypt = require("../utils/encrypt");
 var router = express.Router();
 
-// Defining get User route
-router.get('/(:employee_id(\d+))?', function(req, res, next) {
+// Defining get User by employee id route
+router.get('/:employee_id(\d+)', function(req, res, next) {
 	if (req.params.employee_id) {
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
@@ -13,16 +13,19 @@ router.get('/(:employee_id(\d+))?', function(req, res, next) {
 				res.json(rows[0]);
 			}
 		});
-	} else {
-		User.getAllUsers(function(err, rows) {
-			if (err) {
-				res.json(err);
-			} else {
-				res.json(rows);
-			}
-		});
-	}
+	} 
 });
+
+// Defining get all users route
+router.get('/', function(req, res, next) {
+	User.getAllUsers(function(err, rows) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(rows);
+		}
+	});
+})
 
 // Defining create User route
 router.post('/', function(req, res, next) {
