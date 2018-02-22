@@ -48,7 +48,7 @@ var Schedule = {
 				}
 				return db.query(
 					"UPDATE " + TABLE_NAME +
-					"SET `" + COLUMN_COURSES +
+					" SET `" + COLUMN_COURSES +
 					"` =? WHERE `" + COLUMN_ID +
 					"` =?",
 					[courses, id],
