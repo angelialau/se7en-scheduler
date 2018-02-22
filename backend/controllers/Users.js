@@ -74,23 +74,32 @@ router.post('/', function(req, res, next) {
 
 // Defining login route
 router.post('/Login', function(req, res, next) {
-	if (req.body.employee_id) {
+	// Check if params are in
+	if (req.body.employee_id && req.body.password) {
 		User.getUserByEmployeeId(req.body.employee_id, function(err, rows) {
 			if (err) {
 				// Cannot retrieve a row with employee id
 				res.json(err);
 			} else {
-				// Check if password matches
-				var passwordHash = encrypt.sha512(req.body.password, rows[0].salt);
-				if (passwordHash !== rows[0].passwordHash) {
-					res.json({"message":"wrong password"});
+				if (!utils.isEmptyObject(rows)) {
+					// Check if password matches
+					var passwordHash = encrypt.sha512(req.body.password, rows[0].salt);
+					if (passwordHash !== rows[0].passwordHash) {
+						res.json({"success":false, "message":"wrong password"});
+						
+					} else {
+						// Return success along with user details
+						rows[0].success = true;
+						res.json(rows[0]);
+					}
 				} else {
-					res.json(rows[0]);
+					// If unable to retrieve any row
+					res.json({"success":false, "message":"unable to find user"});
 				}
 			}
 		});
 	} else {
-		res.json({"message":"post params empty"});
+		res.json({"success":false, "message":"post params incomplete"});
 	}
 });
 
