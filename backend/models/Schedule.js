@@ -53,7 +53,7 @@ var Schedule = {
 					callback);
 			}
 		})
-	}
+	},
 
 	deleteSchedule:function(id, callback) {
 		return db.query("DELETE FROM " + TABLE_NAME + " WHERE `" + COLUMN_ID +
