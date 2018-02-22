@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
 // defining route for getting one schedule by id
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
-		Schedule.getScheduleByID(req.params.id, function(err, rows) {
+		Schedule.getScheduleById(req.params.id, function(err, rows) {
 			if (err) {
 				err.success = false;
 				res.json(err);
