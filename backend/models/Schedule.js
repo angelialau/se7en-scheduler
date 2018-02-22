@@ -41,8 +41,11 @@ var Schedule = {
 		this.getScheduleById(id, function(err, rows) {
 			if (err == null) {
 				var courses = rows[0].courses;
-				courses = courses + "," + course;
-				console.log(courses);
+				if (courses == null) {
+					courses = course;
+				} else {
+					courses = courses + "," + course;
+				}
 				return db.query(
 					"UPDATE " + TABLE_NAME +
 					"SET `" + COLUMN_COURSES +
