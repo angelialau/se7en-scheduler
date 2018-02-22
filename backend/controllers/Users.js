@@ -4,16 +4,8 @@ var encrypt = require("../utils/encrypt");
 var router = express.Router();
 
 // Defining get User route
-router.get('/:id?:employee_id?', function(req, res, next) {
-	if (req.params.id) {
-		User.getUserById(req.params.id, function(err, rows) {
-			if (err) {
-				res.json(err);
-			} else {
-				res.json(rows[0]);
-			}
-		});
-	} else if (req.params.employee_id) {
+router.get('/:employee_id?(\d+)', function(req, res, next) {
+	if (req.params.employee_id) {
 		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
 			if (err) {
 				res.json(err);
@@ -60,7 +52,7 @@ router.post('/', function(req, res, next) {
 });
 
 // Defining login route
-router.post('/login', function(req, res, next) {
+router.post('/Login', function(req, res, next) {
 	if (req.body.employee_id) {
 		User.getUserByEmployeeId(req.body.employee_id, function(err, rows) {
 			if (err) {
