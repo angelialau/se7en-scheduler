@@ -10,11 +10,14 @@ router.get('/:employee_id(\\d+)', function(req, res, next) {
 			if (err) {
 				err.success = false;
 				res.json(err);
+				console.log("error");
 			} else {
 				if (rows) {
 					res.json(rows[0]);
+					console.log("no error");
 				} else {
 					res.json({"success":false});
+					console.log("success is false");
 				}
 			}
 		});
