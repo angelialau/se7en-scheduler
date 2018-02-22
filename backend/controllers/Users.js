@@ -31,7 +31,6 @@ router.get('/', function(req, res, next) {
 			res.json(err);
 		} else {
 			if (!utils.isEmptyObject(rows)) {
-				rows.success = true;
 				res.json(rows);
 			} else {
 				res.json({"success":false, "message":"no rows found"});

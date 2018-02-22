@@ -20,8 +20,26 @@ router.get('/', function(req, res, next) {
 	});
 })
 
+// defining route for getting one schedule by id
+router.get('/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		User.getScheduleByID(req.params.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				if (!utils.isEmptyObject(rows)) {
+					rows[0].success = true;
+					res.json(rows[0]);
+				} else {
+					res.json({"success":false, "message":"no rows found"});
+				}
+			}
+		});
+	} 
+});
+
 // defining route for creating a schedule
-// Defining create User route
 router.post('/', function(req, res, next) {
 	if (req.body.year && req.body.trimester) {
 
