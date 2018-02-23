@@ -1,4 +1,4 @@
-<mat-toolbar class="toolbar" *ngIf="!(location === '/login')">
+<mat-toolbar class="toolbar">
   SE7EN <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor>Instructor</ng-template>
   <span class="spacer"></span>
     <!-- sign out -->

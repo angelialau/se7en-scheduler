@@ -28,7 +28,7 @@ import { ScheduleDetailsComponent } from './schedule-details/schedule-details.co
 
 const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
   { path: 'create-user', component: CreateUserComponent },
