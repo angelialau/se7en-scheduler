@@ -1,10 +1,10 @@
 <div *ngIf="!loggedin else loggedin"><app-login></app-login></div>
 
 <ng-template #loggedin>
-<app-navbar></app-navbar>
+<app-navbar *ngIf="!(location === '/login')"></app-navbar>
 <mat-sidenav-container class="mat-sidenav-container" autosize>
   <!-- sidenav content -->
-  <mat-sidenav mode="side" opened="true" class="sidebar">
+  <mat-sidenav mode="side" opened="true" class="sidebar" *ngIf="!(location === '/login')">
     <app-sidebar></app-sidebar>
   </mat-sidenav>
   <!-- main content -->

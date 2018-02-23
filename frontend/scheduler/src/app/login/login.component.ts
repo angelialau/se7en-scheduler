@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   temp: User = new User(null,null);
   model: User = new User(null,null);
   returnURL: string;
-  submitted = false;
 
   constructor(
     private userService: UserService,
@@ -44,7 +43,7 @@ export class LoginComponent implements OnInit {
            this.user.name = userData.name;
            this.user.phone = userData.phone;
            localStorage.setItem("currentUser", JSON.stringify(this.user));
-           this.snackBar.open("Your have login", null, { duration: 1000, });
+           this.snackBar.open("Your have logged in", null, { duration: 1000, });
            this.router.navigateByUrl('/home');
         }
         else{
@@ -56,10 +55,6 @@ export class LoginComponent implements OnInit {
       () => console.log(this.user),
       );
     }
-  }
-
-  onSubmit(){
-    this.submitted = true;
   }
 
 }

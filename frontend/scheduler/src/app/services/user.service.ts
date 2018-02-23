@@ -14,6 +14,8 @@ export class UserService {
   headers = new HttpHeaders({ 
     'Content-Type': 'application/x-www-form-urlencoded' 
   });
+
+  public atLoginPage : boolean = false;
   
   constructor(
     private http: HttpClient) { }
@@ -42,6 +44,15 @@ export class UserService {
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
+  }
+
+  // hides navbar and sidebar if it is the login page
+  setAtLoginPage(bool : boolean){
+    this.atLoginPage = bool;
+  }
+
+  getAtLoginPage(){
+    return this.atLoginPage;
   }
 
   private handleError(err: HttpErrorResponse) {
