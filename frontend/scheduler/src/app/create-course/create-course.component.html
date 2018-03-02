@@ -1,0 +1,38 @@
+<div class="form-container">
+  <h4>Create New Schedule</h4>
+  <form #newForm="ngForm">
+    
+    <!-- trimester type -->
+    <div class="form-group">
+      <label for="trimester"> Academic Term * </label>
+      <select class="form-control" id="trimester"
+      required
+       [(ngModel)]="schedule.trimester" name="trimester">
+        <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
+        <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
+        <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
+      </select>
+    </div>
+
+    <!-- year -->
+    <div class="form-group">
+      <label for="year"> Year </label>
+      <select class="form-control" id="year"
+      required
+       [(ngModel)]="schedule.year" name="year">
+       <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
+        value={{i}}>{{i}}</option>
+      </select>
+    </div>        
+
+    <button type="submit" class="btn btn-success" 
+    [disabled]="!newForm.form.valid" 
+    (click)="onSend()">Create course</button>
+    <button class="btn btn-warning" 
+    (click)="newForm.reset()">Reset</button>
+    <button class="btn btn-danger" 
+    (click)="closeForm()">Cancel</button>
+
+    
+  </form>
+</div>
