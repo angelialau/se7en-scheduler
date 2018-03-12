@@ -4,10 +4,10 @@ var encrypt = require("../utils/encrypt");
 var utils = require("../utils/utilities");
 var router = express.Router();
 
-// Defining get User by employee id route
-router.get('/:employee_id(\\d+)', function(req, res, next) {
-	if (req.params.employee_id) {
-		User.getUserByEmployeeId(req.params.employee_id, function(err, rows) {
+// Defining get User by id route
+router.get('/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		User.getUserById(req.params.id, function(err, rows) {
 			if (err) {
 				err.success = false;
 				res.json(err);
@@ -44,7 +44,6 @@ router.post('/', function(req, res, next) {
 	if (req.body.name && 
 		req.body.email && 
 		req.body.phone && 
-		req.body.employee_id &&
 		req.body.password &&
 		req.body.admin) {
 
@@ -55,7 +54,6 @@ router.post('/', function(req, res, next) {
 			req.body.name, 
 			req.body.email,
 			req.body.phone,
-			req.body.employee_id,
 			passwordHash,
 			salt,
 			req.body.admin,
@@ -77,8 +75,8 @@ router.post('/', function(req, res, next) {
 // Defining login route
 router.post('/Login', function(req, res, next) {
 	// Check if params are in
-	if (req.body.employee_id && req.body.password) {
-		User.getUserByEmployeeId(req.body.employee_id, function(err, rows) {
+	if (req.body.email && req.body.password) {
+		User.getUserByEmail(req.body.email, function(err, rows) {
 			if (err) {
 				// Cannot retrieve a row with employee id
 				err.success = false;
