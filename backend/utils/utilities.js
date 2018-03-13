@@ -21,7 +21,7 @@ var utilities = {
 			if (!this.isEmptyObject(rows)) {
 		
 				if (row_num != null) {
-					rows[row_num] = true;
+					rows[row_num].success = true;
 					res.json(rows[row_num]);
 				} else {
 					rows.success = true;
