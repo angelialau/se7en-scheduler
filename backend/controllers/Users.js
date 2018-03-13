@@ -8,17 +8,7 @@ var router = express.Router();
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		User.getUserById(req.params.id, function(err, rows) {
-			if (err) {
-				err.success = false;
-				res.json(err);
-			} else {
-				if (!utils.isEmptyObject(rows)) {
-					rows[0].success = true;
-					res.json(rows[0]);
-				} else {
-					res.json({"success":false, "message":"no rows found"});
-				}
-			}
+			utils.basicGetCallback(res, err, rows, 0);
 		});
 	} 
 });
@@ -26,16 +16,7 @@ router.get('/:id(\\d+)', function(req, res, next) {
 // Defining get all users route
 router.get('/', function(req, res, next) {
 	User.getAllUsers(function(err, rows) {
-		if (err) {
-			err.success = false;
-			res.json(err);
-		} else {
-			if (!utils.isEmptyObject(rows)) {
-				res.json(rows);
-			} else {
-				res.json({"success":false, "message":"no rows found"});
-			}
-		}
+		utils.basicGetCallback(res, err, rows, null);
 	});
 })
 
@@ -58,13 +39,7 @@ router.post('/', function(req, res, next) {
 			salt,
 			req.body.admin,
 			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					count.success = true;
-					res.json(count);
-				}
+				utils.basicPostCallback(res, err, count);
 			}
 		);
 	} else {
