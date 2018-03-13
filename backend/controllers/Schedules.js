@@ -6,7 +6,7 @@ var router = express.Router();
 // defining route for get all schedules
 router.get('/', function(req, res, next) {
 	Schedule.getAllSchedules(function(err, rows) {
-		utils.basicGetCallback(res, err, rows);
+		utils.basicGetCallback(res, err, rows, null);
 	});
 });
 
@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Schedule.getScheduleById(req.params.id, function(err, rows) {
-			utils.basicGetCallback(res, err, rows);
+			utils.basicGetCallback(res, err, rows, 0);
 		});
 	} 
 });

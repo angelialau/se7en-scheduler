@@ -7,7 +7,7 @@ var router = express.Router();
 // defining route for get all courses
 router.get('/', function(req, res, next) {
 	Course.getAllCourses(function(err, rows) {
-		utils.basicGetCallback(res, err, rows);
+		utils.basicGetCallback(res, err, rows, null);
 	});
 });
 
@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Course.getCourseById(req.params.id, function(err, rows) {
-			utils.basicGetCallback(res, err, rows);
+			utils.basicGetCallback(res, err, rows, 0);
 		});
 	} 
 });
@@ -24,7 +24,7 @@ router.get('/:id(\\d+)', function(req, res, next) {
 router.get('/BySchedule/:schedule_id(\\d+)', function(req, res, next) {
 	if (req.params.schedule_id) {
 		Course.getCourseBySchedule(req.params.schedule_id, function(err, rows) {
-			utils.basicGetCallback(res, err, rows);
+			utils.basicGetCallback(res, err, rows, null);
 		});
 	} 
 });
