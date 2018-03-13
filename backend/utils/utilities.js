@@ -3,6 +3,12 @@ var utilities = {
 		return !Object.keys(obj).length;
 	},
 
+	compareJSONKeys:function(jsonIn, jsonCompare){
+		var inKeys = Object.keys(jsonIn).sort();
+  		var compareKeys = Object.keys(jsonCompare).sort();
+  		return JSON.stringify(inKeys) === JSON.stringify(compareKeys);
+	},
+
 	basicPostCallback:function(res, err, count) {
 		if (err) {
 			err.success = false;

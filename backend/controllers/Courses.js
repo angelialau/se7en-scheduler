@@ -32,27 +32,33 @@ router.get('/BySchedule/:schedule_id(\\d+)', function(req, res, next) {
 // defining route for creating a course
 router.post('/', function(req, res, next) {
 	if (req.body.schedule_id && 
+		req.body.term &&
+		req.body.course_no &&
+		req.body.course_name &&
 		req.body.core && 
+		req.body.no_classes &&
+		req.body.class_size &&
 		req.body.no_sessions &&
 		req.body.session_hrs &&
 		req.body.locations &&
-		req.body.term &&
 		req.body.instructors &&
-		req.body.course_no &&
-		req.body.course_name
+		req.body.split
 	) {
 
 		// Create the course
 		Course.createCourse(
-			req.body.schedule_id, 
+			req.body.schedule_id,
+			req.body.term,
+			req.body.course_no,
+			req.body.course_name,
 			req.body.core,
+			req.body.no_classes,
+			req.body.class_size,
 			req.body.no_sessions,
 			req.body.session_hrs,
 			req.body.locations,
-			req.body.term,
 			req.body.instructors,
-			req.body.course_no,
-			req.body.course_name,
+			req.body.split,
 			function(create_err, create_count) {
 				// return error if any
 				if (create_err) {
@@ -79,26 +85,32 @@ router.post('/', function(req, res, next) {
 router.post('/Update', function(req, res, next) {
 	if (
 		req.body.id &&
-		req.body.core && 
-		req.body.no_sessions && 
-		req.body.session_hrs && 
-		req.body.locations &&
 		req.body.term &&
-		req.body.instructors &&
 		req.body.course_no &&
-		req.body.course_name
+		req.body.course_name &&
+		req.body.core && 
+		req.body.no_classes &&
+		req.body.class_size &&
+		req.body.no_sessions &&
+		req.body.session_hrs &&
+		req.body.locations &&
+		req.body.instructors &&
+		req.body.split
 	) {
 
 		Course.updateCourse(
 			req.body.id,
-			req.body.core,
-			req.body.no_sessions,
-			req.body.session_hrs, 
-			req.body.locations,
 			req.body.term,
-			req.body.instructors,
 			req.body.course_no,
 			req.body.course_name,
+			req.body.core,
+			req.body.no_classes,
+			req.body.class_size,
+			req.body.no_sessions,
+			req.body.session_hrs,
+			req.body.locations,
+			req.body.instructors,
+			req.body.split,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
