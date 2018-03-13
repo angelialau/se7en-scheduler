@@ -13,7 +13,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class LoginComponent implements OnInit {
   hide = true;
   user: NewUser;
-  temp: User = new User(null,null);
   model: User = new User(null,null);
   returnURL: string;
 
@@ -29,13 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.temp = JSON.parse(localStorage.getItem("currentUser"));
-    if (this.temp.email != null){
-      console.log(this.temp);
-      this.snackBar.open("Login invalid", null, {duration:500,})
-    }
-    else{
-      this.userService.postLogin(this.model.email, this.model.password)
+    this.userService.postLogin(this.model.email, this.model.password)
       .subscribe(userData => {
         if (userData){
           userData = JSON.parse(userData); // need to map userData to NewUser model
@@ -58,7 +51,6 @@ export class LoginComponent implements OnInit {
       error => {console.log("show error: "+ error),this.snackBar.open("Try clearing your cookies......", null, { duration: 500, })},
       () => console.log(this.user),
       );
-    }
   }
 
 }
