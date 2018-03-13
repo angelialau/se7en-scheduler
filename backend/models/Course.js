@@ -9,6 +9,8 @@ var COLUMN_SESSION_HRS = "session_hrs";
 var COLUMN_LOCATIONS = "locations";
 var COLUMN_TERM = "term";
 var COLUMN_INSTRUCTORS = "instructors";
+var COLUMN_COURSE_NO = "course_no";
+var COLUMN_COURSE_NAME = "course_name";
 
 var Course = {
 	getAllCourses:function(callback) {
@@ -33,6 +35,8 @@ var Course = {
 		locations, 
 		term, 
 		instructors, 
+		course_no,
+		course_name,
 		callback
 	){
 		return db.query("INSERT INTO " + 
@@ -43,9 +47,19 @@ var Course = {
 			COLUMN_SESSION_HRS + "`,`" +
 			COLUMN_LOCATIONS + "`,`" +
 			COLUMN_TERM + "`,`" +
-			COLUMN_INSTRUCTORS + "`)" +  
-			" VALUES(?,?,?,?,?,?,?)", 
-			[schedule_id, core, no_sessions, session_hrs, locations, term, instructors],
+			COLUMN_INSTRUCTORS + "`,`" +
+			COLUMN_COURSE_NO + "`,`" +
+			COLUMN_COURSE_NAME + "`)" +  
+			" VALUES(?,?,?,?,?,?,?,?,?)", 
+			[schedule_id,
+			 core,
+			 no_sessions,
+			 session_hrs, 
+			 locations, 
+			 term, 
+			 instructors, 
+			 course_no, 
+			 course_name],
 			callback);
 	},
 
@@ -57,6 +71,8 @@ var Course = {
 		locations,
 		term,
 		instructors,
+		course_no,
+		course_name,
 		callback
 	){
 		return db.query("UPDATE " + TABLE_NAME +
@@ -66,9 +82,19 @@ var Course = {
 						"` =?, `" + COLUMN_LOCATIONS +
 						"` =?, `" + COLUMN_TERM + 
 						"` =?, `" + COLUMN_INSTRUCTORS +
+						"` =?, `" + COLUMN_COURSE_NO +
+						"` =?, `" + COLUMN_COURSE_NAME +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
-						[core, no_sessions, session_hrs, locations, term, instructors, id],
+						[core, 
+						no_sessions, 
+						session_hrs, 
+						locations, 
+						term, 
+						instructors, 
+						course_no,
+						course_name,
+						id],
 						callback);
 	},
 

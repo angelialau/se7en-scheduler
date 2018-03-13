@@ -24,17 +24,7 @@ router.get('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Schedule.getScheduleById(req.params.id, function(err, rows) {
-			if (err) {
-				err.success = false;
-				res.json(err);
-			} else {
-				if (!utils.isEmptyObject(rows)) {
-					rows[0].success = true;
-					res.json(rows[0]);
-				} else {
-					res.json({"success":false, "message":"no rows found"});
-				}
-			}
+			utils.basicGetCallback(res, err, rows)
 		});
 	} 
 });
