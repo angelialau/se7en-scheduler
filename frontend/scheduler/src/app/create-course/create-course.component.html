@@ -1,38 +1,64 @@
-<div class="form-container">
-  <h4>Create New Schedule</h4>
-  <form #newForm="ngForm">
-    
-    <!-- trimester type -->
-    <div class="form-group">
-      <label for="trimester"> Academic Term * </label>
-      <select class="form-control" id="trimester"
-      required
-       [(ngModel)]="schedule.trimester" name="trimester">
-        <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
-        <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
-        <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
-      </select>
+<div class="container">
+  <div class="card-body">
+    <h5 class="card-title text-center">Courses</h5>
+  </div>
+  <p>Testing: {{diagnostic}}</p>
+  List of courses here 
+  
+  <div class="container"><button class="btn btn-success" style="float: right;margin-right: 20px" (click)="showForm()">Create new Course</button></div><br><br>
+
+
+  <div *ngIf="showAddCourseForm">
+    <div class="form-container">
+      <h4>Create New Course</h4>
+      <form #newForm="ngForm">
+       <!--  
+        public course_name: string, // according to istdCourses.txt
+        public core: number, // either 1 or 0 
+        public no_sessions: number,
+        public sessions_hrs: string,
+        public locations: string,
+        public term: number, 
+        public instructors: string, -->
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01"> Course </label>
+          </div>
+          <select class="custom-select" id="inputGroupSelect01" 
+            required 
+            [(ngModel)]="newCourse.name" name="name">
+            <option *ngFor='let c of istdCourses' [value]=c.name>
+              {{c}}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="core" 
+            [(ngModel)]="newCourse.core" name="core" value="1"
+            required >
+            <label class="form-check-label" for="core"> Core </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="elective"
+            [(ngModel)]="newCourse.core" name="elective"  value="0"
+            required >
+            <label class="form-check-label" for="elective"> Elective </label>
+          </div>
+        </div>
+
+
+        <!-- button managers -->
+        <button type="submit" class="btn btn-success" 
+        [disabled]="!newForm.form.valid" 
+        (click)="onSend()">Create course</button>
+        <button class="btn btn-warning" 
+        (click)="newForm.reset()">Reset</button>
+        <button class="btn btn-danger" 
+        (click)="closeForm()">Cancel</button>        
+      </form>
     </div>
-
-    <!-- year -->
-    <div class="form-group">
-      <label for="year"> Year </label>
-      <select class="form-control" id="year"
-      required
-       [(ngModel)]="schedule.year" name="year">
-       <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
-        value={{i}}>{{i}}</option>
-      </select>
-    </div>        
-
-    <button type="submit" class="btn btn-success" 
-    [disabled]="!newForm.form.valid" 
-    (click)="onSend()">Create course</button>
-    <button class="btn btn-warning" 
-    (click)="newForm.reset()">Reset</button>
-    <button class="btn btn-danger" 
-    (click)="closeForm()">Cancel</button>
-
-    
-  </form>
+  </div>
 </div>

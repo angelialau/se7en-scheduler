@@ -30,21 +30,25 @@ export class LoginComponent implements OnInit {
 
   login(){
     this.temp = JSON.parse(localStorage.getItem("currentUser"));
-    if (this.temp != null){
+    if (this.temp.email != null){
+      console.log(this.temp);
       this.snackBar.open("Login invalid", null, {duration:500,})
     }
     else{
-      this.userService.postLogin(this.model.employee_id, this.model.password)
-      .map((data:any) => data)
+      this.userService.postLogin(this.model.email, this.model.password)
       .subscribe(userData => {
         if (userData){
-           this.user.employee_id = userData.employee_id;
+          userData = JSON.parse(userData); // need to map userData to NewUser model
+           this.user.id = userData.id;
+           this.user.admin = userData.admin;
            this.user.email = userData.email;
            this.user.name = userData.name;
            this.user.phone = userData.phone;
            localStorage.setItem("currentUser", JSON.stringify(this.user));
            this.snackBar.open("Your have logged in", null, { duration: 1000, });
            this.router.navigateByUrl('/home');
+           console.log("currentUser:");
+           console.log(localStorage.getItem("currentUser"));
         }
         else{
           this.user = null;

@@ -10,7 +10,7 @@ import { UserService } from './../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
 
-  modelNewUser = new NewUser(null,null,null,null,null,null);
+  modelNewUser = new NewUser(null,null,null,null,null);
   submitted : boolean = false;
   message : string = "User account created for ";
   alertRequiredMessage : string = "This field is required";

@@ -1,10 +1,10 @@
 export class NewUser{
   constructor(
-    public admin: number,
+    public admin: number, // 1 or 0 
     public name: string,
     public email: string,
     public phone: number,
-    public employee_id: number,
-    public password: string
+    public password: string,
+    public id?: number
   ) { }
 }

@@ -10,7 +10,6 @@ import { ScheduleService } from './../services/schedule.service';
 })
 export class ViewSchedulesComponent implements OnInit {
   showAddScheduleForm = false;
-  // submitted : boolean = false;
   schedule : Schedule = new Schedule(null,null);
   schedules : Schedule[];
 

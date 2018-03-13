@@ -27,7 +27,6 @@ export class UserService {
     body.set('name', newUser.name); 
     body.set('email', newUser.email); 
     body.set('phone', String(newUser.phone)); 
-    body.set('employee_id', String(newUser.employee_id)); 
     body.set('password', newUser.password); 
     let extension = this.url + '/Users';
     return this.http.post(extension, body.toString(),
@@ -35,10 +34,11 @@ export class UserService {
       .catch(this.handleError); 
   }
   
-  // log in -> if success, returns all user details 
-  postLogin(employee_id : number, password : string ) : Observable<any>{
+  // @params login email and password 
+  // @return user details if successful
+  postLogin(email : string, password : string ) : Observable<any>{
     let body = new URLSearchParams(); 
-    body.set('employee_id', String(employee_id)); 
+    body.set('email', email.trim()); 
     body.set('password', password); 
     let extension = this.url + '/Users/Login';
     return this.http.post(extension, body.toString(),
