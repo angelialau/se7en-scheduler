@@ -11,7 +11,7 @@ var utilities = {
 			count.success = true;
 			res.json(count);
 		}
-	}
+	},
 
 	basicGetCallback:function(res, err, rows) {
 		if (err) {
