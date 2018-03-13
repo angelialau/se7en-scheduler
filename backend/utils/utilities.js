@@ -18,7 +18,7 @@ var utilities = {
 			err.success = false;
 			res.json(err);
 		} else {
-			if (!isEmptyObject(rows)) {
+			if (!this.isEmptyObject(rows)) {
 			rows[0].success = true;
 			res.json(rows[0]);
 			} else {
