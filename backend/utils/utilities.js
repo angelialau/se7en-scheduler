@@ -19,8 +19,8 @@ var utilities = {
 			res.json(err);
 		} else {
 			if (!this.isEmptyObject(rows)) {
-			rows[0].success = true;
-			res.json(rows[0]);
+			rows.success = true;
+			res.json(rows);
 			} else {
 				res.json({"success":false, "message":"no rows found"});
 			}
