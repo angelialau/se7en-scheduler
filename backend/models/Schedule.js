@@ -1,4 +1,5 @@
 var db = require("../utils/dbconnection"); //reference to db connection
+var utils = require("../utils/utilities"); //reference to useful functions
 
 var TABLE_NAME = "schedules";
 var COLUMN_ID = "id";
@@ -40,29 +41,33 @@ var Schedule = {
 	updateScheduleCourses:function(id, course, operation, callback) {
 		this.getScheduleById(id, function(err, rows) {
 			if (err == null) {
-				var courses = rows[0].courses;
-				if (courses == null) {
-					courses = course;
-				} else {
-					if (operation > 0) {
-						// positive operation means adding a course
-						courses = courses + "," + course;
+				if (!utils.isEmptyObject(rows)) {
+					var courses = rows[0].courses;
+					if (courses == null) {
+						courses = course;
 					} else {
-						// negative or zero operation means removing a course
-						var array = courses.split(',')
-						var index = array.indexOf(course);
-						array.splice(index, 1);
-						courses = array.join();
+						if (operation > 0) {
+							// positive operation means adding a course
+							courses = courses + "," + course;
+						} else {
+							// negative or zero operation means removing a course
+							var array = courses.split(',')
+							var index = array.indexOf(course);
+							array.splice(index, 1);
+							courses = array.join();
+						}
+						
 					}
-					
+					return db.query(
+						"UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_COURSES +
+						"` =? WHERE `" + COLUMN_ID +
+						"` =?",
+						[courses, id],
+						callback);
+				} else {
+					callback({"success": false, "message": "Schedule not found"}, 0);
 				}
-				return db.query(
-					"UPDATE " + TABLE_NAME +
-					" SET `" + COLUMN_COURSES +
-					"` =? WHERE `" + COLUMN_ID +
-					"` =?",
-					[courses, id],
-					callback);
 			}
 		})
 	},

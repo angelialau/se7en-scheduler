@@ -66,7 +66,9 @@ router.post('/', function(req, res, next) {
 		req.body.session_hrs &&
 		req.body.locations &&
 		req.body.term &&
-		req.body.instructors
+		req.body.instructors &&
+		req.body.course_no &&
+		req.body.course_name
 	) {
 
 		// Create the course
@@ -78,6 +80,8 @@ router.post('/', function(req, res, next) {
 			req.body.locations,
 			req.body.term,
 			req.body.instructors,
+			req.body.course_no,
+			req.body.course_name,
 			function(create_err, create_count) {
 				// return error if any
 				if (create_err) {
