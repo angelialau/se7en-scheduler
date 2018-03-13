@@ -78,21 +78,27 @@ router.post('/', function(req, res, next) {
 // defining route for updating a course
 router.post('/Update', function(req, res, next) {
 	if (
+		req.body.id &&
 		req.body.core && 
 		req.body.no_sessions && 
 		req.body.session_hrs && 
 		req.body.locations &&
 		req.body.term &&
-		req.body.instructors
+		req.body.instructors &&
+		req.body.course_no &&
+		req.body.course_name
 	) {
 
 		Course.updateCourse(
+			req.body.id,
 			req.body.core,
 			req.body.no_sessions,
 			req.body.session_hrs, 
 			req.body.locations,
 			req.body.term,
 			req.body.instructors,
+			req.body.course_no,
+			req.body.course_name,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
