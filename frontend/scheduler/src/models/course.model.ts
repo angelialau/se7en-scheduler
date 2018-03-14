@@ -124,50 +124,6 @@ export const courseDetails = [
 
 courseDetails.sort((a,b) => parseFloat(a.course_no)-parseFloat(b.course_no));
 
-export const instructors = [
-  { name: 'Jit Biswas',
-    pillar: "ISTD", 
-  },
-  { name: 'Sudipta Chattopadhyay',
-    pillar: "ISTD", 
-  },
-  { name: 'Ngai-Man (Man) Cheung',
-    pillar: "ISTD", 
-  },
-  { name: 'Subhajit Datta',
-    pillar: "ISTD", 
-  },
-  { name: 'Jianying Zhou',
-    pillar: "ISTD", 
-  },
-  { name: 'Oka Kurniawan',
-    pillar: "ISTD", 
-  },
-  { name: 'Norman Lee Tiong Seng',
-    pillar: "ISTD", 
-  },
-  { name: 'Aditya P Mathur',
-    pillar: "ISTD", 
-  },
-  { name: 'Tony Quek',
-    pillar: "ISTD", 
-  },
-  { name: 'Gemma Roig',
-    pillar: "ISTD", 
-  },
-  { name: 'Zhang Yue',
-    pillar: "ISTD", 
-  },
-]
-
-instructors.sort(function(a,b) {
-  if(a.pillar.localeCompare(b.pillar) === 0){
-    return a.name.localeCompare(b.name);
-  } else{
-    return a.pillar.localeCompare(b.pillar);
-  }
-});
-
 export const class_type = ["Cohort Based Learning", "Lecture", "Lab"]
 class_type.sort((a,b) => a.localeCompare(b));
 

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Course, Session, CourseDetail, courseDetails, instructors, class_type, 
+import { User } from './../../models/user.model';
+import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
+import { UserService } from './../services/user.service';
 
 @Component({
   selector: 'app-create-course',
@@ -14,7 +16,7 @@ import { ScheduleService } from './../services/schedule.service';
 export class CreateCourseComponent implements OnInit {
   showAddCourseForm = false;
   courseDetails = courseDetails; 
-  instructors = instructors; 
+  instructors : User[]= []; 
   class_type = class_type; 
   durations = durations;
   newForm: FormGroup;
@@ -26,8 +28,10 @@ export class CreateCourseComponent implements OnInit {
     private formBuilder : FormBuilder,
     private snackBar : MatSnackBar,
     private scheduleService : ScheduleService,
+    private userService: UserService,
      ) {
     this.createForm();
+    this.getInstructors();
   }
 
   ngOnInit() {
@@ -41,7 +45,7 @@ export class CreateCourseComponent implements OnInit {
       class_size: ['', Validators.required], // 1-55
       prof_list: new FormArray([
         new FormGroup({
-          name: new FormControl('', Validators.required)  
+          name: new FormControl('', Validators.required) // a little misleading but this is actually user id 
         })
       ]), // to filter the profs for professors later
       sessions: new FormArray([
@@ -223,6 +227,24 @@ export class CreateCourseComponent implements OnInit {
   showCheckBox(): boolean{
     if(this.prof_list.value) { return true; }
     return false;
+  }
+
+  getInstructors(){
+    this.userService.getAllUsers()
+    .map((data: any) => {
+      this.instructors = data.body.sort(function(a,b) {
+        if(a.pillar.localeCompare(b.pillar) === 0){
+          return a.name.localeCompare(b.name);
+        } else{
+          return a.pillar.localeCompare(b.pillar);
+        }
+      });
+    })
+    .subscribe(data => {}, 
+      error => {
+        console.log("getInstructors error"); 
+        console.log(error)
+      });
   }
   
 

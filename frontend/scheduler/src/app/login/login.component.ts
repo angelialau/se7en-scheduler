@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         if (userData){
           userData = JSON.parse(userData); // need to map userData to User model
           this.user.id = userData.id;
-          this.user.admin = userData.admin;
+          this.user.pillar = userData.pillar;
           this.user.email = userData.email;
           this.user.name = userData.name;
           this.user.phone = userData.phone;

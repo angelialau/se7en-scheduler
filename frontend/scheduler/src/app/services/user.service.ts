@@ -9,7 +9,6 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
-
   private url : string = "http://devostrum.no-ip.info:6666";
   headers = new HttpHeaders({ 
     'Content-Type': 'application/x-www-form-urlencoded' 
@@ -20,10 +19,21 @@ export class UserService {
   constructor(
     private http: HttpClient) { }
 
+  getAllUsers(): Observable<any>{
+    return this.http.get<User[]>(this.url + '/Users', { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+  getUser(id : number): Observable<User[]>{
+    return this.http.get<User[]>(this.url + '/Users/' + id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+
   // creating a new user
   postNewUser(newUser : User): Observable<any>{
     let body = new URLSearchParams(); 
-    body.set('admin', String(newUser.admin)); 
+    body.set('pillar', String(newUser.pillar)); 
     body.set('name', newUser.name); 
     body.set('email', newUser.email); 
     body.set('phone', String(newUser.phone)); 

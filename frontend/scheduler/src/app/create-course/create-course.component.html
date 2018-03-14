@@ -1,6 +1,8 @@
 <div class="container">
   <div class="form-container">
     <h4>Create New Course</h4>
+
+    <p>debugging: {{instructors}}</p>
     <form [formGroup]="newForm">
 
       <!-- course details - number, name, term -->
@@ -70,7 +72,7 @@
           </h6>
           <div class="form-group">
             <select class="custom-select" formControlName="name">
-              <option *ngFor='let prof of instructors' [value]=prof.name>
+              <option *ngFor='let prof of instructors' [value]=prof.id>
                 {{prof.pillar}} - {{prof.name}}
               </option>
             </select>
