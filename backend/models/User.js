@@ -58,7 +58,11 @@ var User = {
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
 						[row.schedules, row.courses, row.id],
-						function(row_err, row_rows){});
+						function(row_err, row_rows){
+							if (row_err) {
+								console.log(row_err);
+							}
+						});
 			}
 			callback(err, rows);
 		});
