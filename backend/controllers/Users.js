@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
 });
 
 // Defining get users by pillar route
-route.get('/Pillar/:pillar(\\w+)', function(req, res, next) {
+router.get('/Pillar/:pillar(\\w+)', function(req, res, next) {
 	if (req.params.pillar) {
 		Users.getUsersByPillar(req.params.pillar, function(err, rows) {
 			utils.basicGetCallback(res, err, rows, null);
