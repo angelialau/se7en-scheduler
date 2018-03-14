@@ -46,7 +46,7 @@ var User = {
 	},
 
 	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
-		var uniqueInstructors = new Set(instructors.split(\D));
+		var uniqueInstructors = new Set(instructors.split(/\D/));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
 		this.getUsersByIDs(ids, function(err, rows) {
 			for (index in rows) {
@@ -55,7 +55,7 @@ var User = {
 				var courses = row.courses.concat(",",course_id);
 
 				// schedules id should be unique
-				var uniqueSchedules = new Set(schedules.split(\D));
+				var uniqueSchedules = new Set(schedules.split(/\D/));
 				schedules = [...uniqueSchedules].join();
 
 				// update database
