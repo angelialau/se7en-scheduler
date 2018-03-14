@@ -53,6 +53,12 @@ var User = {
 				var row = rows[index];
 				var schedules = row.schedules.concat(",",schedule_id);
 				var courses = row.courses.concat(",",course_id);
+
+				// schedules id should be unique
+				var uniqueSchedules = new Set(schedules);
+				schedules = [...uniqueSchedules].join('');
+
+				// update database
 				db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_SCHEDULES +
 						"` =?, `" + COLUMN_COURSES +

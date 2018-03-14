@@ -31,7 +31,7 @@ router.get('/BySchedule/:schedule_id(\\d+)', function(req, res, next) {
 });
 
 // defining route for creating a course
-// TODO: check if schedule ids and instructor ids are correct before doing SQL calls
+// TODO: the different sql calls should be grouped into one function
 router.post('/', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Course.createStructure)) {
 		// Create the course
@@ -53,6 +53,7 @@ router.post('/', function(req, res, next) {
 								update_err.success = false;
 								res.json(update_err);
 							} else {
+								// update user
 								User.updateUserSchedule(
 									req.body.instructors, 
 									req.body.schedule_id, 
