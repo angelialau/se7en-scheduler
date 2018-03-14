@@ -31,6 +31,11 @@ var User = {
 						" IN " + ids, [], callback);
 	},
 
+	getUsersByPillar:function(pillar, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ADMIN +
+						" =?", [pillar], callback);
+	},
+
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
