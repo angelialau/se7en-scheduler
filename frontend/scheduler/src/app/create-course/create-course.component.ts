@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FetchAPI } from 'typescript-fetch-api';
-import { Course } from './../../models/course.model';
+import { MatSnackBar } from '@angular/material';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { Course, Session, CourseDetail, courseDetails, instructors, class_type, 
+  durations } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
 
 @Component({
@@ -8,64 +10,220 @@ import { ScheduleService } from './../services/schedule.service';
   templateUrl: './create-course.component.html',
   styleUrls: ['./create-course.component.css']
 })
+
 export class CreateCourseComponent implements OnInit {
-
-  // fetch('file.txt')
-  // .then(response => response.text())
-  // .then(text => console.log(text))
-  // outputs the content of the text file
-
   showAddCourseForm = false;
-  newCourse : Course = new Course(null,null,null,null,null,null,null,null);
-  courses : Course[];
-  istdCourses : string[] = [
-    "01.110 Computational Fabrication",
-    "01.112 Machine Learning",
-    "50.001 Introduction to Information Systems & Programming",
-    "50.002 Computation Structures",
-    "50.003 Elements of Software Construction",
-    "50.004 Introduction to Algorithms",
-    "50.005 Computer System Engineering",
-    "50.006 User Interface Design and Implementation",
-    "50.008 Database Management Systems",
-    "50.012 Networks",
-    "50.017 Graphics and Visualisation",
-    "50.020 Security",
-    "50.021 Artificial Intelligence",
-    "50.034 Introduction to Probability and Statistics",
-    "50.035 Computer Vision"
-  ]
+  courseDetails = courseDetails; 
+  instructors = instructors; 
+  class_type = class_type; 
+  durations = durations;
+  newForm: FormGroup;
+  no_classesRange = this.createRange(12);
+  class_sizeRange = this.createRange(60);
+  // checkBoxOptions = this.makeCheckBoxOptions();
 
-  constructor() { }
+  constructor(
+    private formBuilder : FormBuilder,
+    private snackBar : MatSnackBar,
+    private scheduleService : ScheduleService,
+     ) {
+    this.createForm();
+  }
 
   ngOnInit() {
   }
 
-  // shows form to add courses
-  showForm() {
-    this.showAddCourseForm = true;
+  createForm(){ // assumes that u just want to add courses from existing database 
+    this.newForm = this.formBuilder.group({
+      courseDetail: ['', Validators.required], // course object for course number, name, term
+      core: ['', Validators.required],
+      no_classes: ['', Validators.required], // 1-12
+      class_size: ['', Validators.required], // 1-55
+      prof_list: new FormArray([
+        new FormGroup({
+          name: new FormControl('', Validators.required)  
+        })
+      ]), // to filter the profs for professors later
+      sessions: new FormArray([
+        new FormGroup({
+          class_types: new FormControl('', Validators.required),
+          sessions_hrs: new FormControl('', Validators.required),
+          // -- uncomment below for split --
+          // selectedInstructors: new FormArray([
+          //     new FormGroup({
+          //       instructor_name: new FormControl('', Validators.required)
+          //     })
+          //   ]),
+          // split: new FormControl('', Validators.required),
+        })
+      ]), 
+    })
   }
 
-  // hides form to add courses
-  closeForm(){
-    this.showAddCourseForm = false;
+  rebuildForm(){
+    this.newForm.reset();
+    // this.setSessions(this.course.sessions); // input from getCourse
+    // this.setProfs(input); // input from getCourse
+  }  
+
+  get sessions(): FormArray {
+    return this.newForm.get('sessions') as FormArray;
+  }
+  get prof_list(): FormArray {
+    return this.newForm.get('prof_list') as FormArray;
   }
 
-  // uploads add course form onto server
-  onSend(){ 
+  addSessionToCourse(){
+    this.sessions.push(
+      new FormGroup({
+        class_types: new FormControl('', Validators.required),
+        sessions_hrs: new FormControl('', Validators.required),
+        // -- uncomment below for split --
+        // selectedInstructors: new FormArray([
+        //     new FormGroup({
+        //       instructor_name: new FormControl('', Validators.required)
+        //     })
+        //   ]),
+        // split: new FormControl('', Validators.required),
+      })
+    );
+  }
+  addProfToCourse(){
+    this.prof_list.push(this.formBuilder.group({
+      name: ['', Validators.required]
+    }));
+  }
+  deleteProf(index : number){ this.prof_list.removeAt(index); }
+  deleteSession(index : number){ this.sessions.removeAt(index); }
 
+  pushToInstructorsArray(prof_name: string, index: number){
+    const instructorListFormArray = <FormArray> this.newForm.get(['sessions', index, 'selectedInstructors']);
+    instructorListFormArray.push(this.formBuilder.group({
+      instructor_name: ''
+    }));
+    console.log(instructorListFormArray.value);
   }
 
-  // retrieves all server info on courses
+  //for editting courses
+  setSessions(sessions: Session[]){
+    const sessionFormGroups = sessions.map(session => this.formBuilder.group(session));
+    const sessionFormArray = this.formBuilder.array(sessionFormGroups);
+    this.newForm.setControl('sessions', sessionFormArray);
+  }
+  setProfs(prof_list: String[]){
+    const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
+    const profsFormArray = this.formBuilder.array(profsFormGroups);
+    this.newForm.setControl('prof_list', profsFormArray);
+  }
+
+  
+
+  // http methods
+  translateDataToCourse() : Course{
+    let data = this.newForm.value;
+    let schedule_id = 1; // TODO port courses to schedule and pass over schedule details
+    let course_no = data.courseDetail;
+    let course_name = this.queryCourse(course_no, "course_name");
+    let term = this.queryCourse(course_no, "term");
+    let core = data.core;
+    let no_classes = Number(data.no_classes);
+    let class_size = Number(data.class_size);
+    let no_sessions = data.sessions.length;
+    let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
+    let class_types : string = this.sessionsParser(data.sessions, "class_types");
+    let split = null;
+    // -- uncomment below for split --
+    // let split : string = this.sessionsParser(data.sessions, "split");
+    let instructors : string = this.prof_listParser(data.prof_list);
+
+    return new Course(
+      schedule_id,term,course_no,course_name,core,no_classes,
+      class_size,no_sessions,sessions_hrs,class_types,instructors,split); 
+  }
   getCourses(){
-
   }
-
-  // posts a delete request for a specified course to server 
+  onSend(){ 
+    let msg : string = "Submitted new course!"
+    this.scheduleService.addCourse(this.translateDataToCourse())
+    .subscribe(
+      success => {
+        console.log("successfully created new course!");
+        this.snackBar.open(msg, null, { duration: 800, });
+      },
+      error => {
+        console.log("Error in addCourse via CreateCourseComponent");
+        console.log(error);
+        this.snackBar.open("Hhm, something went wrong. Really sorry but please try again!", null, { duration: 800, });
+      }
+    );
+  }
+  
   deleteCourse(){
-
   }
 
-  get diagnostic() { return JSON.stringify(this.courses)};
+  // helper functions
+  createRange(n : number) : number[]{
+    let x=[];
+    let i=1;
+    while(x.push(i++)<n);
+    return x;
+  }
+  queryCourse(course_no, param: string): any{
+    for(let course of courseDetails){
+      if( course.course_no=== course_no){
+        if (param === "term"){
+          return course.term;
+        }
+        if (param === "course_name"){
+          return course.course_name;
+        }
+      }
+    }
+  }
+  prof_listParser(prof_list: any): string{
+    let array : string[] = [];
+    for (let prof of prof_list){
+      array.push(prof.name);
+    } 
+    return array.join();
+  }
+
+  sessionsParser(sessions: any, param: string): string{
+    let array : string[] = [];
+    if(param === "sessions_hrs"){
+      for (let session of sessions){
+        array.push(session.sessions_hrs);
+      } 
+    }else if(param==="class_types"){
+      for (let session of sessions){
+        array.push(session.class_types);
+      } 
+    }else if(param==="split"){
+      for (let session of sessions){
+        array.push(session.split);
+      } 
+    }
+    return array.join();
+  }
+  // unused, untested
+  sessionsInstructorsParser(sessions: any): string{
+    let finalArray : string[] = [];
+    let singleSession : string[] = [];
+    for(let session of sessions){
+      for(let instructor of session.instructors){
+        singleSession.push(instructor.name);
+      }
+      finalArray.push(singleSession.join());
+    }
+    console.log(finalArray.join('|'));    
+    return finalArray.join();
+  }
+  showForm() { this.showAddCourseForm = true; }
+  closeForm(){ this.showAddCourseForm = false; }
+  showCheckBox(): boolean{
+    if(this.prof_list.value) { return true; }
+    return false;
+  }
+  
 
 }

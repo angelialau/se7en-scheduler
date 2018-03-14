@@ -1,64 +1,168 @@
 <div class="container">
-  <div class="card-body">
-    <h5 class="card-title text-center">Courses</h5>
-  </div>
-  <p>Testing: {{diagnostic}}</p>
-  List of courses here 
-  
-  <div class="container"><button class="btn btn-success" style="float: right;margin-right: 20px" (click)="showForm()">Create new Course</button></div><br><br>
+  <div class="form-container">
+    <h4>Create New Course</h4>
+    <form [formGroup]="newForm">
 
-
-  <div *ngIf="showAddCourseForm">
-    <div class="form-container">
-      <h4>Create New Course</h4>
-      <form #newForm="ngForm">
-       <!--  
-        public course_name: string, // according to istdCourses.txt
-        public core: number, // either 1 or 0 
-        public no_sessions: number,
-        public sessions_hrs: string,
-        public locations: string,
-        public term: number, 
-        public instructors: string, -->
-
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01"> Course </label>
-          </div>
-          <select class="custom-select" id="inputGroupSelect01" 
-            required 
-            [(ngModel)]="newCourse.name" name="name">
-            <option *ngFor='let c of istdCourses' [value]=c.name>
-              {{c}}
-            </option>
-          </select>
+      <!-- course details - number, name, term -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="courseDetail"> Course </label>
         </div>
+        <select class="custom-select" id="courseDetail"
+          formControlName="courseDetail">
+          <option *ngFor='let c of courseDetails' [value]=c.course_no>
+            {{c.course_no}} {{c.course_name}}
+          </option>
+        </select>
+      </div>
 
-        <div class="form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="core" 
-            [(ngModel)]="newCourse.core" name="core" value="1"
-            required >
+      <!-- core or elective? -->
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="core" 
+             formControlName="core"
+             value="1">
             <label class="form-check-label" for="core"> Core </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" id="elective"
-            [(ngModel)]="newCourse.core" name="elective"  value="0"
-            required >
-            <label class="form-check-label" for="elective"> Elective </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="elective"
+          formControlName="core"  
+          value="0">
+          <label class="form-check-label" for="elective"> Elective </label>
+        </div>  
+      </div>
+      
+      <div class="dropdown-divider"></div>
+      
+      <!-- number of cohorts to enrol -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="no_classes"> Number of Cohort Classes enrolled to course </label>
+        </div>
+        <select class="custom-select" id="no_classes"
+          formControlName="no_classes">
+          <option *ngFor='let i of no_classesRange' [value]='i'>{{i}}</option>
+        </select>
+      </div>
+
+      <!-- class size  -->
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="class_size"> Size of each Cohort Class </label>
+        </div>
+        <select class="custom-select" id="class_size"
+          formControlName="class_size">
+          <option *ngFor='let i of class_sizeRange' [value]='i'>{{i}}</option>
+        </select>
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+      <!-- instructor details -->
+      <div class="form-group no-ugly-red-line" formArrayName="prof_list">
+        <h6>Details of Teaching Professors</h6>
+        <div *ngFor="let prof of newForm.controls.prof_list.controls; let a=index" formGroupName="{{a}}"
+        class="no-ugly-red-line">
+          <h6>Professor {{a+1}}
+            <span style="float: right;"><button mat-icon-button (click)="deleteProf(a)">
+              <i class="fas fa-trash-alt"></i>
+            </button></span>
+          </h6>
+          <div class="form-group">
+            <select class="custom-select" formControlName="name">
+              <option *ngFor='let prof of instructors' [value]=prof.name>
+                {{prof.pillar}} - {{prof.name}}
+              </option>
+            </select>
           </div>
         </div>
+        <button type="button" class="btn btn-primary" 
+          (click)="addProfToCourse()">
+          Add an Instructor
+        </button>
+      </div> 
 
+      <div class="dropdown-divider"></div>
 
-        <!-- button managers -->
-        <button type="submit" class="btn btn-success" 
-        [disabled]="!newForm.form.valid" 
-        (click)="onSend()">Create course</button>
-        <button class="btn btn-warning" 
-        (click)="newForm.reset()">Reset</button>
-        <button class="btn btn-danger" 
-        (click)="closeForm()">Cancel</button>        
-      </form>
-    </div>
+      <!-- sessions -->
+      <div class="form-group no-ugly-red-line" formArrayName="sessions">
+        <h6>Details of all Sessions necessary</h6>
+        <div *ngFor="let sesh of newForm.controls.sessions.controls; let b=index"
+        formGroupName="{{b}}" class="no-ugly-red-line">
+          <!-- repeated segment -->
+          <h5>Session {{b+1}} 
+            <span style="float: right;"><button mat-icon-button (click)="deleteSession(b)">
+              <i class="fas fa-trash-alt"></i>
+            </button></span>
+          </h5>
+          <!-- type of lesson -->
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="class_type"> Session Type </label>
+            </div>
+            <select class="custom-select" id="class_type"
+              formControlName="class_types">
+              <option *ngFor='let i of class_type' [value]='i'>{{i}}</option>
+            </select>
+          </div>
+          <!-- duration of each lesson in hours -->
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="duration"> Duration </label>
+            </div>
+            <select class="custom-select" id="duration"
+              formControlName="sessions_hrs">
+              <option *ngFor='let i of durations' [value]='i'>{{i}}</option>
+            </select>
+          </div>
+          
+          <!-- profs involved in this session -->
+          <!-- <div class="form-group no-ugly-red-line" formArrayName="selectedInstructors" *ngIf="showCheckBox()">
+            
+            <h6>Professors involved in this session:</h6> 
+            <div *ngFor="let prof of newForm.get('prof_list').value; let c=index" formGroupName="{{c}}" class="no-ugly-red-line">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" value="1" formControlName="instructor_name">
+                  <input class="form-check-input" type="radio" value="0" formControlName="instructor_name">
+                {{prof.name}}</label>  
+              </div>
+            </div>
+            
+          </div> -->
+
+          <!-- whether to split or not -->
+          <!-- <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="split"> Delegation of Professors </label>
+            </div>
+            <select class="custom-select" id="split"
+              formControlName="split">
+              <option [value]='1'>Each cohort class is assigned one teaching Professor</option>
+              <option [value]='0'>Each cohort class is assigned all Professors</option>
+            </select>
+          </div> -->
+          
+          <!-- end of repeated segment -->
+        </div> <br>
+        <!-- add new session -->
+        <button type="button" class="btn btn-primary" 
+          (click)="addSessionToCourse()">
+          Add a Session
+        </button>
+      </div>
+
+      <!-- button managers -->
+      <button type="submit" class="btn btn-success" 
+      [disabled]="newForm.status=='INVALID'"
+      (click)="onSend()">Add Course</button>
+      <button class="btn btn-warning" 
+      (click)="newForm.reset()">Reset</button>
+      <button class="btn btn-danger" 
+      (click)="translateData()">Translate/Cancel</button>        
+    </form>
+
+    <p>Form values: {{newForm.value | json : 2 }} </p>
+    <p>Form status: {{newForm.status | json}} </p>
   </div>
 </div>

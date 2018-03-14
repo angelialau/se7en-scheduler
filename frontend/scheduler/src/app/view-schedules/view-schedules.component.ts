@@ -49,9 +49,10 @@ export class ViewSchedulesComponent implements OnInit {
 
   getSchedules(){
     this.scheduleService.getSchedules()
-      .map((data: any) => this.schedules = data.body).subscribe(
+      .map((data: any) => this.schedules = data.body)
+      .subscribe(
         allSchedules => {
-          JSON.stringify(allSchedules);
+          // JSON.stringify(allSchedules); 
         },
         error => console.log("getSchedules error: " + error)
     );

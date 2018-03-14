@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import { NewUser } from './../../models/newuser.model'
+import { User } from './../../models/User.model'
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -21,7 +21,7 @@ export class UserService {
     private http: HttpClient) { }
 
   // creating a new user
-  postNewUser(newUser : NewUser): Observable<any>{
+  postNewUser(newUser : User): Observable<any>{
     let body = new URLSearchParams(); 
     body.set('admin', String(newUser.admin)); 
     body.set('name', newUser.name); 

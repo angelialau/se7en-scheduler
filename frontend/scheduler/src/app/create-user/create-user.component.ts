@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NewUser } from './../../models/newuser.model';
+import { User } from './../../models/user.model';
 import { MatSnackBar } from '@angular/material';
 import { UserService } from './../services/user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from './../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
 
-  modelNewUser = new NewUser(null,null,null,null,null);
+  modelNewUser = new User(null,null,null,null,null);
   submitted : boolean = false;
   message : string = "User account created for ";
   alertRequiredMessage : string = "This field is required";
