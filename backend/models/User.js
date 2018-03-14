@@ -52,6 +52,9 @@ var User = {
 			for (row in rows) {
 				row.schedules += schedule_id;
 				row.courses += course_id;
+				console.log(row.schedules);
+				console.log(row.courses);
+				
 				db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_SCHEDULES +
 						"` =?, `" + COLUMN_COURSES +
