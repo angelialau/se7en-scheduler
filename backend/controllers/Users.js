@@ -29,6 +29,13 @@ router.get('/Pillar/:pillar(\\w+)', function(req, res, next) {
 	}
 });
 
+// Defining get all instructors route
+router.get('/Instructors', function(req, res, next) {
+	User.getInstructors(function(err, rows) {
+		utils.basicGetCallback(res, err, rows, null);
+	})
+});
+
 // Defining create User route
 router.post('/', function(req, res, next) {
 	if (req.body.name && 

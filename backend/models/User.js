@@ -36,6 +36,11 @@ var User = {
 						" =?", [pillar], callback);
 	},
 
+	getInstructors:function(callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ADMIN +
+						" NOT Administrator", [], callback);
+	},
+
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
