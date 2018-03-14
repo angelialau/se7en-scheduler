@@ -38,7 +38,7 @@ var User = {
 
 	getInstructors:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE NOT " + COLUMN_ADMIN +
-						" = `Administrator`", [], callback);
+						" =?", ["Administrator"], callback);
 	},
 
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
