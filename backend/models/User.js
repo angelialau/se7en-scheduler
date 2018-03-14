@@ -48,9 +48,7 @@ var User = {
 	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
 		var uniqueInstructors = new Set(instructors.split(","));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
-		console.log(ids);
-		callback(null,null);
-		//return this.getUsersByIDs(ids, callback);
+		return this.getUsersByIDs(ids, callback);
 
 		// return db.query("UPDATE " + TABLE_NAME +
 		// 				" SET `" + COLUMN_SCHEDULES +
