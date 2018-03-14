@@ -1,6 +1,7 @@
 var express = require("express");
 var Schedule = require("../models/Schedule");
 var Course = require("../models/Course");
+var User = require("../models/User");
 var utils = require("../utils/utilities");
 var router = express.Router();
 
@@ -30,6 +31,7 @@ router.get('/BySchedule/:schedule_id(\\d+)', function(req, res, next) {
 });
 
 // defining route for creating a course
+// TODO: check if schedule ids and instructor ids are correct before doing SQL calls
 router.post('/', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Course.createStructure)) {
 		// Create the course
@@ -47,7 +49,18 @@ router.post('/', function(req, res, next) {
 						create_count.insertId,
 						1,
 						function(update_err, update_count) {
-							utils.basicPostCallback(res, update_err, create_count);
+							if (update_err) {
+								update_err.success = false;
+								res.json(update_err);
+							} else {
+								User.updateUserSchedule(
+									req.body.instructors, 
+									req.body.schedule_id, 
+									create_count.insertId, 
+									function(user_err, user_count) {
+										utils.basicPostCallback(res, user_err, create_count);
+									});
+							}
 						});
 				}
 			}

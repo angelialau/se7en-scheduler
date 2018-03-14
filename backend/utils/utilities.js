@@ -1,14 +1,17 @@
 var utilities = {
+	// checked if an object has no keys
 	isEmptyObject:function(obj) {
 		return !Object.keys(obj).length;
 	},
 
+	// checks if two json objects have the same set of keys
 	compareJSONKeys:function(jsonIn, jsonCompare){
 		var inKeys = Object.keys(jsonIn).sort();
   		var compareKeys = Object.keys(jsonCompare).sort();
   		return JSON.stringify(inKeys) === JSON.stringify(compareKeys);
 	},
 
+	// common post callback sequence
 	basicPostCallback:function(res, err, count) {
 		if (err) {
 			err.success = false;
@@ -19,6 +22,7 @@ var utilities = {
 		}
 	},
 
+	// common get callback sequence
 	basicGetCallback:function(res, err, rows, row_num) {
 		if (err) {
 			err.success = false;

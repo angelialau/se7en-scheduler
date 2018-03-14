@@ -26,6 +26,11 @@ var User = {
 						" =?", [id], callback);
 	},
 
+	getUsersByIDs:function(ids, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + 
+						" IN ?", [ids], callback);
+	},
+
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
@@ -40,14 +45,20 @@ var User = {
 			callback);
 	},
 
-	updateUserSchedule:function(id, schedules, courses, callback) {
-		return db.query("UPDATE " + TABLE_NAME +
-						" SET `" + COLUMN_SCHEDULES +
-						"` =?, `" + COLUMN_COURSES +
-						"` =? WHERE `" + COLUMN_ID +
-						"` =?",
-						[schedules, courses, id],
-						callback);
+	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
+		var uniqueInstructors = new Set(instructors.split(","));
+		var ids = "(" + [...uniqueInstructors].toString() + ")";
+		console.log(ids);
+		callback(null,null);
+		//return this.getUsersByIDs(ids, callback);
+
+		// return db.query("UPDATE " + TABLE_NAME +
+		// 				" SET `" + COLUMN_SCHEDULES +
+		// 				"` =?, `" + COLUMN_COURSES +
+		// 				"` =? WHERE `" + COLUMN_ID +
+		// 				"` =?",
+		// 				[schedules, courses, id],
+		// 				callback);
 	}
 };
 
