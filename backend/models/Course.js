@@ -36,6 +36,7 @@ var Course = {
 		id:null,
 		term:null,
 		course_no:null,
+		course_name:null,
 		core:null,
 		no_classes:null,
 		class_size:null,
@@ -60,21 +61,7 @@ var Course = {
 						" =?", [schedule_id], callback);
 	},
 
-	createCourse:function(
-		schedule_id, 
-		term,
-		course_no,
-		course_name,
-		core, 
-		no_classes,
-		class_size,
-		no_sessions,
-		session_hrs, 
-		class_types, 
-		instructors, 
-		split,
-		callback
-	){
+	createCourse:function(data, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
 			COLUMN_SCHEDULE_ID + "`,`" +
@@ -90,18 +77,18 @@ var Course = {
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_SPLIT + "`)" +  
 			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
-			[schedule_id,
-			 term,
-			 course_no,
-			 course_name,
-			 core,
-			 no_classes,
-			 class_size,
-			 no_sessions,
-			 session_hrs, 
-			 class_types,  
-			 instructors, 
-			 split],
+			[data.schedule_id,
+			 data.term,
+			 data.course_no,
+			 data.course_name,
+			 data.core,
+			 data.no_classes,
+			 data.class_size,
+			 data.no_sessions,
+			 data.session_hrs, 
+			 data.class_types,  
+			 data.instructors, 
+			 data.split],
 			callback);
 	},
 

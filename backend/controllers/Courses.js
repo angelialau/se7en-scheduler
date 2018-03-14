@@ -34,18 +34,7 @@ router.post('/', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Course.createStructure)) {
 		// Create the course
 		Course.createCourse(
-			req.body.schedule_id,
-			req.body.term,
-			req.body.course_no,
-			req.body.course_name,
-			req.body.core,
-			req.body.no_classes,
-			req.body.class_size,
-			req.body.no_sessions,
-			req.body.session_hrs,
-			req.body.class_types,
-			req.body.instructors,
-			req.body.split,
+			req.body,
 			function(create_err, create_count) {
 				// return error if any
 				if (create_err) {
@@ -70,20 +59,7 @@ router.post('/', function(req, res, next) {
 
 // defining route for updating a course
 router.post('/Update', function(req, res, next) {
-	if (
-		req.body.id &&
-		req.body.term &&
-		req.body.course_no &&
-		req.body.course_name &&
-		req.body.core && 
-		req.body.no_classes &&
-		req.body.class_size &&
-		req.body.no_sessions &&
-		req.body.session_hrs &&
-		req.body.class_types &&
-		req.body.instructors &&
-		req.body.split
-	) {
+	if (utils.compareJSONKeys(req.body, Course.updateStructure)) {
 
 		Course.updateCourse(
 			req.body.id,
