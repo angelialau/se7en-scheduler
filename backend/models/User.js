@@ -45,18 +45,23 @@ var User = {
 			callback);
 	},
 
-	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
+	updateUsersSchedule:function(instructors, schedule_id, course_id, callback) {
 		var uniqueInstructors = new Set(instructors.split(","));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
-		return this.getUsersByIDs(ids, callback);
-
-		// return db.query("UPDATE " + TABLE_NAME +
-		// 				" SET `" + COLUMN_SCHEDULES +
-		// 				"` =?, `" + COLUMN_COURSES +
-		// 				"` =? WHERE `" + COLUMN_ID +
-		// 				"` =?",
-		// 				[schedules, courses, id],
-		// 				callback);
+		this.getUsersByIDs(ids, function(err, rows) {
+			for (row in rows) {
+				row.schedules += schedule_id;
+				row.courses += course_id;
+				db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_SCHEDULES +
+						"` =?, `" + COLUMN_COURSES +
+						"` =? WHERE `" + COLUMN_ID +
+						"` =?",
+						[row.schedules, row.courses, row.id],
+						function(row_err, row_rows){});
+			}
+			callback(err, rows);
+		});
 	}
 };
 
