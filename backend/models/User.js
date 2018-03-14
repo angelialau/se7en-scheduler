@@ -45,7 +45,7 @@ var User = {
 			callback);
 	},
 
-	updateUsersSchedule:function(instructors, schedule_id, course_id, callback) {
+	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
 		var uniqueInstructors = new Set(instructors.split(","));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
 		this.getUsersByIDs(ids, function(err, rows) {
