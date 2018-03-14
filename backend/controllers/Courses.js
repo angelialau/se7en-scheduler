@@ -58,7 +58,7 @@ router.post('/', function(req, res, next) {
 									req.body.schedule_id, 
 									create_count.insertId, 
 									function(user_err, user_count) {
-										utils.basicPostCallback(res, user_err, user_count);
+										utils.basicPostCallback(res, user_err, create_count);
 									});
 							}
 						});
