@@ -31,20 +31,7 @@ router.get('/BySchedule/:schedule_id(\\d+)', function(req, res, next) {
 
 // defining route for creating a course
 router.post('/', function(req, res, next) {
-	if (req.body.schedule_id && 
-		req.body.term &&
-		req.body.course_no &&
-		req.body.course_name &&
-		req.body.core && 
-		req.body.no_classes &&
-		req.body.class_size &&
-		req.body.no_sessions &&
-		req.body.session_hrs &&
-		req.body.locations &&
-		req.body.instructors &&
-		req.body.split
-	) {
-
+	if (utils.compareJSONKeys(req.body, Course.createStructure)) {
 		// Create the course
 		Course.createCourse(
 			req.body.schedule_id,
@@ -56,7 +43,7 @@ router.post('/', function(req, res, next) {
 			req.body.class_size,
 			req.body.no_sessions,
 			req.body.session_hrs,
-			req.body.locations,
+			req.body.class_types,
 			req.body.instructors,
 			req.body.split,
 			function(create_err, create_count) {
@@ -93,7 +80,7 @@ router.post('/Update', function(req, res, next) {
 		req.body.class_size &&
 		req.body.no_sessions &&
 		req.body.session_hrs &&
-		req.body.locations &&
+		req.body.class_types &&
 		req.body.instructors &&
 		req.body.split
 	) {
@@ -108,7 +95,7 @@ router.post('/Update', function(req, res, next) {
 			req.body.class_size,
 			req.body.no_sessions,
 			req.body.session_hrs,
-			req.body.locations,
+			req.body.class_types,
 			req.body.instructors,
 			req.body.split,
 			function(err, count) {

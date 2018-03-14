@@ -11,12 +11,40 @@ var COLUMN_NO_CLASSES = "no_classes";
 var COLUMN_CLASS_SIZE = "class_size";
 var COLUMN_NO_SESSIONS = "no_sessions";
 var COLUMN_SESSION_HRS = "session_hrs";
-var COLUMN_LOCATIONS = "locations";
+var COLUMN_CLASS_TYPES = "class_types";
 var COLUMN_INSTRUCTORS = "instructors";
 var COLUMN_SPLIT = "split";
 
 
 var Course = {
+	createStructure:{
+		schedule_id:null,
+		term:null,
+		course_no:null,
+		core:null,
+		no_classes:null,
+		class_size:null,
+		no_sessions:null,
+		session_hrs:null,
+		class_types:null,
+		instructors:null,
+		split:null
+ 	},
+
+ 	updateStructure:{
+		id:null,
+		term:null,
+		course_no:null,
+		core:null,
+		no_classes:null,
+		class_size:null,
+		no_sessions:null,
+		session_hrs:null,
+		class_types:null,
+		instructors:null,
+		split:null
+ 	},
+
 	getAllCourses:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME, callback);
 	},
@@ -41,7 +69,7 @@ var Course = {
 		class_size,
 		no_sessions,
 		session_hrs, 
-		locations, 
+		class_types, 
 		instructors, 
 		split,
 		callback
@@ -57,7 +85,7 @@ var Course = {
 			COLUMN_CLASS_SIZE + "`,`" +
 			COLUMN_NO_SESSIONS + "`,`" +
 			COLUMN_SESSION_HRS + "`,`" +
-			COLUMN_LOCATIONS + "`,`" +
+			COLUMN_CLASS_TYPES + "`,`" +
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_SPLIT + "`)" +  
 			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
@@ -70,7 +98,7 @@ var Course = {
 			 class_size,
 			 no_sessions,
 			 session_hrs, 
-			 locations,  
+			 class_types,  
 			 instructors, 
 			 split],
 			callback);
@@ -86,7 +114,7 @@ var Course = {
 		class_size,
 		no_sessions,
 		session_hrs, 
-		locations, 
+		class_types, 
 		instructors, 
 		split,
 		callback
@@ -100,7 +128,7 @@ var Course = {
 						"` =?, `" + COLUMN_CLASS_SIZE +
 						"` =?, `" + COLUMN_NO_SESSIONS + 
 						"` =?, `" + COLUMN_SESSION_HRS +
-						"` =?, `" + COLUMN_LOCATIONS +
+						"` =?, `" + COLUMN_CLASS_TYPES +
 						"` =?, `" + COLUMN_INSTRUCTORS +
 						"` =?, `" + COLUMN_SPLIT +
 						"` =? WHERE `" + COLUMN_ID +
@@ -113,7 +141,7 @@ var Course = {
 						 class_size,
 						 no_sessions,
 						 session_hrs, 
-						 locations,  
+						 class_types,  
 						 instructors, 
 						 split,
 						 id],
