@@ -28,7 +28,7 @@ var User = {
 
 	getUsersByIDs:function(ids, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + 
-						" IN ?", [ids], callback);
+						" IN " + ids, [], callback);
 	},
 
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
