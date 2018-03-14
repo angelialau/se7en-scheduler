@@ -21,6 +21,7 @@ var Course = {
 		schedule_id:null,
 		term:null,
 		course_no:null,
+		course_name:null,
 		core:null,
 		no_classes:null,
 		class_size:null,
