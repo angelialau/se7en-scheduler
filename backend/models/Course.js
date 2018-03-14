@@ -89,24 +89,10 @@ var Course = {
 			 data.class_types,  
 			 data.instructors, 
 			 data.split],
-			callback);
+			 callback);
 	},
 
-	updateCourse:function(
-		id, 
-		term,
-		course_no,
-		course_name,
-		core, 
-		no_classes,
-		class_size,
-		no_sessions,
-		session_hrs, 
-		class_types, 
-		instructors, 
-		split,
-		callback
-	){
+	updateCourse:function(data, callback) {
 		return db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_TERM +
 						"` =?, `" + COLUMN_COURSE_NO +
@@ -121,19 +107,19 @@ var Course = {
 						"` =?, `" + COLUMN_SPLIT +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
-						[term,
-						 course_no,
-						 course_name,
-						 core,
-						 no_classes,
-						 class_size,
-						 no_sessions,
-						 session_hrs, 
-						 class_types,  
-						 instructors, 
-						 split,
-						 id],
-						callback);
+						[data.term,
+						 data.course_no,
+						 data.course_name,
+						 data.core,
+						 data.no_classes,
+						 data.class_size,
+						 data.no_sessions,
+						 data.session_hrs, 
+						 data.class_types,  
+						 data.instructors, 
+						 data.split,
+						 data.id],
+						 callback);
 	},
 
 	deleteCourse:function(id, callback) {

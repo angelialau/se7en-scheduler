@@ -62,18 +62,7 @@ router.post('/Update', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Course.updateStructure)) {
 
 		Course.updateCourse(
-			req.body.id,
-			req.body.term,
-			req.body.course_no,
-			req.body.course_name,
-			req.body.core,
-			req.body.no_classes,
-			req.body.class_size,
-			req.body.no_sessions,
-			req.body.session_hrs,
-			req.body.class_types,
-			req.body.instructors,
-			req.body.split,
+			req.body,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
