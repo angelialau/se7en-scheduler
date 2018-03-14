@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
 		req.body.email && 
 		req.body.phone && 
 		req.body.password &&
-		req.body.admin) {
+		req.body.pillar) {
 
 		var salt = encrypt.genRanString(13);
 		var passwordHash = encrypt.sha512(req.body.password, salt);
@@ -37,7 +37,7 @@ router.post('/', function(req, res, next) {
 			req.body.phone,
 			passwordHash,
 			salt,
-			req.body.admin,
+			req.body.pillar,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}

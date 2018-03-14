@@ -125,6 +125,7 @@ var Course = {
 						"` =?", [id], callback);
 	},
 
+	// TODO 
 	getCoursesForAlgo:function(schedule_id, callback) {
 		
 	}

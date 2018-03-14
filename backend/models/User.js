@@ -7,7 +7,9 @@ var COLUMN_EMAIL = "email";
 var COLUMN_PHONE = "phone";
 var COLUMN_PASSWORD_HASH = "passwordHash";
 var COLUMN_SALT = "salt";
-var COLUMN_ADMIN = "admin";
+var COLUMN_ADMIN = "pillar";
+var COLUMN_SCHEDULES = "schedules";
+var COLUMN_COURSES = "courses";
 
 var User = {
 	getAllUsers:function(callback) {
@@ -35,7 +37,17 @@ var User = {
 			COLUMN_ADMIN + "`)" +  
 			" VALUES(?,?,?,?,?,?)", 
 			[name, email, phone, passwordHash, salt, admin],
-			callback)
+			callback);
+	},
+
+	updateUserSchedule:function(id, schedules, courses, callback) {
+		return db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_SCHEDULES +
+						"` =?, `" + COLUMN_COURSES +
+						"` =? WHERE `" + COLUMN_ID +
+						"` =?",
+						[schedules, courses, id],
+						callback);
 	}
 };
 
