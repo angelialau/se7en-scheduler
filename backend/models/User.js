@@ -49,8 +49,8 @@ var User = {
 		var uniqueInstructors = new Set(instructors.split(","));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
 		this.getUsersByIDs(ids, function(err, rows) {
-			for (row in rows) {
-				console.log(row.name);
+			for (index in rows) {
+				console.log(rows[index].name);
 				// row["schedules"].concat(",",schedule_id);
 				// row["courses"].concat(",",course_id);
 				// console.log(row["schedules"]);
