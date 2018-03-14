@@ -8,6 +8,8 @@ var utilities = {
 	compareJSONKeys:function(jsonIn, jsonCompare){
 		var inKeys = Object.keys(jsonIn).sort();
   		var compareKeys = Object.keys(jsonCompare).sort();
+  		console.log(inKeys);
+  		console.log(compareKeys);
   		return JSON.stringify(inKeys) === JSON.stringify(compareKeys);
 	},
 
