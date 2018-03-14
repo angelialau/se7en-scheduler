@@ -50,18 +50,17 @@ var User = {
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
 		this.getUsersByIDs(ids, function(err, rows) {
 			for (row in rows) {
-				console.log(row);
-				// row.schedules.concat(",",schedule_id);
-				// row.courses.concat(",",course_id);
-				// console.log(row.schedules);
-				// console.log(row.courses);
+				row["schedules"].concat(",",schedule_id);
+				row["courses"].concat(",",course_id);
+				console.log(row["schedules"]);
+				console.log(row["courses"]);
 
 				db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_SCHEDULES +
 						"` =?, `" + COLUMN_COURSES +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
-						[row.schedules, row.courses, row.id],
+						[row["schedules"], row["courses"], row["id"]],
 						function(row_err, row_rows){
 							if (row_err) {
 								console.log(row_err);
