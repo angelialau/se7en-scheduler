@@ -38,7 +38,7 @@ var User = {
 
 	getInstructors:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ADMIN +
-						" NOT Administrator", [], callback);
+						" IS NOT Administrator", [], callback);
 	},
 
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
