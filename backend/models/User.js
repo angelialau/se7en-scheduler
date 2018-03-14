@@ -51,14 +51,14 @@ var User = {
 		this.getUsersByIDs(ids, function(err, rows) {
 			for (index in rows) {
 				var row = rows[index];
-				row.schedules.concat(",",schedule_id);
-				row.courses.concat(",",course_id);
+				var schedules = row.schedules.concat(",",schedule_id);
+				var courses = row.courses.concat(",",course_id);
 				db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_SCHEDULES +
 						"` =?, `" + COLUMN_COURSES +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
-						[row.schedules, row.courses, row.id],
+						[schedules, courses, row.id],
 						function(row_err, row_rows){
 							if (row_err) {
 								console.log(row_err);
