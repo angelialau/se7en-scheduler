@@ -79,8 +79,9 @@ router.post('/Generate', function(req, res, next) {
 			child.stdout.on('data', function(data) {
 				console.log(data.toString());
 			})
+
+			res.json(rows);
 		});
-		res.json(rows);
 	}
 	res.json({success:false});
 });
