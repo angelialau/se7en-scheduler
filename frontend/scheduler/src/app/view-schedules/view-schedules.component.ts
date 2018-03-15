@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -10,14 +11,16 @@ import { ScheduleService } from './../services/schedule.service';
 })
 export class ViewSchedulesComponent implements OnInit {
   showAddScheduleForm = false;
-  // submitted : boolean = false;
   schedule : Schedule = new Schedule(null,null);
   schedules : Schedule[];
+  schedule_id: number;
 
   constructor(
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
-     ) { }
+    private route: ActivatedRoute
+     ) { 
+  }
 
   ngOnInit() {
     this.getSchedules();
@@ -50,9 +53,10 @@ export class ViewSchedulesComponent implements OnInit {
 
   getSchedules(){
     this.scheduleService.getSchedules()
-      .map((data: any) => this.schedules = data.body).subscribe(
+      .map((data: any) => this.schedules = data.body)
+      .subscribe(
         allSchedules => {
-          JSON.stringify(allSchedules);
+          // JSON.stringify(allSchedules); 
         },
         error => console.log("getSchedules error: " + error)
     );

@@ -24,16 +24,18 @@ import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-fo
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component'
+import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
+import { CreateCourseComponent } from './create-course/create-course.component'
 
 const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
-  { path: 'create-user', component: CreateUserComponent },
+  { path: 'user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
-  { path: 'schedules/details', component: ScheduleDetailsComponent },
+  { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
+  // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
 
   { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated
@@ -50,7 +52,8 @@ const ROUTES: Routes = [
     NotificationsComponent,
     ViewSchedulesComponent,
     ChangePasswordComponent,
-    ScheduleDetailsComponent
+    ScheduleDetailsComponent,
+    CreateCourseComponent
   ],
   imports: [
     BrowserModule, 
