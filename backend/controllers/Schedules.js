@@ -4,6 +4,10 @@ var Course = require("../models/Course");
 var utils = require("../utils/utilities");
 var spawn = require("child_process").spawn;
 var router = express.Router();
+var options = {
+    cwd: process.cwd(),
+    env: process.env,
+};
 
 // defining route for get all schedules
 router.get('/', function(req, res, next) {
@@ -78,7 +82,7 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var child = spawn('python', ['../utils/test.py', JSON.stringify(rows)]);
+				var child = spawn('python', ['../utils/test.py', JSON.stringify(rows)], options);
 				var result = "";
 
 				child.stdout.on('data', function(data) {
