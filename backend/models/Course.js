@@ -143,14 +143,14 @@ var Course = {
 		var sessions = [];
 		var class_types = row.class_types.split(",");
 		var timings = row.sessions_hrs.split(",");
-		var instructors = row.instructors.split(",");
+		var instructors = [row.instructors];
 		var split = row.split.split(",");
 
 		for (var i = 0; i < row.no_sessions; i++) {
 			sessions[i] = {};
 			sessions[i].class_type = class_types[i];
 			sessions[i].time = timings[i];
-			sessions[i].instructors = instructors[i%instructors.length];
+			sessions[i].instructors = instructors;
 			sessions[i].split = split[i];
 		}
 
@@ -161,7 +161,7 @@ var Course = {
 		delete row.split;
 		delete row.class_types;
 		delete row.instructors;
-		
+
 		return row;
 	}
 };

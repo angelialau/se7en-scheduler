@@ -22,7 +22,8 @@ describe('rowToJSON()', function () {
 		        "split": "1,1,1"
     		}
 
-    		correct = { term: 1,
+    		correct = { 
+    			  "term": 1,
 				  "course_no": '50.003',
 				  "course_name": 'Elements of Software Construction',
 				  "core": 1,
@@ -32,15 +33,15 @@ describe('rowToJSON()', function () {
 				  "sessions": 
 				   [ { 'class_type': 'Lecture',
 				       'time': '2',
-				       'instructors': '31',
+				       'instructors': ['31','31','31'],
 				       'split': '1' },
 				     { 'class_type': 'Lecture',
 				       'time': '2',
-				       'instructors': '31',
+				       'instructors': ['31','31','31'],
 				       'split': '1' },
 				     { 'class_type': 'Lecture',
 				       'time': '1',
-				       'instructors': '31',
+				       'instructors': ['31','31','31'],
 				       'split': '1' } 
 				    ] 
 			}
