@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -12,11 +13,14 @@ export class ViewSchedulesComponent implements OnInit {
   showAddScheduleForm = false;
   schedule : Schedule = new Schedule(null,null);
   schedules : Schedule[];
+  schedule_id: number;
 
   constructor(
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
-     ) { }
+    private route: ActivatedRoute
+     ) { 
+  }
 
   ngOnInit() {
     this.getSchedules();

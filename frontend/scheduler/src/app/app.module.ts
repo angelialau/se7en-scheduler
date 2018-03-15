@@ -34,7 +34,7 @@ const ROUTES: Routes = [
   { path: 'home', component: NotificationsComponent },
   { path: 'create-user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
-  { path: 'schedules/courses', component: ScheduleDetailsComponent },
+  { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
 

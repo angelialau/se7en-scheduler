@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 import { Schedule } from './../../models/schedule.model';
 import { Course } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -9,14 +10,23 @@ import { ScheduleService } from './../services/schedule.service';
   styleUrls: ['./schedule-details.component.css']
 })
 export class ScheduleDetailsComponent implements OnInit {
+  @Input() schedule: Schedule;
+  schedule_id : number;
   showCourseForm : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
 
-  constructor(private scheduleService: ScheduleService) { }
+  constructor(
+    private scheduleService: ScheduleService,
+    private route: ActivatedRoute
+    ) { 
+    this.schedule_id = route.snapshot.params['schedule_id'];
+  }
 
   ngOnInit() {
-    this.getScheduleDetails(3);
+    console.log("schedule id:");
+    console.log(this.schedule_id);
+    this.getScheduleDetails(this.schedule_id);
   }
 
   // get the metadata of this specific schedule
