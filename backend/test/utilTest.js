@@ -206,7 +206,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicPostCallback(res, err, null, row_num);
 
 			// Assert
 			expect(output.success).to.be.equal(false);
