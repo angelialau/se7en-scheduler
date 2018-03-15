@@ -147,6 +147,7 @@ var Course = {
 		var split = row.split.split(",");
 
 		for (var i = 0; i < row.no_sessions; i++) {
+			sessions[i] = {};
 			sessions[i].class_type = class_types[i];
 			sessions[i].time = timings[i];
 			sessions[i].instructors = instructors[i].split(",");
