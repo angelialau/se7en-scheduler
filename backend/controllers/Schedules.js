@@ -81,6 +81,7 @@ router.post('/Generate', function(req, res, next) {
 			})
 		});
 	}
+	res.json({success:true});
 });
 
 module.exports = router;
