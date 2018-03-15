@@ -87,6 +87,7 @@ router.post('/Generate', function(req, res, next) {
 				})
 
 				child.on('close', function(code) {
+					console.log(`child process exited with code ${code}`);
 					res.json(result);
 				})
 			}
