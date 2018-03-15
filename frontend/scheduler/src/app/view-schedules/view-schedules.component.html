@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="container"><button class="btn btn-success" style="float: right;margin-right: 20px" (click)="showForm()">Create new Schedule</button></div><br><br>
+  <div class="container"><button class="btn btn-success" style="float: right;margin-right: 20px" (click)="showForm()" id="addScheduleFormButton" >Create new Schedule</button></div><br><br>
 
 
   <div *ngIf="showAddScheduleForm">
@@ -48,7 +48,7 @@
         </div>        
 
         <button type="submit" class="btn btn-success" 
-        [disabled]="!newScheduleForm.form.valid" 
+        [disabled]="!newScheduleForm.form.valid" id="addScheduleSubmitButton"
         (click)="onSend()">Create schedule</button>
         <button class="btn btn-warning" 
         (click)="newScheduleForm.reset()">Reset</button>

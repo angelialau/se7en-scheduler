@@ -14,10 +14,41 @@ class FormsTest(unittest.TestCase):
         self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(10)
 
-    def test_add_user(self):
+    def test_direct_to_login(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/login")
+        self.assertIn("Login", driver.page_source)
+
+    def test_login(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/login")
+        
+        email = driver.find_element_by_id("email")
+        email.send_keys("email@gmail.com")
+
+        password = driver.find_element_by_id("password")
+        password.send_keys("password")
+
+        button = driver.find_element_by_tag_name("button").click()
+
+        # snackbar = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(driver.find_element_by_tag_name("simple-snack-bar")))
+        # snackbarText = snackbar.text.strip()
+        # assert "Your have logged in" in snackbarText
+
+    def test_direct_to_home(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/home")
+        self.assertIn("Notifications", driver.page_source)
+        # logoutButton
+
+    def test_direct_to_add_user(self):
         driver = self.driver
         driver.get("http://localhost:4200/user")
         self.assertEqual("Create a new Administrator/Instructor", driver.find_element_by_id("createUserFormTitle").text)
+
+    def test_add_user(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/user")
         try:    
             select = driver.find_element_by_id("pillar")
             options = select.find_elements_by_tag_name("option")
@@ -50,10 +81,41 @@ class FormsTest(unittest.TestCase):
             print("Seems like element is not found: ")
             print(e)
 
-    def test_add_course(self):
+    def test_direct_to_add_schedule(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/schedules")
+        self.assertIn("Schedules", driver.page_source)
+
+    def test_add_schedule(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/schedules")
+
+        newScheduleButton = driver.find_element_by_id("addScheduleFormButton").click()
+
+        trimester = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "trimester")))
+        trimesteroptions = trimester.find_elements_by_tag_name("option")
+        for option in trimesteroptions:
+            if "Trimester 3" in option.text:
+                option.click()
+
+        year = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "year")))
+        yearoptions = year.find_elements_by_tag_name("option")
+        for option in yearoptions:
+            if "2023" in option.text:
+                option.click()
+
+        submit = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "addScheduleSubmitButton")))
+        self.assertEqual(submit.is_enabled(), True, "add schedule form button not enabled")
+
+    def test_direct_to_add_course(self):
         driver = self.driver
         driver.get("http://localhost:4200/schedules/4")
         self.assertEqual("Courses under this Schedule", driver.find_element_by_id("pageTitle").text)
+
+    def test_add_course(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/schedules/4")
+        # self.assertEqual("Courses under this Schedule", driver.find_element_by_id("pageTitle").text)
         try:
             showFormButton = driver.find_element_by_id("showFormButton").click()
 
@@ -106,6 +168,13 @@ class FormsTest(unittest.TestCase):
         except NoSuchElementException as e: 
             print("Seems like element is not found: ")
             print(e)
+
+    def test_logout(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/home")
+        
+        logoutbutton = driver.find_element_by_id("logoutButton").click()
+        self.assertIn("Login", driver.page_source)
 
     def tearDown(self):
         self.driver.close()

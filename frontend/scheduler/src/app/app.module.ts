@@ -20,14 +20,13 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-form.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
 import { CreateCourseComponent } from './create-course/create-course.component'
 
-const ROUTES: Routes = [
+export const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -37,8 +36,6 @@ const ROUTES: Routes = [
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
-
-  { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated
 ];
 
 @NgModule({
@@ -48,7 +45,6 @@ const ROUTES: Routes = [
     SidebarComponent,
     LoginComponent,
     CreateUserComponent,
-    TimetableReqFormComponent,
     NotificationsComponent,
     ViewSchedulesComponent,
     ChangePasswordComponent,
