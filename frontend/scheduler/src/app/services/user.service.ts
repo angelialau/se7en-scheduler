@@ -24,6 +24,11 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  getAllInstructors(): Observable<any>{
+    return this.http.get<User[]>(this.url + '/Users/Instructors', { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
   getUser(id : number): Observable<User[]>{
     return this.http.get<User[]>(this.url + '/Users/' + id, { observe: 'response' })
       .catch(this.handleError);

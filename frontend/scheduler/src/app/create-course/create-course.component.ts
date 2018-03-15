@@ -52,13 +52,6 @@ export class CreateCourseComponent implements OnInit {
         new FormGroup({
           class_types: new FormControl('', Validators.required),
           sessions_hrs: new FormControl('', Validators.required),
-          // -- uncomment below for split --
-          // selectedInstructors: new FormArray([
-          //     new FormGroup({
-          //       instructor_name: new FormControl('', Validators.required)
-          //     })
-          //   ]),
-          // split: new FormControl('', Validators.required),
         })
       ]), 
     })
@@ -82,13 +75,6 @@ export class CreateCourseComponent implements OnInit {
       new FormGroup({
         class_types: new FormControl('', Validators.required),
         sessions_hrs: new FormControl('', Validators.required),
-        // -- uncomment below for split --
-        // selectedInstructors: new FormArray([
-        //     new FormGroup({
-        //       instructor_name: new FormControl('', Validators.required)
-        //     })
-        //   ]),
-        // split: new FormControl('', Validators.required),
       })
     );
   }
@@ -125,11 +111,11 @@ export class CreateCourseComponent implements OnInit {
   // http methods
   translateDataToCourse() : Course{
     let data = this.newForm.value;
-    let schedule_id = 1; // TODO port courses to schedule and pass over schedule details
+    let schedule_id = 3; // TODO port courses to schedule and pass over schedule details
     let course_no = data.courseDetail;
     let course_name = this.queryCourse(course_no, "course_name");
     let term = this.queryCourse(course_no, "term");
-    let core = data.core;
+    let core = Number(data.core);
     let no_classes = Number(data.no_classes);
     let class_size = Number(data.class_size);
     let no_sessions = data.sessions.length;
@@ -140,9 +126,11 @@ export class CreateCourseComponent implements OnInit {
     // let split : string = this.sessionsParser(data.sessions, "split");
     let instructors : string = this.prof_listParser(data.prof_list);
 
-    return new Course(
+    let course: Course = new Course(
       schedule_id,term,course_no,course_name,core,no_classes,
       class_size,no_sessions,sessions_hrs,class_types,instructors,split); 
+    console.log(course);
+    return course;
   }
   getCourses(){
   }
@@ -150,9 +138,18 @@ export class CreateCourseComponent implements OnInit {
     let msg : string = "Submitted new course!"
     this.scheduleService.addCourse(this.translateDataToCourse())
     .subscribe(
-      success => {
-        console.log("successfully created new course!");
-        this.snackBar.open(msg, null, { duration: 800, });
+      response => {
+        console.log(typeof response);
+        let success = JSON.parse(response).success;
+        console.log(JSON.parse(response));
+        if(success){
+          console.log("successfully created new course!");
+          this.snackBar.open(msg, null, { duration: 800, });  
+        }else{
+          console.log("Error in addCourse via CreateCourseComponent");
+          // console.log();
+          this.snackBar.open("Hhm, something went wrong. Really sorry but please try again later!", null, { duration: 1000, });
+        }
       },
       error => {
         console.log("Error in addCourse via CreateCourseComponent");
@@ -230,7 +227,7 @@ export class CreateCourseComponent implements OnInit {
   }
 
   getInstructors(){
-    this.userService.getAllUsers()
+    this.userService.getAllInstructors()
     .map((data: any) => {
       this.instructors = data.body.sort(function(a,b) {
         if(a.pillar.localeCompare(b.pillar) === 0){

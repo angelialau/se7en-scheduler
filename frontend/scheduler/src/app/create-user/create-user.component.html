@@ -1,5 +1,5 @@
 <div class="container">
-  <h4>Create a new Administrator/Instructor</h4>
+  <h4 id="createUserFormTitle">Create a new Administrator/Instructor</h4>
   <form (ngSubmit)="onSubmit()" #newUserForm="ngForm">
     <!-- ^ makes newUserForm a ref to the NgForm directive that governs form as whole -->
     <!-- <p>Testing: {{diagnostic}}</p> -->
@@ -60,7 +60,7 @@
         [(ngModel)]="modelNewUser.password" name="password">
     </div>
 
-    <button type="submit" class="btn btn-success" 
+    <button type="submit" class="btn btn-success" id="submitFormButton"
     [disabled]="!newUserForm.form.valid" 
     (click)="openSnackBar(modelNewUser.name); newUserForm.reset()">Submit</button>
   </form>

@@ -1,8 +1,7 @@
 <div class="container">
   <div class="form-container">
-    <h4>Create New Course</h4>
-
-    <p>debugging: {{instructors}}</p>
+    <h4 id="createCourseFormTitle">Create New Course</h4>
+    <!-- <p>debugging: {{instructors}}</p> -->
     <form [formGroup]="newForm">
 
       <!-- course details - number, name, term -->
@@ -155,7 +154,7 @@
       </div>
 
       <!-- button managers -->
-      <button type="submit" class="btn btn-success" 
+      <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
       [disabled]="newForm.status=='INVALID'"
       (click)="onSend()">Add Course</button>
       <button class="btn btn-warning" 

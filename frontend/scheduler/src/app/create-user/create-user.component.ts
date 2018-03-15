@@ -33,8 +33,8 @@ export class CreateUserComponent implements OnInit {
     this.userService.postNewUser(this.modelNewUser)
     .subscribe(
       success => {
-        console.log("successfully posted new user!");
-        this.snackBar.open(msg, null, { duration: 500, });
+        console.log("Successfully added new user!");
+        this.snackBar.open(msg, null, { duration: 60000, });
       },
       error => {
         console.log("Error in postNewUser via CreateUserComponent");
