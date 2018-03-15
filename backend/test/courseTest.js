@@ -49,7 +49,7 @@ describe('rowToJSON()', function () {
 			output = Course.rowToJSON(course);
 
 			// Assert
-			expect(output).to.be.equal(correct);
+			expect(output).to.deep.equal(correct);
 		});
 
 	afterEach(function () {
