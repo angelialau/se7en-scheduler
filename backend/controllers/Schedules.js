@@ -1,22 +1,18 @@
 var express = require("express");
 var Schedule = require("../models/Schedule");
+var Course = require("../models/Course");
 var utils = require("../utils/utilities");
+var spawn = require("child_process").spawn;
 var router = express.Router();
+var options = {
+    cwd: process.cwd(),
+    env: process.env,
+};
 
 // defining route for get all schedules
 router.get('/', function(req, res, next) {
 	Schedule.getAllSchedules(function(err, rows) {
-		if (err) {
-			err.success = false;
-			res.json(err);
-		} else {
-			if (!utils.isEmptyObject(rows)) {
-				rows.success = true;
-				res.json(rows);
-			} else {
-				res.json({"success":false, "message":"no rows found"});
-			}
-		}
+		utils.basicGetCallback(res, err, rows, null);
 	});
 });
 
@@ -24,7 +20,7 @@ router.get('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Schedule.getScheduleById(req.params.id, function(err, rows) {
-			utils.basicGetCallback(res, err, rows)
+			utils.basicGetCallback(res, err, rows, 0);
 		});
 	} 
 });
@@ -37,13 +33,7 @@ router.post('/', function(req, res, next) {
 			req.body.year, 
 			req.body.trimester,
 			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					count.success = true;
-					res.json(count);
-				}
+				utils.basicPostCallback(res, err, count);
 			}
 		);
 	} else {
@@ -61,13 +51,7 @@ router.post('/Update', function(req, res, next) {
 			req.body.year, 
 			req.body.trimester,
 			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					count.success = true;
-					res.json(count);
-				}
+				utils.basicPostCallback(res, err, count);
 			}
 		);
 	} else {
@@ -82,17 +66,40 @@ router.post('/Delete', function(req, res, next) {
 		Schedule.deleteSchedule(
 			req.body.id,
 			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					count.success = true;
-					res.json(count);
-				}
+				utils.basicPostCallback(res, err, count);
 			}
 		);
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for generating a schedule
+router.post('/Generate', function(req, res, next) {
+	if (req.body.id) {
+		Course.getCourseBySchedule(req.body.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
+				var result = "";
+
+				child.stdout.on('data', function(data) {
+					result += data.toString();
+				});
+
+				child.stderr.on('data', function(data) {
+					console.log("ERR child process: " + data.toString());
+				});
+
+				child.on('close', function(code) {
+					res.json(result);
+				});
+			}
+		});
+	} else {
+		res.json({success:false, message: "incomplete params"});
 	}
 });
 
