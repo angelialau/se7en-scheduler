@@ -86,7 +86,7 @@ router.post('/Generate', function(req, res, next) {
 					result += data.toString();
 				});
 
-				child.stderr.on('data', function(date) {
+				child.stderr.on('data', function(data) {
 					console.log(data.toString());
 				})
 
