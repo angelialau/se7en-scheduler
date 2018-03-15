@@ -198,7 +198,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err;
-			var rows = [];
+			var rows = {};
 			var row_num = 1;
 
 			res.json = function(message) {
