@@ -78,7 +78,7 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var child = spawn('python', ['test.py', JSON.stringify(rows)]);
+				var child = spawn('python', ['../utils/test.py', JSON.stringify(rows)]);
 				var result = "";
 
 				child.stdout.on('data', function(data) {
