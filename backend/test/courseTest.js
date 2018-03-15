@@ -51,9 +51,5 @@ describe('rowToJSON()', function () {
 
 			// Assert
 			expect(output).to.deep.equal(correct);
-		});
-
-	afterEach(function () {
-		console.log(output);
-	})
+	});
 });

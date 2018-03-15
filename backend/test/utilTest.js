@@ -10,6 +10,6 @@ describe('compareJSONKeys()', function () {
 			var b = {"age": 21, "name": "Angelia"};
 
 			// Assert
-			expect(true).to.be.equal(util.compareJSONKeys(a,b));
+			expect(util.compareJSONKeys(a,b)).to.be.equal(true);
 		})
 });
