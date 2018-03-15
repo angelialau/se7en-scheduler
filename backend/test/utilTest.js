@@ -52,3 +52,45 @@ describe('compareJSONKeys()', function() {
 			expect(util.compareJSONKeys(a,b)).to.be.equal(false);
 		});
 });
+
+describe('isEmptyObject()', function() {
+	it('Constructive Test: ' +
+		'Returns true for empty object', function() {
+
+			// Setup
+			var a = {};
+
+			// Assert
+			expect(util.isEmptyObject(a)).to.be.equal(true);
+		});
+});
+
+describe('isEmptyObject()', function() {
+	it('Constructive Test: ' +
+		'Returns false for nonempty object', function() {
+
+			// Setup
+			var a = {"name": "Rayson"};
+
+			// Assert
+			expect(util.isEmptyObject(a)).to.be.equal(false);
+		});
+});
+
+describe('isEmptyObject()', function() {
+	it('Destructive Test: ' +
+		'Returns true for null object', function() {
+
+			// Assert
+			expect(util.isEmptyObject(null)).to.be.equal(true);
+		});
+});
+
+describe('isEmptyObject()', function() {
+	it('Destructive Test: ' +
+		'Returns false for int object', function() {
+			
+			// Assert
+			expect(util.isEmptyObject(1)).to.be.equal(false);
+		});
+});
