@@ -17,7 +17,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicGetCallback(res, err, rows, row_num);
 
 			// Assert
 			expect(output).to.be.equal(err);
@@ -40,7 +40,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicGetCallback(res, err, rows, row_num);
 
 			// Assert
 			expect(output).to.be.equal(rows);
@@ -63,7 +63,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicGetCallback(res, err, rows, row_num);
 
 			// Assert
 			expect(output).to.be.equal(rows[1]);
@@ -86,7 +86,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicGetCallback(res, err, rows, row_num);
 
 			// Assert
 			expect(output.success).to.be.equal(false);

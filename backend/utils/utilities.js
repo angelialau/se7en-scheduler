@@ -51,7 +51,6 @@ var utilities = {
 				}
 
 			} else {
-				res.json(rows);
 				res.json({"success":false, "message":"no rows found"});
 			}
 		}
