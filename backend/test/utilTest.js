@@ -92,7 +92,7 @@ describe('basicPostCallBack()', function() {
 			};
 
 			// Act
-			util.basicPostCallBack(res, err, count);
+			util.basicPostCallback(res, err, count);
 
 			// Assert
 			expect(output).to.be.equal(err);
@@ -114,7 +114,7 @@ describe('basicPostCallBack()', function() {
 			};
 
 			// Act
-			util.basicPostCallBack(res, err, count);
+			util.basicPostCallback(res, err, count);
 
 			// Assert
 			expect(output).to.be.equal(count);
