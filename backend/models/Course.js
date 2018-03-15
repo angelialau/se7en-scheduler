@@ -133,7 +133,7 @@ var Course = {
 			if (err) {
 				console.log(err);
 			} else {
-				console.log(rowToJSON(row));
+				callback(this.rowToJson(row));
 			}
 		})
 	},
