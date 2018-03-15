@@ -11,7 +11,8 @@ export class Course{
     public sessions_hrs: string,
     public class_types: string,
     public instructors: string,    
-    public split: string,    
+    public split: string,   
+    public id?: number, 
     ) { }
 }
 

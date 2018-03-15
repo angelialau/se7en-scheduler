@@ -37,8 +37,8 @@ export class ScheduleService {
   }
 
   // getting a specific schedule
-  getSchedule(id : number): Observable<Schedule[]>{
-    return this.http.get<Schedule[]>(this.url + '/Schedules/' + id, { observe: 'response' })
+  getSchedule(id : number): Observable<any>{
+    return this.http.get<Schedule>(this.url + '/Schedules/' + id, { observe: 'response' })
       .catch(this.handleError);
   }
 
@@ -63,6 +63,11 @@ export class ScheduleService {
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
+  }
+
+  getCourse(id: number): Observable<any>{
+    return this.http.get<Course>(this.url + '/Courses/' + id, { observe: 'response' })
+      .catch(this.handleError);
   }
 
   addCourse(course : Course): Observable<any>{

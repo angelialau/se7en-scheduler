@@ -129,16 +129,14 @@ export class CreateCourseComponent implements OnInit {
     console.log(course);
     return course;
   }
-  getCourses(){
-  }
+  
   onSend(){ 
     let msg : string = "Submitted new course!"
     this.scheduleService.addCourse(this.translateDataToCourse())
     .subscribe(
       response => {
-        console.log(typeof response);
         let success = JSON.parse(response).success;
-        console.log(JSON.parse(response));
+        // console.log(JSON.parse(response));
         if(success){
           console.log("successfully created new course!");
           this.snackBar.open(msg, null, { duration: 800, });  
