@@ -198,7 +198,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err;
-			var rows;
+			var rows = [];
 			var row_num = 1;
 
 			res.json = function(message) {
@@ -206,9 +206,10 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, null, row_num);
+			util.basicPostCallback(res, err, rows, row_num);
 
 			// Assert
+			expect(util.isEmptyObject(rows)).to.be.equal(true);
 			expect(output.success).to.be.equal(false);
 			expect(output.message).to.be.equal("no rows found");
 		});
