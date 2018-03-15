@@ -83,7 +83,7 @@ describe('basicPostCallBack()', function() {
 			
 			// Setup
 			var output;
-			var res;
+			var res = {};
 			var err = "There is an error";
 			var count = -1;
 
@@ -105,7 +105,7 @@ describe('basicPostCallBack()', function() {
 			
 			// Setup
 			var output;
-			var res;
+			var res = {};
 			var err;
 			var count = 2;
 
