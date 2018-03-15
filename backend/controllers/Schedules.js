@@ -74,16 +74,26 @@ router.post('/Delete', function(req, res, next) {
 router.post('/Generate', function(req, res, next) {
 	if (req.body.id) {
 		Course.getCourseBySchedule(req.body.id, function(err, rows) {
-			var child = spawn('python', ['test.py', JSON.stringify(rows)]);
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var child = spawn('python', ['test.py', JSON.stringify(rows)]);
+				var result = "";
 
-			child.stdout.on('data', function(data) {
-				console.log(data.toString());
-			})
+				child.stdout.on('data', function(data) {
+					console.log(data.toString());
+					result += data.toString();
+				})
 
-			res.json(rows);
+				child.on('close', function(code) {
+					res.json(result);
+				})
+			}
 		});
+	} else {
+		res.json({success:false, message: "incomplete params"});
 	}
-	res.json({success:false});
 });
 
 module.exports = router;
