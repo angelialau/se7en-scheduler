@@ -14,7 +14,6 @@ import { UserService } from './../services/user.service';
 })
 
 export class CreateCourseComponent implements OnInit {
-  showAddCourseForm = false;
   courseDetails = courseDetails; 
   instructors : User[]= []; 
   class_type = class_type; 
@@ -104,9 +103,7 @@ export class CreateCourseComponent implements OnInit {
     const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
     const profsFormArray = this.formBuilder.array(profsFormGroups);
     this.newForm.setControl('prof_list', profsFormArray);
-  }
-
-  
+  }  
 
   // http methods
   translateDataToCourse() : Course{
@@ -219,8 +216,7 @@ export class CreateCourseComponent implements OnInit {
     console.log(finalArray.join('|'));    
     return finalArray.join();
   }
-  showForm() { this.showAddCourseForm = true; }
-  closeForm(){ this.showAddCourseForm = false; }
+  
   showCheckBox(): boolean{
     if(this.prof_list.value) { return true; }
     return false;

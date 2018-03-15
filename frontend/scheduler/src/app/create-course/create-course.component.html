@@ -3,7 +3,6 @@
     <h4 id="createCourseFormTitle">Create New Course</h4>
     <!-- <p>debugging: {{instructors}}</p> -->
     <form [formGroup]="newForm">
-
       <!-- course details - number, name, term -->
       <div class="input-group mb-3">
         <div class="input-group-prepend">
@@ -64,11 +63,11 @@
         <h6>Details of Teaching Professors</h6>
         <div *ngFor="let prof of newForm.controls.prof_list.controls; let a=index" formGroupName="{{a}}"
         class="no-ugly-red-line">
-          <h6>Professor {{a+1}}
+          <h5>Professor {{a+1}}
             <span style="float: right;"><button mat-icon-button (click)="deleteProf(a)">
               <i class="fas fa-trash-alt"></i>
             </button></span>
-          </h6>
+          </h5>
           <div class="form-group">
             <select class="custom-select" formControlName="name">
               <option *ngFor='let prof of instructors' [value]=prof.id>
@@ -117,35 +116,8 @@
             </select>
           </div>
           
-          <!-- profs involved in this session -->
-          <!-- <div class="form-group no-ugly-red-line" formArrayName="selectedInstructors" *ngIf="showCheckBox()">
-            
-            <h6>Professors involved in this session:</h6> 
-            <div *ngFor="let prof of newForm.get('prof_list').value; let c=index" formGroupName="{{c}}" class="no-ugly-red-line">
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="radio" value="1" formControlName="instructor_name">
-                  <input class="form-check-input" type="radio" value="0" formControlName="instructor_name">
-                {{prof.name}}</label>  
-              </div>
-            </div>
-            
-          </div> -->
-
-          <!-- whether to split or not -->
-          <!-- <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="split"> Delegation of Professors </label>
-            </div>
-            <select class="custom-select" id="split"
-              formControlName="split">
-              <option [value]='1'>Each cohort class is assigned one teaching Professor</option>
-              <option [value]='0'>Each cohort class is assigned all Professors</option>
-            </select>
-          </div> -->
-          
           <!-- end of repeated segment -->
-        </div> <br>
+        </div>
         <!-- add new session -->
         <button type="button" class="btn btn-primary" 
           (click)="addSessionToCourse()">
@@ -153,17 +125,18 @@
         </button>
       </div>
 
-      <!-- button managers -->
-      <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
-      [disabled]="newForm.status=='INVALID'"
-      (click)="onSend()">Add Course</button>
-      <button class="btn btn-warning" 
-      (click)="newForm.reset()">Reset</button>
-      <button class="btn btn-danger" 
-      (click)="translateData()">Translate/Cancel</button>        
-    </form>
+      <div class="dropdown-divider"></div>
 
-    <p>Form values: {{newForm.value | json : 2 }} </p>
-    <p>Form status: {{newForm.status | json}} </p>
+      <!-- button managers -->
+      <div style="float: right;">
+        <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
+        [disabled]="newForm.status=='INVALID'"
+        (click)="onSend()">Add Course</button>
+        <button class="btn btn-warning" 
+        (click)="newForm.reset()">Reset</button>
+      </div>
+    </form>
+    <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
+    <p>Form status: {{newForm.status | json}} </p> -->
   </div>
 </div>

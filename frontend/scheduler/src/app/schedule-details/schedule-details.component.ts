@@ -8,10 +8,12 @@ import { ScheduleService } from './../services/schedule.service';
   styleUrls: ['./schedule-details.component.css']
 })
 export class ScheduleDetailsComponent implements OnInit {
-
+  showCourseForm : boolean = false;
   constructor(private scheduleService: ScheduleService) { }
 
   ngOnInit() {
   }
+
+  showForm(bool: boolean) { this.showCourseForm = bool; }
 
 }

@@ -34,8 +34,8 @@ const ROUTES: Routes = [
   { path: 'home', component: NotificationsComponent },
   { path: 'create-user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
-  { path: 'schedules/details', component: ScheduleDetailsComponent },
-  { path: 'schedules/courses/add', component: CreateCourseComponent },
+  { path: 'schedules/courses', component: ScheduleDetailsComponent },
+  // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
 
   { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated

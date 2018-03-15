@@ -1,12 +1,35 @@
 <div class="container">
   <div class="card-body">
-    <h5 class="card-title text-center">Courses</h5>
+    <h5 class="card-title text-center" id="pageTitle">Courses under this Schedule</h5>
   </div>
-  <div *ngFor="let course of courses">
+  <!-- display list of courses -->
+  <p>course here</p>
+  <p>course here</p>
+  <p>course here</p>
+  <div class="dropdown-divider"></div>
+  <!-- <div *ngFor="let course of courses">
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header" > Course {{schedule.year}} Trimester {{schedule.trimester}} 
         <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button>
       </h5>
     </div>
+  </div> -->
+
+  <!-- form to add new course to schedule -->
+  
+
+  <div *ngIf="showCourseForm; else showFormButton">
+    <app-create-course></app-create-course>
+    <br><br>
+    <button class="btn btn-danger" style="float: right;" 
+      (click)="showForm(false)">Cancel</button>  
   </div>
+  <button class="btn btn-success" style="float: right;margin-right: 20px" 
+    *ngIf="!showCourseForm" id="showFormButton"
+    (click)="showForm(true)">
+    Submit new Course
+  </button>
+
+  
+
 </div>
