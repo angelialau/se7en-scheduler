@@ -12,4 +12,4 @@ describe('compareJSONKeys()', function () {
 			// Assert
 			expect(true).to.be.equal(util.compareJSONKeys(a,b));
 		})
-})
+});
