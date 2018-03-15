@@ -130,6 +130,25 @@ var Course = {
 	// TODO 
 	getCoursesForAlgo:function(schedule_id, callback) {
 		
+	},
+
+	// converts a course to JSON format required for scheduling algorithm
+	rowToJSON:function(row) {
+		var sessions = [];
+		var class_types = row.class_types.split(",");
+		var timings = row.sessions_hrs.split(",");
+		var instructors = row.instructors.split("|");
+		var split = row.split.split(",");
+
+		for (var i = 0; i < row.no_sessions; i++) {
+			sessions[i].class_type = class_types[i];
+			sessions[i].time = timings[i];
+			sessions[i].instructors = instructors[i].split(",");
+			sessions[i].split = split[i];
+		}
+
+		row.sessions = sessions;
+		return row;
 	}
 };
 
