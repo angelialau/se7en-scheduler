@@ -56,13 +56,29 @@ var User = {
 	},
 
 	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
+		var schedules;
+		var courses;
+		var row;
+
 		var uniqueInstructors = new Set(instructors.split(/\D/));
 		var ids = "(" + [...uniqueInstructors].toString() + ")";
 		this.getUsersByIDs(ids, function(err, rows) {
 			for (index in rows) {
-				var row = rows[index];
-				var schedules = row.schedules.concat(",",schedule_id);
-				var courses = row.courses.concat(",",course_id);
+				row = rows[index];
+
+				// add new schedule to string of schedules
+				if (row.schedules) {
+					schedules = row.schedules.concat(",",schedule_id);
+				} else {
+					schedules = schedule_id;
+				}
+				
+				// add new course to string of courses
+				if (row.courses) {
+					courses = row.courses.concat(",",course_id);
+				} else {
+					courses = course_id;
+				}
 
 				// schedules id should be unique
 				var uniqueSchedules = new Set(schedules.split(/\D/));
