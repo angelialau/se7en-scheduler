@@ -183,7 +183,7 @@ describe('basicGetCallback()', function() {
 			};
 
 			// Act
-			util.basicPostCallback(res, err, rows, row_num);
+			util.basicPostCallback(res, err, rows, 1);
 
 			// Assert
 			expect(output).to.be.equal(rows[1]);

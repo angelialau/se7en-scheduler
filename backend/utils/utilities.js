@@ -44,7 +44,6 @@ var utilities = {
 		
 				if (row_num != null) {
 					rows[row_num].success = true;
-					console.log(rows[row_num]);
 					res.json(rows[row_num]);
 				} else {
 					rows.success = true;
