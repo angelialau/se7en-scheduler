@@ -10,7 +10,7 @@ var COLUMN_CORE = "core";
 var COLUMN_NO_CLASSES = "no_classes";
 var COLUMN_CLASS_SIZE = "class_size";
 var COLUMN_NO_SESSIONS = "no_sessions";
-var COLUMN_SESSION_HRS = "session_hrs";
+var COLUMN_SESSIONS_HRS = "sessions_hrs";
 var COLUMN_CLASS_TYPES = "class_types";
 var COLUMN_INSTRUCTORS = "instructors";
 var COLUMN_SPLIT = "split";
@@ -72,7 +72,7 @@ var Course = {
 			COLUMN_NO_CLASSES + "`,`" +
 			COLUMN_CLASS_SIZE + "`,`" +
 			COLUMN_NO_SESSIONS + "`,`" +
-			COLUMN_SESSION_HRS + "`,`" +
+			COLUMN_SESSIONS_HRS + "`,`" +
 			COLUMN_CLASS_TYPES + "`,`" +
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_SPLIT + "`)" +  
@@ -101,7 +101,7 @@ var Course = {
 						"` =?, `" + COLUMN_NO_CLASSES +
 						"` =?, `" + COLUMN_CLASS_SIZE +
 						"` =?, `" + COLUMN_NO_SESSIONS + 
-						"` =?, `" + COLUMN_SESSION_HRS +
+						"` =?, `" + COLUMN_SESSIONS_HRS +
 						"` =?, `" + COLUMN_CLASS_TYPES +
 						"` =?, `" + COLUMN_INSTRUCTORS +
 						"` =?, `" + COLUMN_SPLIT +
