@@ -55,7 +55,7 @@ describe('compareJSONKeys()', function() {
 
 describe('isEmptyObject()', function() {
 	it('Constructive Test: ' +
-		'Returns true for empty object', function() {
+		'Returns true for empty json object', function() {
 
 			// Setup
 			var a = {};
@@ -67,7 +67,7 @@ describe('isEmptyObject()', function() {
 
 describe('isEmptyObject()', function() {
 	it('Constructive Test: ' +
-		'Returns false for nonempty object', function() {
+		'Returns false for nonempty json object', function() {
 
 			// Setup
 			var a = {"name": "Rayson"};
@@ -77,20 +77,46 @@ describe('isEmptyObject()', function() {
 		});
 });
 
-describe('isEmptyObject()', function() {
-	it('Destructive Test: ' +
-		'Returns true for null object', function() {
+describe('basicPostCallBack()', function() {
+	it('Constructive Test: ' +
+		'Returns the err if there is one', function() {
+			
+			// Setup
+			var output;
+			var res;
+			var err = "There is an error";
+			var count = -1;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			basicPostCallBack(res, err, count);
 
 			// Assert
-			expect(util.isEmptyObject(null)).to.be.equal(true);
+			expect(output).to.be.equal(err);
 		});
 });
 
-describe('isEmptyObject()', function() {
-	it('Destructive Test: ' +
-		'Returns false for int object', function() {
+describe('basicPostCallBack()', function() {
+	it('Constructive Test: ' +
+		'Returns the count if there is no err', function() {
 			
+			// Setup
+			var output;
+			var res;
+			var err;
+			var count = 2;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			basicPostCallBack(res, err, count);
+
 			// Assert
-			expect(util.isEmptyObject(1)).to.be.equal(false);
+			expect(output).to.be.equal(count);
 		});
 });

@@ -1,5 +1,5 @@
 var utilities = {
-	// checked if an object has no keys
+	// checked if an json object has no keys
 	isEmptyObject:function(obj) {
 		return !Object.keys(obj).length;
 	},
