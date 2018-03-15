@@ -90,7 +90,7 @@ router.post('/Generate', function(req, res, next) {
 				});
 
 				child.stderr.on('data', function(data) {
-					console.log("ERR child process: "data.toString());
+					console.log("ERR child process: " + data.toString());
 				});
 
 				child.on('close', function(code) {
