@@ -166,3 +166,75 @@ describe('basicGetCallback()', function() {
 			expect(output).to.be.equal(rows);
 		});
 });
+
+describe('basicGetCallback()', function() {
+	it('Branch Test: ' +
+		'Returns row indicated by row_num', function() {
+			
+			// Setup
+			var output;
+			var res = {};
+			var err;
+			var rows = {0: "row one", 1: "row two"};
+			var row_num = 1;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			util.basicPostCallback(res, err, rows, row_num);
+
+			// Assert
+			expect(output).to.be.equal(rows[1]);
+		});
+});
+
+describe('basicGetCallback()', function() {
+	it('Branch Test: ' +
+		'Returns error when rows is empty', function() {
+			
+			// Setup
+			var output;
+			var res = {};
+			var err;
+			var rows = {};
+			var row_num = 1;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			util.basicPostCallback(res, err, rows, row_num);
+
+			// Assert
+			expect(output.success).to.be.equal(false);
+			expect(output.message).to.be.equal("no rows found");
+		});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
