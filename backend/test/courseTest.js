@@ -22,11 +22,34 @@ describe('rowToJSON()', function () {
 		        "split": "1,1,1"
     		}
 
+    		correct = { term: 1,
+				  "course_no": '50.003',
+				  "course_name": 'Elements of Software Construction',
+				  "core": 1,
+				  "no_classes": 3,
+				  "class_size": 50,
+				  "no_sessions": 3,
+				  "sessions": 
+				   [ { 'class_type': 'Lecture',
+				       'time': '2',
+				       'instructors': '31',
+				       'split': '1' },
+				     { 'class_type': 'Lecture',
+				       'time': '2',
+				       'instructors': '31',
+				       'split': '1' },
+				     { 'class_type': 'Lecture',
+				       'time': '1',
+				       'instructors': '31',
+				       'split': '1' } 
+				    ] 
+			}
+
 			// Act
 			output = Course.rowToJSON(course);
 
 			// Assert
-			expect(true).to.be.equal(true);
+			expect(output).to.be.equal(correct);
 		});
 
 	afterEach(function () {
