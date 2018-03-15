@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "Smart Scheduler",
   "main": "index.js",
-  "directories":{
-    "test":"test"
-  },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha backend/test/"
   },
   "repository": {
     "type": "git",
