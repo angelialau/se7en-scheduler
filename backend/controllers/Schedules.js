@@ -82,21 +82,18 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				console.log(process.cwd());
 				var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
 				var result = "";
 
 				child.stdout.on('data', function(data) {
-					console.log(data.toString());
 					result += data.toString();
 				});
 
 				child.stderr.on('data', function(data) {
-					console.log(data.toString());
-				})
+					console.log("ERR child process: "data.toString());
+				});
 
 				child.on('close', function(code) {
-					console.log(`child process exited with code ${code}`);
 					res.json(result);
 				});
 			}

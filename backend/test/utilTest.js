@@ -2,8 +2,8 @@ var expect = require('chai').expect;
 var util = require('../utils/utilities');
 
 describe('compareJSONKeys()', function () {
-	it('should tell you whether two JSON objects have exactly ' +
-	    'the same keys regardless of order', function() {
+	it('Constructive Test: ' +
+	    'Return true for equal keys', function() {
 
 			// Setup
 			var a = {"name": "Rayson", "age": 23};
@@ -11,5 +11,44 @@ describe('compareJSONKeys()', function () {
 
 			// Assert
 			expect(util.compareJSONKeys(a,b)).to.be.equal(true);
-		})
+		});
+});
+
+describe('compareJSONKeys()', function () {
+	it('Constructive Test: ' +
+		'Return false for nonequal keys', function() {
+
+			// Setup
+			var a = {"name": "Rayson"};
+			var b = {"name": "Angelia", "age": 22};
+
+			// Assert
+			expect(util.compareJSONKeys(a,b)).to.be.equal(false);
+		});
+});
+
+describe('compareJSONKeys()', function() {
+	it('Destructive Test: ' +
+		'Should work as normal with empty objects', function() {
+
+			// Setup
+			var a = {};
+			var b = {};
+
+			// Assert
+			expect(util.compareJSONKeys(a,b)).to.be.equal(true);
+		});
+});
+
+describe('compareJSONKeys()', function() {
+	it('Destructive Test: ' +
+		'Should work as normal with empty objects', function() {
+
+			// Setup
+			var a = {"name": "Rayson"};
+			var b = {};
+
+			// Assert
+			expect(util.compareJSONKeys(a,b)).to.be.equal(false);
+		});
 });
