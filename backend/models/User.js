@@ -7,7 +7,9 @@ var COLUMN_EMAIL = "email";
 var COLUMN_PHONE = "phone";
 var COLUMN_PASSWORD_HASH = "passwordHash";
 var COLUMN_SALT = "salt";
-var COLUMN_ADMIN = "admin";
+var COLUMN_ADMIN = "pillar";
+var COLUMN_SCHEDULES = "schedules";
+var COLUMN_COURSES = "courses";
 
 var User = {
 	getAllUsers:function(callback) {
@@ -24,6 +26,21 @@ var User = {
 						" =?", [id], callback);
 	},
 
+	getUsersByIDs:function(ids, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + 
+						" IN " + ids, [], callback);
+	},
+
+	getUsersByPillar:function(pillar, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ADMIN +
+						" =?", [pillar], callback);
+	},
+
+	getInstructors:function(callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + " WHERE NOT " + COLUMN_ADMIN +
+						" =?", ["Administrator"], callback);
+	},
+
 	createUser:function(name, email, phone, passwordHash, salt, admin, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
@@ -35,7 +52,53 @@ var User = {
 			COLUMN_ADMIN + "`)" +  
 			" VALUES(?,?,?,?,?,?)", 
 			[name, email, phone, passwordHash, salt, admin],
-			callback)
+			callback);
+	},
+
+	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
+		var schedules;
+		var courses;
+		var row;
+
+		var uniqueInstructors = new Set(instructors.split(/\D/));
+		var ids = "(" + [...uniqueInstructors].toString() + ")";
+		this.getUsersByIDs(ids, function(err, rows) {
+			for (index in rows) {
+				row = rows[index];
+
+				// add new schedule to string of schedules
+				if (row.schedules) {
+					schedules = row.schedules.concat(",",schedule_id);
+				} else {
+					schedules = schedule_id;
+				}
+				
+				// add new course to string of courses
+				if (row.courses) {
+					courses = row.courses.concat(",",course_id);
+				} else {
+					courses = course_id;
+				}
+
+				// schedules id should be unique
+				var uniqueSchedules = new Set(schedules.split(/\D/));
+				schedules = [...uniqueSchedules].join();
+
+				// update database
+				db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_SCHEDULES +
+						"` =?, `" + COLUMN_COURSES +
+						"` =? WHERE `" + COLUMN_ID +
+						"` =?",
+						[schedules, courses, row.id],
+						function(row_err, row_rows){
+							if (row_err) {
+								console.log(row_err);
+							}
+						});
+			}
+			callback(err, rows);
+		});
 	}
 };
 

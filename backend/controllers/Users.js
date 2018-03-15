@@ -8,17 +8,7 @@ var router = express.Router();
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		User.getUserById(req.params.id, function(err, rows) {
-			if (err) {
-				err.success = false;
-				res.json(err);
-			} else {
-				if (!utils.isEmptyObject(rows)) {
-					rows[0].success = true;
-					res.json(rows[0]);
-				} else {
-					res.json({"success":false, "message":"no rows found"});
-				}
-			}
+			utils.basicGetCallback(res, err, rows, 0);
 		});
 	} 
 });
@@ -26,18 +16,25 @@ router.get('/:id(\\d+)', function(req, res, next) {
 // Defining get all users route
 router.get('/', function(req, res, next) {
 	User.getAllUsers(function(err, rows) {
-		if (err) {
-			err.success = false;
-			res.json(err);
-		} else {
-			if (!utils.isEmptyObject(rows)) {
-				res.json(rows);
-			} else {
-				res.json({"success":false, "message":"no rows found"});
-			}
-		}
+		utils.basicGetCallback(res, err, rows, null);
 	});
-})
+});
+
+// Defining get users by pillar route
+router.get('/Pillar/:pillar(\\w+)', function(req, res, next) {
+	if (req.params.pillar) {
+		User.getUsersByPillar(req.params.pillar, function(err, rows) {
+			utils.basicGetCallback(res, err, rows, null);
+		})
+	}
+});
+
+// Defining get all instructors route
+router.get('/Instructors', function(req, res, next) {
+	User.getInstructors(function(err, rows) {
+		utils.basicGetCallback(res, err, rows, null);
+	})
+});
 
 // Defining create User route
 router.post('/', function(req, res, next) {
@@ -45,7 +42,7 @@ router.post('/', function(req, res, next) {
 		req.body.email && 
 		req.body.phone && 
 		req.body.password &&
-		req.body.admin) {
+		req.body.pillar) {
 
 		var salt = encrypt.genRanString(13);
 		var passwordHash = encrypt.sha512(req.body.password, salt);
@@ -56,15 +53,9 @@ router.post('/', function(req, res, next) {
 			req.body.phone,
 			passwordHash,
 			salt,
-			req.body.admin,
+			req.body.pillar,
 			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					count.success = true;
-					res.json(count);
-				}
+				utils.basicPostCallback(res, err, count);
 			}
 		);
 	} else {
