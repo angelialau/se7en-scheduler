@@ -155,8 +155,13 @@ var Course = {
 		}
 
 		row.sessions = sessions;
-		delete row.id, row.schedule_id, row.sessions_hrs, row.split,
-		 	   row.class_types, row.instructors;
+		delete row.id;
+		delete row.schedule_id; 
+		delete row.sessions_hrs;
+		delete row.split;
+		delete row.class_types;
+		delete row.instructors;
+		
 		return row;
 	}
 };
