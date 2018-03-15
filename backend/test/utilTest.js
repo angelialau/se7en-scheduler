@@ -129,7 +129,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err = "There is an error";
-			var rows = {};
+			var rows = [];
 			var row_num = null;
 
 			res.json = function(message) {
@@ -152,7 +152,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err;
-			var rows = {0: "row one", 1: "row two"};
+			var rows = ["row one", "row two"];
 			var row_num = null;
 
 			res.json = function(message) {
@@ -175,7 +175,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err;
-			var rows = {0: "row one", 1: "row two"};
+			var rows = ["row one", "row two"];
 			var row_num = 1;
 
 			res.json = function(message) {
@@ -198,7 +198,7 @@ describe('basicGetCallback()', function() {
 			var output;
 			var res = {};
 			var err;
-			var rows = {};
+			var rows = [];
 			var row_num = 1;
 
 			res.json = function(message) {
