@@ -73,15 +73,16 @@ router.post('/Delete', function(req, res, next) {
 // defining route for generating a schedule
 router.post('/Generate', function(req, res, next) {
 	if (req.body.id) {
-		Course.getCourseBySchedule(req.body.id, function(err, count) {
-			var child = spawn('python', ['test.py', JSON.stringify(count)]);
+		Course.getCourseBySchedule(req.body.id, function(err, rows) {
+			var child = spawn('python', ['test.py', JSON.stringify(rows)]);
 
 			child.stdout.on('data', function(data) {
 				console.log(data.toString());
 			})
 		});
+		res.json(rows);
 	}
-	res.json({success:true});
+	res.json({success:false});
 });
 
 module.exports = router;
