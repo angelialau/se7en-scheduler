@@ -11,7 +11,12 @@ var utilities = {
   		return JSON.stringify(inKeys) === JSON.stringify(compareKeys);
 	},
 
-	// common post callback sequence
+	/**
+	 * common post callback sequence
+	 * 
+	 * returns err response is there is one
+	 * else returns basic status of post request
+	**/
 	basicPostCallback:function(res, err, count) {
 		if (err) {
 			err.success = false;
@@ -22,7 +27,14 @@ var utilities = {
 		}
 	},
 
-	// common get callback sequence
+	/**
+	 * common get callback sequence
+	 * 
+	 * returns err response if there is one
+	 *
+	 * row_num = null would return all rows if no error
+	 * row_num = int would return only the row with index row_num
+	 */
 	basicGetCallback:function(res, err, rows, row_num) {
 		if (err) {
 			err.success = false;

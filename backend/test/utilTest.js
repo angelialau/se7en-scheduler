@@ -77,8 +77,8 @@ describe('isEmptyObject()', function() {
 		});
 });
 
-describe('basicPostCallBack()', function() {
-	it('Constructive Test: ' +
+describe('basicPostCallback()', function() {
+	it('Branch Test: ' +
 		'Returns the err if there is one', function() {
 			
 			// Setup
@@ -99,8 +99,8 @@ describe('basicPostCallBack()', function() {
 		});
 });
 
-describe('basicPostCallBack()', function() {
-	it('Constructive Test: ' +
+describe('basicPostCallback()', function() {
+	it('Branch Test: ' +
 		'Returns the count if there is no err', function() {
 			
 			// Setup
@@ -118,5 +118,51 @@ describe('basicPostCallBack()', function() {
 
 			// Assert
 			expect(output).to.be.equal(count);
+		});
+});
+
+describe('basicGetCallback()', function() {
+	it('Branch Test: ' +
+		'Returns the err if there is one', function() {
+			
+			// Setup
+			var output;
+			var res = {};
+			var err = "There is an error";
+			var rows = {};
+			var row_num = null;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			util.basicPostCallback(res, err, rows, row_num);
+
+			// Assert
+			expect(output).to.be.equal(err);
+		});
+});
+
+describe('basicGetCallback()', function() {
+	it('Branch Test: ' +
+		'Returns the all rows when row_num is null', function() {
+			
+			// Setup
+			var output;
+			var res = {};
+			var err;
+			var rows = {0: "row one", 1: "row two"};
+			var row_num = null;
+
+			res.json = function(message) {
+				output = message;
+			};
+
+			// Act
+			util.basicPostCallback(res, err, rows, row_num);
+
+			// Assert
+			expect(output).to.be.equal(rows);
 		});
 });
