@@ -32,7 +32,7 @@ const ROUTES: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
-  { path: 'create-user', component: CreateUserComponent },
+  { path: 'user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },

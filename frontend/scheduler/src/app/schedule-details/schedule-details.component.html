@@ -3,23 +3,25 @@
     <h5 class="card-title text-center" id="pageTitle">Courses under this Schedule</h5>
   </div>
   <!-- display list of courses -->
-  <p>course here</p>
-  <p>course here</p>
-  <p>course here</p>
-  <div class="dropdown-divider"></div>
-  <!-- <div *ngFor="let course of courses">
+  <div *ngFor="let course of courses">
     <div class="card" style="margin: 0 5% 5% 5%;">
-      <h5 class="card-header" > Course {{schedule.year}} Trimester {{schedule.trimester}} 
-        <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button>
-      </h5>
+      <div class="card-header">{{course.course_no}} - {{course.course_name}} <!-- <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button> --></div>
+      <div class="card-body">
+        Term: {{course.term}} <br>
+        Course type: {{course.core}} <br>
+        Number of classes enrolled:{{course.no_classes}} <br>
+        Size of each class: {{course.class_size}} <br>
+        Instructors: {{course.instructors}} <br>
+        Sessions: {{course.class_types}} <br>
+      </div>
+        
     </div>
-  </div> -->
+  </div>
 
-  <!-- form to add new course to schedule -->
-  
-
+  <!-- form to add a new course -->
+  <div class="dropdown-divider"></div>
   <div *ngIf="showCourseForm; else showFormButton">
-    <app-create-course></app-create-course>
+    <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
     <br><br>
     <button class="btn btn-danger" style="float: right;" 
       (click)="showForm(false)">Cancel</button>  
@@ -29,7 +31,4 @@
     (click)="showForm(true)">
     Submit new Course
   </button>
-
-  
-
 </div>

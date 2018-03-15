@@ -1,7 +1,8 @@
-<div class="container">
-  <h4 id="createUserFormTitle">Create a new Administrator/Instructor</h4>
+<div class="container" >
+  <div class="card-body">
+    <h5 class="card-title text-center" id="createUserFormTitle">Create a new Administrator/Instructor</h5>
+  </div>
   <form (ngSubmit)="onSubmit()" #newUserForm="ngForm">
-    <!-- ^ makes newUserForm a ref to the NgForm directive that governs form as whole -->
     <!-- <p>Testing: {{diagnostic}}</p> -->
     <div class="form-group">
       <div class="input-group mb-3">
@@ -12,20 +13,6 @@
         [(ngModel)]="modelNewUser.pillar" name="pillar" >
           <option *ngFor="let pillar of ['Administrator','ISTD','ESD','EPD','ASD']" [value]="pillar">{{pillar}}</option>
         </select>
-        <!-- <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" id="instructor" 
-        [(ngModel)]="modelNewUser.admin" name="admin" value="0"
-        required >
-        <label class="form-check-label" for="instructor">
-          Instructor
-        </label>
-      </div>
-      <input class="form-check-input" type="radio" id="admin"
-        [(ngModel)]="modelNewUser.pillar" name="pillar"  value="1"
-        required >
-        <label class="form-check-label" for="admin">
-          Administrator
-        </label> -->
       </div>
     </div>
 
@@ -35,8 +22,6 @@
         required 
         [(ngModel)]="modelNewUser.name" name="name"
         #spy>
-      <!-- u need name attribute when u use <form> and [(ngModel)] -->
-        <!-- <div *ngIf="(modelNewUser.name.touched && !modelNewUser.name.valid)" class="alert alert-danger">{{alertRequiredMessage}}</div> -->
     </div>
 
     <div class="form-group">

@@ -29,6 +29,10 @@ export class ScheduleDetailsComponent implements OnInit {
     this.getScheduleDetails(this.schedule_id);
   }
 
+  refreshCourses($event){
+    this.getScheduleDetails(this.schedule_id);
+  }
+
   // get the metadata of this specific schedule
   getScheduleDetails(id: number){
     this.scheduleService.getSchedule(id).subscribe(

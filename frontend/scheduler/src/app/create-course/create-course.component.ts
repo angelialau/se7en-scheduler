@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { User } from './../../models/user.model';
@@ -14,6 +15,8 @@ import { UserService } from './../services/user.service';
 })
 
 export class CreateCourseComponent implements OnInit {
+  @Output() addedCourse : EventEmitter<any> = new EventEmitter();
+  schedule_id : number;
   courseDetails = courseDetails; 
   instructors : User[]= []; 
   class_type = class_type; 
@@ -28,7 +31,9 @@ export class CreateCourseComponent implements OnInit {
     private snackBar : MatSnackBar,
     private scheduleService : ScheduleService,
     private userService: UserService,
+    private route: ActivatedRoute
      ) {
+    this.schedule_id = route.snapshot.params['schedule_id'];
     this.createForm();
     this.getInstructors();
   }
@@ -108,7 +113,7 @@ export class CreateCourseComponent implements OnInit {
   // http methods
   translateDataToCourse() : Course{
     let data = this.newForm.value;
-    let schedule_id = 3; // TODO port courses to schedule and pass over schedule details
+    let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
     let course_no = data.courseDetail;
     let course_name = this.queryCourse(course_no, "course_name");
     let term = this.queryCourse(course_no, "term");
@@ -138,8 +143,10 @@ export class CreateCourseComponent implements OnInit {
         let success = JSON.parse(response).success;
         // console.log(JSON.parse(response));
         if(success){
-          console.log("successfully created new course!");
+          console.log("Successfully created new course!");
           this.snackBar.open(msg, null, { duration: 800, });  
+          // to update list of courses in schedule details
+          this.addedCourse.emit(null);
         }else{
           console.log("Error in addCourse via CreateCourseComponent");
           // console.log();
