@@ -16,7 +16,7 @@ class FormsTest(unittest.TestCase):
 
     def test_add_user(self):
         driver = self.driver
-        driver.get("http://localhost:4200/create-user")
+        driver.get("http://localhost:4200/user")
         self.assertEqual("Create a new Administrator/Instructor", driver.find_element_by_id("createUserFormTitle").text)
         try:    
             select = driver.find_element_by_id("pillar")
