@@ -84,12 +84,16 @@ router.post('/Generate', function(req, res, next) {
 				child.stdout.on('data', function(data) {
 					console.log(data.toString());
 					result += data.toString();
+				});
+
+				child.stderr.on('data', function(date) {
+					console.log(data.toString());
 				})
 
 				child.on('close', function(code) {
 					console.log(`child process exited with code ${code}`);
 					res.json(result);
-				})
+				});
 			}
 		});
 	} else {
