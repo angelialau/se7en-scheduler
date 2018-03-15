@@ -129,7 +129,13 @@ var Course = {
 
 	// TODO 
 	getCoursesForAlgo:function(schedule_id, callback) {
-		
+		this.getCourseById(58, function(err, row) {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(rowToJSON(row));
+			}
+		})
 	},
 
 	// converts a course to JSON format required for scheduling algorithm
