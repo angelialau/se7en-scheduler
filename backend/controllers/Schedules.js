@@ -1,6 +1,8 @@
 var express = require("express");
 var Schedule = require("../models/Schedule");
+var Course = require("../models/Course");
 var utils = require("../utils/utilities");
+var spawn = require("child_process").spawn;
 var router = express.Router();
 
 // defining route for get all schedules
@@ -65,6 +67,19 @@ router.post('/Delete', function(req, res, next) {
 		);
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for generating a schedule
+router.post('/Generate', function(req, res, next) {
+	if (req.body.id) {
+		Course.getScheduleById(req.body.id, function(err, count) {
+			var child = spawn('python', ['test.py', JSON.stringify(count)]);
+
+			child.stdout.on('data', function(data) {
+				console.log(data.toString());
+			})
+		});
 	}
 });
 
