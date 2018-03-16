@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, By } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material';
@@ -36,6 +36,7 @@ describe('CreateCourseComponent', () => {
   let testBedUserService : MockUserService;
   let scheduleServiceStub : MockScheduleService;
   let testBedScheduleService: MockScheduleService;
+  let formSubmitButton : DebugElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,6 +69,7 @@ describe('CreateCourseComponent', () => {
     userServiceStub = fixture.debugElement.injector.get(UserService);
     testBedScheduleService = TestBed.get(ScheduleService);
     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
+    formSubmitButton = fixture.debugElement.nativeElement.querySelector("#addCourseSubmitButton");
     fixture.autoDetectChanges();
   });
 
@@ -95,5 +97,14 @@ describe('CreateCourseComponent', () => {
   it('ScheduleService injected via component should be an instance of MockScheduleService', () => {
     expect(scheduleServiceStub instanceof MockScheduleService).toBeTruthy();
   });
+
+  // it('creating a course emits addedCourse event', () => {
+  //   fixture.nativeElement.querySelector('#addCourseSubmitButton').click()
+
+  //   // formSubmitButton.triggerEventHandler('click', null);
+  //   expect(component.addedCourse.emit).toHaveBeenCalled();
+  // })
+
+
 
 });
