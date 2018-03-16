@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NewUser } from './../../models/newuser.model';
+import { User } from './../../models/user.model';
 import { MatSnackBar } from '@angular/material';
 import { UserService } from './../services/user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from './../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
 
-  modelNewUser = new NewUser(null,null,null,null,null,null);
+  modelNewUser = new User(null,null);
   submitted : boolean = false;
   message : string = "User account created for ";
   alertRequiredMessage : string = "This field is required";
@@ -33,8 +33,8 @@ export class CreateUserComponent implements OnInit {
     this.userService.postNewUser(this.modelNewUser)
     .subscribe(
       success => {
-        console.log("successfully posted new user!");
-        this.snackBar.open(msg, null, { duration: 500, });
+        console.log("Successfully added new user!");
+        this.snackBar.open(msg, null, { duration: 60000, });
       },
       error => {
         console.log("Error in postNewUser via CreateUserComponent");
@@ -44,5 +44,5 @@ export class CreateUserComponent implements OnInit {
     );
   }
 
-  // get diagnostic() { return JSON.stringify(this.modelNewUser)};
+  get diagnostic() { return JSON.stringify(this.modelNewUser)};
 }

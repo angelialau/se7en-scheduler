@@ -1,0 +1,15 @@
+Term 6,01.112,Machine Learning
+Term 6,50.008,Database Management Systems
+Term 6,50.012,Networks
+Term 4,50.001,Introduction to Information Systems & Programming
+Term 4,50.002,Computation Structures
+Term 4,50.004,Introduction to Algorithms
+Term 8,01.110,Computational Fabrication
+Term 8,50.021,Artificial Intelligence
+Term 7,50.006,User Interface Design and Implementation
+Term 7,50.017,Graphics and Visualisation
+Term 7,50.020,Security
+Term 7,50.035,Computer Vision
+Term 5,50.003,Elements of Software Construction
+Term 5,50.005,Computer System Engineering
+Term 5,50.034,Introduction to Probability and Statistics

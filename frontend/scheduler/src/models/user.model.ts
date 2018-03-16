@@ -1,9 +1,10 @@
 export class User{
   constructor(
-    public employee_id: number,
+    public email: string,
     public password: string,
-    ){
-    
-  }
-  
+    public pillar?: string, // Administrator/ISTD/ESD/EPD/ASD 
+    public name?: string,
+    public phone?: number,
+    public id?: number
+  ) { }
 }

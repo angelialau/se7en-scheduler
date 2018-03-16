@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import { NewUser } from './../../models/newuser.model'
+import { User } from './../../models/user.model'
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -9,7 +9,6 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
-
   private url : string = "http://devostrum.no-ip.info:6666";
   headers = new HttpHeaders({ 
     'Content-Type': 'application/x-www-form-urlencoded' 
@@ -20,14 +19,29 @@ export class UserService {
   constructor(
     private http: HttpClient) { }
 
+  getAllUsers(): Observable<any>{
+    return this.http.get<User[]>(this.url + '/Users', { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+  getAllInstructors(): Observable<any>{
+    return this.http.get<User[]>(this.url + '/Users/Instructors', { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
+  getUser(id : number): Observable<User[]>{
+    return this.http.get<User[]>(this.url + '/Users/' + id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+
   // creating a new user
-  postNewUser(newUser : NewUser): Observable<any>{
+  postNewUser(newUser : User): Observable<any>{
     let body = new URLSearchParams(); 
-    body.set('admin', String(newUser.admin)); 
+    body.set('pillar', String(newUser.pillar)); 
     body.set('name', newUser.name); 
     body.set('email', newUser.email); 
     body.set('phone', String(newUser.phone)); 
-    body.set('employee_id', String(newUser.employee_id)); 
     body.set('password', newUser.password); 
     let extension = this.url + '/Users';
     return this.http.post(extension, body.toString(),
@@ -35,10 +49,11 @@ export class UserService {
       .catch(this.handleError); 
   }
   
-  // log in -> if success, returns all user details 
-  postLogin(employee_id : number, password : string ) : Observable<any>{
+  // @params login email and password 
+  // @return user details if successful
+  postLogin(email : string, password : string ) : Observable<any>{
     let body = new URLSearchParams(); 
-    body.set('employee_id', String(employee_id)); 
+    body.set('email', email.trim()); 
     body.set('password', password); 
     let extension = this.url + '/Users/Login';
     return this.http.post(extension, body.toString(),
