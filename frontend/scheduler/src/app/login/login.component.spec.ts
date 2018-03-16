@@ -18,9 +18,6 @@ import { LoginComponent } from './login.component';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  const fakeActivatedRoute = {
-    snapshot: { data: { ... } }
-  } as ActivatedRoute;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,8 +32,10 @@ describe('LoginComponent', () => {
         RouterTestingModule
 
       ],
-      providers: [ UserService, HttpClientModule, 
-      {provide: ActivatedRoute, useValue: fakeActivatedRoute} ],
+      providers: [ 
+        UserService, 
+        HttpClientModule, 
+      ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();

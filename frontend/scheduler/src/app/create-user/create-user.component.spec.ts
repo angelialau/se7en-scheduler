@@ -17,9 +17,6 @@ import { CreateUserComponent } from './create-user.component';
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
   let fixture: ComponentFixture<CreateUserComponent>;
-  const fakeActivatedRoute = {
-    snapshot: { data: { ... } }
-  } as ActivatedRoute;
 
 
   beforeEach(async(() => {
@@ -35,8 +32,10 @@ describe('CreateUserComponent', () => {
         RouterTestingModule
 
       ],
-      providers: [ UserService, HttpClientModule, 
-      {provide: ActivatedRoute, useValue: fakeActivatedRoute} ],
+      providers: [ 
+        UserService, 
+        HttpClientModule, 
+      ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
