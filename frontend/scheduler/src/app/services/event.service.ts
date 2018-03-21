@@ -1,65 +1,53 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import * as moment from 'moment';
+
 @Injectable()
 export class EventService {
     public getEvents(): Observable<any> {
-        const dateObj = new Date();
-        const yearMonth = dateObj.getUTCFullYear() + '-' + (dateObj.getUTCMonth() + 1);
-        let data: any = [{
-            title: 'All Day Event',
-            start: yearMonth + '-01'
-        },
+        //const dateObj = new Date();
+        //const yearMonth = dateObj.getUTCFullYear() + (dateObj.getUTCMonth() + 1);
+        //getUTCMonth() - January represents 0, etc.
+       
+        let data: any = [
         {
             title: 'Long Event',
-            start: yearMonth + '-07',
-            end: yearMonth + '-10'
-        },
-        {
-            id: 999,
-            title: 'Repeating Event',
-            start: yearMonth + '-09T16:00:00'
-        },
-        {
-            id: 999,
-            title: 'Repeating Event',
-            start: yearMonth + '-16T16:00:00'
+            start: moment('20180307'),
+            end: moment('20180310')
         },
         {
             title: 'Conference',
-            start: yearMonth + '-11',
-            end: yearMonth + '-13'
+            start: '20180312T08',
+            end: '20180314T13',
         },
         {
             title: 'Meeting',
-            start: yearMonth + '-12T10:30:00',
-            end: yearMonth + '-12T12:30:00'
+            start: moment('20180319T1030'),
+            end: moment('20180319T1230')
         },
         {
             title: 'Lunch',
-            start: yearMonth + '-12T12:00:00'
+            start: moment('20180319T13'),
+            end: moment('20180319T14')
         },
         {
             title: 'Meeting',
-            start: yearMonth + '-12T14:30:00'
+            start: moment('20180321T1030'),
+            end: moment('20180321T1230')
         },
         {
-            title: 'Happy Hour',
-            start: yearMonth + '-12T17:30:00'
+            title: 'ESC Meeting',
+            start: moment('20180323T1030'),
+            end: moment('20180323T1230')
         },
         {
-            title: 'Dinner',
-            start: yearMonth + '-12T20:00:00'
-        },
-        {
-            title: 'Birthday Party',
-            start: yearMonth + '-13T07:00:00'
-        },
-        {
-            title: 'Click for Google',
-            url: 'http://google.com/',
-            start: yearMonth + '-28'
+            title: 'Click for ISTD Website',
+            url: 'http://istd.edu.sg',
+            start: moment('20180328'),
+            end: moment('20180328')
         }];
+        // /http://momentjs.com/docs/#/parsing/
         return Observable.of(data);
     }
 };

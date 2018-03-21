@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
+import * as moment from 'moment';
 import { EventService } from './../services/event.service';
 
 @Component({
@@ -18,16 +19,27 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
     this.eventService.getEvents().subscribe(data => {
       this.calendarOptions = {
-        editable: true,
-        eventLimit: false,
+        editable: false, //make this true to allow editing of events
+        handleWindowResize: true,
+        height: 590,
+        weekends: false, //to hide weekends
+        minTime: moment.duration("08:00:00"), //start time
+        maxTime: moment.duration("18:00:00"), //end time
+        allDaySlot: false, //remove the all day slot
+        defaultView: 'agendaWeek', //show the week view first
+        eventLimit: false, // make true for the plus sign
+
         header: {
-          left: 'prev,next today',
+          left: 'prev,next',
           center: 'title',
-          right: 'month,agendaWeek,agendaDay,listMonth'
+          right: 'month,agendaWeek, agendaDay',
+          //right: 'month,agendaWeek,agendaDay,listMonth'
         },
+        displayEventTime: true, //Display event
         events: data
       };
     });
+
   }
   clickButton(model: any) {
     this.displayEvent = model;
