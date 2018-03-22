@@ -5,7 +5,10 @@
   <!-- display list of courses -->
   <div *ngFor="let course of courses">
     <div class="card" style="margin: 0 5% 5% 5%;">
-      <div class="card-header">{{course.course_no}} - {{course.course_name}} <!-- <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button> --></div>
+      <div class="card-header">{{course.course_no}} - {{course.course_name}} <!-- <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button> -->
+        <button (click)="deleteCourse(course.id)" class="btn" style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
+
+      </div>
       <div class="card-body">
         Term: {{course.term}} <br>
         Course type: {{course.core}} <br>

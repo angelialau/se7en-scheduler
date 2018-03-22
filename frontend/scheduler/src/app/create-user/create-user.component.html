@@ -47,6 +47,6 @@
 
     <button type="submit" class="btn btn-success" id="submitFormButton"
     [disabled]="!newUserForm.form.valid" 
-    (click)="openSnackBar(modelNewUser.name); newUserForm.reset()">Submit</button>
+    (click)="createUser(modelNewUser.name); newUserForm.reset()">Submit</button>
   </form>
 </div>

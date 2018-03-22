@@ -42,6 +42,12 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  // get courses under a specific schedule
+  getCoursesInSchedule(id: number): Observable<any>{
+    return this.http.get<Course[]>(this.url + '/Courses/BySchedule/' + id, {observe: 'response'})
+      .catch(this.handleError);
+  }
+
   //updating a specific schedule, whether year, trimester or courses 
   updateSchedule(newSchedule : Schedule): Observable<any>{
     let body = new URLSearchParams(); 

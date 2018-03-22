@@ -28,18 +28,24 @@ export class CreateUserComponent implements OnInit {
     this.submitted = true;
   }
 
-  openSnackBar(name: string){
+  createUser(name: string){
     let msg : string = this.message + this.modelNewUser.name + "!";
+    let errorMessage: string = "There seems to have been a problem with creating a user, please try again later!";
     this.userService.postNewUser(this.modelNewUser)
     .subscribe(
-      success => {
-        console.log("Successfully added new user!");
-        this.snackBar.open(msg, null, { duration: 60000, });
+      response => {
+        if(JSON.parse(response.success)){
+          this.snackBar.open(msg, null, { duration: 1000, });  
+        }else{
+          this.snackBar.open(errorMessage, null, { duration: 1000, });  
+          console.log("Error in postNewUser via CreateUserComponent");
+          console.log(response);
+        }
       },
       error => {
         console.log("Error in postNewUser via CreateUserComponent");
         console.log(error);
-        this.snackBar.open("Hhm, something went wrong. Really sorry but please try again!", null, { duration: 800, });
+        this.snackBar.open(errorMessage, null, { duration: 1000, });
       }
     );
   }

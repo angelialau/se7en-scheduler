@@ -230,6 +230,7 @@ export class CreateCourseComponent implements OnInit {
   getInstructors(){
     this.userService.getAllInstructors()
     .map((data: any) => {
+      // sorts list of instructors in alphabetical order
       this.instructors = data.body.sort(function(a,b) {
         if(a.pillar.localeCompare(b.pillar) === 0){
           return a.name.localeCompare(b.name);
