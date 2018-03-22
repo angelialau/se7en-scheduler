@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
+import { MatSnackBar } from '@angular/material'
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,8 @@ export class NavbarComponent implements OnInit {
   user: User = null;
 
   constructor(
-    private userService: UserService) {}
+    private userService: UserService, 
+    public snackBar : MatSnackBar) {}
 
   ngOnInit() {
     this.user = this.userService.getLoggedInUser();
@@ -23,7 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   signOut(){
-    // this.userService.setUser()
+    this.userService.resetUser(this.user);
   }
 
 }
