@@ -22,13 +22,18 @@ export class UserService {
 
   setUser(user: User): boolean{
     this.loggedInUser = user;
-    console.log("setUser alr");
     return true;
   }
 
   getLoggedInUser(){
     return this.loggedInUser;
   }
+
+  resetUser(user: User): boolean{
+    this.loggedInUser = new User("not logged in","password hidden");
+      return true;
+  }
+//update sgnout
 
   getAllUsers(): Observable<any>{
     return this.http.get<User[]>(this.url + '/Users', { observe: 'response' })

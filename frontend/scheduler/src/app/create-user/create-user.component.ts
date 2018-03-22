@@ -34,7 +34,7 @@ export class CreateUserComponent implements OnInit {
     this.userService.postNewUser(this.modelNewUser)
     .subscribe(
       response => {
-        if(JSON.parse(response.success)){
+        if(JSON.parse(response).success){
           this.snackBar.open(msg, null, { duration: 1000, });  
         }else{
           this.snackBar.open(errorMessage, null, { duration: 1000, });  

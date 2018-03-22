@@ -26,12 +26,10 @@ export class ScheduleDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getScheduleDetails(this.schedule_id);
     this.getCourses(this.schedule_id);
   }
 
   refreshCourses($event){
-    // this.getScheduleDetails(this.schedule_id);
     this.getCourses(this.schedule_id);
   }
 
