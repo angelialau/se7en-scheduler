@@ -1,15 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { DataFinder } from '../../providers/datafinder';
 import 'rxjs/add/observable/of';
 import * as moment from 'moment';
 
 @Injectable()
 export class EventService {
+    private dataFinder: DataFinder;
     public getEvents(): Observable<any> {
         //const dateObj = new Date();
-        //const yearMonth = dateObj.getUTCFullYear() + (dateObj.getUTCMonth() + 1);
+        //const yearMonth = dateObj.getUTCFullYear() + (dateObj.getUTCMonth() + 1)
         //getUTCMonth() - January represents 0, etc.
-       
         let data: any = [
         {
             title: 'Long Event',

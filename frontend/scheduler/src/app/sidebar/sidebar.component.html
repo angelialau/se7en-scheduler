@@ -6,19 +6,20 @@
   <br>
   <span class="spacer"></span>
   <mat-list-item>
-    <a routerLink="/user"><i class="material-icons">supervisor_account</i> Sign Up User</a>
+    <a *ngIf = "isAdmin else userSubmitCourse" routerLink="/user"><i class="material-icons">supervisor_account</i> Sign Up User</a>
+    <ng-template #userSubmitCourse><a routerLink = "/schedules"><i class="material-icons">supervisor_account</i> Submit Courses </a></ng-template>
   </mat-list-item>
   <br>
   <span class="spacer"></span>
   <mat-list-item>
-    <a routerLink="/schedules"><i class="material-icons">date_range</i> View Schedules</a>
-  </mat-list-item>
-  <br>  
-  <span class="spacer"></span>
-  <mat-list-item>
-    <a routerLink="/viewschedule"><i class="material-icons">date_range</i> Calendar</a>
+    <a *ngIf = "isAdmin else userViewSchedule" routerLink="/schedules"><i class="material-icons">date_range</i> View Schedules</a>
+    <ng-template #userViewSchedule><a routerLink = "/viewschedule"><i class="material-icons">date_range</i> View Calendar</a></ng-template>
   </mat-list-item>
   <br>
+  <mat-list-item>
+    <a *ngIf = "isAdmin" routerLink="/viewschedule"><i class="material-icons">notifications</i> Overall Calendar </a>
+  </mat-list-item>
+
   <!-- <mat-list-item class="mat-list-item">
     <a routerLink="/password"> <i class="material-icons">settings</i>Change Password</a>
   </mat-list-item> -->

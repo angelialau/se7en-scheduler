@@ -1,11 +1,7 @@
 <mat-toolbar class="toolbar">
-  SE7EN <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor>Instructor</ng-template>
+  SE7EN <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor ><span class = "mat-caption" style="margin-left: 5px;">Instructor</span></ng-template>
   <span class="spacer"></span>
     <!-- sign out -->
-    
-    <button mat-icon-button routerLink="/login">
-      <i class="fas fa-sign-in-alt"></i>
-    </button>
     <button mat-icon-button (click)="signOut()" routerLink="/login" id="logoutButton">
       <i class="fas fa-sign-out-alt"></i>
     </button>
