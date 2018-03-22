@@ -27,7 +27,8 @@ import { ViewSchedulesComponent } from './view-schedules/view-schedules.componen
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
 import { CreateCourseComponent } from './create-course/create-course.component';
-import { ScheduleComponent } from './schedule/schedule.component'
+import { ScheduleComponent } from './schedule/schedule.component';
+import { CreateEventComponent } from './create-event/create-event.component'
 
 export const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
@@ -39,7 +40,8 @@ export const ROUTES: Routes = [
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
-  { path: 'viewschedule', component: ScheduleComponent}
+  { path: 'viewschedule', component: ScheduleComponent},
+  { path: 'event', component: ScheduleComponent},
 ];
 
 @NgModule({
@@ -54,7 +56,8 @@ export const ROUTES: Routes = [
     ChangePasswordComponent,
     ScheduleDetailsComponent,
     CreateCourseComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    CreateEventComponent
   ],
   imports: [
     BrowserModule, 
