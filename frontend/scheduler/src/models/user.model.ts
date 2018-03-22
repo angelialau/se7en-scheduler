@@ -5,6 +5,8 @@ export class User{
     public pillar?: string, // Administrator/ISTD/ESD/EPD/ASD 
     public name?: string,
     public phone?: number,
-    public id?: number
+    public id?: number,
+    public schedules?: string,
+    public courses?: string,
   ) { }
 }

@@ -15,9 +15,20 @@ export class UserService {
   });
 
   public atLoginPage : boolean = false;
+  private loggedInUser : User = new User("not logged in","password hidden");
   
   constructor(
     private http: HttpClient) { }
+
+  setUser(user: User): boolean{
+    this.loggedInUser = user;
+    console.log("setUser alr");
+    return true;
+  }
+
+  getLoggedInUser(){
+    return this.loggedInUser;
+  }
 
   getAllUsers(): Observable<any>{
     return this.http.get<User[]>(this.url + '/Users', { observe: 'response' })
