@@ -121,7 +121,7 @@ export class ScheduleService {
     let body = new URLSearchParams(); 
     body.set('schedule_id', String(schedule_id)); 
     body.set('id', String(courseId)); 
-    let extension = this.url + '/Courses';
+    let extension = this.url + '/Courses/Delete';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 

@@ -26,10 +26,10 @@ export class ScheduleDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCourses(this.schedule_id);
+    this.refreshCourses();
   }
 
-  refreshCourses($event){
+  refreshCourses($event?){
     this.getCourses(this.schedule_id);
   }
 
@@ -41,7 +41,6 @@ export class ScheduleDetailsComponent implements OnInit {
         if(response.status == 200){
           let array : Course[] = response.body;
           this.courses = array;
-          console.log(this.courses);
         }else{
           console.log("error getting courses for schedule:"); 
           console.log(response);
@@ -57,8 +56,9 @@ export class ScheduleDetailsComponent implements OnInit {
     let errorMessage : string = "There's some problem deleting this course. Please try again later!";
     this.scheduleService.deleteCourse(courseId, this.schedule_id)
       .subscribe(response => {
-        if (JSON.parse(response.success)){
+        if (JSON.parse(response).success){
           this.snackBar.open("Course deleted!", null, {duration: 1000, });
+          this.refreshCourses();
         }else{
           this.snackBar.open(errorMessage, null, {duration: 1000, });
           console.log(response);
