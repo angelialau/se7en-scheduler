@@ -30,8 +30,5 @@ export class SidebarComponent implements OnInit {
   	else if (this.user.pillar != undefined){
   		console.log("This is instructor account.")
   	} 
-    else{
-      console.log("User is not logged in. Redirecting to login page...")
-    }
   }
 }
