@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { FullCalendarModule } from 'ng-fullcalendar';
 
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
@@ -13,6 +14,7 @@ import { MatToolbarModule, MatButtonModule, MatIconModule,
 // service imports 
 import { UserService } from './services/user.service'; 
 import { ScheduleService } from './services/schedule.service'; 
+import { EventService } from './services/event.service';
 
 // component imports 
 import { AppComponent } from './app.component';
@@ -24,7 +26,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
-import { CreateCourseComponent } from './create-course/create-course.component'
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { ScheduleComponent } from './schedule/schedule.component'
 
 export const ROUTES: Routes = [
   // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
@@ -36,6 +39,7 @@ export const ROUTES: Routes = [
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
+  { path: 'viewschedule', component: ScheduleComponent}
 ];
 
 @NgModule({
@@ -49,7 +53,8 @@ export const ROUTES: Routes = [
     ViewSchedulesComponent,
     ChangePasswordComponent,
     ScheduleDetailsComponent,
-    CreateCourseComponent
+    CreateCourseComponent,
+    ScheduleComponent
   ],
   imports: [
     BrowserModule, 
@@ -67,8 +72,9 @@ export const ROUTES: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    FullCalendarModule,
   ],
-  providers: [UserService, ScheduleService],
+  providers: [UserService, ScheduleService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
