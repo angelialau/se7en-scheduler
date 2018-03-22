@@ -29,6 +29,7 @@ export class UserService {
     return this.loggedInUser;
   }
 
+  // used to reset loggedInUser when user signs out 
   resetUser(user: User){
     this.loggedInUser = new User("not logged in","password hidden");
   }
@@ -73,6 +74,15 @@ export class UserService {
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
+  }
+
+  changePassword(oldPassword: string, newPassword: string): boolean {
+    if (oldPassword==="password"){
+      console.log("changepassword success! new password is: " + newPassword);
+      return true;
+    }else{
+      return false;
+    }
   }
 
   // hides navbar and sidebar if it is the login page

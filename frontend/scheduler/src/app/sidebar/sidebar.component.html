@@ -16,11 +16,13 @@
     <ng-template #userViewSchedule><a routerLink = "/viewschedule"><i class="material-icons">date_range</i> View Calendar</a></ng-template>
   </mat-list-item>
   <br>
+  <span class="spacer"></span>
   <mat-list-item>
     <a *ngIf = "isAdmin" routerLink="/viewschedule"><i class="material-icons">notifications</i> Overall Calendar </a>
   </mat-list-item>
-
-  <!-- <mat-list-item class="mat-list-item">
+  <br>
+  <span class="spacer"></span>
+  <mat-list-item>
     <a routerLink="/password"> <i class="material-icons">settings</i>Change Password</a>
-  </mat-list-item> -->
+  </mat-list-item>
 </mat-list>
