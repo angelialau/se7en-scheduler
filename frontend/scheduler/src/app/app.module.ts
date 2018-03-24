@@ -41,7 +41,7 @@ export const ROUTES: Routes = [
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
-  { path: 'event', component: ScheduleComponent},
+  { path: 'event', component: CreateEventComponent},
 ];
 
 @NgModule({
