@@ -15,3 +15,8 @@ div.container {
 .spacer{
   flex: 1 1 auto;
 }
+
+.form-container{
+  max-width: 800px;
+  min-width: 300px;
+}

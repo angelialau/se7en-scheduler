@@ -1,8 +1,10 @@
 export class Notification{
-  id: number;
-  title: string;
-  content: string;
-  date: string;
-  sendee: number;
-  sender: number;
+  constructor(
+    public adminId: number, // id
+    public title?: string,
+    public content?: string,
+    public date?: Date,
+    public id?: number,
+    ){}
+  
 }

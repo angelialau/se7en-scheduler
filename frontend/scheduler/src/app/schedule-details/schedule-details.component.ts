@@ -70,8 +70,8 @@ export class ScheduleDetailsComponent implements OnInit {
         this.snackBar.open(errorMessage, null, {duration: 1000, });
         console.log(error);
       } 
-
     );
+    this.refreshCourses();
   }
 
   showListOfCourses(){ this.showCourseList = !this.showCourseList; }
