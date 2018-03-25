@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {HttpModule} from '@angular/http'
 import { FullCalendarModule } from 'ng-fullcalendar';
 
 // material.angular imports
@@ -62,6 +63,7 @@ export const ROUTES: Routes = [
   imports: [
     BrowserModule, 
     HttpClientModule,
+    HttpModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES), 
     MatToolbarModule, 
