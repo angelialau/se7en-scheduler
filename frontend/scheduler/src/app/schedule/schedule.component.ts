@@ -27,12 +27,12 @@ export class ScheduleComponent implements OnInit {
         maxTime: moment.duration("18:00:00"), //end time
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
-        eventLimit: false, // make true for the plus sign
+        eventLimit: false, // make true for the plus sign on month view
 
         header: {
           left: 'prev,next',
           center: 'title',
-          right: 'month,agendaWeek, agendaDay',
+          right: 'agendaWeek,agendaDay',
           //right: 'month,agendaWeek,agendaDay,listMonth'
         },
         displayEventTime: true, //Display event
