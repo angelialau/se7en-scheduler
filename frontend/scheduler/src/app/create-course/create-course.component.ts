@@ -208,19 +208,6 @@ export class CreateCourseComponent implements OnInit {
     }
     return array.join();
   }
-  // unused, untested
-  sessionsInstructorsParser(sessions: any): string{
-    let finalArray : string[] = [];
-    let singleSession : string[] = [];
-    for(let session of sessions){
-      for(let instructor of session.instructors){
-        singleSession.push(instructor.name);
-      }
-      finalArray.push(singleSession.join());
-    }
-    console.log(finalArray.join('|'));    
-    return finalArray.join();
-  }
   
   showCheckBox(): boolean{
     if(this.prof_list.value) { return true; }

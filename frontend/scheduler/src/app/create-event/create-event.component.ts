@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from './../services/user.service';
+import { User } from './../../models/user.model';
 import { Event, days } from './../../models/event.model';
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-create-event',
@@ -7,13 +10,69 @@ import { Event, days } from './../../models/event.model';
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
+  schedule_id : number;
   days = days;
-  newEvent : Event = new Event(null, "undefined day", "undefined time", 0); // form
-  constructor() { }
+  instructors : User[]= []; 
+
+  searchForm : Event; 
+  newEvent : Event;
+  timeslots : Event[];
+
+  constructor(
+    private userService : UserService,
+    private route: ActivatedRoute,
+     ) {
+    this.schedule_id = route.snapshot.params['schedule_id'];
+    console.log(this.schedule_id);
+    }
 
   ngOnInit() {
+    this.searchForm = new Event(this.schedule_id);
+    this.newEvent = new Event(this.schedule_id);
+    this.refreshTimeSlots();
+    this.getInstructors();
   }
 
-  get diagnostic() { return JSON.stringify(this.newEvent)};
+  searchForTimeSlot(){
+    // http request for available slots
+    console.log("Create Event: searching for suitable time slots!");
+  }
+
+  selectTimeSlot(){
+    // update newEvent fields 
+    console.log("Create Event: selected time slot!");
+  }
+
+  // updates list of time slots
+  refreshTimeSlots(){
+    console.log("Create Event: refreshed time slot!");
+  }
+
+  addEvent(){
+    // http request to submit event
+    console.log("Create Event: added event!");
+    console.log(this.newEvent);
+  }
+
+  getInstructors(){
+    this.userService.getAllInstructors()
+    .map((data: any) => {
+      // sorts list of instructors in alphabetical order
+      this.instructors = data.body.sort(function(a,b) {
+        if(a.pillar.localeCompare(b.pillar) === 0){
+          return a.name.localeCompare(b.name);
+        } else{
+          return a.pillar.localeCompare(b.pillar);
+        }
+      });
+    })
+    .subscribe(data => {}, 
+      error => {
+        console.log("getInstructors error"); 
+        console.log(error)
+      });
+  }
+
+  get diagnostic() { return JSON.stringify(this.searchForm)};
 
 }

@@ -13,9 +13,11 @@ import { MatSnackBar } from '@angular/material';
 export class ScheduleDetailsComponent implements OnInit {
   @Input() schedule: Schedule;
   schedule_id : number;
-  showCourseForm : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
+  showCourseList : boolean = true;
+  showEventForm : boolean = false;
+  showCourseForm : boolean = false;
 
   constructor(
     private scheduleService: ScheduleService,
@@ -72,6 +74,8 @@ export class ScheduleDetailsComponent implements OnInit {
     );
   }
 
-  showForm(bool: boolean) { this.showCourseForm = bool; }
+  showListOfCourses(){ this.showCourseList = !this.showCourseList; }
+  showAddEventForm(){ this.showEventForm = !this.showEventForm; }
+  showAddCourseForm(){ this.showCourseForm = !this.showCourseForm; }
 
 }
