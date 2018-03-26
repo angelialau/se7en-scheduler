@@ -1,9 +1,9 @@
-export class Notification{
+export class Announcement{
   constructor(
     public adminId: number, // id
+    public date: string, 
     public title?: string,
     public content?: string,
-    public date?: Date,
     public id?: number,
     ){}
   

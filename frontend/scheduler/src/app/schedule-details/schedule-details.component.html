@@ -2,10 +2,7 @@
   <button class="btn btn-light" routerLink="/schedules"><i class="fas fa-long-arrow-alt-left" ></i></button>
   
   <div class="card-body" (click)="showListOfCourses()">
-    <h5 class="card-title text-center" id="pageTitle"><i class="fas " 
-      [class.fa-caret-right]=!showCourseList
-      [class.fa-caret-down]=showCourseList 
-      ></i> Courses under this Schedule</h5>
+    <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-caret-down"></i> Courses under this Schedule</h5>
   </div>
   <div *ngIf="showCourseList">
     <!-- display list of courses -->
