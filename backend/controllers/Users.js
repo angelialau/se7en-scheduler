@@ -67,7 +67,6 @@ router.post('/', function(req, res, next) {
 router.post('/ChangePassword', function(req, res, next) {
 	// check params are in
 	if (req.body.id &&
-		req.body.email &&
 		req.body.oldPassword &&
 		req.body.newPassword) {
 
