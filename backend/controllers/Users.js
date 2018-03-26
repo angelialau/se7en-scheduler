@@ -63,6 +63,46 @@ router.post('/', function(req, res, next) {
 	}
 });
 
+// Defining change password route
+router.post('/ChangePassword', function(req, res, next) {
+	// check params are in
+	if (req.body.id &&
+		req.body.email &&
+		req.body.oldPassword &&
+		req.body.newPassword) {
+
+		// find user
+		User.getUserById(req.body.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				if (!utils.isEmptyObject(rows)) {
+					// Check if old password matches
+					var passwordHash = encrypt.sha512(req.body.oldPassword, rows[0].salt);
+					if (passwordHash !== rows[0].passwordHash) {
+						res.json({"success":false, "message":"wrong password"});
+
+					} else {
+						// save new password with new salt
+						var salt = encrypt.genRanString(13);
+						passwordHash = encrypt.sha512(req.body.newPassword, salt);
+						User.updatePassword(req.body.id, passwordHash, salt, function(update_err, update_count) {
+							utils.basicPostCallback(res, update_err, update_count);
+						});
+					}
+				} else {
+					// If unable to retrieve any row
+					res.json({"success":false, "message":"unable to find user"});
+				}
+			}
+		})
+
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+})
+
 // Defining login route
 router.post('/Login', function(req, res, next) {
 	// Check if params are in

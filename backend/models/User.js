@@ -55,6 +55,16 @@ var User = {
 			callback);
 	},
 
+	updatePassword:function(id, passwordHash, salt, callback){
+		return db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_PASSWORD_HASH +
+						"` =?, `" + COLUMN_SALT +
+						"` =? WHERE `" + COLUMN_ID +
+						"` =?",
+						[passwordHash, salt, id],
+						callback);
+	},
+
 	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
 		var schedules;
 		var courses;
