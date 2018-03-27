@@ -37,7 +37,7 @@ export class EventService {
         //getUTCMonth() - January represents 0, etc.
         return this.http.get(this.url)
             .catch(this.handleError);
-        /* 
+        /*
         let data: any = [
         {
             title: 'Long Event',
@@ -66,8 +66,11 @@ export class EventService {
         },
         {
             title: 'ESC Meeting',
-            start: moment('20180323T1030'),
-            end: moment('20180323T1230')
+            id: 1,
+            start: '10:30',
+            end: '12:30',
+            dow: [1,5],
+            textColor: 'yellow'
         },
         {
             title: 'Click for ISTD Website',

@@ -18,7 +18,7 @@ export class ScheduleComponent implements OnInit {
   testResponse: any;
   user : User;
   specificSchedule: any;
-  scheduledata: any;
+  scheduledata: any ;
 
   
     @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
@@ -32,11 +32,25 @@ export class ScheduleComponent implements OnInit {
     this.user = this.userService.getLoggedInUser();
     
     this.eventService.getEvents().subscribe(data => {
-      for (let i of data){
-        if (i.instructor == this.user.name){
-          this.scheduledata = i.schedule;
+
+      if (this.user.pillar != "Administrator"){
+        for (let i of data){
+          if (i.instructor == this.user.name){
+            this.scheduledata = i.schedule;
+          }
+        }
       }
-    }
+      else { // is Administrator
+        var allschedules: Object[] = [];
+        for (var i = 0; i < data.length; i++){
+          for (let j of data[i].schedule){
+            allschedules.push(j);
+          }
+       }
+        console.log(allschedules);
+        this.scheduledata = allschedules;
+      }
+
        this.calendarOptions = {
         editable: false, //make this true to allow editing of events
         handleWindowResize: true,
@@ -44,6 +58,10 @@ export class ScheduleComponent implements OnInit {
         weekends: false, //to hide weekends
         minTime: moment.duration("08:00:00"), //start time
         maxTime: moment.duration("18:00:00"), //end time
+        visibleRange: {
+            start: moment('20180201'),
+            end: moment('20180430')
+         }, //why is this not working :(
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
@@ -55,7 +73,7 @@ export class ScheduleComponent implements OnInit {
           //right: 'month,agendaWeek,agendaDay,listMonth'
         },
         displayEventTime: true, //Display event
-        events: this.scheduledata
+        events: this.scheduledata,
       };
     });
 
