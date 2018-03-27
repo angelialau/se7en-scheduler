@@ -68,18 +68,19 @@
             </button></span>
           </h5>
           <div class="form-group">
-            <select class="custom-select" formControlName="name">
+            <select class="custom-select" formControlName="id">
               <option *ngFor='let prof of instructors' [value]=prof.id>
                 {{prof.pillar}} - {{prof.name}}
               </option>
             </select>
           </div>
         </div>
+
         <button type="button" class="btn btn-primary" 
           (click)="addProfToCourse()">
           Add an Instructor
         </button>
-      </div> 
+      </div>
 
       <div class="dropdown-divider"></div>
 
@@ -97,7 +98,7 @@
           <!-- type of lesson -->
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <label class="input-group-text" for="class_type"> Session Type </label>
+              <label class="input-group-text" for="class_type"> Type of Class </label>
             </div>
             <select class="custom-select" id="class_type"
               formControlName="class_types">
@@ -114,14 +115,29 @@
               <option *ngFor='let i of durations' [value]='i'>{{i}}</option>
             </select>
           </div>
-          
+
+          <!-- profs involved -->  
+          <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
+            <p>Professors involved</p>
+            <div *ngFor="let prof of newForm.controls.sessions.controls.'b'.profs_involved; let d=index" formGroupName="{{d}}" class="form-control no-ugly-red-line">
+              <select class="custom-select" formControlName="profId">
+                <option *ngFor='let p of prof_list.controls' [value]="p.controls['id'].value">
+                  {{queryInstructors(p.controls['id'].value)}}</option>
+              </select>
+              <button (click)="deleteProfFromSession(d)" class="btn btn-light">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
           <!-- end of repeated segment -->
-        </div>
+          <button type="button" class="btn btn-primary" 
+            (click)="addProfToSession(b)">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>                       
         <!-- add new session -->
-        <button type="button" class="btn btn-primary" 
-          (click)="addSessionToCourse()">
-          Add a Session
-        </button>
+        
       </div>
 
       <div class="dropdown-divider"></div>
@@ -130,12 +146,12 @@
       <div style="float: right;">
         <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
         [disabled]="newForm.status=='INVALID'"
-        (click)="onSend()">Submit Course</button>
+        (click)="onSend(); newForm.reset()">Submit Course</button>
         <button class="btn btn-warning" 
         (click)="newForm.reset()">Reset</button>
       </div>
     </form>
-    <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
-    <p>Form status: {{newForm.status | json}} </p> -->
+    <p>Form values: {{newForm.value | json : 2 }} </p>
+    <p>Form status: {{newForm.status | json}} </p>
   </div>
 </div>

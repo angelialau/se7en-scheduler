@@ -108,7 +108,7 @@
         <div class="input-group-prepend">
           <label class="input-group-text" for="slotChosen"> Time Slot</label>
         </div>
-        <select class="custom-select" id="slotChosen"
+        <select class="custom-select" id="slotChosen" required
           [(ngModel)]="slotChosen" name="slotChosen">
           <option *ngFor="let slot of timeslots; let i=index" [value]=i>
             {{slot.startDate}} - {{slot.startTime}} to {{slot.endTime}}
@@ -126,7 +126,7 @@
           <div class="input-group-prepend">
             <label class="input-group-text" for="eventName"> Event Name</label>
           </div>
-          <input type="text" id="eventName"
+          <input type="text" id="eventName" required
           placeholder="Blockchain Seminar 2018" class="form-control"
            [(ngModel)]="newEvent.eventName" name="eventName" />
         </div>
@@ -138,7 +138,7 @@
           <div class="input-group-prepend">
             <label class="input-group-text" for="instructorId"> Professor in charge</label>
           </div>
-          <select class="custom-select" id="instructorId"
+          <select class="custom-select" id="instructorId" required 
           [(ngModel)]="newEvent.instructorId" name="instructorId">
             <option *ngFor='let prof of instructors' [value]=prof.id>
               {{prof.pillar}} - {{prof.name}}
@@ -149,7 +149,8 @@
 
       <div>
         <button type="submit" class="btn btn-success" style="float: right;" 
-        (click)="addEvent()"><i class="fas fa-plus-circle"></i> Submit Event</button>
+        [disabled]="addingForm.form.invalid"
+        (click)="addEvent(); addingForm.reset()"><i class="fas fa-plus-circle"></i> Submit Event</button>
       </div>
     </form>
   </div>    

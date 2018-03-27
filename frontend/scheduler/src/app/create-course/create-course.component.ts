@@ -24,6 +24,8 @@ export class CreateCourseComponent implements OnInit {
   newForm: FormGroup;
   no_classesRange = this.createRange(12);
   class_sizeRange = this.createRange(60);
+  profsAvailable : User[];
+  profsInvolved : string[] = [];
   // checkBoxOptions = this.makeCheckBoxOptions();
 
   constructor(
@@ -49,13 +51,18 @@ export class CreateCourseComponent implements OnInit {
       class_size: ['', Validators.required], // 1-55
       prof_list: new FormArray([
         new FormGroup({
-          name: new FormControl('', Validators.required) // a little misleading but this is actually user id 
+          id: new FormControl('', Validators.required)
         })
       ]), // to filter the profs for professors later
       sessions: new FormArray([
         new FormGroup({
           class_types: new FormControl('', Validators.required),
           sessions_hrs: new FormControl('', Validators.required),
+          profs_involved: new FormArray([
+            new FormGroup({
+              profId: new FormControl('', Validators.required)
+            })
+          ])
         })
       ]), 
     })
@@ -70,24 +77,60 @@ export class CreateCourseComponent implements OnInit {
   get sessions(): FormArray {
     return this.newForm.get('sessions') as FormArray;
   }
+  
   get prof_list(): FormArray {
     return this.newForm.get('prof_list') as FormArray;
   }
 
   addSessionToCourse(){
+    console.log("sessions:", this.sessions);
     this.sessions.push(
       new FormGroup({
         class_types: new FormControl('', Validators.required),
         sessions_hrs: new FormControl('', Validators.required),
+        profs_involved: new FormArray([
+          new FormGroup({
+            profId: new FormControl('', Validators.required)
+          })
+        ]),
       })
     );
   }
+
+  // works!!!
+  // TODO, check that they are unique and no repeats 
+  addProfToSession(sessionId:number){ 
+    console.log("addProfToSession sessions:",this.sessions);
+    console.log("addProfToSession sessionId:",sessionId);
+    let session= this.newForm.get('sessions.'+sessionId+'.profs_involved');
+    (<FormArray>session).push(
+      new FormGroup({
+        profId: new FormControl('', Validators.required)
+      })
+    );
+  }
+
   addProfToCourse(){
     this.prof_list.push(this.formBuilder.group({
-      name: ['', Validators.required]
+      id: ['', Validators.required]
     }));
+    // for(let i=0; i<this.sessions.length; i++){
+    //   this.sessions.controls['profs_available'].push(
+    //     new FormGroup({
+    //       profId: new FormControl('', Validators.required)
+    //     })
+    //   )
+    // }
   }
-  deleteProf(index : number){ this.prof_list.removeAt(index); }
+  deleteProf(index : number){ 
+    for(let i=0; i< this.sessions.length; i++){
+      // if(this.prof_list[index].id == this.profs_involved[i].profId){
+      //   this.prof_list.removeAt(i);
+      //   break;
+      // }  
+    }
+    this.prof_list.removeAt(index); 
+  }
   deleteSession(index : number){ this.sessions.removeAt(index); }
 
   pushToInstructorsArray(prof_name: string, index: number){
@@ -160,10 +203,6 @@ export class CreateCourseComponent implements OnInit {
       }
     );
   }
-  
-  deleteCourse(){
-  }
-
   // helper functions
   createRange(n : number) : number[]{
     let x=[];
@@ -183,10 +222,23 @@ export class CreateCourseComponent implements OnInit {
       }
     }
   }
+
+  refreshProfsAvailable(){
+    let array = this.prof_list.value;
+    this.profsAvailable = new Array();
+    for (let profId of array){
+      this.profsAvailable.push(profId);
+    }
+
+    // for (let prof of this.prof_list.value){
+    //   this.profsAvailable.push(prof.name);
+    // } 
+  }
+
   prof_listParser(prof_list: any): string{
     let array : string[] = [];
-    for (let prof of prof_list){
-      array.push(prof.name);
+    for (let profId of prof_list){
+      array.push(profId);
     } 
     return array.join();
   }
@@ -232,6 +284,25 @@ export class CreateCourseComponent implements OnInit {
         console.log(error)
       });
   }
+  queryInstructors(profId:number){
+    for(let i=0; i<this.instructors.length; i++){
+      if (this.instructors[i].id==profId){
+        return this.instructors[i].name;
+      }
+    }
+
+  }
+
+  updateProfsInvolved(profId: number, sessionIndex : number){
+    if(this.updateProfsInvolved[sessionIndex].includes(profId)){
+      let index = this.updateProfsInvolved[sessionIndex].indexOf(profId);
+      this.updateProfsInvolved[sessionIndex].splice(index);
+    }else{
+      this.updateProfsInvolved[sessionIndex].push(profId);
+    }
+  }
+
+  get diagnostic() { return JSON.stringify(this.profsInvolved); }
   
 
 }
