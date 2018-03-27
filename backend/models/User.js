@@ -65,7 +65,7 @@ var User = {
 						callback);
 	},
 
-	updateUserSchedule:function(instructors, schedule_id, course_id, callback) {
+	addUserSchedule:function(instructors, schedule_id, course_id, callback) {
 		var schedules;
 		var courses;
 		var row;
@@ -106,6 +106,40 @@ var User = {
 								console.log(row_err);
 							}
 						});
+			}
+			callback(err, rows);
+		});
+	},
+
+	deleteUserCourse:function(instructors, course_id, callback) {
+		var indexToRemove;
+
+		var uniqueInstructors = new Set(instructors.split(/\D/));
+		var ids = "(" + [...uniqueInstructors].toString() + ")";
+		this.getUsersByIDs(ids, function(err, rows) {
+			for (index in rows) {
+				row = rows[index];
+
+				// remove course id
+				if (row.courses) {
+					courses = row.courses.split(/\D/);
+					indexToRemove = courses.indexOf(course_id);
+					courses.splice(indexToRemove, 1);
+				}
+
+				var newCourses = courses.join();
+
+				// update database
+				db.query("UPDATE " + TABLE_NAME + 
+						 " SET `" + COLUMN_COURSES +
+						 "` =? WHERE `" + COLUMN_ID +
+						 "` =?",
+						 [newCourses, row.id],
+						 function(row_err, row_rows){
+						 	if (row_err) {
+						 		console.log(row_err);
+						 	}
+						 });
 			}
 			callback(err, rows);
 		});

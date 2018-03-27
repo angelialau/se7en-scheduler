@@ -54,7 +54,7 @@ router.post('/', function(req, res, next) {
 								res.json(update_err);
 							} else {
 								// update user
-								User.updateUserSchedule(
+								User.addUserSchedule(
 									req.body.instructors, 
 									req.body.schedule_id, 
 									create_count.insertId, 
@@ -103,7 +103,13 @@ router.post('/Delete', function(req, res, next) {
 						req.body.id,
 						-1,
 						function(update_err, update_count) {
-							utils.basicPostCallback(res, update_err, count);
+							if (update_err) {
+								update_err.success = false;
+								res.json(update_err);
+							} else {
+								// update instructors
+
+							}
 						});
 				}
 			}
