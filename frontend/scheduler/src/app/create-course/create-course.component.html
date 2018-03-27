@@ -119,24 +119,51 @@
           <!-- profs involved -->  
           <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
             <p>Professors involved</p>
-            <div *ngFor="let prof of newForm.controls.sessions.controls.'b'.profs_involved; let d=index" formGroupName="{{d}}" class="form-control no-ugly-red-line">
-              <select class="custom-select" formControlName="profId">
+            <div *ngFor="let d=index" formGroupName="{{d}}" class="form-control no-ugly-red-line">
+              <!-- debug code start -->
+              <p>testing query instructors</p>
+              <div *ngFor='let p of prof_list.controls'>
+                value: {{p.controls['id'].value}}
+                name: {{queryInstructors(p.controls['id'].value)}}
+              </div>
+              <!-- debug code end -->
+              <!-- dropdown -->
+              <!-- <select class="custom-select" formControlName="profId">
                 <option *ngFor='let p of prof_list.controls' [value]="p.controls['id'].value">
                   {{queryInstructors(p.controls['id'].value)}}</option>
-              </select>
+              </select> -->
+              <!-- checkbox -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" [value]="p.controls['id'].value">
+                <label class="form-check-label" for="inlineCheckbox1">
+                  {{queryInstructors(p.controls['id'].value)}}
+                </label>
+              </div>
               <button (click)="deleteProfFromSession(d)" class="btn btn-light">
                 <i class="fas fa-times"></i>
               </button>
             </div>
+            <button type="button" class="btn btn-primary" 
+              (click)="addProfToSession(b)">
+              <i class="fas fa-plus"></i>
+            </button>
           </div>
 
           <!-- end of repeated segment -->
-          <button type="button" class="btn btn-primary" 
-            (click)="addProfToSession(b)">
-            <i class="fas fa-plus"></i>
-          </button>
+          
         </div>                       
         <!-- add new session -->
+        <button type="button" class="btn btn-primary" 
+          (click)="addSessionToCourse()">
+          Add a Session
+        </button>
+        <!-- debug code start -->
+        <p>testing query instructors</p>
+        <div *ngFor='let p of prof_list.controls'>
+          value: {{p.controls['id'].value}}
+          name: {{queryInstructors(p.controls['id'].value)}}
+        </div>
+        <!-- debug code end -->
         
       </div>
 

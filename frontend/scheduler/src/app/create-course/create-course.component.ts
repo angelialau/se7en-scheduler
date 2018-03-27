@@ -77,7 +77,7 @@ export class CreateCourseComponent implements OnInit {
   get sessions(): FormArray {
     return this.newForm.get('sessions') as FormArray;
   }
-  
+
   get prof_list(): FormArray {
     return this.newForm.get('prof_list') as FormArray;
   }
@@ -290,7 +290,6 @@ export class CreateCourseComponent implements OnInit {
         return this.instructors[i].name;
       }
     }
-
   }
 
   updateProfsInvolved(profId: number, sessionIndex : number){
