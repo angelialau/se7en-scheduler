@@ -3,14 +3,14 @@ import { Observable } from 'rxjs/Observable';
 import { DataFinder } from '../../providers/datafinder';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map'
-import { Http, Response } from '@angular/http';
+import { Http } from '@angular/http';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import * as moment from 'moment';
 
 @Injectable()
 export class EventService {
     private dataFinder: DataFinder;
-    private url: string =  'assets/eventdata.json';
+    private url: string =  'assets/eventdatainstru.json'; //change this link
 
   constructor(
     private http: HttpClient) { }
@@ -27,7 +27,8 @@ export class EventService {
   }
 
     public getData(){
-        return this.http.get(this.url).map((response:Response) => response.json);
+        return this.http.get('assets/eventdatainstru.json')
+            .catch(this.handleError);
     }
 
     public getEvents(): Observable<any> {
