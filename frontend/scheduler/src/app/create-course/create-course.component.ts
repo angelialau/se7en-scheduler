@@ -81,7 +81,6 @@ export class CreateCourseComponent implements OnInit {
   }
 
   addSessionToCourse(){
-    console.log("sessions:", this.sessions);
     this.sessions.push(
       new FormGroup({
         class_types: new FormControl('', Validators.required),
@@ -112,6 +111,15 @@ export class CreateCourseComponent implements OnInit {
     }));
   }
   deleteProf(index : number){ 
+    let profId = this.prof_list.at(index).get('id').value;
+    for (let session in this.profsInvolved){
+      for(let prof of this.profsInvolved[session]){
+       if (prof===profId){
+         let index = this.profsInvolved[session].indexOf(prof);
+         this.profsInvolved[session].splice(index);
+       } 
+      }
+    }
     this.prof_list.removeAt(index); 
   }
   deleteSession(index : number){ this.sessions.removeAt(index); }
@@ -136,7 +144,7 @@ export class CreateCourseComponent implements OnInit {
     this.newForm.setControl('prof_list', profsFormArray);
   }  
 
-  // http methods
+  // turning form into Course
   translateDataToCourse() : Course{
     let data = this.newForm.value;
     let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
@@ -159,28 +167,29 @@ export class CreateCourseComponent implements OnInit {
     return course;
   }
   
+  // http push to add course
   onSend(){ 
-    let msg : string = "Submitted new course!"
+    let msg : string = "Submitted new course!";
+    let errorMsg : string = "Hhm, something went wrong. Really sorry but please try again later!";
     this.scheduleService.addCourse(this.translateDataToCourse())
     .subscribe(
       response => {
         let success = JSON.parse(response).success;
-        // console.log(JSON.parse(response));
         if(success){
           console.log("Successfully created new course!");
-          this.snackBar.open(msg, null, { duration: 800, });  
+          this.snackBar.open(msg, null, { duration: 1000, });  
           // to update list of courses in schedule details
           this.addedCourse.emit(null);
         }else{
-          console.log("Error in addCourse via CreateCourseComponent");
-          // console.log();
-          this.snackBar.open("Hhm, something went wrong. Really sorry but please try again later!", null, { duration: 1000, });
+          console.log("Client error in addCourse via CreateCourseComponent");
+          console.log(response);
+          this.snackBar.open(errorMsg, null, { duration: 3000, });
         }
       },
       error => {
-        console.log("Error in addCourse via CreateCourseComponent");
+        console.log("Server error in addCourse via CreateCourseComponent");
         console.log(error);
-        this.snackBar.open("Hhm, something went wrong. Really sorry but please try again!", null, { duration: 800, });
+        this.snackBar.open(errorMsg, null, { duration: 3000, });
       }
     );
   }
@@ -249,6 +258,7 @@ export class CreateCourseComponent implements OnInit {
       let index = this.profsInvolved[sessionIndex].indexOf(profId);
       this.profsInvolved[sessionIndex].splice(index);      
     }
+    console.log("profs involved changed:", this.profsInvolved)
   }
   // translates into format eg 51|55|51,55
   // sessions delimited by pipe
