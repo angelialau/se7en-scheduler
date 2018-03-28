@@ -114,14 +114,18 @@ router.post('/Delete', function(req, res, next) {
 										get_err.success = false;
 										res.json(get_err);
 									} else {
-										// update instructors
-										console.log(get_rows);
-										User.deleteUserCourse(
-											get_rows[0].instructors,
-											req.body.id,
-											function(user_err, user_count) {
-												utils.basicPostCallback(res, user_err, count);
-											});
+										if (get_rows.length > 0) {
+											// update instructors
+											User.deleteUserCourse(
+												get_rows[0].instructors,
+												req.body.id,
+												function(user_err, user_count) {
+													utils.basicPostCallback(res, user_err, count);
+												});
+										} else {
+											res.json({'success':false, "message":"course not found"});
+										}
+										
 									}
 								});
 							}
