@@ -76,13 +76,15 @@ export class UserService {
       .catch(this.handleError); 
   }
 
-  changePassword(oldPassword: string, newPassword: string): boolean {
-    if (oldPassword==="password"){
-      console.log("changepassword success! new password is: " + newPassword);
-      return true;
-    }else{
-      return false;
-    }
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    let body = new URLSearchParams(); 
+    body.set('id', String(this.loggedInUser.id)); 
+    body.set('oldPassword', oldPassword); 
+    body.set('newPassword', newPassword); 
+    let extension = this.url + '/Users/ChangePassword';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
   }
 
   // hides navbar and sidebar if it is the login page
