@@ -109,7 +109,7 @@ router.post('/Delete', function(req, res, next) {
 								res.json(update_err);
 							} else {
 								// get instructors involved
-								Courses.getCourseById(req.body.id, function(get_err, get_rows) {
+								Course.getCourseById(req.body.id, function(get_err, get_rows) {
 									if (get_err) {
 										get_err.success = false;
 										res.json(get_err);
