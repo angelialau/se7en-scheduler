@@ -116,7 +116,7 @@ router.post('/Delete', function(req, res, next) {
 									} else {
 										// update instructors
 										User.deleteUserCourse(
-											req.body.instructors,
+											get_rows[0].instructors,
 											req.body.id,
 											function(user_err, user_count) {
 												utils.basicPostCallback(res, user_err, count);
