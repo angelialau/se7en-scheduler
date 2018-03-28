@@ -25,5 +25,6 @@ var Notification = {
 		return db.query("DELETE FROM " + TABLE_NAME + " WHERE `" + COLUMN_ID + 
 						"` =?", [id], callback);
 	}
-}
+};
 
+module.exports=Notification;
