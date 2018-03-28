@@ -110,6 +110,7 @@ export class CreateCourseComponent implements OnInit {
       id: ['', Validators.required]
     }));
   }
+  
   deleteProf(index : number){ 
     let profId = this.prof_list.at(index).get('id').value;
     for (let session in this.profsInvolved){
@@ -200,6 +201,7 @@ export class CreateCourseComponent implements OnInit {
     while(x.push(i++)<n);
     return x;
   }
+
   queryCourse(course_no, param: string): any{
     for(let course of courseDetails){
       if( course.course_no=== course_no){
@@ -236,6 +238,7 @@ export class CreateCourseComponent implements OnInit {
         console.log(error)
       });
   }
+
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){
       if (this.instructors[i].id==profId){
@@ -260,6 +263,7 @@ export class CreateCourseComponent implements OnInit {
     }
     console.log("profs involved changed:", this.profsInvolved)
   }
+
   // translates into format eg 51|55|51,55
   // sessions delimited by pipe
   // profs within session delimited by commas
