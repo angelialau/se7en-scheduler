@@ -91,48 +91,54 @@ router.post('/Delete', function(req, res, next) {
 	if (req.body.id && 
 		req.body.schedule_id) {
 
-		Course.deleteCourse(
-			req.body.id,
-			function(err, count) {
-				if (err) {
-					err.success = false;
-					res.json(err);
-				} else {
-					// update schedule
-					Schedule.updateScheduleCourses(
-						req.body.schedule_id,
+		// get instructors involved
+		Course.getCourseById(req.body.id, function(get_err, get_rows) {
+			if (get_err) {
+				get_err.success = false;
+				res.json(get_err);
+			} else {
+				if (get_rows.length > 0) {
+					// update instructors
+					User.deleteUserCourse(
+						get_rows[0].instructors,
 						req.body.id,
-						-1,
-						function(update_err, update_count) {
-							if (update_err) {
-								update_err.success = false;
-								res.json(update_err);
+						function(user_err, user_count) {
+							if (user_err) {
+								user_err.success = false;
+								res.json(user_err);
 							} else {
-								// get instructors involved
-								Course.getCourseById(req.body.id, function(get_err, get_rows) {
-									if (get_err) {
-										get_err.success = false;
-										res.json(get_err);
-									} else {
-										if (get_rows.length > 0) {
-											// update instructors
-											User.deleteUserCourse(
-												get_rows[0].instructors,
-												req.body.id,
-												function(user_err, user_count) {
-													utils.basicPostCallback(res, user_err, count);
-												});
+								// update course table
+								Course.deleteCourse(
+									req.body.id,
+									function(err, count) {
+										if (err) {
+											err.success = false;
+											res.json(err);
 										} else {
-											res.json({'success':false, "message":"course not found"});
+											// update schedule
+											Schedule.updateScheduleCourses(
+												req.body.schedule_id,
+												req.body.id,
+												-1,
+												function(update_err, update_count) {
+													if (update_err) {
+														update_err.success = false;
+														res.json(update_err);
+													} else {
+
+													}
+												});
 										}
-										
 									}
-								});
+								);
 							}
 						});
+				} else {
+					res.json({'success':false, "message":"course not found"});
 				}
+				
 			}
-		);
+		});
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
 	}
