@@ -301,6 +301,11 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 
+  selectCheck(sessionId: number, profId: number){
+    console.log("sess id:",sessionId);
+    console.log("p id:",profId);
+  }
+
   get diagnostic() { return JSON.stringify(this.profsInvolved); }
   
 
