@@ -20,6 +20,10 @@ var Notification = {
 	},
 	getAllNotification:function(callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME, callback);
+	},
+	deleteNotification:function(id, callback) {
+		return db.query("DELETE FROM " + TABLE_NAME + " WHERE `" + COLUMN_ID + 
+						"` =?", [id], callback);
 	}
 }
 
