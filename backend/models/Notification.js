@@ -6,16 +6,18 @@ var COLUMN_TITLE = "title";
 var COLUMN_CONTENT = "content";
 var COLUMN_DATE = "date";
 var COLUMN_SENDER = "sender";
+var COLUMN_SENDER_ID = "senderId";
 
 var Notification = {
-	createNotification:function(title, content, sender, callback) {
+	createNotification:function(title, content, sender, senderId, callback) {
 		return db.query("INSERT INTO " +
 			TABLE_NAME + "(`" + 
 			COLUMN_TITLE + "`,`" +
 			COLUMN_CONTENT + "`,`" +
-			COLUMN_SENDER + "`)" +
-			" VALUES(?,?,?)",
-			[title, content, sender],
+			COLUMN_SENDER + "`,`" +
+			COLUMN_SENDER_ID + "`)" +
+			" VALUES(?,?,?,?)",
+			[title, content, sender, senderId],
 			callback);
 	},
 	getAllNotification:function(callback) {

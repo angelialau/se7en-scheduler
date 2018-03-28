@@ -7,11 +7,13 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
 	if (req.body.title &&
 		req.body.content &&
-		req.body.sender) {
+		req.body.sender &&
+		req.body.senderId) {
 		Notification.createNotification(
 			req.body.title,
 			req.body.content,
 			req.body.sender,
+			req.body.senderId,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			});
