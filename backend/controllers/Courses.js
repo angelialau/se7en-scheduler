@@ -115,6 +115,7 @@ router.post('/Delete', function(req, res, next) {
 										res.json(get_err);
 									} else {
 										// update instructors
+										console.log(get_rows);
 										User.deleteUserCourse(
 											get_rows[0].instructors,
 											req.body.id,
