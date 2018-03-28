@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import {HttpModule} from '@angular/http'
 import { FullCalendarModule } from 'ng-fullcalendar';
 
@@ -29,13 +30,14 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
 import { CreateCourseComponent } from './create-course/create-course.component';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { CreateEventComponent } from './create-event/create-event.component'
+import { CreateEventComponent } from './create-event/create-event.component';
+import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component'
 
 export const ROUTES: Routes = [
-  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
+  { path: 'announcements', component: CreateAnnouncementComponent },
   { path: 'user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
@@ -58,7 +60,8 @@ export const ROUTES: Routes = [
     ScheduleDetailsComponent,
     CreateCourseComponent,
     ScheduleComponent,
-    CreateEventComponent
+    CreateEventComponent,
+    CreateAnnouncementComponent
   ],
   imports: [
     BrowserModule, 
@@ -79,7 +82,7 @@ export const ROUTES: Routes = [
     MatSnackBarModule,
     FullCalendarModule,
   ],
-  providers: [UserService, ScheduleService, EventService],
+  providers: [UserService, ScheduleService, EventService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

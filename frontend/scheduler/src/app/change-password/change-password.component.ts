@@ -21,16 +21,25 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword(oldPassword : string, newPassword : string, confirmPassword: string){
+    let errorMsg : string = "Something went wrong with changing your password," + 
+    " please try again later!";
     if(newPassword===confirmPassword){
-      let response : boolean = this.userService.changePassword(oldPassword, newPassword);
-      if(response){ // .success
-        this.snackBar.open("Successfully changed password!", null, {duration: 1000});
-      }else{
-        // not the correct password
-        this.snackBar.open("Incorrect old password, please try again.", null, {duration: 3000});
-      }  
+      this.userService.changePassword(oldPassword, newPassword)
+      .subscribe(
+        response => {
+          if(JSON.parse(response).success){
+            this.snackBar.open("Password changed!", null, {duration: 1000});
+          }else{
+            this.snackBar.open(errorMsg, null, {duration: 1000});
+            console.log(response);
+          }
+        }, error => {
+          this.snackBar.open(errorMsg, null, {duration: 1000});
+          console.log(error);
+        }
+        )
     }else{
-      this.snackBar.open("Your new passwords do not match, please try again.", null, {duration: 3000});
+      this.snackBar.open("The new passwords do not match, please try again.", null, {duration: 3000});
     }
   }
 }

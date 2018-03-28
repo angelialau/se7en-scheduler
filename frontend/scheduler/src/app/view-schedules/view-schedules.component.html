@@ -1,4 +1,5 @@
 <div class="container">
+  <div class="form-container">
   <div class="card-body" (click)="showSchedules()">
     <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> All Schedules</h5>
   </div>
@@ -27,7 +28,7 @@
     <h5 class="card-title text-center" id="scheduleFormTitle"><i class="fas fa-caret-right"></i> Add a new Schedule</h5>
   </div>
   <div *ngIf="showAddScheduleForm">
-    <div class="form-container">
+    
       <form #newScheduleForm="ngForm">
         <!-- trimester type -->
         <div class="form-group">
@@ -60,7 +61,7 @@
           (click)="newScheduleForm.reset()">Reset</button>
         </div>
       </form>
-    </div>
+    
   </div>
-
+</div>
 </div>
