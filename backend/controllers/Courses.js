@@ -88,7 +88,8 @@ router.post('/Update', function(req, res, next) {
 
 // defining route for deleting a course
 router.post('/Delete', function(req, res, next) {
-	if (req.body.id && req.body.schedule_id) {
+	if (req.body.id && 
+		req.body.schedule_id) {
 
 		Course.deleteCourse(
 			req.body.id,
@@ -107,8 +108,21 @@ router.post('/Delete', function(req, res, next) {
 								update_err.success = false;
 								res.json(update_err);
 							} else {
-								// update instructors
-
+								// get instructors involved
+								Courses.getCourseById(req.body.id, function(get_err, get_rows) {
+									if (get_err) {
+										get_err.success = false;
+										res.json(get_err);
+									} else {
+										// update instructors
+										User.deleteUserCourse(
+											req.body.instructors,
+											req.body.id,
+											function(user_err, user_count) {
+												utils.basicPostCallback(res, user_err, count);
+											});
+									}
+								});
 							}
 						});
 				}

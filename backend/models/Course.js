@@ -128,6 +128,7 @@ var Course = {
 	},
 
 	// converts a course to JSON format required for scheduling algorithm
+	// TODO: Allow different profs for different sessions
 	rowToJSON:function(row) {
 		var sessions = [];
 		var class_types = row.class_types.split(",");
