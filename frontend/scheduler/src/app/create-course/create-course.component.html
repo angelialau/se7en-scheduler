@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="form-container">
     <!-- <p>debugging: {{instructors}}</p> -->
     <form [formGroup]="newForm">
@@ -117,15 +117,17 @@
           </div>
 
           <!-- profs involved -->  
-          <p>Professors involved</p>
-          <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
-            <div *ngFor='let p of prof_list.controls'>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
-                <span class="form-check-label">
-                  {{queryInstructors(p.controls['id'].value)}}
-                </span>
+          <div *ngIf="prof_list.dirty">
+            <p>Professors involved</p>
+            <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
+              <div *ngFor='let p of prof_list.controls'>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" 
+                  (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
+                  <span class="form-check-label">
+                    {{queryInstructors(p.controls['id'].value)}}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -134,17 +136,10 @@
           
         </div>                       
         <!-- add new session -->
-        <button type="button" class="btn btn-primary" 
+        <br><button type="button" class="btn btn-primary" 
           (click)="addSessionToCourse()">
           Add a Session
         </button>
-        <!-- debug code start -->
-        <p>testing query instructors</p>
-        <div *ngFor='let p of prof_list.controls'>
-          value: {{p.controls['id'].value}}
-          name: {{queryInstructors(p.controls['id'].value)}}
-        </div>
-        <!-- debug code end -->
         
       </div>
 
@@ -157,8 +152,8 @@
         (click)="onSend(); newForm.reset()">Submit Course</button>
         <button class="btn btn-warning" 
         (click)="newForm.reset()">Reset</button>
-        <button class="btn btn-dark" 
-        (click)="prof_listParser()">testing parser</button>
+        <!-- <button class="btn btn-dark" 
+        (click)="prof_listParser()">testing parser</button> -->
       </div>
     </form>
     <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
