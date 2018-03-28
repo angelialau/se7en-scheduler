@@ -24,7 +24,7 @@ export class EventService {
 
   constructor(
     private http: HttpClient,
-    private userService: UserService;
+    private userService: UserService,
     ) { 
     this.loggedInUser = this.userService.getLoggedInUser();
   }
