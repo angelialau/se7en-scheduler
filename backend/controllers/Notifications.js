@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
 });
 
 // Defining delete notification route
-route.post('/Delete', function(req, res, next) {
+router.post('/Delete', function(req, res, next) {
 	if (req.body.id) {
 		Notification.deleteNotification(req.body.id, function(err, count) {
 			utils.basicPostCallback(res, err, count);
