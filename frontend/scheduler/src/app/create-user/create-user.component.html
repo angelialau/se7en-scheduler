@@ -46,7 +46,7 @@
     </div>
 
     <button type="submit" class="btn btn-success" id="submitFormButton" style="float: right;" 
-    [disabled]="!newUserForm.form.valid" 
+    [disabled]="newUserForm.form.invalid" 
     (click)="createUser(modelNewUser.name); newUserForm.reset()">Submit</button>
   </form>
 </div>
