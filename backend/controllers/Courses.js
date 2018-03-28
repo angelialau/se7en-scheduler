@@ -125,7 +125,7 @@ router.post('/Delete', function(req, res, next) {
 														update_err.success = false;
 														res.json(update_err);
 													} else {
-
+														utils.basicPostCallback(res, update_err, count);
 													}
 												});
 										}
