@@ -24,9 +24,7 @@ export class CreateCourseComponent implements OnInit {
   newForm: FormGroup;
   no_classesRange = this.createRange(12);
   class_sizeRange = this.createRange(60);
-  profsAvailable : User[];
-  profsInvolved : string[] = [];
-  // checkBoxOptions = this.makeCheckBoxOptions();
+  profsInvolved : Array<any> = []; // stores selection before passing into final form
 
   constructor(
     private formBuilder : FormBuilder,
@@ -97,8 +95,6 @@ export class CreateCourseComponent implements OnInit {
     );
   }
 
-  // works!!!
-  // TODO, check that they are unique and no repeats 
   addProfToSession(sessionId:number){ 
     console.log("addProfToSession sessions:",this.sessions);
     console.log("addProfToSession sessionId:",sessionId);
@@ -114,21 +110,8 @@ export class CreateCourseComponent implements OnInit {
     this.prof_list.push(this.formBuilder.group({
       id: ['', Validators.required]
     }));
-    // for(let i=0; i<this.sessions.length; i++){
-    //   this.sessions.controls['profs_available'].push(
-    //     new FormGroup({
-    //       profId: new FormControl('', Validators.required)
-    //     })
-    //   )
-    // }
   }
   deleteProf(index : number){ 
-    for(let i=0; i< this.sessions.length; i++){
-      // if(this.prof_list[index].id == this.profs_involved[i].profId){
-      //   this.prof_list.removeAt(i);
-      //   break;
-      // }  
-    }
     this.prof_list.removeAt(index); 
   }
   deleteSession(index : number){ this.sessions.removeAt(index); }
@@ -167,9 +150,7 @@ export class CreateCourseComponent implements OnInit {
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
     let split = null;
-    // -- uncomment below for split --
-    // let split : string = this.sessionsParser(data.sessions, "split");
-    let instructors : string = this.prof_listParser(data.prof_list);
+    let instructors : string = this.prof_listParser();
 
     let course: Course = new Course(
       schedule_id,term,course_no,course_name,core,no_classes,
@@ -222,44 +203,6 @@ export class CreateCourseComponent implements OnInit {
       }
     }
   }
-
-  refreshProfsAvailable(){
-    let array = this.prof_list.value;
-    this.profsAvailable = new Array();
-    for (let profId of array){
-      this.profsAvailable.push(profId);
-    }
-
-    // for (let prof of this.prof_list.value){
-    //   this.profsAvailable.push(prof.name);
-    // } 
-  }
-
-  prof_listParser(prof_list: any): string{
-    let array : string[] = [];
-    for (let profId of prof_list){
-      array.push(profId);
-    } 
-    return array.join();
-  }
-
-  sessionsParser(sessions: any, param: string): string{
-    let array : string[] = [];
-    if(param === "sessions_hrs"){
-      for (let session of sessions){
-        array.push(session.sessions_hrs);
-      } 
-    }else if(param==="class_types"){
-      for (let session of sessions){
-        array.push(session.class_types);
-      } 
-    }else if(param==="split"){
-      for (let session of sessions){
-        array.push(session.split);
-      } 
-    }
-    return array.join();
-  }
   
   showCheckBox(): boolean{
     if(this.prof_list.value) { return true; }
@@ -292,18 +235,48 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 
-  updateProfsInvolved(profId: number, sessionIndex : number){
-    if(this.updateProfsInvolved[sessionIndex].includes(profId)){
-      let index = this.updateProfsInvolved[sessionIndex].indexOf(profId);
-      this.updateProfsInvolved[sessionIndex].splice(index);
+  updateProfsInvolved(event, sessionIndex: number, profId: number){
+    if(event.target.checked === true){
+      // if initially the array is empty and uninitialised
+      if(this.profsInvolved[sessionIndex] === undefined){
+        this.profsInvolved[sessionIndex] = [profId];
+      }
+      else{
+        this.profsInvolved[sessionIndex].push(profId);
+      }
     }else{
-      this.updateProfsInvolved[sessionIndex].push(profId);
+      // if user unchecks the checkbox, i remove the profId
+      let index = this.profsInvolved[sessionIndex].indexOf(profId);
+      this.profsInvolved[sessionIndex].splice(index);      
     }
   }
+  // translates into format eg 51|55|51,55
+  // sessions delimited by pipe
+  // profs within session delimited by commas
+  prof_listParser(): string{
+    let array : string[] = [];
+    for (let session of this.profsInvolved){
+      let subarray: string[] = [];
+      for(let prof of session){
+        subarray.push(prof);
+      }
+      array.push(subarray.join(","));
+    } 
+    return array.join("|");
+  }
 
-  selectCheck(sessionId: number, profId: number){
-    console.log("sess id:",sessionId);
-    console.log("p id:",profId);
+  sessionsParser(sessions: any, param: string): string{
+    let array : string[] = [];
+    if(param === "sessions_hrs"){
+      for (let session of sessions){
+        array.push(session.sessions_hrs);
+      } 
+    }else if(param==="class_types"){
+      for (let session of sessions){
+        array.push(session.class_types);
+      } 
+    }
+    return array.join();
   }
 
   get diagnostic() { return JSON.stringify(this.profsInvolved); }
