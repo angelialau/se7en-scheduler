@@ -11,9 +11,9 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./create-announcement.component.css']
 })
 export class CreateAnnouncementComponent implements OnInit {
-  loggedInUser: User = this.userService.getLoggedInUser();
+  // loggedInUser: User = this.userService.getLoggedInUser();
   today: string = this.transformDate(Date.now()).toString();
-  newAnnouncement : Announcement = new Announcement(this.loggedInUser.id, this.today);
+  newAnnouncement : Announcement = new Announcement(this.today);
   
   constructor(
     private userService: UserService,
@@ -50,7 +50,7 @@ export class CreateAnnouncementComponent implements OnInit {
   }
 
   initialiseAnnouncement(){
-    this.newAnnouncement = new Announcement(this.loggedInUser.id, this.today, "", "");
+    this.newAnnouncement = new Announcement(this.today);
   }
 
   transformDate(date) {

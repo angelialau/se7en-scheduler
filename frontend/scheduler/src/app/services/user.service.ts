@@ -88,6 +88,11 @@ export class UserService {
       .catch(this.handleError); 
   }
 
+  getAnnouncements() : Observable<Announcement[]>{
+    return this.http.get<Announcement[]>(this.url + '/Notifications', { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
   makeAnnouncements(announcement: Announcement): Observable<any>{
     let body = new URLSearchParams(); 
     body.set('senderId', String(this.loggedInUser.id)); 
@@ -95,6 +100,15 @@ export class UserService {
     body.set('content', announcement.content); 
     body.set('sender', this.loggedInUser.name); 
     let extension = this.url + '/Notifications';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  deleteAnnouncement(id: number): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('id', String(id)); 
+    let extension = this.url + '/Notifications/Delete';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 

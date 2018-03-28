@@ -28,10 +28,7 @@ export class LoginComponent implements OnInit {
   login(){
     this.userService.postLogin(this.model.email, this.model.password)
       .subscribe(response => {
-        console.log(response);
-
         if(JSON.parse(response).success){
-          console.log("success in loggin in");
           let id = JSON.parse(response).id;
           let pillar = JSON.parse(response).pillar;
           let email = JSON.parse(response).email;
