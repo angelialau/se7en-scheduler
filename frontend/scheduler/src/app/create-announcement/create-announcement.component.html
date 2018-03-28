@@ -32,7 +32,7 @@
 
       <button type="submit" class="btn btn-success" style="float: right;" 
       [disabled]="newAnnouncement.form.invalid" 
-      (click)="makeAnnouncement()">
+      (click)="makeAnnouncement(); newAnnouncement.reset()">
         <i class="fas fa-bullhorn"></i> Make Announcement
       </button>
       

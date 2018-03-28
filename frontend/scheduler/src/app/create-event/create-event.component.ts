@@ -17,6 +17,7 @@ export class CreateEventComponent implements OnInit {
   searchForm : Event; 
   newEvent : Event;
   timeslots : Event[];
+  slotChosen : Event;
 
   constructor(
     private userService : UserService,
@@ -33,19 +34,21 @@ export class CreateEventComponent implements OnInit {
     this.getInstructors();
   }
 
+  // updates list of all time slots
+  refreshTimeSlots(){
+    // http call 
+    console.log("Create Event: refreshed time slot!");
+  }
+
   searchForTimeSlot(){
     // http request for available slots
+    // use slotChosen here 
     console.log("Create Event: searching for suitable time slots!");
   }
 
   selectTimeSlot(){
     // update newEvent fields 
     console.log("Create Event: selected time slot!");
-  }
-
-  // updates list of time slots
-  refreshTimeSlots(){
-    console.log("Create Event: refreshed time slot!");
   }
 
   addEvent(){
