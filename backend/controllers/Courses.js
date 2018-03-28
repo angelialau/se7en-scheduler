@@ -55,7 +55,7 @@ router.post('/', function(req, res, next) {
 							} else {
 								// update user
 								User.addUserSchedule(
-									req.body.instructors, 
+									req.body.instructor_ids, 
 									req.body.schedule_id, 
 									create_count.insertId, 
 									function(user_err, user_count) {
