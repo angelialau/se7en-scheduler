@@ -25,6 +25,8 @@ export class CreateCourseComponent implements OnInit {
   no_classesRange = this.createRange(12);
   class_sizeRange = this.createRange(60);
   profsInvolved : Array<any> = []; // stores selection before passing into final form
+  tempInstructors : string;
+  tempInstructor_ids : string;
 
   constructor(
     private formBuilder : FormBuilder,
@@ -58,7 +60,7 @@ export class CreateCourseComponent implements OnInit {
           sessions_hrs: new FormControl('', Validators.required),
           profs_involved: new FormArray([
             new FormGroup({
-              profId: new FormControl('', Validators.required)
+              profId: new FormControl('')
             })
           ])
         })
@@ -87,7 +89,7 @@ export class CreateCourseComponent implements OnInit {
         sessions_hrs: new FormControl('', Validators.required),
         profs_involved: new FormArray([
           new FormGroup({
-            profId: new FormControl('', Validators.required)
+            profId: new FormControl('')
           })
         ]),
       })
@@ -159,11 +161,13 @@ export class CreateCourseComponent implements OnInit {
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
     let split = null;
-    let instructors : string = this.prof_listParser();
+    this.prof_listParser();
+    let instructors : string = this.tempInstructors;
+    let instructor_ids : string = this.tempInstructor_ids;
 
     let course: Course = new Course(
       schedule_id,term,course_no,course_name,core,no_classes,
-      class_size,no_sessions,sessions_hrs,class_types,instructors,split); 
+      class_size,no_sessions,sessions_hrs,class_types,instructors,instructor_ids,split); 
     console.log(course);
     return course;
   }
@@ -267,16 +271,21 @@ export class CreateCourseComponent implements OnInit {
   // translates into format eg 51|55|51,55
   // sessions delimited by pipe
   // profs within session delimited by commas
-  prof_listParser(): string{
+  prof_listParser(){
     let array : string[] = [];
+    let nameArray : string[] = [];
     for (let session of this.profsInvolved){
       let subarray: string[] = [];
+      let subNameArray: string[] = [];
       for(let prof of session){
         subarray.push(prof);
+        subNameArray.push(this.queryInstructors(prof))
       }
       array.push(subarray.join(","));
+      nameArray.push(subNameArray.join(","));
     } 
-    return array.join("|");
+    this.tempInstructor_ids = array.join("|");
+    this.tempInstructors = nameArray.join("|");
   }
 
   sessionsParser(sessions: any, param: string): string{

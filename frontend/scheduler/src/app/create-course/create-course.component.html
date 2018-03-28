@@ -148,7 +148,7 @@
       <!-- button managers -->
       <div style="float: right;">
         <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
-        [disabled]="newForm.status=='INVALID'"
+        [disabled]="newForm.invalid"
         (click)="onSend(); newForm.reset()">Submit Course</button>
         <button class="btn btn-warning" 
         (click)="newForm.reset()">Reset</button>
