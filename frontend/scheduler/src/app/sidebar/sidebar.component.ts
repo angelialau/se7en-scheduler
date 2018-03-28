@@ -18,17 +18,17 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
   	this.user = this.userService.getLoggedInUser();
-  	console.log("logged in user details: ", this.user);
+  	// console.log("logged in user details: ", this.user);
   	/*if (this.user.pillar == undefined){
   		this.router.navigateByUrl('/login');
   		console.log("User is not logged in. Redirecting to login page...")
   	}*/
   	if (this.user.pillar == "Administrator"){
-  		console.log("This is administrator account.")
+  		console.log("This is an administrator account.")
   		this.isAdmin = true;
   	}
   	else if (this.user.pillar != undefined){
-  		console.log("This is instructor account.")
+  		console.log("This is an instructor account.")
   	} 
   }
 }

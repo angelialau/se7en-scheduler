@@ -21,7 +21,6 @@ export class AppComponent {
   }
   ngOnInit(){
   	this.user = this.userService.getLoggedInUser();
-  	console.log("App: ", this.user);
   	if (this.user.pillar == undefined){
   		this.router.navigateByUrl('/login');
   		console.log("App: User is not logged in. Please login.")
