@@ -80,7 +80,7 @@ var Course = {
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_INSTRUCTOR_IDS + "`,`" +
 			COLUMN_SPLIT + "`)" +  
-			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 			[data.schedule_id,
 			 data.term,
 			 data.course_no,
