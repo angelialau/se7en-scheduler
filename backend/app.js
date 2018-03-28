@@ -4,6 +4,7 @@ var Users = require("./controllers/Users");
 var Schedules = require("./controllers/Schedules");
 var Courses = require("./controllers/Courses");
 var Notifications = require("./controllers/Notifications");
+var Calendars = require("./controllers/Calendars");
 var cors = require("cors");
 var logger = require("morgan");
 var app = express();
@@ -19,6 +20,7 @@ app.use("/Users", Users);
 app.use("/Schedules", Schedules);
 app.use("/Courses", Courses);
 app.use("/Notifications", Notifications);
+app.use("/Calendars", Calendars);
 
 app.listen(6666, function(){
 	console.log("Serving Se7en-Scheduler on port 6666");
