@@ -6,6 +6,10 @@ import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
 import { EventService } from './../services/event.service';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { Appeal} from './../../models/appeal.model'
+
 
 @Component({
   selector: 'app-schedule',
@@ -15,23 +19,35 @@ import { EventService } from './../services/event.service';
 export class ScheduleComponent implements OnInit {
 	calendarOptions: Options;
 	displayEvent: any;
-  testResponse: any;
-  user : User;
-  specificSchedule: any;
+  user : User = this.userService.getLoggedInUser();
+  isAdmin: boolean = false;
   scheduledata: any ;
+  specificPillar: string = "ASD"; //default ASD view for admins
+  show: boolean = false; //to show Appeal form
+  today: string = this.transformDate(Date.now()).toString();
+  newAppeal: Appeal = new Appeal(this.user.name, this.user.pillar,this.today);
 
   
     @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(
     protected eventService: EventService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private router: Router,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
 
-    this.user = this.userService.getLoggedInUser();
-    
-    this.eventService.getEvents().subscribe(data => {
+    if (this.user.pillar == "Administrator"){
+      this.isAdmin = true;
+    }
+    this.displayCalendar();
+  }
+
+  displayCalendar(){
+
+
+      this.eventService.getEvents().subscribe(data => {
 
       if (this.user.pillar != "Administrator"){
         for (let i of data){
@@ -40,17 +56,20 @@ export class ScheduleComponent implements OnInit {
           }
         }
       }
+
       else { // is Administrator
         var allschedules: Object[] = [];
         for (var i = 0; i < data.length; i++){
-          for (let j of data[i].schedule){
-            allschedules.push(j);
-          }
+          if (data[i].pillar == this.specificPillar){
+            for (let j of data[i].schedule){
+              allschedules.push(j);
+          }}
        }
         console.log(allschedules);
         this.scheduledata = allschedules;
-      }
 
+      }
+     
        this.calendarOptions = {
         editable: false, //make this true to allow editing of events
         handleWindowResize: true,
@@ -73,12 +92,11 @@ export class ScheduleComponent implements OnInit {
           //right: 'month,agendaWeek,agendaDay,listMonth'
         },
         displayEventTime: true, //Display event
-        events: this.scheduledata,
+        events: this.scheduledata
       };
     });
 
   }
-
   clickButton(model: any) {
     this.displayEvent = model;
   }
@@ -110,5 +128,40 @@ export class ScheduleComponent implements OnInit {
       }
     }
     this.displayEvent = model;
+  }
+  displayASD(){
+    console.log("ASD calendar view");
+    this.specificPillar = "ASD";
+    this.displayCalendar();
+  }
+  displayEPD(){
+    console.log("EPD calendar view");
+    this.specificPillar = "EPD";
+
+    this.displayCalendar();
+  }
+  displayESD(){
+    console.log("ESD calendar view");
+    this.specificPillar = "ESD";
+
+    this.displayCalendar();
+  }
+  displayISTD(){
+    console.log("ISTD calendar view");
+    this.specificPillar = "ISTD";
+    console.log(this.specificPillar);
+    this.displayCalendar();
+  }
+
+  showForm(){
+    this.show = true;
+  }
+
+  transformDate(date) {
+    return this.datePipe.transform(date, 'yyyy-MM-dd'); //whatever format you need. 
+  }
+
+  initialiseAppeal(){
+    this.newAppeal = new Appeal(this.user.name, this.user.pillar,this.today,"","");
   }
 }

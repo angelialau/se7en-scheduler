@@ -2,7 +2,7 @@
   <div class="form-container">
     <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i>Make an Announcement</h5>
     <!-- <p>Testing: {{diagnostic}}</p> -->
-    <form #newAnnouncement="ngForm">
+    <form #announcementForm="ngForm">
       <!-- title of announcement -->
       <div class="form-group">
         <div class="input-group">
@@ -31,12 +31,12 @@
       <!-- send to -->
 
       <button type="submit" class="btn btn-success" style="float: right;" 
-      [disabled]="newAnnouncement.form.invalid" 
+      [disabled]="announcementForm.form.invalid" 
       (click)="makeAnnouncement()">
         <i class="fas fa-bullhorn"></i> Make Announcement
       </button>
       
     </form>
-    
+    <!-- <p>Testing: {{diagnostic}}</p> -->
   </div>
 </div>

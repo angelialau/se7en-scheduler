@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="form-container">
     <!-- <p>debugging: {{instructors}}</p> -->
     <form [formGroup]="newForm">
@@ -68,18 +68,19 @@
             </button></span>
           </h5>
           <div class="form-group">
-            <select class="custom-select" formControlName="name">
+            <select class="custom-select" formControlName="id">
               <option *ngFor='let prof of instructors' [value]=prof.id>
                 {{prof.pillar}} - {{prof.name}}
               </option>
             </select>
           </div>
         </div>
+
         <button type="button" class="btn btn-primary" 
           (click)="addProfToCourse()">
           Add an Instructor
         </button>
-      </div> 
+      </div>
 
       <div class="dropdown-divider"></div>
 
@@ -97,7 +98,7 @@
           <!-- type of lesson -->
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <label class="input-group-text" for="class_type"> Session Type </label>
+              <label class="input-group-text" for="class_type"> Type of Class </label>
             </div>
             <select class="custom-select" id="class_type"
               formControlName="class_types">
@@ -114,14 +115,32 @@
               <option *ngFor='let i of durations' [value]='i'>{{i}}</option>
             </select>
           </div>
-          
+
+          <!-- profs involved -->  
+          <div *ngIf="prof_list.dirty">
+            <p>Professors involved</p>
+            <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
+              <div *ngFor='let p of prof_list.controls'>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" 
+                  (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
+                  <span class="form-check-label">
+                    {{queryInstructors(p.controls['id'].value)}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- end of repeated segment -->
-        </div>
+          
+        </div>                       
         <!-- add new session -->
-        <button type="button" class="btn btn-primary" 
+        <br><button type="button" class="btn btn-primary" 
           (click)="addSessionToCourse()">
           Add a Session
         </button>
+        
       </div>
 
       <div class="dropdown-divider"></div>
@@ -129,10 +148,12 @@
       <!-- button managers -->
       <div style="float: right;">
         <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
-        [disabled]="newForm.status=='INVALID'"
-        (click)="onSend()">Submit Course</button>
+        [disabled]="newForm.invalid"
+        (click)="onSend(); newForm.reset()">Submit Course</button>
         <button class="btn btn-warning" 
         (click)="newForm.reset()">Reset</button>
+        <!-- <button class="btn btn-dark" 
+        (click)="prof_listParser()">testing parser</button> -->
       </div>
     </form>
     <!-- <p>Form values: {{newForm.value | json : 2 }} </p>

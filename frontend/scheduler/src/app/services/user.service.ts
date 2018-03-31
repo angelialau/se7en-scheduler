@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import { User } from './../../models/user.model'
+import { User } from './../../models/user.model';
+import { Announcement } from './../../models/announcement.model';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -76,13 +77,41 @@ export class UserService {
       .catch(this.handleError); 
   }
 
-  changePassword(oldPassword: string, newPassword: string): boolean {
-    if (oldPassword==="password"){
-      console.log("changepassword success! new password is: " + newPassword);
-      return true;
-    }else{
-      return false;
-    }
+  changePassword(oldPassword: string, newPassword: string): Observable<any> {
+    let body = new URLSearchParams(); 
+    body.set('id', String(this.loggedInUser.id)); 
+    body.set('oldPassword', oldPassword); 
+    body.set('newPassword', newPassword); 
+    let extension = this.url + '/Users/ChangePassword';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  getAnnouncements() : Observable<Announcement[]>{
+    return this.http.get<Announcement[]>(this.url + '/Notifications', { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
+  makeAnnouncements(announcement: Announcement): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('senderId', String(this.loggedInUser.id)); 
+    body.set('title', announcement.title); 
+    body.set('content', announcement.content); 
+    body.set('sender', this.loggedInUser.name); 
+    let extension = this.url + '/Notifications';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  deleteAnnouncement(id: number): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('id', String(id)); 
+    let extension = this.url + '/Notifications/Delete';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
   }
 
   // hides navbar and sidebar if it is the login page
