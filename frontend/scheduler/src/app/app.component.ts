@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from './../models/user.model';
 import { UserService } from './services/user.service';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +11,25 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   loggedin : boolean = false; 
-  user: User;
 
   location;
 
   constructor(
   	public router: Router,
-  	private userService: UserService) {
+    private cookieService: CookieService,
+  	private userService: UserService,
+    ) {
     router.events.subscribe((data:any) => { this.location = data.url; });
   }
   ngOnInit(){
-  	this.user = this.userService.getLoggedInUser();
-  	if (this.user.pillar == undefined){
-  		this.router.navigateByUrl('/login');
-  		console.log("App: User is not logged in. Please login.")
+  	if (this.cookieService.get('pillar').length > 1 ){
+  		console.log(this.cookieService.get('pillar'));
+      this.loggedin = true;
   	}
   	else{
-  		this.loggedin = true;
+  		this.loggedin = false;
+      this.router.navigateByUrl('/login');
+      console.log("App: User is not logged in. Please login.");
   	}
   }
 }
