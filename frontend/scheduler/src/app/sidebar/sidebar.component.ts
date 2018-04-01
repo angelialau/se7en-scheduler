@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './../../models/user.model';
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,21 +14,16 @@ export class SidebarComponent implements OnInit {
 	user: User = null;
   constructor(
   	private userService: UserService,
-  	private router: Router
+    private cookieService: CookieService,
+  	private router: Router,
   	) { }
 
   ngOnInit() {
-  	this.user = this.userService.getLoggedInUser();
-  	// console.log("logged in user details: ", this.user);
-  	/*if (this.user.pillar == undefined){
-  		this.router.navigateByUrl('/login');
-  		console.log("User is not logged in. Redirecting to login page...")
-  	}*/
-  	if (this.user.pillar == "Administrator"){
+  	if (this.cookieService.get('pillar') == "Administrator"){
   		console.log("This is an administrator account.")
   		this.isAdmin = true;
   	}
-  	else if (this.user.pillar != undefined){
+  	else if (this.cookieService.get('pillar') != undefined){
   		console.log("This is an instructor account.")
   	} 
   }

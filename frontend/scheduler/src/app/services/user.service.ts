@@ -17,6 +17,7 @@ export class UserService {
 
   public atLoginPage : boolean = false;
   private loggedInUser : User = new User("not logged in","password hidden");
+  private Cookie;
   
   constructor(
     private http: HttpClient) { }
