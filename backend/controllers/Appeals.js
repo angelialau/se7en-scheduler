@@ -49,7 +49,7 @@ router.get('/Pillar/:pillar(\\D+)', function(req, res, next) {
 });
 
 // defining delete appeal route
-router.post('/Delete/:id(\\d+', function(req, res, next) {
+router.post('/Delete/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Appeal.deleteAppeal(req.params.id, function(err, count) {
 			utils.basicPostCallback(res, err, count);
