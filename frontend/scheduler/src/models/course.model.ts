@@ -10,7 +10,8 @@ export class Course{
     public no_sessions: number,
     public sessions_hrs: string,
     public class_types: string,
-    public instructors: string,    
+    public instructors: string, // names    
+    public instructor_ids: string, // ids    
     public split: string,   
     public id?: number, 
     ) { }

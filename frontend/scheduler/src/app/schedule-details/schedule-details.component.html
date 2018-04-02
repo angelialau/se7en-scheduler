@@ -1,34 +1,52 @@
 <div class="container">
-  <div class="card-body">
-    <h5 class="card-title text-center" id="pageTitle">Courses under this Schedule</h5>
+  <button class="btn btn-light" routerLink="/schedules"><i class="fas fa-long-arrow-alt-left" ></i></button>
+  
+  <div class="card-body" (click)="showListOfCourses()">
+    <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-caret-down"></i> Courses under this Schedule</h5>
   </div>
-  <!-- display list of courses -->
-  <div *ngFor="let course of courses">
-    <div class="card" style="margin: 0 5% 5% 5%;">
-      <div class="card-header">{{course.course_no}} - {{course.course_name}} <!-- <button routerLink="/courses/edit" class="btn" style="float: right;"><i class="fas fa-edit"></i></button> --></div>
-      <div class="card-body">
-        Term: {{course.term}} <br>
-        Course type: {{course.core}} <br>
-        Number of classes enrolled:{{course.no_classes}} <br>
-        Size of each class: {{course.class_size}} <br>
-        Instructors: {{course.instructors}} <br>
-        Sessions: {{course.class_types}} <br>
+  <div *ngIf="showCourseList">
+    <!-- display list of courses -->
+    <div *ngFor="let course of courses">
+      <div class="card" style="margin: 0 5% 5% 5%;">
+        <div class="card-header">{{course.course_no}} - {{course.course_name}}
+          <button (click)="deleteCourse(course.id)" class="btn" style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
+
+        </div>
+        <div class="card-body">
+          Term: {{course.term}} <br>
+          Course type: {{course.core}} <br>
+          Number of classes enrolled:{{course.no_classes}} <br>
+          Size of each class: {{course.class_size}} <br>
+          <!-- Instructors: {{course.instructors}} <br> -->
+          Sessions: {{course.class_types}} <br>
+          Hours for each session: {{course.sessions_hrs}}<br>
+        </div>
       </div>
-        
     </div>
   </div>
-
-  <!-- form to add a new course -->
+  
+  
   <div class="dropdown-divider"></div>
-  <div *ngIf="showCourseForm; else showFormButton">
-    <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
-    <br><br>
-    <button class="btn btn-danger" style="float: right;" 
-      (click)="showForm(false)">Cancel</button>  
+  <!-- form to add an ad hoc event -->
+  <div class="card-body" (click)="showAddEventForm()">
+    <h5 class="card-title text-center" 
+    title="Click to add an event" 
+    id="eventFormTitle"><i class="fas fa-caret-right"></i> Add an Event</h5>
   </div>
-  <button class="btn btn-success" style="float: right;margin-right: 20px" 
-    *ngIf="!showCourseForm" id="showFormButton"
-    (click)="showForm(true)">
-    Submit new Course
-  </button>
+  <div *ngIf="showEventForm">
+    <app-create-event></app-create-event>
+  </div>
+    
+  <div class="dropdown-divider"></div>
+  <!-- form to add a new course -->
+  <div class="card-body" (click)="showAddCourseForm()">
+    <h5 class="card-title text-center"
+    title="Click to enrol a course"
+    id="courseFormTitle"><i class="fas fa-caret-right"></i> Add a Course</h5>
+  </div>
+  <div *ngIf="showCourseForm">
+    <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
+    <br>
+  </div>
+ 
 </div>

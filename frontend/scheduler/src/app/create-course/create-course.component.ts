@@ -24,7 +24,9 @@ export class CreateCourseComponent implements OnInit {
   newForm: FormGroup;
   no_classesRange = this.createRange(12);
   class_sizeRange = this.createRange(60);
-  // checkBoxOptions = this.makeCheckBoxOptions();
+  profsInvolved : Array<any> = []; // stores selection before passing into final form
+  tempInstructors : string;
+  tempInstructor_ids : string;
 
   constructor(
     private formBuilder : FormBuilder,
@@ -49,13 +51,18 @@ export class CreateCourseComponent implements OnInit {
       class_size: ['', Validators.required], // 1-55
       prof_list: new FormArray([
         new FormGroup({
-          name: new FormControl('', Validators.required) // a little misleading but this is actually user id 
+          id: new FormControl('', Validators.required)
         })
       ]), // to filter the profs for professors later
       sessions: new FormArray([
         new FormGroup({
           class_types: new FormControl('', Validators.required),
           sessions_hrs: new FormControl('', Validators.required),
+          profs_involved: new FormArray([
+            new FormGroup({
+              profId: new FormControl('')
+            })
+          ])
         })
       ]), 
     })
@@ -70,6 +77,7 @@ export class CreateCourseComponent implements OnInit {
   get sessions(): FormArray {
     return this.newForm.get('sessions') as FormArray;
   }
+
   get prof_list(): FormArray {
     return this.newForm.get('prof_list') as FormArray;
   }
@@ -79,15 +87,44 @@ export class CreateCourseComponent implements OnInit {
       new FormGroup({
         class_types: new FormControl('', Validators.required),
         sessions_hrs: new FormControl('', Validators.required),
+        profs_involved: new FormArray([
+          new FormGroup({
+            profId: new FormControl('')
+          })
+        ]),
       })
     );
   }
+
+  addProfToSession(sessionId:number){ 
+    console.log("addProfToSession sessions:",this.sessions);
+    console.log("addProfToSession sessionId:",sessionId);
+    let session= this.newForm.get('sessions.'+sessionId+'.profs_involved');
+    (<FormArray>session).push(
+      new FormGroup({
+        profId: new FormControl('', Validators.required)
+      })
+    );
+  }
+
   addProfToCourse(){
     this.prof_list.push(this.formBuilder.group({
-      name: ['', Validators.required]
+      id: ['', Validators.required]
     }));
   }
-  deleteProf(index : number){ this.prof_list.removeAt(index); }
+  
+  deleteProf(index : number){ 
+    let profId = this.prof_list.at(index).get('id').value;
+    for (let session in this.profsInvolved){
+      for(let prof of this.profsInvolved[session]){
+       if (prof===profId){
+         let index = this.profsInvolved[session].indexOf(prof);
+         this.profsInvolved[session].splice(index);
+       } 
+      }
+    }
+    this.prof_list.removeAt(index); 
+  }
   deleteSession(index : number){ this.sessions.removeAt(index); }
 
   pushToInstructorsArray(prof_name: string, index: number){
@@ -110,7 +147,7 @@ export class CreateCourseComponent implements OnInit {
     this.newForm.setControl('prof_list', profsFormArray);
   }  
 
-  // http methods
+  // turning form into Course
   translateDataToCourse() : Course{
     let data = this.newForm.value;
     let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
@@ -124,46 +161,43 @@ export class CreateCourseComponent implements OnInit {
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
     let split = null;
-    // -- uncomment below for split --
-    // let split : string = this.sessionsParser(data.sessions, "split");
-    let instructors : string = this.prof_listParser(data.prof_list);
+    this.prof_listParser();
+    let instructors : string = this.tempInstructors;
+    let instructor_ids : string = this.tempInstructor_ids;
 
     let course: Course = new Course(
       schedule_id,term,course_no,course_name,core,no_classes,
-      class_size,no_sessions,sessions_hrs,class_types,instructors,split); 
+      class_size,no_sessions,sessions_hrs,class_types,instructors,instructor_ids,split); 
     console.log(course);
     return course;
   }
   
+  // http push to add course
   onSend(){ 
-    let msg : string = "Submitted new course!"
+    let msg : string = "Submitted new course!";
+    let errorMsg : string = "Hhm, something went wrong. Really sorry but please try again later!";
     this.scheduleService.addCourse(this.translateDataToCourse())
     .subscribe(
       response => {
         let success = JSON.parse(response).success;
-        // console.log(JSON.parse(response));
         if(success){
           console.log("Successfully created new course!");
-          this.snackBar.open(msg, null, { duration: 800, });  
+          this.snackBar.open(msg, null, { duration: 1000, });  
           // to update list of courses in schedule details
           this.addedCourse.emit(null);
         }else{
-          console.log("Error in addCourse via CreateCourseComponent");
-          // console.log();
-          this.snackBar.open("Hhm, something went wrong. Really sorry but please try again later!", null, { duration: 1000, });
+          console.log("Client error in addCourse via CreateCourseComponent");
+          console.log(response);
+          this.snackBar.open(errorMsg, null, { duration: 3000, });
         }
       },
       error => {
-        console.log("Error in addCourse via CreateCourseComponent");
+        console.log("Server error in addCourse via CreateCourseComponent");
         console.log(error);
-        this.snackBar.open("Hhm, something went wrong. Really sorry but please try again!", null, { duration: 800, });
+        this.snackBar.open(errorMsg, null, { duration: 3000, });
       }
     );
   }
-  
-  deleteCourse(){
-  }
-
   // helper functions
   createRange(n : number) : number[]{
     let x=[];
@@ -171,6 +205,7 @@ export class CreateCourseComponent implements OnInit {
     while(x.push(i++)<n);
     return x;
   }
+
   queryCourse(course_no, param: string): any{
     for(let course of courseDetails){
       if( course.course_no=== course_no){
@@ -183,44 +218,6 @@ export class CreateCourseComponent implements OnInit {
       }
     }
   }
-  prof_listParser(prof_list: any): string{
-    let array : string[] = [];
-    for (let prof of prof_list){
-      array.push(prof.name);
-    } 
-    return array.join();
-  }
-
-  sessionsParser(sessions: any, param: string): string{
-    let array : string[] = [];
-    if(param === "sessions_hrs"){
-      for (let session of sessions){
-        array.push(session.sessions_hrs);
-      } 
-    }else if(param==="class_types"){
-      for (let session of sessions){
-        array.push(session.class_types);
-      } 
-    }else if(param==="split"){
-      for (let session of sessions){
-        array.push(session.split);
-      } 
-    }
-    return array.join();
-  }
-  // unused, untested
-  sessionsInstructorsParser(sessions: any): string{
-    let finalArray : string[] = [];
-    let singleSession : string[] = [];
-    for(let session of sessions){
-      for(let instructor of session.instructors){
-        singleSession.push(instructor.name);
-      }
-      finalArray.push(singleSession.join());
-    }
-    console.log(finalArray.join('|'));    
-    return finalArray.join();
-  }
   
   showCheckBox(): boolean{
     if(this.prof_list.value) { return true; }
@@ -230,6 +227,7 @@ export class CreateCourseComponent implements OnInit {
   getInstructors(){
     this.userService.getAllInstructors()
     .map((data: any) => {
+      // sorts list of instructors in alphabetical order
       this.instructors = data.body.sort(function(a,b) {
         if(a.pillar.localeCompare(b.pillar) === 0){
           return a.name.localeCompare(b.name);
@@ -244,6 +242,67 @@ export class CreateCourseComponent implements OnInit {
         console.log(error)
       });
   }
+
+  queryInstructors(profId:number){
+    for(let i=0; i<this.instructors.length; i++){
+      if (this.instructors[i].id==profId){
+        return this.instructors[i].name;
+      }
+    }
+  }
+
+  updateProfsInvolved(event, sessionIndex: number, profId: number){
+    if(event.target.checked === true){
+      // if initially the array is empty and uninitialised
+      if(this.profsInvolved[sessionIndex] === undefined){
+        this.profsInvolved[sessionIndex] = [profId];
+      }
+      else{
+        this.profsInvolved[sessionIndex].push(profId);
+      }
+    }else{
+      // if user unchecks the checkbox, i remove the profId
+      let index = this.profsInvolved[sessionIndex].indexOf(profId);
+      this.profsInvolved[sessionIndex].splice(index);      
+    }
+    console.log("profs involved changed:", this.profsInvolved)
+  }
+
+  // translates into format eg 51|55|51,55
+  // sessions delimited by pipe
+  // profs within session delimited by commas
+  prof_listParser(){
+    let array : string[] = [];
+    let nameArray : string[] = [];
+    for (let session of this.profsInvolved){
+      let subarray: string[] = [];
+      let subNameArray: string[] = [];
+      for(let prof of session){
+        subarray.push(prof);
+        subNameArray.push(this.queryInstructors(prof))
+      }
+      array.push(subarray.join(","));
+      nameArray.push(subNameArray.join(","));
+    } 
+    this.tempInstructor_ids = array.join("|");
+    this.tempInstructors = nameArray.join("|");
+  }
+
+  sessionsParser(sessions: any, param: string): string{
+    let array : string[] = [];
+    if(param === "sessions_hrs"){
+      for (let session of sessions){
+        array.push(session.sessions_hrs);
+      } 
+    }else if(param==="class_types"){
+      for (let session of sessions){
+        array.push(session.class_types);
+      } 
+    }
+    return array.join();
+  }
+
+  get diagnostic() { return JSON.stringify(this.profsInvolved); }
   
 
 }

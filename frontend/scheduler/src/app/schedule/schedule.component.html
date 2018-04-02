@@ -1,0 +1,66 @@
+<div class="container">
+	<div align="center">
+		<label class="radio-inline"><span *ngIf = "isAdmin">
+			<input type="radio" name="optradio" checked="checked" 
+			(click)="displayASD()">ASD</span></label>
+		<label class="radio-inline"><span *ngIf = "isAdmin">
+			<input type="radio" name="optradio"
+			(click)="displayEPD()">EPD</span></label>
+		<label class="radio-inline"><span *ngIf = "isAdmin">
+			<input type="radio" name="optradio"
+			(click)="displayESD()">ESD</span></label>
+		<label class="radio-inline"><span *ngIf = "isAdmin">
+			<input type="radio" name="optradio"
+			(click)="displayISTD()">ISTD</span></label>
+	</div>
+	<div *ngIf="calendarOptions">
+		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+	</div>
+	<br>
+
+	<div align="center">
+	<span *ngIf = "!isAdmin">
+    <button type="button" (click) = "showForm()" class="btn btn-primary">
+    Make an appeal</button></span>
+
+    <span *ngIf = "show">
+    <form #newAppeal="ngForm">
+    	<br>
+      <!-- title of announcement -->
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="title"> Title </label>
+          </div>
+          <input type="text" id="title" 
+          required class="form-control"
+          placeholder="Enter the class/lecture" 
+           [(ngModel)]="newAppeal.title" name="title" />
+        </div>
+      </div>  
+      <!-- content -->
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="appealContent">Content</label>
+          </div>
+          <textarea rows="3" id="appealContent"
+          required class="form-control"
+          placeholder="State the reason and your preferred timings for the appeal." 
+          [(ngModel)]="newAppeal.content" name="appealContent"></textarea>
+        </div>  
+      </div>
+      
+      <!-- send to -->
+
+      <button type="submit" class="btn btn-success" style="float: right;" 
+      [disabled]="newAppeal.form.invalid" 
+      (click)="makeAppeal()">
+        <i class="fas fa-bullhorn"></i> Make Appeal
+      </button>
+      
+    </form>
+</span>
+</div>
+    

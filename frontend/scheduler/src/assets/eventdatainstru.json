@@ -1,0 +1,191 @@
+[{
+    "instructor": "Sudipta Chattopadhyay",
+    "id": "33",
+    "pillar":"ISTD",
+    "schedule": [{
+        "title": "Long Event Sudipta",
+        "start": "20180307",
+        "end": "20180310"
+      },
+      {
+        "title": "Conference Sudipta",
+        "start": "20180312T08",
+        "end": "20180314T13"
+      },
+      {
+        "title": "Meeting Sudipta",
+        "start": "20180319T1030",
+        "end": "20180319T1230"
+      },
+      {
+        "title": "Lunch Sudipta",
+        "start": "20180319T13",
+        "end": "20180319T14"
+      },
+      {
+        "title": "Meeting Sudipta",
+        "start": "20180321T1030",
+        "end": "20180321T1230"
+      },
+      {
+        "title": "ESC Meeting with Sudipta",
+        "start": "20180323T1030",
+        "end": "20180323T1230"
+      },
+      {
+        "title": "Lunch Break Sudipta",
+        "start": "20180323T1130",
+        "end": "20180323T1330"
+      },
+      {
+        "title": "Click for ISTD Website Sudipta",
+        "url": "http://istd.edu.sg",
+        "start": "20180328T0800",
+        "end": "20180328T1700"
+      }
+    ]
+  },
+  {
+    "instructor": "Oka Kurniawan",
+    "id": "31",
+    "pillar": "ISTD",
+    "schedule": [{
+        "title": "Long Event Oka",
+        "start": "20180307",
+        "end": "20180310"
+      },
+      {
+        "title": "Conference Oka",
+        "start": "20180312T08",
+        "end": "20180314T13"
+      },
+      {
+        "title": "Meeting Oka",
+        "start": "20180319T1030",
+        "end": "20180319T1230"
+      },
+      {
+        "title": "Lunch Oka",
+        "start": "20180319T13",
+        "end": "20180319T14"
+      },
+      {
+        "title": "Meeting Oka",
+        "start": "20180321T1030",
+        "end": "20180321T1230"
+      },
+      {
+        "title": "ESC Meeting with Oka Kurniawan",
+        "start": "20180323T1030",
+        "end": "20180323T1230"
+      },
+      {
+        "title": "Lunch Break Oka",
+        "start": "20180323T1130",
+        "end": "20180323T1330"
+      },
+      {
+        "title": "Click for ISTD Website Oka",
+        "url": "http://istd.edu.sg",
+        "start": "20180328T0800",
+        "end": "20180328T1700"
+      }
+    ]
+  },
+  {
+    "instructor": "tummytingISTD",
+    "id": "44",
+    "pillar": "ISTD",
+    "schedule": [{
+        "title": "Long Event tummytingISTD",
+        "start": "20180307",
+        "end": "20180310"
+      },
+      {
+        "title": "Conference tummytingISTD",
+        "start": "20180312T08",
+        "end": "20180314T13"
+      },
+      {
+        "title": "Meeting tummytingISTD",
+        "start": "20180319T1030",
+        "end": "20180319T1230"
+      },
+      {
+        "title": "Lunch tummytingISTD",
+        "start": "20180319T13",
+        "end": "20180319T14"
+      },
+      {
+        "title": "Meeting tummytingISTD",
+        "start": "20180321T1030",
+        "end": "20180321T1230"
+      },
+      {
+        "title": "ESC Meeting with Tummyting \n \n Cohort Classroom 12",
+        "start": "10:30",
+        "end": "12:30",
+        "dow": "[1,4]"
+      },
+      {
+        "title": "Lunch Break tummytingISTD \n \n Cohort Classroom 12",
+        "start": "20180323T1130",
+        "end": "20180323T1330"
+      },
+      {
+        "title": "Click for ISTD Website tummytingISTDs \n \n Cohort Classroom 12",
+        "url": "http://istd.edu.sg",
+        "start": "20180328T0800",
+        "end": "20180328T1700"
+      }
+    ]
+  },
+  {
+    "instructor": "Selin Damla Ahipasaoglu",
+    "id": "55",
+    "pillar": "ASD",
+    "schedule": [{
+        "title": "Long Event Ahipasaoglu",
+        "start": "20180307",
+        "end": "20180310"
+      },
+      {
+        "title": "Conference Ahipasaoglu",
+        "start": "20180312T08",
+        "end": "20180314T13"
+      },
+      {
+        "title": "Meeting Ahipasaoglu",
+        "start": "20180319T1030",
+        "end": "20180319T1230"
+      },
+      {
+        "title": "Lunch Ahipasaoglu",
+        "start": "20180319T13",
+        "end": "20180319T14"
+      },
+      {
+        "title": "Meeting Ahipasaoglu",
+        "start": "20180321T1030",
+        "end": "20180321T1230"
+      },
+      {
+        "title": "ESC Meeting with Tummyting \n \n Ahipasaoglu",
+        "start": "10:30",
+        "end": "12:30",
+        "dow": "[1,4]"
+      },
+      {
+        "title": "Lunch Break tummytingISTD \n \n Ahipasaoglu",
+        "start": "20180323T1130",
+        "end": "20180323T1330"
+      },
+      {
+        "title": "Click for ISTD Website tummytingISTDs \n \n Ahipasaoglu",
+        "url": "http://istd.edu.sg",
+        "start": "20180328T0800",
+        "end": "20180328T1700"
+      }
+    ]
+  }
+]

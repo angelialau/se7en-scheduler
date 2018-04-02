@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
+import { User } from './../../models/user.model';
+import { MatSnackBar } from '@angular/material'
 
 @Component({
   selector: 'app-navbar',
@@ -8,14 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  administrator : boolean = true;  
+  administrator : boolean = false;  
+  user: User = null;
+
+  constructor(
+    private userService: UserService, 
+    private cookieService: CookieService,
+    public snackBar : MatSnackBar) {}
 
   ngOnInit() {
-
+    if (this.cookieService.get('pillar') == "Administrator"){
+      this.administrator = true;
+    }
   }
 
   signOut(){
-    localStorage.removeItem("currentUser");
+    this.userService.resetUser(this.user);
+    this.cookieService.deleteAll();
   }
 
 }

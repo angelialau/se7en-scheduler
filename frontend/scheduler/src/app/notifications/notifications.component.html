@@ -1,13 +1,22 @@
 <div class="container">
   <div class="card-body">
-    <h5 class="card-title text-center">Notifications</h5>
+    <h5 class="card-title text-center">Announcements 
+    <button id="makeAnnouncementBtn" class="btn btn-light" routerLink="/announcements" style="float: right;">
+      <i class="fas fa-bullhorn"></i> Make an Announcement
+    </button>
+    </h5>
   </div>
-  <div *ngFor="let notification of notifications">
+  <div *ngFor="let announcement of announcements">
     <div class="card" style="margin: 0 5% 5% 5%;">
-      <h5 class="card-header">{{notification.title}}</h5>
+      <h5 class="card-header">{{announcement.title}}
+        <button (click)="deleteAnnouncement(announcement.id)" 
+          title="Delete this announcement" 
+          class="btn btn-light" 
+          style="float: right;"><i class="fas fa-trash-alt"></i></button>
+      </h5>
       <div class="card-body">
-        <p class="card-text"><small class="text-muted">on {{notification.date}} by {{senderName}}</small></p>
-        <p class="card-text">{{notification.content}}</p>    
+        <p class="card-text"><small class="text-muted">on {{announcement.date | date: 'dd/MM/yyyy'}} by {{announcement.sender}}</small></p>
+        <p class="card-text">{{announcement.content}}</p>    
       </div>
     </div>
   </div>

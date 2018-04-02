@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import {HttpModule} from '@angular/http'
+import { FullCalendarModule } from 'ng-fullcalendar';
 
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
@@ -13,6 +16,8 @@ import { MatToolbarModule, MatButtonModule, MatIconModule,
 // service imports 
 import { UserService } from './services/user.service'; 
 import { ScheduleService } from './services/schedule.service'; 
+import { EventService } from './services/event.service';
+import { CookieService } from 'ng2-cookies';
 
 // component imports 
 import { AppComponent } from './app.component';
@@ -20,25 +25,29 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoginComponent } from './login/login.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { TimetableReqFormComponent } from './timetable-req-form/timetable-req-form.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
-import { CreateCourseComponent } from './create-course/create-course.component'
+import { CreateCourseComponent } from './create-course/create-course.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { CreateEventComponent } from './create-event/create-event.component';
+import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component';
+import { ViewAppealComponent } from './view-appeal/view-appeal.component'
 
-const ROUTES: Routes = [
-  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // use when login page is done
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+export const ROUTES: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
+  { path: 'announcements', component: CreateAnnouncementComponent },
   { path: 'user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
-
-  { path: 'timetable-requirements-form', component: TimetableReqFormComponent }, // to be deprecated
+  { path: 'viewschedule', component: ScheduleComponent},
+  { path: 'event', component: CreateEventComponent},
+  { path: 'viewappeal', component: ViewAppealComponent}
 ];
 
 @NgModule({
@@ -48,16 +57,20 @@ const ROUTES: Routes = [
     SidebarComponent,
     LoginComponent,
     CreateUserComponent,
-    TimetableReqFormComponent,
     NotificationsComponent,
     ViewSchedulesComponent,
     ChangePasswordComponent,
     ScheduleDetailsComponent,
-    CreateCourseComponent
+    CreateCourseComponent,
+    ScheduleComponent,
+    CreateEventComponent,
+    CreateAnnouncementComponent,
+    ViewAppealComponent
   ],
   imports: [
     BrowserModule, 
     HttpClientModule,
+    HttpModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(ROUTES), 
     MatToolbarModule, 
@@ -71,8 +84,9 @@ const ROUTES: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    FullCalendarModule,
   ],
-  providers: [UserService, ScheduleService],
+  providers: [UserService, ScheduleService, EventService, DatePipe, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

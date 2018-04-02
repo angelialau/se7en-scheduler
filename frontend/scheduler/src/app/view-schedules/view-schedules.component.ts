@@ -10,7 +10,8 @@ import { ScheduleService } from './../services/schedule.service';
   styleUrls: ['./view-schedules.component.css']
 })
 export class ViewSchedulesComponent implements OnInit {
-  showAddScheduleForm = false;
+  showScheduleList : boolean = true;
+  showAddScheduleForm : boolean = false;
   schedule : Schedule = new Schedule(null,null);
   schedules : Schedule[];
   schedule_id: number;
@@ -24,14 +25,6 @@ export class ViewSchedulesComponent implements OnInit {
 
   ngOnInit() {
     this.getSchedules();
-  }
-
-  showForm() {
-    this.showAddScheduleForm = true;
-  }
-
-  closeForm(){
-    this.showAddScheduleForm = false;
   }
 
   onSend(){
@@ -80,6 +73,8 @@ export class ViewSchedulesComponent implements OnInit {
       )
   }
 
+  showSchedules() { this.showScheduleList = ! this.showScheduleList }
+  showScheduleForm() { this.showAddScheduleForm = ! this.showAddScheduleForm }
   get diagnostic() { return JSON.stringify(this.schedules)};
 
 }

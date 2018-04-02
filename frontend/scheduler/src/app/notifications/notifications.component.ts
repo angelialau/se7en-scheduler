@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Notification } from './../../models/notification.model';
+import { Announcement } from './../../models/announcement.model';
+import { UserService } from './../services/user.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-notifications',
@@ -7,23 +9,51 @@ import { Notification } from './../../models/notification.model';
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-  senderName : string = "Subhajit Datta"; // http.get UserById
-  notification : Notification = {
-    id: 0,
-    title: "This is a sample notification message.",
-    content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    date: "10 Feb 2018",
-    sender: 1,
-    sendee: 1,
-  }
-  notifications : Notification[] = [];
-  constructor() { 
-    for(let i=0; i<3; i++){
-      this.notifications.push(this.notification);
-    }
+  announcements : Announcement[] = [];
+  
+  constructor(
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    ) { 
   }
 
   ngOnInit() {
+    this.refreshAnnouncements();
   }
 
+  refreshAnnouncements(){
+    this.userService.getAnnouncements()
+    .map((data: any) => {
+      this.announcements = data.body;
+    } )
+    .subscribe(
+      response => {
+        // this.announcements = response.body;
+      }, 
+      error => {
+        console.log("Server error getting announcements");
+        console.log(error)
+      }
+    )
+  }
+
+  deleteAnnouncement(id: number){
+    let errorMsg = "Something went wrong with deleting announcement, please try again later.";
+    this.userService.deleteAnnouncement(id).subscribe(
+      response => {
+        if(JSON.parse(response).success){
+          this.snackBar.open("Announcement deleted!", null, {duration: 3000});
+          this.refreshAnnouncements();
+        }else{
+          this.snackBar.open(errorMsg, null, {duration: 3000});
+          console.log(response);
+        }
+      }, 
+      error => {
+        this.snackBar.open(errorMsg, null, {duration: 3000});
+        console.log("Server error deleting announcements");
+        console.log(error);
+      }
+    )
+  }
 }

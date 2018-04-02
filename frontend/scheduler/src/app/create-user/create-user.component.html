@@ -2,7 +2,7 @@
   <div class="card-body">
     <h5 class="card-title text-center" id="createUserFormTitle">Create a new Administrator/Instructor</h5>
   </div>
-  <form (ngSubmit)="onSubmit()" #newUserForm="ngForm">
+  <form #newUserForm="ngForm">
     <!-- <p>Testing: {{diagnostic}}</p> -->
     <div class="form-group">
       <div class="input-group mb-3">
@@ -40,13 +40,13 @@
 
     <div class="form-group">
       <label for="password"> Password * </label>
-        <input type="text" class="form-control" id="password" 
+        <input type="password" class="form-control" id="password" 
         required minlength="5" 
         [(ngModel)]="modelNewUser.password" name="password">
     </div>
 
-    <button type="submit" class="btn btn-success" id="submitFormButton"
-    [disabled]="!newUserForm.form.valid" 
-    (click)="openSnackBar(modelNewUser.name); newUserForm.reset()">Submit</button>
+    <button type="submit" class="btn btn-success" id="submitFormButton" style="float: right;" 
+    [disabled]="newUserForm.form.invalid" 
+    (click)="createUser(modelNewUser.name); newUserForm.reset()">Submit</button>
   </form>
 </div>

@@ -1,0 +1,43 @@
+ [
+  {
+      "title": "Long Event",
+      "start": "20180307",
+      "end": "20180310"
+    },
+    {
+      "title": "Conference",
+      "start": "20180312T08",
+      "end": "20180314T13"
+    },
+    {
+      "title": "Meeting",
+      "start": "20180319T1030",
+      "end": "20180319T1230"
+    },
+    {
+      "title": "Lunch",
+      "start": "20180319T13",
+      "end": "20180319T14"
+    },
+    {
+      "title": "Meeting",
+      "start": "20180321T1030",
+      "end": "20180321T1230"
+    },
+    {
+      "title": "ESC Meeting with Sudipta",
+      "start": "20180323T1030",
+      "end": "20180323T1230"
+    },
+    {
+      "title": "Lunch Break",
+      "start": "20180323T1130",
+      "end": "20180323T1330"
+    },
+    {
+      "title": "Click for ISTD Website",
+      "url": "http://istd.edu.sg",
+      "start": "20180328T0800",
+      "end": "20180328T1700"
+    }
+  ]

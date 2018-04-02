@@ -42,6 +42,12 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  // get courses under a specific schedule
+  getCoursesInSchedule(id: number): Observable<any>{
+    return this.http.get<Course[]>(this.url + '/Courses/BySchedule/' + id, {observe: 'response'})
+      .catch(this.handleError);
+  }
+
   //updating a specific schedule, whether year, trimester or courses 
   updateSchedule(newSchedule : Schedule): Observable<any>{
     let body = new URLSearchParams(); 
@@ -83,6 +89,7 @@ export class ScheduleService {
     body.set('sessions_hrs', String(course.sessions_hrs)); 
     body.set('class_types', String(course.class_types)); 
     body.set('instructors', String(course.instructors)); 
+    body.set('instructor_ids', String(course.instructor_ids)); 
     body.set('split', String(course.split)); 
     
     let extension = this.url + '/Courses';
@@ -115,7 +122,7 @@ export class ScheduleService {
     let body = new URLSearchParams(); 
     body.set('schedule_id', String(schedule_id)); 
     body.set('id', String(courseId)); 
-    let extension = this.url + '/Courses';
+    let extension = this.url + '/Courses/Delete';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router'
 import { Schedule } from './../../models/schedule.model';
 import { Course } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-schedule-details',
@@ -12,77 +13,69 @@ import { ScheduleService } from './../services/schedule.service';
 export class ScheduleDetailsComponent implements OnInit {
   @Input() schedule: Schedule;
   schedule_id : number;
-  showCourseForm : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
+  showCourseList : boolean = true;
+  showEventForm : boolean = false;
+  showCourseForm : boolean = false;
 
   constructor(
     private scheduleService: ScheduleService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, 
+    public snackBar: MatSnackBar, 
     ) { 
     this.schedule_id = route.snapshot.params['schedule_id'];
   }
 
   ngOnInit() {
-    console.log("schedule id:");
-    console.log(this.schedule_id);
-    this.getScheduleDetails(this.schedule_id);
+    this.refreshCourses();
   }
 
-  refreshCourses($event){
-    this.getScheduleDetails(this.schedule_id);
+  refreshCourses($event?){
+    this.getCourses(this.schedule_id);
   }
 
   // get the metadata of this specific schedule
-  getScheduleDetails(id: number){
-    this.scheduleService.getSchedule(id).subscribe(
+  getCourses(id: number){
+    this.scheduleService.getCoursesInSchedule(id)
+    .subscribe( 
       response => {
-        if(response.body.success){
-          this.courseIDs = response.body.courses.split(",");
-          this.pushAllCourses()
-        }else {
-          console.log("some error in getting the list of enrolled courses:"); 
-          console.log(response); 
-        }
-    }, error => { 
-      console.log("some error in getting the list of enrolled courses:"); 
-      console.log(error); 
-    }
-    )
-  }
-
-  // retrieves information for a specific course
-  getIndivCourse(id: number){
-    this.scheduleService.getCourse(id).subscribe(
-      response => {
-        if(response.body.success){
-          let data = response.body;
-          // console.log(data);
-          let course = new Course(data.schedule_id,data.term,data.course_no,
-            data.course_name,data.core,data.no_classes,data.class_size,
-            data.no_sessions,data.sessions_hrs,data.class_types,
-            data.instructors,data.split,data.id)
-          // console.log(course);
-          this.courses.push(course);  
+        if(response.status == 200){
+          let array : Course[] = response.body;
+          this.courses = array;
         }else{
-          console.log("some error in getting indiv course: "); 
-          console.log(response)
+          console.log("error getting courses for schedule:"); 
+          console.log(response);
         }
-      }, error => { 
-        console.log("some error in getting indiv course: "); 
-        console.log(error)
-      }
+        
+      },
+      error => { console.log("error getting courses for schedule:"); 
+      console.log(error);}
     )
   }
 
-  // populate the list of courses enrolled
-  pushAllCourses(){
-    for (let courseID of this.courseIDs){
-      this.getIndivCourse(Number(courseID));
-    }
-    console.log(this.courses); 
+  deleteCourse(courseId: number){
+    let errorMessage : string = "There's some problem deleting this course. Please try again later!";
+    this.scheduleService.deleteCourse(courseId, this.schedule_id)
+      .subscribe(response => {
+        if (JSON.parse(response).success){
+          this.snackBar.open("Course deleted!", null, {duration: 1000, });
+          this.refreshCourses();
+        }else{
+          this.snackBar.open(errorMessage, null, {duration: 1000, });
+          console.log(response);
+        }
+      },
+      error => {
+        this.snackBar.open(errorMessage, null, {duration: 1000, });
+        console.log(error);
+      } 
+    );
+    this.refreshCourses();
   }
 
-  showForm(bool: boolean) { this.showCourseForm = bool; }
+  showListOfCourses(){ this.showCourseList = !this.showCourseList; }
+  showAddEventForm(){ this.showEventForm = !this.showEventForm; }
+  showAddCourseForm(){ this.showCourseForm = !this.showCourseForm; }
 
 }

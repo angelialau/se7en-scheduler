@@ -1,29 +1,35 @@
 <div class="container">
-  <div class="card-body">
-    <h5 class="card-title text-center">Schedules</h5>
+  <div class="form-container">
+  <div class="card-body" (click)="showSchedules()">
+    <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> All Schedules</h5>
   </div>
   
-  <div *ngFor="let schedule of schedules">
-    <div class="card" style="margin: 0 5% 5% 5%;">
-      <h5 class="card-header" > Year {{schedule.year}} Trimester {{schedule.trimester}} 
-        <button (click)="deleteSchedule(schedule)" class="btn" style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
-        <button [routerLink]="['./',schedule.id]" class="btn" style="float: right;margin: 0 5px;"><i class="fas fa-edit"></i></button>
-      </h5>
-      <!-- <div class="card-body">
-        <h6>List of courses:</h6>
-        <p>{{schedule.courses}} </p>
-      </div> -->
-    </div>
+  <div *ngIf="showScheduleList">
+    <table class="table table-hover">
+      <tbody *ngFor="let schedule of schedules">
+        <tr>
+          <td [routerLink]="['./',schedule.id]"
+          title="View courses enrolled and add a course or event to this schedule"
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          <button (click)="deleteSchedule(schedule)" 
+          title="Delete this schedule" 
+          class="btn" 
+          style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+  
+  <div class="dropdown-divider"></div>
 
-  <div class="container"><button class="btn btn-success" style="float: right;margin-right: 20px" (click)="showForm()">Create new Schedule</button></div><br><br>
-
-
+  <!-- form to add a new schedule -->
+  <div class="card-body" (click)="showScheduleForm()">
+    <h5 class="card-title text-center" id="scheduleFormTitle"><i class="fas fa-caret-right"></i> Add a new Schedule</h5>
+  </div>
   <div *ngIf="showAddScheduleForm">
-    <div class="form-container">
-      <h4>Create New Schedule</h4>
+    
       <form #newScheduleForm="ngForm">
-        
         <!-- trimester type -->
         <div class="form-group">
           <label for="trimester"> Academic Term * </label>
@@ -47,16 +53,15 @@
           </select>
         </div>        
 
-        <button type="submit" class="btn btn-success" 
-        [disabled]="!newScheduleForm.form.valid" 
-        (click)="onSend()">Create schedule</button>
-        <button class="btn btn-warning" 
-        (click)="newScheduleForm.reset()">Reset</button>
-        <button class="btn btn-danger" 
-        (click)="closeForm()">Cancel</button>
-
-        
+        <div style="float: right;">
+          <button type="submit" class="btn btn-success" 
+          [disabled]="!newScheduleForm.form.valid" id="addScheduleSubmitButton"
+          (click)="onSend()">Create schedule</button>
+          <button class="btn btn-warning" id="addSchedResetButton"
+          (click)="newScheduleForm.reset()">Reset</button>
+        </div>
       </form>
-    </div>
+    
   </div>
+</div>
 </div>
