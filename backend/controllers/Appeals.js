@@ -12,6 +12,8 @@ router.post('/', function(req, res, next) {
 			utils.basicPostCallback(res, err, count);
 		})
 	} else {
+		console.log(req.body);
+		console.log(Appeal.createStructure);
 		res.json({"success":false, "message":"post params incomplete"});
 	}
 });
@@ -31,18 +33,18 @@ router.get('/:id(\\d+)', function(req, res, next) {
 });
 
 // defining get appeals by instructor id route
-router.get('/Instructor/:id(\\d+)', function(req, res, next) {
-	if (req.params.id) {
-		Appeal.getAppealByInstructorId(req.params.id, function(err, rows) {
+router.get('/Instructor/:instructorId(\\d+)/:scheduleId(\\d+)', function(req, res, next) {
+	if (req.params.instructorId && req.params.scheduleId) {
+		Appeal.getAppealByInstructorId(req.params.instructorId, req.params.scheduleId, function(err, rows) {
 			utils.basicGetCallback(res, err, rows, null);
 		});
 	}
 });
 
 // defining get appeals by pillar route
-router.get('/Pillar/:pillar(\\D+)', function(req, res, next) {
-	if (req.params.pillar) {
-		Appeal.getAppealsByPillar(req.params.pillar, function(err, rows) {
+router.get('/Pillar/:pillar(\\D+)/:scheduleId(\\d+)', function(req, res, next) {
+	if (req.params.pillar && req.params.scheduleId) {
+		Appeal.getAppealsByPillar(req.params.pillar, req.params.scheduleId, function(err, rows) {
 			utils.basicGetCallback(res, err, rows, null);
 		});
 	}
