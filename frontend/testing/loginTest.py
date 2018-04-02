@@ -6,7 +6,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 import unittest, time
 
-class FormsTest(unittest.TestCase):
+class LoginTest(unittest.TestCase):
 
     def setUp(self):
         chrome_options = webdriver.ChromeOptions()

@@ -68,7 +68,7 @@
             </button></span>
           </h5>
           <div class="form-group">
-            <select class="custom-select" formControlName="id">
+            <select id="chooseProf" class="custom-select" formControlName="id">
               <option *ngFor='let prof of instructors' [value]=prof.id>
                 {{prof.pillar}} - {{prof.name}}
               </option>
@@ -122,7 +122,7 @@
             <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
               <div *ngFor='let p of prof_list.controls'>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" 
+                  <input class="form-check-input" type="checkbox" id="checkbox"
                   (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
                   <span class="form-check-label">
                     {{queryInstructors(p.controls['id'].value)}}
@@ -150,7 +150,7 @@
         <button id="addCourseSubmitButton" type="submit" class="btn btn-success" 
         [disabled]="newForm.invalid"
         (click)="onSend(); newForm.reset()">Submit Course</button>
-        <button class="btn btn-warning" 
+        <button class="btn btn-warning" id="resetCourseButton"
         (click)="newForm.reset()">Reset</button>
         <!-- <button class="btn btn-dark" 
         (click)="prof_listParser()">testing parser</button> -->
