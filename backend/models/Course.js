@@ -13,6 +13,7 @@ var COLUMN_NO_SESSIONS = "no_sessions";
 var COLUMN_SESSIONS_HRS = "sessions_hrs";
 var COLUMN_CLASS_TYPES = "class_types";
 var COLUMN_INSTRUCTORS = "instructors";
+var COLUMN_INSTRUCTOR_IDS = "instructor_ids";
 var COLUMN_SPLIT = "split";
 
 
@@ -29,6 +30,7 @@ var Course = {
 		sessions_hrs:null,
 		class_types:null,
 		instructors:null,
+		instructor_ids:null,
 		split:null
  	},
 
@@ -44,6 +46,7 @@ var Course = {
 		sessions_hrs:null,
 		class_types:null,
 		instructors:null,
+		instructor_ids:null,
 		split:null
  	},
 
@@ -75,8 +78,9 @@ var Course = {
 			COLUMN_SESSIONS_HRS + "`,`" +
 			COLUMN_CLASS_TYPES + "`,`" +
 			COLUMN_INSTRUCTORS + "`,`" +
+			COLUMN_INSTRUCTOR_IDS + "`,`" +
 			COLUMN_SPLIT + "`)" +  
-			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 			[data.schedule_id,
 			 data.term,
 			 data.course_no,
@@ -88,6 +92,7 @@ var Course = {
 			 data.sessions_hrs, 
 			 data.class_types,  
 			 data.instructors, 
+			 data.instructor_ids,
 			 data.split],
 			 callback);
 	},
@@ -104,6 +109,7 @@ var Course = {
 						"` =?, `" + COLUMN_SESSIONS_HRS +
 						"` =?, `" + COLUMN_CLASS_TYPES +
 						"` =?, `" + COLUMN_INSTRUCTORS +
+						"` =?, `" + COLUMN_INSTRUCTOR_IDS +
 						"` =?, `" + COLUMN_SPLIT +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
@@ -117,6 +123,7 @@ var Course = {
 						 data.sessions_hrs, 
 						 data.class_types,  
 						 data.instructors, 
+						 data.instructor_ids,
 						 data.split,
 						 data.id],
 						 callback);
@@ -132,24 +139,29 @@ var Course = {
 		var sessions = [];
 		var class_types = row.class_types.split(",");
 		var timings = row.sessions_hrs.split(",");
-		var instructors = row.instructors.split(",");
+		var instructors = row.instructors.split("|");
+		var instructor_ids = row.instructor_ids.split("|");
 		var split = row.split.split(",");
 
+		// adding data we need in correct format
 		for (var i = 0; i < row.no_sessions; i++) {
 			sessions[i] = {};
 			sessions[i].class_type = class_types[i];
 			sessions[i].time = timings[i];
-			sessions[i].instructors = instructors;
+			sessions[i].instructors = instructors[i].split(",");
+			sessions[i].instructor_ids = instructor_ids[i].split(",");
 			sessions[i].split = split[i];
 		}
 
 		row.sessions = sessions;
+		// removing data that we don't need anymore
 		delete row.id;
 		delete row.schedule_id; 
 		delete row.sessions_hrs;
 		delete row.split;
 		delete row.class_types;
 		delete row.instructors;
+		delete row.instructor_ids;
 
 		return row;
 	}
