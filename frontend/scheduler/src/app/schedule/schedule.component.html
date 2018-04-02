@@ -25,39 +25,39 @@
     Make an appeal</button></span>
 
     <span *ngIf = "show">
-    <form #newAnnouncement="ngForm">
+    <form #newAppeal="ngForm">
     	<br>
       <!-- title of announcement -->
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="title">Title</label>
+            <label class="input-group-text" for="title"> Title </label>
           </div>
           <input type="text" id="title" 
           required class="form-control"
-          placeholder="New Calendar for 2018: Enrol your courses now" 
-           [(ngModel)]="newAnnouncement.title" name="title" />
+          placeholder="Enter the class/lecture" 
+           [(ngModel)]="newAppeal.title" name="title" />
         </div>
       </div>  
       <!-- content -->
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="announcementContent">Announcement</label>
+            <label class="input-group-text" for="appealContent">Content</label>
           </div>
-          <textarea rows="4" id="announcementContent"
+          <textarea rows="3" id="appealContent"
           required class="form-control"
-          placeholder="Content of announcement here" 
-          [(ngModel)]="newAnnouncement.content" name="announcementContent"></textarea>
+          placeholder="State the reason and your preferred timings for the appeal." 
+          [(ngModel)]="newAppeal.content" name="appealContent"></textarea>
         </div>  
       </div>
       
       <!-- send to -->
 
       <button type="submit" class="btn btn-success" style="float: right;" 
-      [disabled]="newAnnouncement.form.invalid" 
-      (click)="makeAnnouncement()">
-        <i class="fas fa-bullhorn"></i> Make Announcement
+      [disabled]="newAppeal.form.invalid" 
+      (click)="makeAppeal()">
+        <i class="fas fa-bullhorn"></i> Make Appeal
       </button>
       
     </form>

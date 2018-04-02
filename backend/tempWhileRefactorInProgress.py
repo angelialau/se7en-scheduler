@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Mar 14 04:33:37 2018
+Created on Fri Mar 30 02:37:44 2018
 
 @author: trying
 """
@@ -11,13 +11,14 @@ from urllib.request import urlopen
 import random
 import copy
 import time
-
+import re
 tt,cc,lt,cla,pro=0,26,42,50,100
 proNum=100
 claNum=53
 
 def readJson(url):
-    weather = urlopen(url)
+    #weather = urlopen(url)
+    weather = sys.argv[1]
     wjson = json.load(weather)
     courses=[]
     i=0
@@ -59,24 +60,29 @@ def initializeValue():                      #initialize rooms, cohort list, prof
                 course.setRoom([cc+12,cc+13,lt+1,lt+2])
                 classlist=[]
                 for k in range(course.classes):
-                    rowRef[cla+k]="ISTD term "+str(course.term)+" Cohort "+str(k+1) 
+                    rowRef[cla+k]=k+1 
                     classlist.append(cla+k)
                 course.classlist=classlist
+                course.pillar = "ISTD"
         if course.term in [6,7,8]:
             if course.courseName[0]=="5":
                 course.setRoom([tt+15,tt+16,tt+17,cc+14,lt+1,lt+2])
                 course.classlist=[]
                 for k in range(course.classes):
-                    rowRef[claNum]="ISTD term "+str(course.term)+" Cohort "+str(k+1) 
+                    rowRef[claNum]=k+1 
                     course.classlist.append(claNum)
                     claNum+=1
+                course.pillar="ISTD"
         for j in course.sessions:
             lis=[]
-            for prof in j["professors"]:
-                if prof not in rowRef:
-                    rowRef[proNum]=prof
+            for prof in range(len(j["instructors"])):
+                newProfName=j["instructors"][prof]+j["instructor_ids"][prof]
+                if newProfName not in rowRef:
+                    lis.append(proNum)
+                    rowRef[proNum]=j["instructors"][prof]+j["instructor_ids"][prof]
                     proNum+=1
-                lis.append(rowRef.index(prof))
+                else:
+                    lis.append(rowRef.index(newProfName))
             j["proID"]=lis
     return rowRef
 
@@ -117,9 +123,9 @@ class Course(object):
             j=2
         else:
             j=1
-        lec = 0;
+        lec = 0
         for i in self.sessions:
-            if i["location"]=="Lecture":
+            if i["class_type"]=="Lecture":
                 lec+=1
         self.priority= j*c1+self.numSessions*c2+self.classes*c3+lec*c4
         
@@ -151,7 +157,7 @@ def generator(c1,c2,c3,c4,b1,b2):
             classRanCheck.append(0)
         for l in range(i):
             clength=int(courses[count].sessions[l]["time"]*2)
-            if courses[count].sessions[l]["location"]=="Cohort Based Learning":
+            if courses[count].sessions[l]["class_type"]=="Cohort Based Learning":
                 classCheck=copy.deepcopy(classlist)
                 for num in range(len(classlist)):
                     randomClass=classCheck[random.randint(0,len(classCheck)-1)]
@@ -194,7 +200,7 @@ def generator(c1,c2,c3,c4,b1,b2):
                         if succ:
                             break
                         randomDay+=1
-            elif courses[count].sessions[l]["location"]=="Lecture":
+            elif courses[count].sessions[l]["class_type"]=="Lecture":
                 maxi=0
                 for j in range(len(classlist)):
                     if classRanCheck[j]>maxi:
@@ -289,7 +295,7 @@ def formatOutput(schedule):
     prof=pro
 
     while rowRef[prof]!="":
-        print(rowRef[prof],":")
+        #print(rowRef[prof],":")
         for day in range(5):
             time=0
             while (time<19):
@@ -313,7 +319,10 @@ def formatOutput(schedule):
                         if (schedule[roos][day*19+time]!=schedule[roos][day*19+startTime]):
                             break
                     endTime=time-1
-                    print(courses[schedule[prof][day*19+endTime]].courseName+"--",rowRef[clas],"--",rowRef[roos],"-- on Day",day+1,"from",startTime,"to",endTime)
+                    profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
+                    print("term:"+str(courses[schedule[prof][day*19+endTime]].term)+",pillar:"+courses[schedule[prof][day*19+endTime]].pillar+",course:"+courses[schedule[prof][day*19+endTime]].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
+                          +str(rowRef[clas])+",location:"+str(rowRef[roos])+",day:"+str(day+1)+",start:"+str(startTime)+
+                          ",end:"+str(endTime))
                 else:
                     time+=1
             
@@ -324,7 +333,7 @@ def formatOutput(schedule):
 main function
 """
 start = time.time()
-courses = readJson("https://api.myjson.com/bins/g4sxp")
+courses = readJson("https://api.myjson.com/bins/1dy7sn")
 start1 = time.time()
 rowRef=referenceRows()
 rowRef=initializeValue()
@@ -359,14 +368,14 @@ for i in range(5):
             if currentSchedule[0][0]!="Fail":
                 break
         rawSchedule.append(currentSchedule)
-    print("at the loop no.: ",i,"Score is ",score)
+    #print("at the loop no.: ",i,"Score is ",score)
 index,score=checkScore()
 formatOutput(rawSchedule[index[0]])
 
-end=time.time()    
-print(end-start,end-start1)
+#end=time.time()    
+#print(end-start,end-start1)
 
-print(score)
+#print(score)
             
     
 

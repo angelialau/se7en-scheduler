@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
+import { Calendar } from 'fullcalendar';
 import * as moment from 'moment';
 import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
@@ -34,9 +35,11 @@ export class ScheduleComponent implements OnInit {
     protected eventService: EventService,
     private userService: UserService,
     private router: Router,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe) {}
 
   ngOnInit() {
+
+    this.initialiseAppeal();
 
     if (this.user.pillar == "Administrator"){
       this.isAdmin = true;
@@ -45,13 +48,11 @@ export class ScheduleComponent implements OnInit {
   }
 
   displayCalendar(){
-
-
       this.eventService.getEvents().subscribe(data => {
 
       if (this.user.pillar != "Administrator"){
         for (let i of data){
-          if (i.instructor == this.user.name){
+          if (i.instructor == this.user.name && i.id == this.user.id){
             this.scheduledata = i.schedule;
           }
         }
@@ -67,7 +68,6 @@ export class ScheduleComponent implements OnInit {
        }
         console.log(allschedules);
         this.scheduledata = allschedules;
-
       }
      
        this.calendarOptions = {
@@ -132,7 +132,6 @@ export class ScheduleComponent implements OnInit {
   displayASD(){
     console.log("ASD calendar view");
     this.specificPillar = "ASD";
-    this.displayCalendar();
   }
   displayEPD(){
     console.log("EPD calendar view");
@@ -162,6 +161,10 @@ export class ScheduleComponent implements OnInit {
   }
 
   initialiseAppeal(){
-    this.newAppeal = new Appeal(this.user.name, this.user.pillar,this.today,"","");
+    this.newAppeal = new Appeal(this.user.name, this.user.pillar, this.today, "", "");
+  }
+
+  makeAppeal(){
+    
   }
 }

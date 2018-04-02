@@ -32,7 +32,8 @@ import { ScheduleDetailsComponent } from './schedule-details/schedule-details.co
 import { CreateCourseComponent } from './create-course/create-course.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CreateEventComponent } from './create-event/create-event.component';
-import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component'
+import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component';
+import { ViewAppealComponent } from './view-appeal/view-appeal.component'
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -46,6 +47,7 @@ export const ROUTES: Routes = [
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
   { path: 'event', component: CreateEventComponent},
+  { path: 'viewappeal', component: ViewAppealComponent}
 ];
 
 @NgModule({
@@ -62,7 +64,8 @@ export const ROUTES: Routes = [
     CreateCourseComponent,
     ScheduleComponent,
     CreateEventComponent,
-    CreateAnnouncementComponent
+    CreateAnnouncementComponent,
+    ViewAppealComponent
   ],
   imports: [
     BrowserModule, 
