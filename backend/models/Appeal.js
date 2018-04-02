@@ -41,7 +41,7 @@ var Appeal = {
 	},
 	getAppealByInstructorId:function(id, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + 
-						" WHERE " + COLUMN_INSTRUCTOR_ID "=?", 
+						" WHERE " + COLUMN_INSTRUCTOR_ID + "=?", 
 						[id],
 						callback);
 	},
