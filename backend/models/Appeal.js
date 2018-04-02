@@ -35,7 +35,7 @@ var Appeal = {
 	},
 	getAppealById:function(id, callback) {
 		return db.query("SELECT * FROM " + TABLE_NAME + 
-						" WHERE " + COLUMN_ID "=?", 
+						" WHERE " + COLUMN_ID + "=?", 
 						[id],
 						callback);
 	},
