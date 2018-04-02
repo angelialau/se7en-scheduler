@@ -27,7 +27,7 @@ var Appeal = {
 			COLUMN_INSTRUCTOR + "`,`" + 
 			COLUMN_INSTRUCTOR_ID + "`,`" +
 			COLUMN_PILLAR + "`,`" +
-			COLUMN_SCHEDULE_ID + "`)`" + 
+			COLUMN_SCHEDULE_ID + "`)" + 
 			" VALUES(?,?,?,?,?)",
 			[data.title,
 			 data.content,
