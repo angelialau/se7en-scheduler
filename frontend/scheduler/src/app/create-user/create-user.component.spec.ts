@@ -80,12 +80,12 @@ describe('CreateUserComponent', () => {
   });
 
   it('should trigger openSnackBar() when create user button clicked',() => {
-    spyOn(component, 'openSnackBar');
+    spyOn(component, 'snackBar');
     let button = fixture.debugElement.nativeElement.querySelector('button');
     button.click();
 
     fixture.whenStable().then(() => {
-      expect(component.openSnackBar).toHaveBeenCalled();
+      expect(component.snackBar).toHaveBeenCalled();
       }
     )
   });
