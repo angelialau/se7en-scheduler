@@ -24,12 +24,15 @@ router.get('/:id(\\d+)', function(req, res, next) {
 		Appeal.getAppealById(req.params.id, function(err, rows) {
 			utils.basicGetCallback(res, err, rows, 0);
 		});
-	} else {
-		// if no id given, return all rows
-		Appeal.getAppeals(function(err, rows) {
-			utils.basicGetCallback(res, err, rows, null);
-		});
-	}
+	} 
+});
+
+// defining get all appeals route
+router.get('/', function(req, res, next) {
+	// if no id given, return all rows
+	Appeal.getAppeals(function(err, rows) {
+		utils.basicGetCallback(res, err, rows, null);
+	});
 });
 
 // defining get appeals by instructor id route
