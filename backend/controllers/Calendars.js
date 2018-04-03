@@ -66,9 +66,9 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			for (var i = 0; i < rows.length; i++) {
 				var j = rows[i].start
 				while (j < rows[i].end+1) {
-					var index = weekday[rows[i].day-1].indexOf(j);
+					var index = weekdays[rows[i].day-1].indexOf(j);
 					if (index != -1) {
-						weekday[rows[i].day-1].splice(index, 1);
+						weekdays[rows[i].day-1].splice(index, 1);
 					}
 					j++;
 				}
