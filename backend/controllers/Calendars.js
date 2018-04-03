@@ -44,7 +44,7 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 });
 
 // defining get day route
-router.get('/Filter/day.:day/', function(req, res, next) {
+router.get('/Filter/day.:day?/', function(req, res, next) {
 	if (req.params.day) {
 		console.log(req.params.day);
 	} else{
