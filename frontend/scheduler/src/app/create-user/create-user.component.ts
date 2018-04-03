@@ -9,7 +9,6 @@ import { UserService } from './../services/user.service';
   styleUrls: ['./create-user.component.css']
 })
 export class CreateUserComponent implements OnInit {
-
   modelNewUser = new User(null,null);
   submitted : boolean = false;
   message : string = "User account created for ";
@@ -22,10 +21,6 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  onSubmit(){ 
-    this.submitted = true;
   }
 
   createUser(name: string){

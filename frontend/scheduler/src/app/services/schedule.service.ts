@@ -89,6 +89,7 @@ export class ScheduleService {
     body.set('sessions_hrs', String(course.sessions_hrs)); 
     body.set('class_types', String(course.class_types)); 
     body.set('instructors', String(course.instructors)); 
+    body.set('instructor_ids', String(course.instructor_ids)); 
     body.set('split', String(course.split)); 
     
     let extension = this.url + '/Courses';

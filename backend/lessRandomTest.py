@@ -11,7 +11,10 @@ from urllib.request import urlopen
 import random
 import copy
 import time
-import operator
+
+tt,cc,lt,cla,pro=0,26,42,50,100
+proNum=100
+claNum=53
 
 def readJson(url):
     weather = urlopen(url)
@@ -47,6 +50,7 @@ Prof: 100-249 (150)
 def initializeValue():                      #initialize rooms, cohort list, professor list
     global proNum
     global claNum
+    global cc,tt,lt
     rowRef=referenceRows()
     
     for course in courses:
@@ -324,7 +328,7 @@ courses = readJson("https://api.myjson.com/bins/g4sxp")
 start1 = time.time()
 rowRef=referenceRows()
 rowRef=initializeValue()
-tt,cc,lt,cla,pro=0,26,42,50,100
+
 
 dayTime=[[0,12],[25,37],[38,47],[57,69],[76,81]]    #The available slots for every day
 

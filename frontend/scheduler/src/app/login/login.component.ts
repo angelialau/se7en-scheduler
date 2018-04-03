@@ -3,6 +3,7 @@ import { User } from './../../models/user.model';
 import { MatDialogRef,MatSnackBar } from '@angular/material';
 import { UserService } from './../services/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-login',
@@ -14,15 +15,22 @@ export class LoginComponent implements OnInit {
   user: User;
   model: User = new User(null,null);
   returnURL: string;
+  cookies: Object;
 
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
     ) {}
 
   ngOnInit() {
-    this.user = this.userService.getLoggedInUser();
+    if (this.cookieService.get('pillar').length > 1 ){
+      this.router.navigateByUrl('/home');
+    }
+    else{
+      this.user = this.userService.getLoggedInUser();  
+    }
   }
 
   login(){
@@ -36,6 +44,12 @@ export class LoginComponent implements OnInit {
           let phone = JSON.parse(response).phone;
           let schedules = JSON.parse(response).schedules;
           let courses = JSON.parse(response).courses;
+          this.cookieService.set('id', id);
+          this.cookieService.set('pillar', pillar);
+          this.cookieService.set('name', name);
+          this.cookieService.set('email', email);
+          this.cookieService.set('schedules', schedules);
+          this.cookieService.set('courses', courses);
 
           let set :boolean = this.userService.setUser(new User(email, this.user.password, pillar, name, phone, id, schedules, courses));
          

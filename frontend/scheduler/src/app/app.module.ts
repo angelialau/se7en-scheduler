@@ -17,6 +17,7 @@ import { MatToolbarModule, MatButtonModule, MatIconModule,
 import { UserService } from './services/user.service'; 
 import { ScheduleService } from './services/schedule.service'; 
 import { EventService } from './services/event.service';
+import { CookieService } from 'ng2-cookies';
 
 // component imports 
 import { AppComponent } from './app.component';
@@ -31,10 +32,11 @@ import { ScheduleDetailsComponent } from './schedule-details/schedule-details.co
 import { CreateCourseComponent } from './create-course/create-course.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CreateEventComponent } from './create-event/create-event.component';
-import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component'
+import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component';
+import { ViewAppealComponent } from './view-appeal/view-appeal.component'
 
 export const ROUTES: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'home', component: NotificationsComponent },
   { path: 'announcements', component: CreateAnnouncementComponent },
@@ -45,6 +47,7 @@ export const ROUTES: Routes = [
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
   { path: 'event', component: CreateEventComponent},
+  { path: 'viewappeal', component: ViewAppealComponent}
 ];
 
 @NgModule({
@@ -61,7 +64,8 @@ export const ROUTES: Routes = [
     CreateCourseComponent,
     ScheduleComponent,
     CreateEventComponent,
-    CreateAnnouncementComponent
+    CreateAnnouncementComponent,
+    ViewAppealComponent
   ],
   imports: [
     BrowserModule, 
@@ -82,7 +86,7 @@ export const ROUTES: Routes = [
     MatSnackBarModule,
     FullCalendarModule,
   ],
-  providers: [UserService, ScheduleService, EventService, DatePipe],
+  providers: [UserService, ScheduleService, EventService, DatePipe, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
