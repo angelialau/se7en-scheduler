@@ -128,7 +128,7 @@
           <!-- profs involved -->  
           <div *ngIf="prof_list.dirty">
             <p>Professors involved</p>
-            <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
+            <div class="form-inline no-ugly-red-line">
               <div *ngFor='let p of prof_list.controls'>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" id="checkbox"
@@ -165,7 +165,7 @@
         (click)="temp()">testing parser</button> -->
       </div>
     </form>
-    <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
-    <p>Form status: {{newForm.status | json}} </p> -->
+    <p>Form values: {{newForm.value | json : 2 }} </p>
+    <p>Form status: {{newForm.status | json}} </p>
 
 </div>

@@ -39,6 +39,7 @@ export const aNewForm = (new FormBuilder).group({
       sessions: new FormArray([
         new FormGroup({
           class_types: new FormControl('', Validators.required),
+          venue_types: new FormControl('No preference'),
           sessions_hrs: new FormControl('', Validators.required),
           profs_involved: new FormArray([
             new FormGroup({
@@ -185,12 +186,18 @@ describe('CreateCourseComponent', () => {
     component.ngOnInit();
     fixture.whenStable().then(() => {
       expect(component.newForm.valid).toBeFalsy();
-      let errors = {};
-      let email = component.newForm.controls['courseDetails'];
-      errors = email.errors || {};
-      expect(errors['required']).toBeTruthy(); 
+      let errors = [];
+      let courseDetails = component.newForm.controls['courseDetails'];
+      let no_classes = component.newForm.controls['no_classes'];
+      let core = component.newForm.controls['core'];
+      let prof_list = component.newForm.controls['prof_list'];
+      let sessions = component.newForm.controls['sessions'];
+      errors = [courseDetails.errors, no_classes.errors, core.errors,
+        prof_list.errors, sessions.errors];
+      for(let i=0; i< errors.length; i++){
+        expect(errors[i]['required']).toBeTruthy();   
+      }
    })
-    
   });
 
 

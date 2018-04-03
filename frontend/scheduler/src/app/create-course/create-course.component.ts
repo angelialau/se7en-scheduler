@@ -59,12 +59,7 @@ export class CreateCourseComponent implements OnInit {
         new FormGroup({
           class_types: new FormControl('', Validators.required),
           venue_types: new FormControl('No preference', Validators.required),
-          sessions_hrs: new FormControl('', Validators.required),
-          profs_involved: new FormArray([
-            new FormGroup({
-              profId: new FormControl('')
-            })
-          ])
+          sessions_hrs: new FormControl('', Validators.required)
         })
       ]), 
     })
@@ -89,23 +84,7 @@ export class CreateCourseComponent implements OnInit {
       new FormGroup({
         class_types: new FormControl('', Validators.required),
         venue_types: new FormControl('No preference'),
-        sessions_hrs: new FormControl('', Validators.required),
-        profs_involved: new FormArray([
-          new FormGroup({
-            profId: new FormControl('')
-          })
-        ]),
-      })
-    );
-  }
-
-  addProfToSession(sessionId:number){ 
-    console.log("addProfToSession sessions:",this.sessions);
-    console.log("addProfToSession sessionId:",sessionId);
-    let session= this.newForm.get('sessions.'+sessionId+'.profs_involved');
-    (<FormArray>session).push(
-      new FormGroup({
-        profId: new FormControl('', Validators.required)
+        sessions_hrs: new FormControl('', Validators.required),        
       })
     );
   }
