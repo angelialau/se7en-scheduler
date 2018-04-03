@@ -17,3 +17,4 @@ export class Event{
 }
 
 export const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
