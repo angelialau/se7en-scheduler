@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { User } from './../../models/user.model';
 import { Course, Session, CourseDetail, courseDetails, class_type, 
-  durations } from './../../models/course.model';
+  durations, venue_type } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
 import { UserService } from './../services/user.service';
 
@@ -20,6 +20,7 @@ export class CreateCourseComponent implements OnInit {
   courseDetails = courseDetails; 
   instructors : User[]= []; 
   class_type = class_type; 
+  venue_type = venue_type;
   durations = durations;
   newForm: FormGroup;
   no_classesRange = this.createRange(12);
@@ -57,6 +58,7 @@ export class CreateCourseComponent implements OnInit {
       sessions: new FormArray([
         new FormGroup({
           class_types: new FormControl('', Validators.required),
+          venue_types: new FormControl('No preference', Validators.required),
           sessions_hrs: new FormControl('', Validators.required),
           profs_involved: new FormArray([
             new FormGroup({
@@ -86,6 +88,7 @@ export class CreateCourseComponent implements OnInit {
     this.sessions.push(
       new FormGroup({
         class_types: new FormControl('', Validators.required),
+        venue_types: new FormControl('No preference'),
         sessions_hrs: new FormControl('', Validators.required),
         profs_involved: new FormArray([
           new FormGroup({
@@ -160,6 +163,7 @@ export class CreateCourseComponent implements OnInit {
     let no_sessions = data.sessions.length;
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
+    let venue_types : string = this.sessionsParser(data.sessions, "venue_types");
     let split = null;
     this.prof_listParser();
     let instructors : string = this.tempInstructors;
@@ -167,7 +171,7 @@ export class CreateCourseComponent implements OnInit {
 
     let course: Course = new Course(
       schedule_id,term,course_no,course_name,core,no_classes,
-      class_size,no_sessions,sessions_hrs,class_types,instructors,instructor_ids,split); 
+      class_size,no_sessions,sessions_hrs,class_types,venue_types,instructors,instructor_ids,split); 
     console.log(course);
     return course;
   }
@@ -298,8 +302,16 @@ export class CreateCourseComponent implements OnInit {
       for (let session of sessions){
         array.push(session.class_types);
       } 
+    }else if(param==="venue_types"){
+      for (let session of sessions){
+        array.push(session.venue_types);
+      } 
     }
     return array.join();
+  }
+
+  temp(){
+    console.log(this.sessionsParser(this.newForm.value.sessions, "venue_types"));
   }
 
   get diagnostic() { return JSON.stringify(this.profsInvolved); }

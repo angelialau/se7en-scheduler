@@ -100,8 +100,18 @@
               <label class="input-group-text" for="class_type"> Type of Class </label>
             </div>
             <select class="custom-select" id="class_type"
-              formControlName="class_types">
-              <option *ngFor='let i of class_type' [value]='i'>{{i}}</option>
+              formControlName="class_types" #class>
+              <option *ngFor='let i of class_type' [value]='i' >{{i}}</option>
+            </select>
+          </div>
+          <!-- type of preferred venue -->
+          <div class="input-group mb-3" [hidden]="class.value!='Cohort Based Learning' ">
+            <div class="input-group-prepend">
+              <label class="input-group-text"> Preferred Venue </label>
+            </div>
+            <select class="custom-select" 
+              formControlName="venue_types">
+              <option *ngFor='let i of venue_type' [value]='i' selected="true">{{i}}</option>
             </select>
           </div>
           <!-- duration of each lesson in hours -->
@@ -152,7 +162,7 @@
         <button class="btn btn-warning" id="resetCourseButton"
         (click)="newForm.reset()">Reset</button>
         <!-- <button class="btn btn-dark" 
-        (click)="prof_listParser()">testing parser</button> -->
+        (click)="temp()">testing parser</button> -->
       </div>
     </form>
     <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
