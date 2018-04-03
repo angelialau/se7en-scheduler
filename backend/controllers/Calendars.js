@@ -44,7 +44,7 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 });
 
 // defining filter route
-router.get('/Filter/:day(\\d?)/:sDate(\\.?+)/:eDate(\\.?+)/:stime(\\.?+)/:etime(\\.?+)', function(req, res, next) {
+router.get('/Filter/:day(\\d?)/:sDate(\\.*)/:eDate(\\.*)/:stime(\\.*)/:etime(\\.*)', function(req, res, next) {
 	console.log(req.params);
 })
 
