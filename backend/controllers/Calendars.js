@@ -45,9 +45,10 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 
 // defining filter route
 router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\d{2}-\\d{2})?/?:sTime(\\d{1,2})?/?:eTime(\\d{1,2})?', function(req, res, next) {
+	console.log(req.params);
 	Calendar.filterTimeSlots(req.params, function(err, rows) {
 		utils.basicGetCallback(res, err, rows, null);
-	})
+	});
 })
 
 module.exports = router;
