@@ -36,11 +36,11 @@ export class CreateCourseComponent implements OnInit {
     private route: ActivatedRoute
      ) {
     this.schedule_id = route.snapshot.params['schedule_id'];
-    this.createForm();
-    this.getInstructors();
   }
 
   ngOnInit() {
+    this.createForm();
+    this.getInstructors();
   }
 
   createForm(){ // assumes that u just want to add courses from existing database 

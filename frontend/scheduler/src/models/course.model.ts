@@ -129,4 +129,7 @@ courseDetails.sort((a,b) => parseFloat(a.course_no)-parseFloat(b.course_no));
 export const class_type = ["Cohort Based Learning", "Lecture", "Lab"]
 class_type.sort((a,b) => a.localeCompare(b));
 
+export const venue_type = ["Cohort Classroom", "Think Tank", "Tiered Think Tank", "No preference"]
+class_type.sort((a,b) => a.localeCompare(b));
+
 export const durations = [1,1.5,2,2.5,3]

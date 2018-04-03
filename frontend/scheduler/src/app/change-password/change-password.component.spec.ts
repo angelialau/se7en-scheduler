@@ -13,8 +13,8 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 // component specific imports 
 import { UserService } from './../services/user.service';
-import { MatSnackBar } from '@angular/material';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
+  SimpleSnackBar } from '@angular/material';
 
 import { ChangePasswordComponent } from './change-password.component';
 
@@ -29,6 +29,8 @@ describe('ChangePasswordComponent', () => {
   let fixture: ComponentFixture<ChangePasswordComponent>;
   let userServiceStub : MockUserService;
   let testBedUserService : MockUserService;
+  let snackBarStub : MatSnackBar;
+  let snackBarSpy : jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,6 +60,8 @@ describe('ChangePasswordComponent', () => {
     component = fixture.componentInstance;
     testBedUserService = TestBed.get(UserService);
     userServiceStub = fixture.debugElement.injector.get(UserService);
+    snackBarStub = fixture.debugElement.injector.get(MatSnackBar);
+    snackBarSpy = spyOn(snackBarStub, 'open').and.returnValue(MatSnackBarRef);
 
     fixture.detectChanges();
   });
@@ -73,10 +77,10 @@ describe('ChangePasswordComponent', () => {
   );
 
   it('should have user service instantiated', () => {
-    expect(userServiceStub instanceof MockUserService).toBeTruthy();
+    expect(userServiceStub instanceof MockUserService).toBe(true);
   });
 
-  it('should invoke snackbar when changing password', () => {
+  it('should invoke service when changing password', () => {
     const spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
       Observable.of(HttpResponse)
     );
@@ -86,6 +90,14 @@ describe('ChangePasswordComponent', () => {
 
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
+  })
+
+  it('should invoke snackbar when changing password', () => {
+    component.changePassword('password', 'passwordNew', 'passwordNewWrong');
+
+    fixture.detectChanges();
+    expect(snackBarStub instanceof MatSnackBar).toBe(true);
+    expect(snackBarSpy).toHaveBeenCalled();
   })
 
   it('should not invoke service when new passwords dont match', () => {
