@@ -67,8 +67,10 @@ describe('CreateCourseComponent', () => {
     component = fixture.componentInstance;
     testBedUserService = TestBed.get(UserService);
     userServiceStub = fixture.debugElement.injector.get(UserService);
+
     testBedScheduleService = TestBed.get(ScheduleService);
     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
+    
     formSubmitButton = fixture.debugElement.nativeElement.querySelector("#addCourseSubmitButton");
     fixture.autoDetectChanges();
   });
