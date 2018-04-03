@@ -1,17 +1,20 @@
+// general testing imports 
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { UserService } from './../services/user.service';
-import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+// general imports 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+// component specific imports 
+import { UserService } from './../services/user.service';
+import { MatSnackBar } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 
 import { ChangePasswordComponent } from './change-password.component';
 
