@@ -86,23 +86,23 @@ var Calendar = {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
 		var tokens = "1";
 		var dayFilter = COLUMN_DAY + "=?";
-		var sTimeFilter = "(" + COLUMN_START + "<=?" + " AND " + COLUMN_END + ">?)";
-		var eTimeFilter = "(" + COLUMN_START + "<?" + " AND " + COLUMN_END + ">=?)";
+		var sTimeFilter = "(" + COLUMN_START + ">=?" + " AND " + COLUMN_START + "<?)";
+		var eTimeFilter = "(" + COLUMN_END + ">?" + " AND " + COLUMN_END + "<=?)";
 		var params = [];
 
 		if (data.sTime && data.eTime) {
 			tokens = sTimeFilter + " OR " + eTimeFilter;
 			params.push(data.sTime);
-			params.push(data.sTime);
 			params.push(data.eTime);
+			params.push(data.sTime);
 			params.push(data.eTime);
 		} else if (data.sTime) {
 			tokens = sTimeFilter;
 			params.push(data.sTime);
-			params.push(data.sTime);
+			params.push(data.eTime);
 		} else if (data.eTime) {
 			tokens = eTimeFilter;
-			params.push(data.eTime);
+			params.push(data.sTime);
 			params.push(data.eTime);
 		}
 
