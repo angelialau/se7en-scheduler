@@ -81,6 +81,37 @@ var Calendar = {
 						" WHERE " + COLUMN_SCHEDULE_ID + "=?",
 						[schedule_id],
 						callback);
+	},
+	filterTimeSlots:function(data, callback) {
+		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
+		var dayFilter = COLUMN_DAY + "=?";
+		var timeFilter = COLUMN_START + ">?" + " AND " + COLUMN_END + "<?";
+		var params = [];
+		var i = 0;
+
+		if (data.day) {
+			selectStatement += dayFilter;
+			params[i] = data.day;
+			i++;
+		}
+		if (data.sTime) {
+			if (i > 0) {
+				selectStatement += " AND ";
+			}
+			selectStatement += timeFilter;
+			params[i] = data.sTime;
+			i++;
+		}
+		if (data.eTime) {
+			if (i > 0) {
+				selectStatement += " AND ";
+			}
+			selectStatement += timeFilter;
+			params[i] = data.eTime;
+			i++;
+		}
+
+		return db.query(selectStatement, params, callback);
 	}
 };
 
