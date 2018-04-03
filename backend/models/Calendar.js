@@ -100,7 +100,8 @@ var Calendar = {
 			}
 			selectStatement += timeFilter;
 			params[i] = data.sTime;
-			i++;
+			params[i+1] = data.sTime;
+			i+=2;
 		}
 		if (data.eTime) {
 			if (i > 0) {
@@ -108,7 +109,8 @@ var Calendar = {
 			}
 			selectStatement += timeFilter;
 			params[i] = data.eTime;
-			i++;
+			params[i+1] = data.eTime;
+			i+=2;
 		}
 
 		return db.query(selectStatement, params, callback);
