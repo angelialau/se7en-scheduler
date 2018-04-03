@@ -84,34 +84,34 @@ var Calendar = {
 	},
 	filterTimeSlots:function(data, callback) {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
+		var tokens = "1";
 		var dayFilter = COLUMN_DAY + "=?";
-		var timeFilter = COLUMN_START + "<?" + " AND " + COLUMN_END + ">?";
+		var sTimeFilter = "(" + COLUMN_START + "<=?" + " AND " + COLUMN_END + ">?)";
+		var eTimeFilter = "(" + COLUMN_START + "<?" + " AND " + COLUMN_END + ">=?)";
 		var params = [];
-		var i = 0;
+
+		if (data.sTime && data.eTime) {
+			tokens = sTimeFilter + " OR " + eTimeFilter;
+			params.push(data.sTime);
+			params.push(data.sTime);
+			params.push(data.eTime);
+			params.push(data.eTime);
+		} else if (data.sTime) {
+			tokens = sTimeFilter;
+			params.push(data.sTime);
+			params.push(data.sTime);
+		} else if (data.eTime) {
+			tokens = eTimeFilter;
+			params.push(data.eTime);
+			params.push(data.eTime);
+		}
 
 		if (data.day) {
-			selectStatement += dayFilter;
-			params[i] = data.day;
-			i++;
+			tokens = "(" + tokens + ") AND " + dayFilter;
+			params.push(data.day);
 		}
-		if (data.sTime) {
-			if (i > 0) {
-				selectStatement += " AND ";
-			}
-			selectStatement += timeFilter;
-			params[i] = data.sTime;
-			params[i+1] = data.sTime;
-			i+=2;
-		}
-		if (data.eTime) {
-			if (i > 0) {
-				selectStatement += " AND ";
-			}
-			selectStatement += timeFilter;
-			params[i] = data.eTime;
-			params[i+1] = data.eTime;
-			i+=2;
-		}
+
+		selectStatement += tokens;
 
 		return db.query(selectStatement, params, callback);
 	}
