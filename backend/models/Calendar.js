@@ -85,7 +85,7 @@ var Calendar = {
 	filterTimeSlots:function(data, callback) {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
 		var dayFilter = COLUMN_DAY + "=?";
-		var timeFilter = COLUMN_START + ">?" + " AND " + COLUMN_END + "<?";
+		var timeFilter = COLUMN_START + "<?" + " AND " + COLUMN_END + ">?";
 		var params = [];
 		var i = 0;
 
