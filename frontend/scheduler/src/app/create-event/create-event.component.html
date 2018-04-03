@@ -1,5 +1,4 @@
-<div class="container">
-  <div class="form-container">
+<div class="container mx-auto">
     <h6 class="card-subtitle mb-2 text-muted">Search for suitable timeslots</h6>
     <p>Testing: {{diagnostic}}</p>
     <form #searchingForm="ngForm">
@@ -104,11 +103,11 @@
     <br>
     <h6 class="card-subtitle mb-2 text-muted">Event details</h6>
 
-    <div *ngIf="timeslots.length ==0" class="w-75 p-3 mb-2 bg-info text-white">
+    <div *ngIf="timeslots.length ==0" class="p-3 mb-2 bg-info text-white">
       Sorry, there are no slots available. 
     </div>
 
-  <div class="form-container">
+  <div>
     <!-- list of instructors -->
     <div class="form-group">
       <div class="input-group">
@@ -125,7 +124,7 @@
     </div>
   </div>
 
-  <div class="form-container">
+  <div>
     <form #addingForm="ngForm">
       <!-- name of event -->
       <div class="form-group">
@@ -160,6 +159,5 @@
         (click)="addEvent(); addingForm.reset()"><i class="fas fa-plus-circle"></i> Submit Event</button>
       </div>
     </form>
-  </div>    
 </div>
 <br><br>
