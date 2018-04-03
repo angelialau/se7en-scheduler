@@ -47,7 +47,34 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\d{2}-\\d{2})?/?:sTime(\\d{1,2})?/?:eTime(\\d{1,2})?', function(req, res, next) {
 	console.log(req.params);
 	Calendar.filterTimeSlots(req.params, function(err, rows) {
-		utils.basicGetCallback(res, err, rows, null);
+		if (err) {
+			err.success = false;
+			res.json(err);
+		} else {
+			var weekdays = [];
+
+			// creating array of possible timings
+			for (var i = 0; i < 5; i++) {
+				var day = [];
+				for (var j = 1; j < 20; j++) {
+					day.push(j);
+				}
+				weekdays.push(day);
+			}
+
+			// remove unavailable slots
+			for (var i = 0; i < rows.length; i++) {
+				var j = rows[i].start
+				while (j < rows[i].end+1) {
+					var index = weekday[rows[i].day-1].indexOf(j);
+					if (index != -1) {
+						weekday[rows[i].day-1].splice(index, 1);
+					}
+					j++;
+				}
+			}
+			res.json(weekdays);
+		}
 	});
 })
 
