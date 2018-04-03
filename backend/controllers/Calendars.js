@@ -73,7 +73,12 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 					j++;
 				}
 			}
-			res.json(weekdays);
+
+			if (req.params.day) {
+				res.json(weekdays[req.params.day]);
+			} else {
+				res.json(weekdays);
+			}
 		}
 	});
 })
