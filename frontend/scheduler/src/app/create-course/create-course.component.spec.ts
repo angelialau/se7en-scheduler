@@ -166,17 +166,15 @@ describe('CreateCourseComponent', () => {
     expect(component.prof_list instanceof FormArray).toBe(true);
   })
 
-  // it('should increase the size of sessions when adding a session to course', () => {
-  //   expect(component.sessions.length).toEqual(1);
-
-  //   let sessionSpy = spyOn(component.sessions, "push");
-  //   component.addSessionToCourse();
+  it('should invoke push methods of form array when adding items', () => {
+    let sessionSpy = spyOn(component.sessions, "push");
+    let profListSpy = spyOn(component.prof_list, "push");
+    component.addSessionToCourse();
+    component.addProfToCourse()
     
-  //   expect(sessionSpy).toHaveBeenCalled();
-  //   fixture.whenStable().then(() => {
-  //     expect(component.sessions.length).toBeGreaterThan(1);  
-  //   })
-  // })
+    expect(sessionSpy).toHaveBeenCalled();
+    expect(profListSpy).toHaveBeenCalled();
+  })
 
   it('should have an invalid form when empty', () => {
     expect(component.newForm.valid).toBeFalsy();
@@ -196,6 +194,58 @@ describe('CreateCourseComponent', () => {
         prof_list.errors, sessions.errors];
       for(let i=0; i< errors.length; i++){
         expect(errors[i]['required']).toBeTruthy();   
+      }
+   })
+  });
+
+  it('should return the correct course after filling up form', () => {
+    component.ngOnInit();
+    fixture.whenStable().then(() => {
+      expect(component.newForm.valid).toBeFalsy();
+      let errors = [];
+      let courseDetails = component.newForm.controls['courseDetails'];
+      courseDetails.setValue('50.004');
+      
+      let no_classes = component.newForm.controls['no_classes'];
+      no_classes.setValue('1');
+
+      let class_size = component.newForm.controls['no_classes'];
+      class_size.setValue('1');
+      
+      let core = component.newForm.controls['core'];
+      core.setValue('1');
+      
+      let prof_list = component.newForm.controls['prof_list'];
+      prof_list.setValue([ { "id": "57" } ]);
+      
+      let sessions = component.newForm.controls['sessions'];
+      sessions.setValue([ { 
+        "class_types": "Cohort Based Learning", 
+        "venue_types": "Cohort Classroom", 
+        "sessions_hrs": "1.5" } ]);
+      expect(component.newForm.valid).toBeTruthy();
+      let result = component.translateDataToCourse();
+      expect(result instanceof Course).toBe(true);
+      expect(result).toEqual( new Course(
+        3,
+        4,
+        "50.004",
+        "Introduction to Algorithms",
+        1,
+        1,
+        1,
+        1,
+        "1.5",
+        "No preference",
+        "Cohort Based Learning",
+        "Gemma Roig",
+        "57",
+        "null")
+    )
+      errors = [courseDetails.errors, no_classes.errors, core.errors,
+        prof_list.errors, sessions.errors];
+      for(let i=0; i< errors.length; i++){
+        expect(errors[i]['pattern']).toBeFalsy();   
       }
    })
   });
