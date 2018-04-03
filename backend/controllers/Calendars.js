@@ -43,13 +43,9 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 	}
 });
 
-// defining get day route
-router.get('/Filter/:day(\\d?)/:sDate(\\d?)', function(req, res, next) {
-	if (req.params.day) {
-		console.log(req.params.day);
-	} else{
-		console.log("Null day");
-	}
+// defining filter route
+router.get('/Filter/:day(\\d?)/:sDate(\\.*)/:eDate(\\.*)/:stime(\\.*)/:etime(\\.*)', function(req, res, next) {
+	console.log(req.params);
 })
 
 module.exports = router;

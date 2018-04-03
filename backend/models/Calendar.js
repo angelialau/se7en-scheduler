@@ -11,6 +11,7 @@ var COLUMN_PROF_ID = "prof_id";
 var COLUMN_COHORT = "cohort";
 var COLUMN_LOCATION = "location";
 var COLUMN_DAY = "day";
+var COLUMN_DATE = "date";
 var COLUMN_START = "start";
 var COLUMN_END = "end";
 
@@ -25,6 +26,7 @@ var Calendar = {
 		cohort:null,
 		location:null,
 		day:null,
+		date:null,
 		start:null,
 		end:null
  	},
@@ -39,10 +41,11 @@ var Calendar = {
 			COLUMN_PROF_ID + "`,`" +
 			COLUMN_COHORT + "`,`" +
 			COLUMN_LOCATION + "`,`" +
-			COLUMN_DAY + "`,`" + 
+			COLUMN_DAY + "`,`" +
+			COLUMN_DATE + "`,`"  + 
 			COLUMN_START + "`,`" +
 			COLUMN_END + "`)" + 
-			" VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
 			[data.schedule_id,
 			 data.term,
 			 data.pillar,
@@ -52,6 +55,7 @@ var Calendar = {
 			 data.cohort,
 			 data.location,
 			 data.day,
+			 data.date,
 			 data.start,
 			 data.end],
 			 callback);
