@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angul
 import { Course } from './../../models/course.model'
 import { Schedule } from './../../models/schedule.model'
 import { Observable } from 'rxjs/Rx';
+import { DatePipe } from '@angular/common';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -10,13 +11,13 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ScheduleService {
-
   private url : string = "http://devostrum.no-ip.info:6666";
   headers = new HttpHeaders({ 
     'Content-Type': 'application/x-www-form-urlencoded' 
   });
   
   constructor(
+    private datePipe: DatePipe,
     private http: HttpClient) { }
 
   // creating a new schedule
@@ -137,6 +138,10 @@ export class ScheduleService {
     }
     console.error(errorMessage);
     return Observable.throw(errorMessage);
+  }
+
+  getTodayDate() {
+    return this.datePipe.transform(Date.now(), 'yyyy-MM-dd').toString(); 
   }
 
 }

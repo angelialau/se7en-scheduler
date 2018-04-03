@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { UserService } from './../services/user.service';
+import { ScheduleService } from './../services/schedule.service';
 import { Announcement } from './../../models/announcement.model'
 import { User } from './../../models/user.model'
 import { MatSnackBar } from '@angular/material';
@@ -11,18 +12,19 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./create-announcement.component.css']
 })
 export class CreateAnnouncementComponent implements OnInit {
-  // loggedInUser: User = this.userService.getLoggedInUser();
-  today: string = this.transformDate(Date.now()).toString();
+  today : string;
   newAnnouncement : Announcement = new Announcement(this.today);
   
   constructor(
     private userService: UserService,
+    private scheduleService: ScheduleService,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     ) { 
   }
 
   ngOnInit() {
+    this.today = this.scheduleService.getTodayDate();
     this.initialiseAnnouncement();
   }
 
@@ -51,10 +53,6 @@ export class CreateAnnouncementComponent implements OnInit {
 
   initialiseAnnouncement(){
     this.newAnnouncement = new Announcement(this.today);
-  }
-
-  transformDate(date) {
-    return this.datePipe.transform(date, 'yyyy-MM-dd'); //whatever format you need. 
   }
 
   get diagnostic() { return JSON.stringify(this.newAnnouncement)};

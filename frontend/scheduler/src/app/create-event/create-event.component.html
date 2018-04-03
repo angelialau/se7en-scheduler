@@ -1,7 +1,7 @@
 <div class="container">
   <div class="form-container">
     <h6 class="card-subtitle mb-2 text-muted">Search for suitable timeslots</h6>
-    <!-- <p>Testing: {{diagnostic}}</p> -->
+    <p>Testing: {{diagnostic}}</p>
     <form #searchingForm="ngForm">
       <!-- day of week -->
       <div class="form-group">
@@ -26,7 +26,7 @@
               <div class="input-group-prepend">
                 <label class="input-group-text" for="startDate"> Start Date</label>
               </div>
-              <input type="date" id="startDate"  class="form-control"
+              <input type="date" id="startDate"  class="form-control" #startDate min="today"
                [(ngModel)]="searchForm.startDate" name="startDate" />
                <span class="validity"></span>
             </div>
@@ -39,13 +39,14 @@
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="endDate"> End Date</label>
                 </div>
-                <input type="date" id="endDate"  class="form-control"
+                <input type="date" id="endDate"  class="form-control" #endDate min="today" 
                  [(ngModel)]="searchForm.endDate" name="endDate" />
                  <span class="validity"></span>
               </div>
             </div>
         </div>
       </div>
+
       <!-- times -->
       <div class="row">
         <div class="col">
@@ -91,8 +92,10 @@
       </div>
       
       <div>
-        <button type="submit" class="btn btn-primary" 
+        <button type="submit" class="btn btn-primary" id="searchTimeButton" #searchBtn
         (click)="searchForTimeSlot()"><i class="fas fa-search"></i> Get timeslots</button>
+        <button class="btn btn-warning" id="resetSearchButton"
+        (click)="searchingForm.reset()"><i class="fas fa-redo"></i> Clear search</button>
       </div>
     </form>
   </div>
@@ -100,6 +103,10 @@
     <div class="dropdown-divider"></div>
     <br>
     <h6 class="card-subtitle mb-2 text-muted">Event details</h6>
+
+    <div *ngIf="timeslots.length ==0" class="w-75 p-3 mb-2 bg-info text-white">
+      Sorry, there are no slots available. 
+    </div>
 
   <div class="form-container">
     <!-- list of instructors -->
