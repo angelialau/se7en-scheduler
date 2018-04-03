@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { UserService } from './../services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpResponse } from '@angular/common/http';
-
+import { By } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
@@ -78,10 +78,20 @@ describe('ChangePasswordComponent', () => {
       Observable.of(HttpResponse)
     );
 
-    let button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
+    let button = fixture.debugElement.query(By.css("#submitChangePasswordFormButton"));    
+    button.triggerEventHandler("click", null);
 
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
+  })
+
+  it('should not invoke service when new passwords dont match', () => {
+    component.changePassword('password', 'passwordNew', 'passwordNewWrong');
+    const spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
+      Observable.of(HttpResponse)
+    );
+
+    fixture.detectChanges();
+    expect(spy).not.toHaveBeenCalled();
   })
 });

@@ -8,10 +8,6 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-  private oldPassword : string;
-  private newPassword : string;
-  private confirmPassword : string;
-
   constructor(
     private userService : UserService,
     public snackBar : MatSnackBar,
