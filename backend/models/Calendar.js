@@ -88,9 +88,10 @@ var Calendar = {
 		var dayFilter = COLUMN_DAY + "=?";
 		var sTimeFilter = "(" + COLUMN_START + ">=?" + " AND " + COLUMN_START + "<?)";
 		var eTimeFilter = "(" + COLUMN_END + ">?" + " AND " + COLUMN_END + "<=?)";
-		var scheduleFilter = " AND " + COLUMN_SCHEDULE_ID + "=?";
+		var scheduleFilter = COLUMN_SCHEDULE_ID + "=?";
 		var params = [];
 
+		// filter by start and end times
 		if (data.sTime && data.eTime) {
 			tokens = sTimeFilter + " OR " + eTimeFilter;
 			params.push(data.sTime);
@@ -107,16 +108,17 @@ var Calendar = {
 			params.push(data.eTime);
 		}
 
+		// filter by day of week
 		if (data.day) {
 			tokens = "(" + tokens + ") AND " + dayFilter;
 			params.push(data.day);
 		}
 
-		selectStatement += tokens;
-		selectStatement += scheduleFilter;
+		// choose only relevant schedules
+		tokens = "(" + tokens + ") AND " + scheduleFilter;
 		params.push(schedule_id);
-		console.log(selectStatement);
 
+		selectStatement += tokens;
 		return db.query(selectStatement, params, callback);
 	}
 };
