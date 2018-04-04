@@ -82,12 +82,13 @@ var Calendar = {
 						[schedule_id],
 						callback);
 	},
-	filterTimeSlots:function(data, callback) {
+	filterTimeSlots:function(data, schedule_id, callback) {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
 		var tokens = "1";
 		var dayFilter = COLUMN_DAY + "=?";
 		var sTimeFilter = "(" + COLUMN_START + ">=?" + " AND " + COLUMN_START + "<?)";
 		var eTimeFilter = "(" + COLUMN_END + ">?" + " AND " + COLUMN_END + "<=?)";
+		var scheduleFilter = " AND " + COLUMN_SCHEDULE_ID + "=?";
 		var params = [];
 
 		if (data.sTime && data.eTime) {
@@ -112,6 +113,8 @@ var Calendar = {
 		}
 
 		selectStatement += tokens;
+		selectStatement += scheduleFilter;
+		params.push(schedule_id);
 
 		return db.query(selectStatement, params, callback);
 	}
