@@ -95,7 +95,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			}
 
 			// remove based on today's day
-			available[0].splice(0,todaysDay);
+			available[0].splice(0,5);
 
 			// add dates
 			var current = new Date();
