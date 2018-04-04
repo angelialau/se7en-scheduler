@@ -115,11 +115,11 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 })
 
 function incrementDate(date) {
-	var day = date.getDay;
+	var day = date.getDay();
 	if (day != 5) {
-		date.setDate(date.getDate+1);
+		date.setDate(date.getDate()+1);
 	} else {
-		date.setDate(date.getDate+3);
+		date.setDate(date.getDate()+3);
 	}
 }
 
