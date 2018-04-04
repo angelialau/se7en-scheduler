@@ -51,28 +51,42 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			err.success = false;
 			res.json(err);
 		} else {
-			var weekdays = [];
+			var todaysDate = new Date();
+			var todaysDay = todaysDate.getDay()%6;
+			var num_weeks = 5;
 
-			// creating array of possible timings
-			for (var i = 0; i < 5; i++) {
-				var day = [];
-				for (var j = 1; j < 20; j++) {
-					day.push(j);
+			// create five weeks of possible timings
+			var available = []
+			for (var week = 0; week < num_weeks; week++) {
+				// creating a week of possible timings
+				var weekdays = [];
+				for (var day = 0; day < 5; day++) {
+					var hours = [];
+					for (var hour = 1; hour < 20; hour++) {
+						hours.push(hour);
+					}
+					weekdays.push(hours);
 				}
-				weekdays.push(day);
+				available.push(weekdays);
 			}
 
-			// remove unavailable slots
+			// remove unavailable timings
 			for (var i = 0; i < rows.length; i++) {
 				var j = rows[i].start
 				while (j < rows[i].end) {
-					var index = weekdays[rows[i].day-1].indexOf(j);
-					if (index != -1) {
-						weekdays[rows[i].day-1].splice(index, 1);
-					}
+					// go through week by week
+					for (var week = 0; week < num_weeks; week++) {
+						var index = available[week][rows[i].day-1].indexOf(j);	
+						if (index != -1) {
+							weekdays[rows[i].day-1].splice(index, 1);
+						}
+					}	
 					j++;
 				}
 			}
+
+			// remove based on today's day
+			available[0].splice(0,todaysDay);
 
 			if (req.params.day) {
 				res.json(weekdays[req.params.day-1]);
