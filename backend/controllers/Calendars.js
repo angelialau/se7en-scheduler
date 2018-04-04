@@ -54,18 +54,20 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			var todaysDate = new Date();
 			var todaysDay = todaysDate.getDay()%6;
 			var num_weeks = 5;
+			var current = new Date();
 
 			// create five weeks of possible timings
 			var available = []
 			for (var week = 0; week < num_weeks; week++) {
 				// creating a week of possible timings
-				var weekdays = [];
+				var weekdays = {};
 				for (var day = 0; day < 5; day++) {
 					var hours = [];
+					current.setDate(current.getDate + 1);
 					for (var hour = 1; hour < 20; hour++) {
 						hours.push(hour);
 					}
-					weekdays.push(hours);
+					weekdays[current.getDate] = hours;
 				}
 				available.push(weekdays);
 			}
