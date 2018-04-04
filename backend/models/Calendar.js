@@ -115,6 +115,7 @@ var Calendar = {
 		selectStatement += tokens;
 		selectStatement += scheduleFilter;
 		params.push(schedule_id);
+		console.log(selectStatement);
 
 		return db.query(selectStatement, params, callback);
 	}
