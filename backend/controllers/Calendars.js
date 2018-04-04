@@ -94,7 +94,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 				output.push([]);
 				available.forEach(function(day) {
 					current.setDate(current.getDate() + 1);
-					output[week][current.getDate()] = day;
+					output[week][current.toDateString()] = day;
 				})
 				current.setDate(current.getDate() + 2);
 			}
