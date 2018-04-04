@@ -63,6 +63,9 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			if (req.params.eTime) {
 				endTime = req.params.eTime;
 			}
+			console.log(req.params);
+			console.log(startTime);
+			console.log(endTime);
 
 			// create five weeks of possible timings
 			var available = []
@@ -78,8 +81,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 				}
 				available.push(weekdays);
 			}
-
-			console.log(available);
+			
 			// remove unavailable timings
 			for (var i = 0; i < rows.length; i++) {
 				var j = rows[i].start
