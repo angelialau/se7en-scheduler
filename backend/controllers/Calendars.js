@@ -88,11 +88,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			// remove based on today's day
 			available[0].splice(0,todaysDay);
 
-			if (req.params.day) {
-				res.json(weekdays[req.params.day-1]);
-			} else {
-				res.json(weekdays);
-			}
+			res.json(available);
 		}
 	});
 })
