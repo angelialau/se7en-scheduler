@@ -97,6 +97,15 @@ export class CreateCourseComponent implements OnInit {
         newArray.push(course);
       }
     }   
+    newArray.sort(function(a,b) {
+      if(a.pillar.localeCompare(b.pillar) === 0){
+        if(a.term == b.term){
+          return a.course_no.localeCompare(b.course_no);  
+        }else{ return a.term - b.term; }
+      }else{
+        return a.pillar.localeCompare(b.pillar);
+      }
+    })
     return newArray;
   }
 

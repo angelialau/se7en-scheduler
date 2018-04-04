@@ -51,36 +51,36 @@ export const courseDetails = [
     term : 6,
     pillar: "ISTD"
   },
-  // {
-  //   course_no: "50.001",
-  //   course_name: "Introduction to Information Systems & Programming", 
-  //   term : 4,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.002",
-  //   course_name: "Computation Structures", 
-  //   term : 4,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.004",
-  //   course_name: "Introduction to Algorithms", 
-  //   term : 4,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "01.110",
-  //   course_name: "Computational Fabrication", 
-  //   term : 8,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.021",
-  //   course_name: "Artificial Intelligence", 
-  //   term : 8,
-  //   pillar: "ISTD"
-  // },
+  {
+    course_no: "50.001",
+    course_name: "Introduction to Information Systems & Programming", 
+    term : 4,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.002",
+    course_name: "Computation Structures", 
+    term : 4,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.004",
+    course_name: "Introduction to Algorithms", 
+    term : 4,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "01.110",
+    course_name: "Computational Fabrication", 
+    term : 8,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.021",
+    course_name: "Artificial Intelligence", 
+    term : 8,
+    pillar: "ISTD"
+  },
   {
     course_no: "50.006",
     course_name: "User Interface Design and Implementation", 
@@ -105,24 +105,24 @@ export const courseDetails = [
     term : 7,
     pillar: "ISTD"
   },
-  // {
-  //   course_no: "50.003",
-  //   course_name: "Elements of Software Construction", 
-  //   term : 5,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.005",
-  //   course_name: "Computer System Engineering", 
-  //   term : 5,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.034",
-  //   course_name: "Introduction to Probability and Statistics", 
-  //   term : 5,
-  //   pillar: "ISTD"
-  // }, 
+  {
+    course_no: "50.003",
+    course_name: "Elements of Software Construction", 
+    term : 5,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.005",
+    course_name: "Computer System Engineering", 
+    term : 5,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.034",
+    course_name: "Introduction to Probability and Statistics", 
+    term : 5,
+    pillar: "ISTD"
+  }, 
   {
     course_no: "30.104",
     course_name: "Dynamics", 
@@ -220,6 +220,42 @@ export const courseDetails = [
     pillar: "EPD"
   }, 
   {
+    course_no: "30.117",
+    course_name: "Electric Power Systems Analysis and Design", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.119",
+    course_name: "Intelligent Robotics", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.200",
+    course_name: "Micro-Nano Projects Laboratory", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.201",
+    course_name: "Wireless Communications and Internet of Things", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.202",
+    course_name: "Design of Intelligent Digital Integrated Circuits and Systems", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.207",
+    course_name: "Structural Mechanics and Design", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
     course_no: "40.001",
     course_name: "Probability", 
     term : 6,
@@ -288,7 +324,13 @@ export const courseDetails = [
 
 ]
 
-courseDetails.sort((a,b) => parseFloat(a.course_no)-parseFloat(b.course_no));
+// courseDetails.sort(function(a,b) {
+//         if(a.pillar.localeCompare(b.pillar) === 0){
+//           return a.course_no.localeCompare(b.course_no);
+//         } else{
+//           return 
+//         }
+//       });
 
 export const class_type = ["Cohort Based Learning", "Lecture", "Lab"]
 class_type.sort((a,b) => a.localeCompare(b));

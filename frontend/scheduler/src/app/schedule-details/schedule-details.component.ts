@@ -43,9 +43,11 @@ export class ScheduleDetailsComponent implements OnInit {
     this.scheduleService.getCoursesInSchedule(id)
     .subscribe( 
       response => {
-        if(response.status == 200){
+        if(response.body.success){
           let array : Course[] = response.body;
           this.courses = array;
+        }else if(response.body.message == "no rows found"){
+          this.courses = new Array<any>;
         }else{
           console.log("error getting courses for schedule:"); 
           console.log(response);
