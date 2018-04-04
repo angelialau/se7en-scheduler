@@ -91,12 +91,12 @@ describe('CreateEventComponent', () => {
 
   it('should initialise schedule id and form options at ngOnInit', ()=>{
     fixture.detectChanges()
-    expect(component.schedule_id).toBe('4');
+    expect(Number(component.schedule_id)).toBe(4);
     expect(component.today).toBe(scheduleServiceStub.getTodayDate());
     expect(component.searchForm instanceof Event).toBeTruthy();
-    expect(component.searchForm.schedule_id).toBe('4');
+    expect(Number(component.searchForm.schedule_id)).toBe(4);
     expect(component.newEvent instanceof Event).toBeTruthy();
-    expect(component.newEvent.schedule_id).toBe('4');
+    expect(Number(component.newEvent.schedule_id)).toBe(4);
     expect(component.timeslots).toEqual([]);    
   })
 
