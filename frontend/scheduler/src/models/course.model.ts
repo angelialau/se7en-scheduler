@@ -51,36 +51,36 @@ export const courseDetails = [
     term : 6,
     pillar: "ISTD"
   },
-  {
-    course_no: "50.001",
-    course_name: "Introduction to Information Systems & Programming", 
-    term : 4,
-    pillar: "ISTD"
-  },
-  {
-    course_no: "50.002",
-    course_name: "Computation Structures", 
-    term : 4,
-    pillar: "ISTD"
-  },
-  {
-    course_no: "50.004",
-    course_name: "Introduction to Algorithms", 
-    term : 4,
-    pillar: "ISTD"
-  },
-  {
-    course_no: "01.110",
-    course_name: "Computational Fabrication", 
-    term : 8,
-    pillar: "ISTD"
-  },
-  {
-    course_no: "50.021",
-    course_name: "Artificial Intelligence", 
-    term : 8,
-    pillar: "ISTD"
-  },
+  // {
+  //   course_no: "50.001",
+  //   course_name: "Introduction to Information Systems & Programming", 
+  //   term : 4,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "50.002",
+  //   course_name: "Computation Structures", 
+  //   term : 4,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "50.004",
+  //   course_name: "Introduction to Algorithms", 
+  //   term : 4,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "01.110",
+  //   course_name: "Computational Fabrication", 
+  //   term : 8,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "50.021",
+  //   course_name: "Artificial Intelligence", 
+  //   term : 8,
+  //   pillar: "ISTD"
+  // },
   {
     course_no: "50.006",
     course_name: "User Interface Design and Implementation", 
@@ -105,23 +105,89 @@ export const courseDetails = [
     term : 7,
     pillar: "ISTD"
   },
+  // {
+  //   course_no: "50.003",
+  //   course_name: "Elements of Software Construction", 
+  //   term : 5,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "50.005",
+  //   course_name: "Computer System Engineering", 
+  //   term : 5,
+  //   pillar: "ISTD"
+  // },
+  // {
+  //   course_no: "50.034",
+  //   course_name: "Introduction to Probability and Statistics", 
+  //   term : 5,
+  //   pillar: "ISTD"
+  // }, 
   {
-    course_no: "50.003",
-    course_name: "Elements of Software Construction", 
-    term : 5,
-    pillar: "ISTD"
+    course_no: "30.104",
+    course_name: "Dynamics", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.108",
+    course_name: "Material Science", 
+    term : 6,
+    pillar: "EPD"
   },
   {
-    course_no: "50.005",
-    course_name: "Computer System Engineering", 
-    term : 5,
-    pillar: "ISTD"
-  },
+    course_no: "30.203",
+    course_name: "Topics in Biomedical and Healthcare Engineering", 
+    term : 6,
+    pillar: "EPD"
+  },  
   {
-    course_no: "50.034",
-    course_name: "Introduction to Probability and Statistics", 
-    term : 5,
-    pillar: "ISTD"
+    course_no: "30.113",
+    course_name: "Design and Fabrication Microelectromechanical Systems (MEMS)", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.114",
+    course_name: "Advanced Feedback and Control", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "40.001",
+    course_name: "Probability", 
+    term : 6,
+    pillar: "ESD"
+  }, 
+  {
+    course_no: "40.002",
+    course_name: "Optimisation", 
+    term : 6,
+    pillar: "ESD"
+  }, 
+  {
+    course_no: "40.011",
+    course_name: "Data and Business Analytics", 
+    term : 6,
+    pillar: "ESD"
+  }, 
+  {
+    course_no: "01.104",
+    course_name: "Networked Life", 
+    term : 7,
+    pillar: "ESD"
+  }, 
+  {
+    course_no: "40.004",
+    course_name: "Statistics", 
+    term : 7,
+    pillar: "ESD"
+  }, 
+  {
+    course_no: "40.012",
+    course_name: "Manufacturing and Service Operations", 
+    term : 7,
+    pillar: "ESD"
   }, 
 ]
 
