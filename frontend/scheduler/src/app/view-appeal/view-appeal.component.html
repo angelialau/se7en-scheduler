@@ -10,14 +10,16 @@
       <th></th>
     </tr>
   </thead>
+  <tbody>
     <tr *ngFor = "let appeal of appeals">
       <td *ngFor = "let col of columns">
         {{appeal[col]}}
       </td>
       <td> 
+        <button class="btn btn-light"><i class="fas fa-eye"></i></button>
         <button (click)="deleteAppeal(appeal.id)" 
-          class="btn btn-light" 
-          style="float: right;"><i class="fas fa-trash-alt"></i></button></td>
+          class="btn btn-light"><i class="fas fa-trash-alt"></i></button></td>
     </tr>
+  </tbody>
 </table>
 </div>

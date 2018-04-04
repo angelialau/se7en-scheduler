@@ -19,18 +19,18 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./schedule.component.css']
 })
 export class ScheduleComponent implements OnInit {
-	calendarOptions: Options;
-	displayEvent: any;
+  calendarOptions: Options;
   user : User = this.userService.getLoggedInUser();
   isAdmin: boolean = false;
   scheduledata: any ;
+  fulldataset: any;
   specificPillar: string = "ASD"; //default ASD view for admins
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
 
   
-    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
+   @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(
     protected eventService: EventService,
@@ -46,12 +46,8 @@ export class ScheduleComponent implements OnInit {
     if (this.user.pillar == "Administrator"){
       this.isAdmin = true;
     }
-    this.displayCalendar();
-  }
-
-  displayCalendar(){
       this.eventService.getEvents().subscribe(data => {
-
+        this.fulldataset = data;
       if (this.user.pillar != "Administrator"){
         for (let i of data){
           if (i.instructor == this.user.name && i.id == this.user.id){
@@ -59,16 +55,14 @@ export class ScheduleComponent implements OnInit {
           }
         }
       }
-
       else { // is Administrator
         var allschedules: Object[] = [];
         for (var i = 0; i < data.length; i++){
-          if (data[i].pillar == this.specificPillar){
+          if (data[i].pillar == "ASD"){
             for (let j of data[i].schedule){
               allschedules.push(j);
           }}
        }
-        console.log(allschedules);
         this.scheduledata = allschedules;
       }
      
@@ -86,7 +80,6 @@ export class ScheduleComponent implements OnInit {
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
-
         header: {
           left: 'prev,next',
           center: 'title',
@@ -97,61 +90,48 @@ export class ScheduleComponent implements OnInit {
         events: this.scheduledata
       };
     });
+  }
 
-  }
-  clickButton(model: any) {
-    this.displayEvent = model;
-  }
-  eventClick(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title,
-        allDay: model.event.allDay
-        // other params
-      },
-      duration: {}
-    }
-    this.displayEvent = model;
-  }
-  updateEvent(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title
-        // other params
-      },
-      duration: {
-        _data: model.duration._data
+  changeView(){
+    var pillarschedules: Object[] = [];
+    for (var i = 0; i < this.fulldataset.length; i++){
+      if (this.fulldataset[i].pillar == this.specificPillar){
+        for (let j of this.fulldataset[i].schedule){
+          pillarschedules.push(j);
+        }
       }
     }
-    this.displayEvent = model;
-  }
+
+    this.scheduledata = pillarschedules;
+
+    /* Not elegant but I'll deal with it again
+    cus refetchEvents not working... :()
+    */
+    this.ucCalendar.fullCalendar('removeEvents');
+    this.ucCalendar.fullCalendar('addEventSource', this.scheduledata);
+    this.ucCalendar.fullCalendar('rerenderEvents');
+
+    }
+
   displayASD(){
     console.log("ASD calendar view");
     this.specificPillar = "ASD";
+    this.changeView();
   }
   displayEPD(){
     console.log("EPD calendar view");
     this.specificPillar = "EPD";
-
-    this.displayCalendar();
+    this.changeView();
   }
   displayESD(){
     console.log("ESD calendar view");
     this.specificPillar = "ESD";
-
-    this.displayCalendar();
+    this.changeView();
   }
   displayISTD(){
     console.log("ISTD calendar view");
     this.specificPillar = "ISTD";
-    console.log(this.specificPillar);
-    this.displayCalendar();
+    this.changeView();
   }
 
   showForm(){
