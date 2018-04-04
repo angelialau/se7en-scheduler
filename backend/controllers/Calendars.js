@@ -55,6 +55,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			var num_weeks = 3;
 			var startTime = 0;
 			var endTime = 19;
+			var output = {};
 
 			if (req.params.sTime) {
 				startTime = parseInt(req.params.sTime);
@@ -64,50 +65,58 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 				endTime = parseInt(req.params.eTime);
 			}
 		
-			// create five weeks of possible timings
-			var available = []
-			for (var week = 0; week < num_weeks; week++) {
-				// creating a week of possible timings
-				var weekdays = [];
-				for (var day = 0; day < 5; day++) {
-					var hours = [];
-					for (var hour = startTime; hour < endTime+1; hour++) {
-						hours.push(hour);
-					}
-					weekdays.push(hours);
-				}
-				available.push(weekdays);
-			}
+			utils.availableRooms.forEach(function(room){
 
-			// remove unavailable timings
-			for (var i = 0; i < rows.length; i++) {
-				var j = rows[i].start
-				while (j < rows[i].end) {
-					// go through week by week
-					for (var week = 0; week < num_weeks; week++) {
-						var index = available[week][rows[i].day-1].indexOf(j);	
-						if (index != -1) {
-							available[week][rows[i].day-1].splice(index, 1);
+				// create five weeks of possible timings
+				var available = []
+				for (var week = 0; week < num_weeks; week++) {
+					// creating a week of possible timings
+					var weekdays = [];
+					for (var day = 0; day < 5; day++) {
+						var hours = [];
+						for (var hour = startTime; hour < endTime+1; hour++) {
+							hours.push(hour);
+						}
+						weekdays.push(hours);
+					}
+					available.push(weekdays);
+				}
+
+				// remove unavailable timings
+				for (var i = 0; i < rows.length; i++) {
+					// only care if it concerns current room
+					if (rows[i].location === room) {
+						var j = rows[i].start
+						while (j < rows[i].end) {
+							// go through week by week
+							for (var week = 0; week < num_weeks; week++) {
+								var index = available[week][rows[i].day-1].indexOf(j);	
+								if (index != -1) {
+									available[week][rows[i].day-1].splice(index, 1);
+								}
+							}	
+							j++;
 						}
 					}	
-					j++;
 				}
-			}
 
-			// remove based on today's day
-			if (todaysDay < 5) {
-				available[0].splice(0,todaysDay);
-			}
-			
-			// add dates
-			var current = new Date();
-			var output = {}
-			for (var week = 0; week < num_weeks; week++) {
-				available[week].forEach(function(day) {
-					incrementDate(current);
-					output[current.toDateString()] = day;
-				})
-			}
+				// remove based on today's day
+				if (todaysDay < 5) {
+					available[0].splice(0,todaysDay);
+				}
+				
+				// add dates
+				var current = new Date();
+				var roomAvailability = {}
+				for (var week = 0; week < num_weeks; week++) {
+					available[week].forEach(function(day) {
+						incrementDate(current);
+						roomAvailability[current.toDateString()] = day;
+					});
+				}
+
+				output[room] = roomAvailability;
+			});
 
 			res.json(output);
 		}
