@@ -25,7 +25,7 @@
     Make an appeal</button></span>
 
     <span *ngIf = "show">
-    <form #newAppeal="ngForm">
+    <form #AppealForm="ngForm">
     	<br>
       <!-- title of announcement -->
       <div class="form-group">
@@ -55,7 +55,7 @@
       <!-- send to -->
 
       <button type="submit" class="btn btn-success" style="float: right;" 
-      [disabled]="newAppeal.form.invalid" 
+      [disabled]="AppealForm.form.invalid" 
       (click)="makeAppeal()">
         <i class="fas fa-bullhorn"></i> Make Appeal
       </button>

@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable } from 'rxjs/Rx';
 import { User } from './../../models/user.model';
 import { Announcement } from './../../models/announcement.model';
+import { Appeal } from './../../models/appeal.model';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -133,5 +134,37 @@ export class UserService {
     }
     console.error(errorMessage);
     return Observable.throw(errorMessage);
+  }
+
+  makeAppeals(appeal: Appeal): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('title', appeal.title);
+    body.set('content', appeal.content);
+    body.set('instructor',this.loggedInUser.name);
+    body.set('instructorId', String(this.loggedInUser.id));
+    body.set('pillar', this.loggedInUser.pillar);
+    body.set('scheduleId', String(this.loggedInUser.id)); //change this to scheduleid
+    let extension = this.url + '/Appeals';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+    getAppeals() : Observable<Appeal[]>{
+    return this.http.get<Appeal[]>(this.url + '/Appeals', { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
+    deleteAppeal(id: number): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('id', String(id)); 
+    let extension = this.url + '/Appeals/Delete';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  getAppealColumns(): string[]{
+    return ["instructor", "pillar", "title", "content", "date"];
   }
 }

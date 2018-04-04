@@ -9,7 +9,8 @@ import { User } from './../../models/user.model';
 import { EventService } from './../services/event.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { Appeal} from './../../models/appeal.model'
+import { Appeal} from './../../models/appeal.model';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class ScheduleComponent implements OnInit {
   specificPillar: string = "ASD"; //default ASD view for admins
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
-  newAppeal: Appeal = new Appeal(this.user.name, this.user.pillar,this.today);
+  newAppeal: Appeal = new Appeal(this.today);
 
   
     @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
@@ -35,7 +36,8 @@ export class ScheduleComponent implements OnInit {
     protected eventService: EventService,
     private userService: UserService,
     private router: Router,
-    private datePipe: DatePipe) {}
+    private datePipe: DatePipe,
+    private snackBar: MatSnackBar,) {}
 
   ngOnInit() {
 
@@ -161,10 +163,24 @@ export class ScheduleComponent implements OnInit {
   }
 
   initialiseAppeal(){
-    this.newAppeal = new Appeal(this.user.name, this.user.pillar, this.today, "", "");
+    this.newAppeal = new Appeal(this.today);
   }
 
   makeAppeal(){
-    
+    let errorMsg : string = "Something went wrong with making appeal, please try again later!";
+    this.userService.makeAppeals(this.newAppeal).subscribe(response =>{
+      if (JSON.parse(response).success){
+        this.snackBar.open("Appeal made!", null, {duration:1000});
+        this.initialiseAppeal();
+      }
+      else{
+        this.snackBar.open(errorMsg,null,{duration:1000});
+      }
+    }, 
+     error => {
+       this.snackBar.open(errorMsg, null, {duration:1000});
+       console.log("sever error in making appeal")
+     })
+
   }
 }
