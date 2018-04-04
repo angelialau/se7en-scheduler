@@ -21,6 +21,7 @@ import { Announcement } from './../../models/announcement.model'
 import { User } from './../../models/user.model'
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations } from './../../models/course.model';
+import { courseSorted, courseUnsorted, courseTestInput } from './test';
 
 import { CreateCourseComponent } from './create-course.component';
 
@@ -101,7 +102,15 @@ describe('CreateCourseComponent', () => {
 
     let creatFormSpy = spyOn(component, 'createForm');
     let getInstructorsSpy = spyOn(component, 'getInstructors').and.callThrough();
-    // let serviceSpy = spyOn(userServiceStub, ['getAllInstructors','map']);
+    let schedSpy = spyOn(scheduleServiceStub, 'getSchedule').and.callFake(()=>{
+      let options, currArray;
+      component.filterHelper(options, currArray);
+    });
+    let filterHelperSpy = spyOn(component, 'filterHelper');
+    let filterSpy = spyOn(component, 'filterCourseDetails').and.callFake(()=>{
+      let id;
+      scheduleServiceStub.getSchedule(id);
+    });
 
     component.ngOnInit()
     
@@ -109,6 +118,9 @@ describe('CreateCourseComponent', () => {
     expect(component.instructors).toBeDefined();
     expect(creatFormSpy).toHaveBeenCalled();
     expect(getInstructorsSpy).toHaveBeenCalled();
+    expect(filterSpy).toHaveBeenCalled();
+    expect(filterHelperSpy).toHaveBeenCalled();
+    expect(schedSpy).toHaveBeenCalled();
     // expect(serviceSpy).toHaveBeenCalled();
     expect(component.sessions instanceof FormArray).toBe(true);
     expect(component.prof_list instanceof FormArray).toBe(true);
@@ -243,7 +255,7 @@ describe('CreateCourseComponent', () => {
       for(let i=0; i< errors.length; i++){
         expect(errors[i]['pattern']).toBeFalsy();   
       }
-   })
+    })
   })
 
   it('should build the correct course from the form submitted', () => {
@@ -288,7 +300,7 @@ describe('CreateCourseComponent', () => {
       for(let i=0; i< errors.length; i++){
         expect(errors[i]['pattern']).toBeFalsy();   
       }
-   })
+    })
   })
 
   it('should invoke schedule service, course builder and snack bar when adding a course', () => {
@@ -350,9 +362,10 @@ describe('CreateCourseComponent', () => {
   })
 
   it('should return correct name and term when querying course',()=> {
-    let course_no= "50.034";
-    let course_name= "Introduction to Probability and Statistics";
-    let term = 5;
+    component.courseDetails = courseSorted;
+    let course_no= "50.006";
+    let course_name= "User Interface Design and Implementation";
+    let term = 7;
     let pillar= "ISTD";
     
     let output = component.queryCourse(course_no, "course_name");
@@ -364,11 +377,12 @@ describe('CreateCourseComponent', () => {
   })
 
   it('should throw error if course number or param not found when querying course',()=> {    
+    component.courseDetails = courseSorted;
     expect(function(){
       component.queryCourse("50.34", "course_name")
     }).toThrow(new Error('course to be queried not found'));
     expect(function(){
-      component.queryCourse("50.034", "curse_name")
+      component.queryCourse("50.006", "curse_name")
     }).toThrow(new Error('param not found'));
   })
   
@@ -491,9 +505,4 @@ describe('CreateCourseComponent', () => {
     let result = component.sessionsParser(sessions, "sessions_hrs");
     expect(spy).toThrow(new Error('param not found'));
   })
-
-  // test that query is called in where its supposed to be called 
-  // test parsers 
-  // sessionsparser in translator
-  // test that parsers were called when building form
 });

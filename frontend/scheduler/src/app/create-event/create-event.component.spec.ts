@@ -137,7 +137,13 @@ describe('CreateEventComponent', () => {
 
   it('should return the correct day given a specific date', ()=>{
     let d = '2018-04-04';
-    let ans = component.parseDay(new Date(d));
+    let ans = component.parseDate(new Date(d));
     expect(ans).toEqual(3);
+  })
+
+  it('should return the correct index given a specific day', ()=>{
+    component.searchForm.day = 'Monday';
+    let ans = component.parseDay();
+    expect(ans).toEqual(1);
   })
 });

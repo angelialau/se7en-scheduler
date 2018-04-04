@@ -99,7 +99,6 @@ describe('LoginComponent', () => {
   it("should have variables initialised at ngOnInit", () => {
     let nullUser = new User(null,null);
     expect(component.model).toEqual(nullUser);
-    expect(component.user).toBeUndefined();
     expect(component.cookies).toBeUndefined();
   });
 

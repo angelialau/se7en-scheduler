@@ -51,26 +51,6 @@ export class CreateCourseComponent implements OnInit {
     
   }
 
-  // new method
-  // getSchedule(callback){
-  //   this.scheduleService.getSchedule(this.schedule_id).subscribe(
-  //     response => {
-  //       // console.log(response);
-  //       if(response.body.success){
-  //         this.schedule.id = this.schedule_id;
-  //         this.schedule.trimester = response.body.trimester;
-  //         this.schedule.year = response.body.year;
-  //         this.schedule.courses = response.body.courses;
-  //         this.schedule.generated = response.body.generated;
-  //         console.log('trimester:',this.schedule.trimester);
-  //       }
-  //     }, error => {
-  //       console.log("getSchedule error:",error);
-  //     } 
-  //   )
-  //   callback();
-  // }
-
   filterCourseDetails(){
     let trimester = 0;
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
@@ -96,7 +76,8 @@ export class CreateCourseComponent implements OnInit {
       if(options.includes(course.term)){
         newArray.push(course);
       }
-    }   
+    }  
+    console.log('unsorted array',newArray); // for testing
     newArray.sort(function(a,b) {
       if(a.pillar.localeCompare(b.pillar) === 0){
         if(a.term == b.term){
@@ -106,6 +87,7 @@ export class CreateCourseComponent implements OnInit {
         return a.pillar.localeCompare(b.pillar);
       }
     })
+    console.log('sorted array',newArray); // for testing
     return newArray;
   }
 
