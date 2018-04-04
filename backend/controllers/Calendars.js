@@ -73,8 +73,8 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 					var hours = [];
 					for (var hour = startTime; hour < endTime+1; hour++) {
 						hours.push(hour);
+						console.log(hour);
 					}
-					console.log(hours)
 					weekdays.push(hours);
 				}
 				available.push(weekdays);
