@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./view-appeal.component.css']
 })
 export class ViewAppealComponent implements OnInit {
-	announcements : Appeal[] = [];
+	appeals : Appeal[] = [];
 	columns: string[];
 
   constructor(
@@ -24,9 +24,9 @@ export class ViewAppealComponent implements OnInit {
   refreshAppeals(){
     this.userService.getAppeals()
     .map((data: any) => {
-      data.body.sort(function(a,b){
-        return new Date(b.date) - new Date(a.date);
-      });
+      /*data.body.sort(function(a,b){
+        return a.getTime() - b.getTime();
+      });*/
 
       for (let entry of data.body){
         var tempdate = new Date(entry.date);
@@ -64,8 +64,4 @@ export class ViewAppealComponent implements OnInit {
       }
     )
   }
-}
-
-
-
 }

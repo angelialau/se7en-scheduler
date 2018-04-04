@@ -1,5 +1,8 @@
 <div class="container mx-auto">
-<table class="table">
+  <h2 align="center"> Appeals made </h2>
+  <br>
+
+  <table class="table">
   <thead class="thead-light">
     <tr>
       <th *ngFor = "let col of columns">
@@ -8,11 +11,11 @@
     </tr>
   </thead>
     <tr *ngFor = "let appeal of appeals">
-    	<td *ngFor = "let col of columns">
-    		{{appeal[col]}}
-    	</td>
-    	<td> 
-    		<button (click)="deleteAppeal(appeal.id)" 
+      <td *ngFor = "let col of columns">
+        {{appeal[col]}}
+      </td>
+      <td> 
+        <button (click)="deleteAppeal(appeal.id)" 
           class="btn btn-light" 
           style="float: right;"><i class="fas fa-trash-alt"></i></button></td>
     </tr>

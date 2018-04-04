@@ -165,6 +165,6 @@ export class UserService {
   }
 
   getAppealColumns(): string[]{
-    return ["instructor", "pillar", "title", "content", "date"];
+    return ["instructor", "pillar", "title", "date"];
   }
 }
