@@ -95,22 +95,32 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			}
 
 			// remove based on today's day
-			available[0].splice(0,5);
-
+			if (todaysDay < 5) {
+				available[0].splice(0,5);
+			}
+			
 			// add dates
 			var current = new Date();
 			var output = {}
 			for (var week = 0; week < num_weeks; week++) {
 				available[week].forEach(function(day) {
-					current.setDate(current.getDate() + 1);
+					incrementDate(current);
 					output[current.toDateString()] = day;
 				})
-				current.setDate(current.getDate() + 2);
 			}
 
 			res.json(output);
 		}
 	});
 })
+
+function incrementDate(date) {
+	var day = date.getDay;
+	if (day != 5) {
+		date.setDate(date.getDate+1);
+	} else {
+		date.setDate(date.getDate+3);
+	}
+}
 
 module.exports = router;
