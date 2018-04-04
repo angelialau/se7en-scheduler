@@ -45,7 +45,6 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 
 // defining filter route
 router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\d{2}-\\d{2})?/?:sTime(\\d{1,2})?/?:eTime(\\d{1,2})?', function(req, res, next) {
-	console.log(req.params);
 	Calendar.filterTimeSlots(req.params, function(err, rows) {
 		if (err) {
 			err.success = false;
@@ -92,6 +91,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			var current = new Date();
 			var output = []
 			for (var week = 0; week < num_weeks; week++) {
+				output.push([]);
 				available.forEach(function(day) {
 					current.setDate(current.getDate() + 1);
 					output[week][current.getDate()] = day;
