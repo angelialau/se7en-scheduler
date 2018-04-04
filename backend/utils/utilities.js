@@ -56,7 +56,7 @@ var utilities = {
 		}
 	},
 
-	availableRooms:{
+	availableRooms:[
 		"Think Tank 1",
 		"Think Tank 2",
 		"Think Tank 3",
@@ -104,7 +104,7 @@ var utilities = {
 		"Lecture Theatre 3",
 		"Lecture Theatre 4",
 		"Lecture Theatre 5"
-	}
+	]
 }
 
 module.exports=utilities;
