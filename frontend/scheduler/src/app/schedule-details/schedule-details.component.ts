@@ -30,7 +30,8 @@ export class ScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCourses();
-    this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
+    // this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
+    this.generated = true; // for testing
   }
 
   refreshCourses($event?){
