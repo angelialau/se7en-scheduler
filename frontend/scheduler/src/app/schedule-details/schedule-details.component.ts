@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material';
 export class ScheduleDetailsComponent implements OnInit {
   @Input() schedule: Schedule;
   schedule_id : number;
+  generated : boolean;
   courseIDs : string[] = [];
   courses: Course[] = [];
   showCourseList : boolean = true;
@@ -29,6 +30,7 @@ export class ScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCourses();
+    this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
   }
 
   refreshCourses($event?){

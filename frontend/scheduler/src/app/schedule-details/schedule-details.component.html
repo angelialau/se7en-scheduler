@@ -25,28 +25,33 @@
     </div>
   </div>
   
-  
-  <div class="dropdown-divider"></div>
   <!-- form to add an ad hoc event -->
-  <div class="card-body" (click)="showAddEventForm()">
-    <h5 class="card-title text-center" 
-    title="Click to add an event" 
-    id="eventFormTitle"><i class="fas fa-caret-right"></i> Add an Event</h5>
+  <div *ngIf="generated">
+    <div class="dropdown-divider"></div>
+    <div class="card-body" (click)="showAddEventForm()">
+      <h5 class="card-title text-center" 
+      title="Click to add an event" 
+      id="eventFormTitle"><i class="fas fa-caret-right"></i> Add an Event</h5>
+      <div *ngIf="showEventForm">
+        <app-create-event></app-create-event>
+      </div>
+    </div>  
   </div>
-  <div *ngIf="showEventForm">
-    <app-create-event></app-create-event>
-  </div>
-    
-  <div class="dropdown-divider"></div>
+  
   <!-- form to add a new course -->
-  <div class="card-body" (click)="showAddCourseForm()">
-    <h5 class="card-title text-center"
-    title="Click to enrol a course"
-    id="courseFormTitle"><i class="fas fa-caret-right"></i> Add a Course</h5>
-  </div>
-  <div *ngIf="showCourseForm">
-    <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
-    <br>
-  </div>
+  <div>
+    <div class="dropdown-divider"></div>
+    <div class="card-body" (click)="showAddCourseForm()">
+      <h5 class="card-title text-center"
+      title="Click to enrol a course"
+      id="courseFormTitle"><i class="fas fa-caret-right"></i> Add a Course</h5>
+      <div *ngIf="showCourseForm">
+        <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
+        <br>
+      </div>
+    </div>  
+  </div>  
+  
+  
  
 </div>
