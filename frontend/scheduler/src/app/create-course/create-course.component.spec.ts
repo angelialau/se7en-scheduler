@@ -57,6 +57,8 @@ describe('CreateCourseComponent', () => {
   let testBedUserService : MockUserService;
   let scheduleServiceStub : MockScheduleService;
   let testBedScheduleService: MockScheduleService;
+  let snackBar : MatSnackBar;
+  let snackBarSpy : jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -87,7 +89,8 @@ describe('CreateCourseComponent', () => {
     component = fixture.componentInstance;
     testBedUserService = TestBed.get(UserService);
     userServiceStub = fixture.debugElement.injector.get(UserService);
-
+    snackBar = fixture.debugElement.injector.get(MatSnackBar);
+    snackBarSpy = spyOn(snackBar, "open").and.returnValue(MatSnackBarRef);
     testBedScheduleService = TestBed.get(ScheduleService);
     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
     
@@ -132,10 +135,15 @@ describe('CreateCourseComponent', () => {
     expect(component.prof_list instanceof FormArray).toBe(true);
   })
 
-  it('should have a schedule id, and the correct class_type and durations when created', () => {
+  it('should initialise schedule id and form option at ngOnInit', () => {
     expect(component.schedule_id).toBeDefined();
     expect(component.class_type).toBe(class_type);
     expect(component.durations).toBe(durations);
+    expect(component.no_classesRange).toEqual([1,2,3,4,5,6,7,8,9,10,11,12]);
+    expect(component.class_sizeRange).toEqual([ 1, 2, 3, 4, 5, 6, 7, 8, 9,
+     10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
+     28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+     46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60 ]);
   })
 
   it('should invoke user service when getting instructors list', () => {
@@ -144,18 +152,6 @@ describe('CreateCourseComponent', () => {
     );    
     component.getInstructors();    
     expect(userServiceSpy).toHaveBeenCalled();
-  })
-
-  it('should invoke schedule service when adding a course', () => {
-    let spy = spyOn(scheduleServiceStub, 'addCourse').and.returnValue(
-      Observable.of(HttpResponse)
-    );
-
-    let button = fixture.debugElement.query(By.css("#addCourseSubmitButton"));    
-    button.triggerEventHandler("click", null);
-
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalled();
   })
 
   it('should call form reset function when rebuilding form', () => {
@@ -198,7 +194,80 @@ describe('CreateCourseComponent', () => {
    })
   });
 
-  it('should return the correct course after filling up form', () => {
+  it('should call removeAt method when deleting prof or session', () => {
+    let profsISpy = spyOn(component.profsInvolved, "splice");
+    let profListSpy = spyOn(component.prof_list, "removeAt");
+    let sessionSpy = spyOn(component.sessions, "removeAt");
+    let index = 0;
+
+    let prof_list = component.newForm.controls['prof_list'];
+    prof_list.setValue([ { "id": "57" }]);
+    let sessions = component.newForm.controls['sessions'];
+    sessions.setValue([ { 
+      "class_types": "Cohort Based Learning", 
+      "venue_types": "Cohort Classroom", 
+      "sessions_hrs": "1.5" } ]);
+
+    fixture.whenStable().then(()=>{
+      component.deleteProf(index);
+      component.deleteSession(index);
+      // expect(profsISpy).toHaveBeenCalled(); //TODO
+      expect(profListSpy).toHaveBeenCalled();  
+      expect(sessionSpy).toHaveBeenCalled();  
+    })
+  })
+
+  it('should remove prof id and name when user deletes prof', ()=> {
+    component.ngOnInit();
+    fixture.whenStable().then(() => {
+      expect(component.newForm.valid).toBeFalsy();
+      let errors = [];
+      let courseDetails = component.newForm.controls['courseDetails'];
+      courseDetails.setValue('50.004');
+      
+      let no_classes = component.newForm.controls['no_classes'];
+      no_classes.setValue('1');
+
+      let class_size = component.newForm.controls['no_classes'];
+      class_size.setValue('1');
+      
+      let core = component.newForm.controls['core'];
+      core.setValue('1');
+      
+      let prof_list = component.newForm.controls['prof_list'];
+      prof_list.setValue([ { "id": "57" }, { "id": "58" }, { "id": "59" } ]);
+      
+      let sessions = component.newForm.controls['sessions'];
+      sessions.setValue([ { 
+        "class_types": "Cohort Based Learning", 
+        "venue_types": "Cohort Classroom", 
+        "sessions_hrs": "1.5" }, { 
+        "class_types": "Lab", 
+        "venue_types": "No preference", 
+        "sessions_hrs": "2" }  ]);
+      expect(component.newForm.valid).toBeTruthy();
+      component.deleteProf(0);
+      component.deleteSession(0)
+      let result = component.translateDataToCourse();
+      expect(result instanceof Course).toBe(true);
+      expect(result).toEqual( new Course(
+        3,4,"50.004","Introduction to Algorithms",1,1,1,1,
+        "1.5,2",
+        "No preference",
+        "Lab",
+        "David Yau,Subhajit Datta",
+        "58,59",
+        "null")
+    )
+      errors = [courseDetails.errors, no_classes.errors, core.errors,
+        prof_list.errors, sessions.errors];
+      for(let i=0; i< errors.length; i++){
+        expect(errors[i]['pattern']).toBeFalsy();   
+      }
+   })
+  })
+
+  it('should build the correct course from the form submitted', () => {
     component.ngOnInit();
     fixture.whenStable().then(() => {
       expect(component.newForm.valid).toBeFalsy();
@@ -227,14 +296,7 @@ describe('CreateCourseComponent', () => {
       let result = component.translateDataToCourse();
       expect(result instanceof Course).toBe(true);
       expect(result).toEqual( new Course(
-        3,
-        4,
-        "50.004",
-        "Introduction to Algorithms",
-        1,
-        1,
-        1,
-        1,
+        3,4,"50.004","Introduction to Algorithms",1,1,1,1,
         "1.5",
         "No preference",
         "Cohort Based Learning",
@@ -248,8 +310,93 @@ describe('CreateCourseComponent', () => {
         expect(errors[i]['pattern']).toBeFalsy();   
       }
    })
-  });
+  })
 
+  it('should invoke schedule service, course builder and snack bar when adding a course', () => {
+    let schedSpy = spyOn(scheduleServiceStub, 'addCourse').and.returnValue(
+      Observable.of(HttpResponse)
+    );
 
+    component.ngOnInit();
+    fixture.whenStable().then(() => {
+      let sendSpy = spyOn(component, 'onSend');
+      let translateSpy = spyOn(component, 'translateDataToCourse').and.returnValue(Course);
+      let emitSpy = spyOn(component.addedCourse, 'emit');
+      
+      let courseDetails = component.newForm.controls['courseDetails'];
+      courseDetails.setValue('50.004');
+      
+      let no_classes = component.newForm.controls['no_classes'];
+      no_classes.setValue('1');
 
+      let class_size = component.newForm.controls['no_classes'];
+      class_size.setValue('1');
+      
+      let core = component.newForm.controls['core'];
+      core.setValue('1');
+      
+      let prof_list = component.newForm.controls['prof_list'];
+      prof_list.setValue([ { "id": "57" } ]);
+      
+      let sessions = component.newForm.controls['sessions'];
+      sessions.setValue([ { 
+        "class_types": "Cohort Based Learning", 
+        "venue_types": "Cohort Classroom", 
+        "sessions_hrs": "1.5" } ]);
+
+      let button = fixture.debugElement.query(By.css("#addCourseSubmitButton"));    
+      button.triggerEventHandler("click", null);
+
+      fixture.detectChanges();
+      expect(schedSpy).toHaveBeenCalled();
+      expect(sendSpy).toHaveBeenCalled();
+      expect(translateSpy).toHaveBeenCalled();
+      expect(snackBarSpy).toHaveBeenCalled();
+      expect(emitSpy).toHaveBeenCalled();
+    })
+  })
+  
+  it('should generate the right range when creating range', ()=> {
+    let ans = [1,2,3,4,5];
+    let output = component.createRange(5);
+    expect(output).toEqual(ans);
+  })
+
+  it('should throw error when trying to create negative or zero range', () => {
+    let output;
+    expect(function(){output = component.createRange(-3);})
+      .toThrowError('range must start from 1');
+    expect(function(){output = component.createRange(0);})
+      .toThrowError('range must start from 1');
+  })
+
+  it('should return correct name and term when querying course',()=> {
+    let course_no= "50.034";
+    let course_name= "Introduction to Probability and Statistics",;
+    let term = 5;
+    let pillar= "ISTD";
+    
+    let output = component.queryCourse(course_no, "course_name");
+    expect(output).toEqual(course_name);
+    output = component.queryCourse(course_no, "term");
+    expect(output).toEqual(term);
+    output = component.queryCourse(course_no, "pillar");
+    expect(output).toEqual(pillar);
+  })
+
+  it('should throw error if course number or param not found when querying course',()=> {    
+    expect(function(){
+      component.queryCourse("50.34", "course_name")
+    }).toThrow(new Error('course to be queried not found'));
+    expect(function(){
+      component.queryCourse("50.034", "curse_name")
+    }).toThrow(new Error('param not found'));
+  })
+  //test that range created on init 
+  // test query return correct output
+  // test query return exception if course not found 
+  // test that query is called in where its supposed to be called 
+  // test parsers 
+
+  // test that parsers were called when building form
 });

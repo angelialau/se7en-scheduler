@@ -23,8 +23,8 @@ export class CreateCourseComponent implements OnInit {
   venue_type = venue_type;
   durations = durations;
   newForm: FormGroup;
-  no_classesRange = this.createRange(12);
-  class_sizeRange = this.createRange(60);
+  no_classesRange: Array<number>;
+  class_sizeRange : Array<number>;
   profsInvolved : Array<any> = []; // stores selection before passing into final form
   tempInstructors : string;
   tempInstructor_ids : string;
@@ -42,6 +42,8 @@ export class CreateCourseComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.getInstructors();
+    this.no_classesRange = this.createRange(12);
+    this.class_sizeRange = this.createRange(60);
   }
 
   createForm(){ // assumes that u just want to add courses from existing database 
@@ -109,25 +111,17 @@ export class CreateCourseComponent implements OnInit {
   }
   deleteSession(index : number){ this.sessions.removeAt(index); }
 
-  pushToInstructorsArray(prof_name: string, index: number){
-    const instructorListFormArray = <FormArray> this.newForm.get(['sessions', index, 'selectedInstructors']);
-    instructorListFormArray.push(this.formBuilder.group({
-      instructor_name: ''
-    }));
-    console.log(instructorListFormArray.value);
-  }
-
   //for editting courses
-  setSessions(sessions: Session[]){
-    const sessionFormGroups = sessions.map(session => this.formBuilder.group(session));
-    const sessionFormArray = this.formBuilder.array(sessionFormGroups);
-    this.newForm.setControl('sessions', sessionFormArray);
-  }
-  setProfs(prof_list: String[]){
-    const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
-    const profsFormArray = this.formBuilder.array(profsFormGroups);
-    this.newForm.setControl('prof_list', profsFormArray);
-  }  
+  // setSessions(sessions: Session[]){
+  //   const sessionFormGroups = sessions.map(session => this.formBuilder.group(session));
+  //   const sessionFormArray = this.formBuilder.array(sessionFormGroups);
+  //   this.newForm.setControl('sessions', sessionFormArray);
+  // }
+  // setProfs(prof_list: String[]){
+  //   const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
+  //   const profsFormArray = this.formBuilder.array(profsFormGroups);
+  //   this.newForm.setControl('prof_list', profsFormArray);
+  // }  
 
   // turning form into Course
   translateDataToCourse() : Course{
@@ -184,9 +178,14 @@ export class CreateCourseComponent implements OnInit {
   // helper functions
   createRange(n : number) : number[]{
     let x=[];
+    if(n<1){
+      let error = new Error('range must start from 1');
+      error.name = 'WrongRangeException';
+      throw error;
+    }
     let i=1;
-    while(x.push(i++)<n);
-    return x;
+    while(x.push(i++)<n);  
+    return x;  
   }
 
   queryCourse(course_no, param: string): any{
@@ -198,8 +197,19 @@ export class CreateCourseComponent implements OnInit {
         if (param === "course_name"){
           return course.course_name;
         }
+        if(param === "pillar"){
+          return course.pillar;
+        }
+        else{
+          let error = new Error('param not found');
+          error.name = 'NoParamForQueryException';
+          throw error;      
+        }
       }
     }
+    let error = new Error('course to be queried not found');
+    error.name = 'NoCourseForQueryException';
+    throw error;   
   }
   
   showCheckBox(): boolean{
