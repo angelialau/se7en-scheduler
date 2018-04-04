@@ -53,21 +53,19 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 		} else {
 			var todaysDate = new Date();
 			var todaysDay = todaysDate.getDay()%6;
-			var num_weeks = 5;
-			var current = new Date();
+			var num_weeks = 3;
 
 			// create five weeks of possible timings
 			var available = []
 			for (var week = 0; week < num_weeks; week++) {
 				// creating a week of possible timings
-				var weekdays = {};
+				var weekdays = [];
 				for (var day = 0; day < 5; day++) {
 					var hours = [];
-					current.setDate(current.getDate + 1);
 					for (var hour = 1; hour < 20; hour++) {
 						hours.push(hour);
 					}
-					weekdays[current.getDate] = hours;
+					weekdays.push(hours);
 				}
 				available.push(weekdays);
 			}
@@ -90,7 +88,18 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			// remove based on today's day
 			available[0].splice(0,todaysDay);
 
-			res.json(available);
+			// add dates
+			var current = new Date;
+			var output = []
+			for (var week = 0; week < num_weeks; week++) {
+				available.forEach(function(day) {
+					current.setDate(current.getDate + 1);
+					output[week][current.getDate] = day;
+				})
+				current.setDate(current.getDate + 2);
+			}
+
+			res.json(output);
 		}
 	});
 })
