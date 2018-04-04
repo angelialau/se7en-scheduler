@@ -10,6 +10,7 @@ export class Course{
     public no_sessions: number,
     public sessions_hrs: string,
     public class_types: string,
+    public venue_types: string,
     public instructors: string, // names    
     public instructor_ids: string, // ids    
     public split: string,   
@@ -127,6 +128,9 @@ export const courseDetails = [
 courseDetails.sort((a,b) => parseFloat(a.course_no)-parseFloat(b.course_no));
 
 export const class_type = ["Cohort Based Learning", "Lecture", "Lab"]
+class_type.sort((a,b) => a.localeCompare(b));
+
+export const venue_type = [ "No preference", "Cohort Classroom", "Think Tank", "Tiered Think Tank", "Lecture Theatre"]
 class_type.sort((a,b) => a.localeCompare(b));
 
 export const durations = [1,1.5,2,2.5,3]

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { UserService } from './../services/user.service';
 import { ScheduleService } from './../services/schedule.service';
 import { Announcement } from './../../models/announcement.model'
@@ -18,7 +17,6 @@ export class CreateAnnouncementComponent implements OnInit {
   constructor(
     private userService: UserService,
     private scheduleService: ScheduleService,
-    private datePipe: DatePipe,
     private snackBar: MatSnackBar,
     ) { 
   }
