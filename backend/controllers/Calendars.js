@@ -53,6 +53,16 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 			var todaysDate = new Date();
 			var todaysDay = todaysDate.getDay()%6;
 			var num_weeks = 3;
+			var startTime = 0;
+			var endTime = 19;
+
+			if (req.params.sTime) {
+				startTime = req.params.sTime;
+			}
+
+			if (req.params.eTime) {
+				endTime = req.params.eTime;
+			}
 
 			// create five weeks of possible timings
 			var available = []
@@ -61,7 +71,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 				var weekdays = [];
 				for (var day = 0; day < 5; day++) {
 					var hours = [];
-					for (var hour = 1; hour < 20; hour++) {
+					for (var hour = startTime; hour <= endTime; hour++) {
 						hours.push(hour);
 					}
 					weekdays.push(hours);
