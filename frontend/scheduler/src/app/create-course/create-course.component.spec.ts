@@ -505,4 +505,32 @@ describe('CreateCourseComponent', () => {
     let result = component.sessionsParser(sessions, "sessions_hrs");
     expect(spy).toThrow(new Error('param not found'));
   })
+
+  // it('should have proper filter helper', ()=>{
+  //   // component.courseDetails = courseTestInput;
+  //   let options = [[3,5,7],[1,8],[2,4,6]];
+  //   let spy = spyOn(component, 'filterHelper').and.callFake((options: Array<number>, currArray: Array<any>)=>{
+  //     let newArray = [];
+  //     for(let course of currArray){
+  //       if(options.includes(course.term)){
+  //         newArray.push(course);
+  //       }
+  //     }  
+  //     newArray.sort(function(a,b) {
+  //       if(a.pillar.localeCompare(b.pillar) === 0){
+  //         if(a.term == b.term){
+  //           return a.course_no.localeCompare(b.course_no);  
+  //         }else{ return a.term - b.term; }
+  //       }else{
+  //         return a.pillar.localeCompare(b.pillar);
+  //       }
+  //     })
+  //     return newArray;
+  //   });
+
+  //   let ans = component.filterHelper(options, courseTestInput);
+  //   expect(ans).toEqual(courseSorted);
+
+  //   expect(spy).toHaveBeenCalled();
+  // })
 });

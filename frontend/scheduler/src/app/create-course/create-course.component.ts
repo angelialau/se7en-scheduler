@@ -77,7 +77,7 @@ export class CreateCourseComponent implements OnInit {
         newArray.push(course);
       }
     }  
-    console.log('unsorted array',newArray); // for testing
+    // console.log('unsorted array',newArray); // for testing
     newArray.sort(function(a,b) {
       if(a.pillar.localeCompare(b.pillar) === 0){
         if(a.term == b.term){
@@ -87,7 +87,7 @@ export class CreateCourseComponent implements OnInit {
         return a.pillar.localeCompare(b.pillar);
       }
     })
-    console.log('sorted array',newArray); // for testing
+    // console.log('sorted array',newArray); // for testing
     return newArray;
   }
 

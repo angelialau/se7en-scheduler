@@ -65,6 +65,7 @@ describe('NavbarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.administrator).toBeFalsy();
   });
   
   it('should have user service injected and instantiated', () => {
@@ -80,5 +81,29 @@ describe('NavbarComponent', () => {
       expect(injectService).toBe(testBedCookieService);
     });
   });
+
+  it('should invoke cookie service at ngOnInit', ()=>{
+    let spy = spyOn(cookieServiceStub, 'get');
+    component.ngOnInit();
+    fixture.autoDetectChanges();
+    fixture.whenStable().then(()=>{
+      expect(spy).toHaveBeenCalled();
+    })
+  })
+
+  it('should invoke user and cookie services when signing out', ()=>{
+    let spy = spyOn(cookieServiceStub, 'deleteAll');
+    let userspy = spyOn(userServiceStub, 'resetUser');
+    let signoutspy = spyOn(component, 'signOut').and.callThrough();
+    
+    component.signOut();
+
+    fixture.autoDetectChanges();
+    fixture.whenStable().then(()=>{
+      expect(spy).toHaveBeenCalled();
+      expect(userspy).toHaveBeenCalled();
+      expect(signoutspy).toHaveBeenCalled();
+    })
+  })
 
 });
