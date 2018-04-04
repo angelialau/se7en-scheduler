@@ -74,11 +74,11 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 					for (var hour = startTime; hour < endTime+1; hour++) {
 						hours.push(hour);
 					}
+					console.log(hours)
 					weekdays.push(hours);
 				}
 				available.push(weekdays);
 			}
-			console.log(available);
 
 			// remove unavailable timings
 			for (var i = 0; i < rows.length; i++) {
