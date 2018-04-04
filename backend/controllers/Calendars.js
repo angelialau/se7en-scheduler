@@ -78,7 +78,7 @@ router.get('/Filter/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\
 					for (var week = 0; week < num_weeks; week++) {
 						var index = available[week][rows[i].day-1].indexOf(j);	
 						if (index != -1) {
-							weekdays[rows[i].day-1].splice(index, 1);
+							available[week][rows[i].day-1].splice(index, 1);
 						}
 					}	
 					j++;
