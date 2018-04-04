@@ -111,7 +111,7 @@ describe('CreateCourseComponent', () => {
     });
   });
 
-  it('should have schedule service injected and instatiated', () => {
+  it('should have schedule service injected and instantiated', () => {
     expect(scheduleServiceStub instanceof MockScheduleService).toBeTruthy();
     inject([ScheduleService], (injectService: ScheduleService) => {
       expect(injectService).toBe(testBedScheduleService);
@@ -123,7 +123,8 @@ describe('CreateCourseComponent', () => {
     expect(component.instructors).toEqual(new Array);
 
     let creatFormSpy = spyOn(component, 'createForm');
-    let getInstructorsSpy = spyOn(component, 'getInstructors');
+    let getInstructorsSpy = spyOn(component, 'getInstructors').and.callThrough();
+    // let serviceSpy = spyOn(userServiceStub, ['getAllInstructors','map']);
 
     component.ngOnInit()
     
@@ -131,11 +132,12 @@ describe('CreateCourseComponent', () => {
     expect(component.instructors).toBeDefined();
     expect(creatFormSpy).toHaveBeenCalled();
     expect(getInstructorsSpy).toHaveBeenCalled();
+    // expect(serviceSpy).toHaveBeenCalled();
     expect(component.sessions instanceof FormArray).toBe(true);
     expect(component.prof_list instanceof FormArray).toBe(true);
   })
 
-  it('should initialise schedule id and form option at ngOnInit', () => {
+  it('should initialise schedule id and form options at ngOnInit', () => {
     expect(component.schedule_id).toBeDefined();
     expect(component.class_type).toBe(class_type);
     expect(component.durations).toBe(durations);
@@ -372,7 +374,7 @@ describe('CreateCourseComponent', () => {
 
   it('should return correct name and term when querying course',()=> {
     let course_no= "50.034";
-    let course_name= "Introduction to Probability and Statistics",;
+    let course_name= "Introduction to Probability and Statistics";
     let term = 5;
     let pillar= "ISTD";
     
@@ -392,11 +394,129 @@ describe('CreateCourseComponent', () => {
       component.queryCourse("50.034", "curse_name")
     }).toThrow(new Error('param not found'));
   })
-  //test that range created on init 
-  // test query return correct output
-  // test query return exception if course not found 
+  
+  it('should return correct name when querying instructors', ()=>{
+    component.instructors = [
+    new User("david_yau@sutd.edu.sg","password", "ISTD","David Yau", 88881111,58)]
+    let output = component.queryInstructors(58);
+    expect(output).toBe("David Yau");
+  })
+
+  it('should throw error if instructor not found when querying instructors', ()=>{
+    component.instructors = [
+    new User("david_yau@sutd.edu.sg","password", "ISTD","David Yau", 88881111,58)]
+    expect(function(){component.queryInstructors(59)}).toThrow(new 
+      Error("instructor to be queried not found"));
+  })
+
+  it('should update list of profs involved according to checked condition', ()=>{
+    expect(component.profsInvolved).toEqual([]);
+    let mockEvent = {
+      target: {
+        checked: true,
+      },
+    }
+    
+    let spy = spyOn(component,'updateProfsInvolved').and.callThrough();
+    let sessionIndex = 0;
+    let profId = 12;
+
+    component.updateProfsInvolved(mockEvent, sessionIndex, profId);
+    component.updateProfsInvolved(mockEvent, sessionIndex, 13);
+    component.updateProfsInvolved(mockEvent, 1, 13);
+    expect(spy.calls.count()).toEqual(3);
+    expect(component.profsInvolved).toEqual([[12,13],[13]]);
+    
+    let mockUncheckEvent = {
+      target: {
+        checked: false,
+      },
+    }
+    expect(mockUncheckEvent.target.checked).toBeFalsy();
+    sessionIndex = 1;
+    profId = 13;
+    component.updateProfsInvolved(mockUncheckEvent, sessionIndex, profId);
+    expect(spy).toHaveBeenCalledWith(mockUncheckEvent, sessionIndex, profId);
+    expect(component.profsInvolved).toEqual([[12,13],[]]);
+  })
+
+  it('should parse instructors by session when creating course', ()=>{
+    component.instructors = [
+    {
+        "name": "James Wan",
+        "email": "james_wan@sutd.edu.sg",
+        "phone": 64994781,
+        "password": "password",
+        "pillar": "ESD",
+        "schedules": null,
+        "courses": null,
+        "id": 51,
+    },
+    {
+        "name": "Selin Damla Ahipasaoglu",
+        "email": "Ahipasaoglu@sutd.edu.sg",
+        "phone": 64994529,
+        "password": "password",
+        "pillar": "ESD",
+        "schedules": null,
+        "courses": null,
+        "id": 55,
+    },
+    ]
+    component.profsInvolved = [[51],[55],[51,55]]; //51|55|51,55
+    expect(component.tempInstructor_ids).toBeUndefined();
+    expect(component.tempInstructors).toBeUndefined();
+
+    let spy = spyOn(component, 'prof_listParser').and.callThrough();
+    let querySpy = spyOn(component, 'queryInstructors').and.callThrough();
+
+    component.prof_listParser();
+    expect(spy).toHaveBeenCalled();
+    expect(querySpy).toHaveBeenCalled();
+    expect(component.tempInstructor_ids).toEqual("51|55|51,55");
+    expect(component.tempInstructors).toBe("James Wan|Selin Damla Ahipasaoglu|James Wan,Selin Damla Ahipasaoglu");
+  })
+
+  it('should return the correctly delimited string when using sessions parser', ()=>{
+    let sessions = [ { 
+      "class_types": "Cohort Based Learning", 
+      "venue_types": "Cohort Classroom", 
+      "sessions_hrs": "1.5" },
+      { 
+      "class_types": "Lab", 
+      "venue_types": "Think Tank", 
+      "sessions_hrs": "2" },
+      { 
+      "class_types": "Lecture", 
+      "venue_types": "Lecture Theatre", 
+      "sessions_hrs": "3" }
+    ];
+
+    let spy = spyOn(component, 'sessionsParser').and.callThrough();
+
+    let result = component.sessionsParser(sessions, "sessions_hrs");
+    expect(result).toBe('1.5,2,3');
+    result = component.sessionsParser(sessions, "class_types");
+    expect(result).toBe('Cohort Based Learning,Lab,Lecture');
+    result = component.sessionsParser(sessions, "venue_types");
+    expect(result).toBe('Cohort Classroom,Think Tank,Lecture Theatre');
+    expect(spy.calls.count()).toBe(3);
+  })
+
+  it('should throw exception if param not found for session parser', ()=>{
+    let sessions = [ { 
+      "class_types": "Cohort Based Learning", 
+      "venue_types": "Cohort Classroom", 
+      },
+    ];
+    let spy = spyOn(component, 'sessionsParser').and.callThrough();
+    let queryspy = spyOn(component, 'queryInstructors').and.callThrough();
+    let result = component.sessionsParser(sessions, "sessions_hrs");
+    expect(spy).toThrow(new Error('param not found'));
+  })
+
   // test that query is called in where its supposed to be called 
   // test parsers 
-
+  // sessionsparser in translator
   // test that parsers were called when building form
 });

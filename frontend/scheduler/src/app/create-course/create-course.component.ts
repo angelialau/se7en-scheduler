@@ -211,11 +211,6 @@ export class CreateCourseComponent implements OnInit {
     error.name = 'NoCourseForQueryException';
     throw error;   
   }
-  
-  showCheckBox(): boolean{
-    if(this.prof_list.value) { return true; }
-    return false;
-  }
 
   getInstructors(){
     this.userService.getAllInstructors()
@@ -241,7 +236,9 @@ export class CreateCourseComponent implements OnInit {
       if (this.instructors[i].id==profId){
         return this.instructors[i].name;
       }
-    }
+    } let error = new Error("instructor to be queried not found");
+    error.name = 'NoInstructorForQueryException';
+    throw error;
   }
 
   updateProfsInvolved(event, sessionIndex: number, profId: number){
@@ -295,6 +292,10 @@ export class CreateCourseComponent implements OnInit {
       for (let session of sessions){
         array.push(session.venue_types);
       } 
+    }else{
+      let error = new Error('param not found');
+      error.name = 'NoParamForQueryException';
+      throw error; 
     }
     return array.join();
   }
