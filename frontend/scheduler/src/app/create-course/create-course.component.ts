@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { User } from './../../models/user.model';
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
+import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
 import { UserService } from './../services/user.service';
 
@@ -17,6 +18,7 @@ import { UserService } from './../services/user.service';
 export class CreateCourseComponent implements OnInit {
   @Output() addedCourse : EventEmitter<any> = new EventEmitter();
   schedule_id : number;
+  schedule : Schedule;
   courseDetails = courseDetails; 
   instructors : User[]= []; 
   class_type = class_type; 
@@ -40,10 +42,62 @@ export class CreateCourseComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.getSchedule(this.filterCourseDetails);
     this.createForm();
     this.getInstructors();
     this.no_classesRange = this.createRange(12);
     this.class_sizeRange = this.createRange(60);
+    this.filterCourseDetails();
+    
+  }
+
+  // new method
+  // getSchedule(callback){
+  //   this.scheduleService.getSchedule(this.schedule_id).subscribe(
+  //     response => {
+  //       // console.log(response);
+  //       if(response.body.success){
+  //         this.schedule.id = this.schedule_id;
+  //         this.schedule.trimester = response.body.trimester;
+  //         this.schedule.year = response.body.year;
+  //         this.schedule.courses = response.body.courses;
+  //         this.schedule.generated = response.body.generated;
+  //         console.log('trimester:',this.schedule.trimester);
+  //       }
+  //     }, error => {
+  //       console.log("getSchedule error:",error);
+  //     } 
+  //   )
+  //   callback();
+  // }
+
+  filterCourseDetails(){
+    let trimester = 0;
+    this.scheduleService.getSchedule(this.schedule_id).subscribe(
+      response => {
+        if(response.body.success){
+          trimester = response.body.trimester;
+          console.log('trimester:',trimester);
+          let currArray = courseDetails;
+          let options = [[3,5,7],[1,8],[2,4,6]];
+          let index = trimester-1;
+          
+          this.courseDetails = this.filterHelper(options[index], currArray);   
+        }
+      }, error => {
+        console.log("getSchedule error:",error);
+      } 
+    )
+  }
+
+  filterHelper(options: Array<number>, currArray: Array<any>){
+    let newArray = [];
+    for(let course of currArray){
+      if(options.includes(course.term)){
+        newArray.push(course);
+      }
+    }   
+    return newArray;
   }
 
   createForm(){ // assumes that u just want to add courses from existing database 

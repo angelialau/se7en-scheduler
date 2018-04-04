@@ -63,8 +63,8 @@ export class CreateEventComponent implements OnInit {
     // http request to submit event
     this.parseTime(this.searchForm.startTime);
     this.parseTime(this.searchForm.endTime);
-    this.parseDay(this.searchForm.startDate);
-    this.parseDay(this.searchForm.endDate);
+    this.parseDate(this.searchForm.startDate);
+    this.parseDate(this.searchForm.endDate);
     console.log("Create Event: added event!");
     console.log(this.newEvent);
   }
@@ -88,7 +88,7 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
-  public parseTime(time: string): number{
+  parseTime(time: string): number{
     let ans = -1;
     //830 = 0, 1600 = 19
     let hour : number = Number(time.substring(0,2));
@@ -105,9 +105,13 @@ export class CreateEventComponent implements OnInit {
     // console.log(ans);
     return ans;
   }
+  // Monday is 1, Tues is 2 ...
+  parseDate(date: Date): number{
+    return (new Date(date)).getDay();
+  }
 
-  public parseDay(date: Date): number{
-    return (new Date(date)).getDay(); // sunday is 0 
+  parseDay(){ 
+    return days.indexOf(this.searchForm.day) + 1; 
   }
 
   get diagnostic() { return JSON.stringify(this.searchForm)};    

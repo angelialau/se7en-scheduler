@@ -9,7 +9,7 @@
         <select class="custom-select" id="courseDetail"
           formControlName="courseDetail">
           <option *ngFor='let c of courseDetails' [value]=c.course_no>
-            {{c.course_no}} {{c.course_name}}
+            Term {{c.term}} {{c.pillar}} - {{c.course_no}} {{c.course_name}}
           </option>
         </select>
       </div>
