@@ -26,29 +26,6 @@ import { CreateCourseComponent } from './create-course.component';
 
 export class MockUserService extends UserService{}
 export class MockScheduleService extends ScheduleService{}
-export const aNewForm = (new FormBuilder).group({
-      courseDetail: ['', Validators.required], // course object for course number, name, term
-      core: ['', Validators.required],
-      no_classes: ['', Validators.required], // 1-12
-      class_size: ['', Validators.required], // 1-55
-      prof_list: new FormArray([
-        new FormGroup({
-          id: new FormControl('', Validators.required)
-        })
-      ]), // to filter the profs for professors later
-      sessions: new FormArray([
-        new FormGroup({
-          class_types: new FormControl('', Validators.required),
-          venue_types: new FormControl('No preference'),
-          sessions_hrs: new FormControl('', Validators.required),
-          profs_involved: new FormArray([
-            new FormGroup({
-              profId: new FormControl('')
-            })
-          ])
-        })
-      ]), 
-    })
 
 describe('CreateCourseComponent', () => {
   let component: CreateCourseComponent;

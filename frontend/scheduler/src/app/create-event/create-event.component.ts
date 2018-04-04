@@ -92,11 +92,17 @@ export class CreateEventComponent implements OnInit {
     let ans = -1;
     //830 = 0, 1600 = 19
     let hour : number = Number(time.substring(0,2));
+    let min : string = time.substring(3,5);
+    if(hour<8 || hour>16 || (min!="00" && min!="30") || time =="16:30" || time == "08:00"){
+      let error = new Error('invalid time given, should be between 0830 to 1600');
+      error.name = 'InvalidTimeException';
+      throw error;
+    }
     ans = 2 * (hour-8);
-    if (time.substring(3,5) == "00"){
+    if (min == "00"){
       ans--;
     }
-    console.log(ans);
+    // console.log(ans);
     return ans;
   }
 
