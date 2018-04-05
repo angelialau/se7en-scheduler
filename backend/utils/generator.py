@@ -374,7 +374,7 @@ for i in range(5):
     #print("at the loop no.: ",i,"Score is ",score)
 index,score=checkScore()
 formatOutput(rawSchedule[index[0]])
-
+sys.stdout.flush()
 #end=time.time()    
 #print(end-start,end-start1)
 
