@@ -43,6 +43,19 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  getGeneratedStatus(id:number) : boolean{
+    this.getSchedule(id).subscribe(response => {
+      if(response.body.success){
+        if(response.body.generated === 1){
+          return true;
+        }
+      }else{
+        console.log('getGeneratedStatus error', response);
+      }
+    })
+    return false;
+  }
+
   // get courses under a specific schedule
   getCoursesInSchedule(id: number): Observable<any>{
     return this.http.get<Course[]>(this.url + '/Courses/BySchedule/' + id, {observe: 'response'})
@@ -56,6 +69,7 @@ export class ScheduleService {
     body.set('year', String(newSchedule.year)); 
     body.set('courses', newSchedule.courses); 
     body.set('id', String(newSchedule.id)); 
+    body.set('generated', String(newSchedule.generated)); 
     let extension = this.url + '/Schedules/Update';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 

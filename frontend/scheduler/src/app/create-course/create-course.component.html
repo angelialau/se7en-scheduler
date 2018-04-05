@@ -9,7 +9,7 @@
         <select class="custom-select" id="courseDetail"
           formControlName="courseDetail">
           <option *ngFor='let c of courseDetails' [value]=c.course_no>
-            {{c.course_no}} {{c.course_name}}
+            {{c.pillar}} Term {{c.term}} - {{c.course_no}} {{c.course_name}}
           </option>
         </select>
       </div>
@@ -165,7 +165,7 @@
         (click)="temp()">testing parser</button> -->
       </div>
     </form>
-    <p>Form values: {{newForm.value | json : 2 }} </p>
-    <p>Form status: {{newForm.status | json}} </p>
+    <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
+    <p>Form status: {{newForm.status | json}} </p> -->
 
 </div>

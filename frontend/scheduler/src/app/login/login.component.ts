@@ -11,10 +11,8 @@ import { CookieService } from 'ng2-cookies';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  hide = true;
   user: User;
   model: User = new User(null,null);
-  returnURL: string;
   cookies: Object;
 
   constructor(

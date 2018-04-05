@@ -33,7 +33,7 @@ export class UserService {
   }
 
   // used to reset loggedInUser when user signs out 
-  resetUser(user: User){
+  resetUser(){
     this.loggedInUser = new User("not logged in","password hidden");
   }
 

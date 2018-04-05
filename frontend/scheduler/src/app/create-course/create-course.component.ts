@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
 import { User } from './../../models/user.model';
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
+import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
 import { UserService } from './../services/user.service';
 
@@ -17,14 +18,15 @@ import { UserService } from './../services/user.service';
 export class CreateCourseComponent implements OnInit {
   @Output() addedCourse : EventEmitter<any> = new EventEmitter();
   schedule_id : number;
+  schedule : Schedule;
   courseDetails = courseDetails; 
   instructors : User[]= []; 
   class_type = class_type; 
   venue_type = venue_type;
   durations = durations;
   newForm: FormGroup;
-  no_classesRange = this.createRange(12);
-  class_sizeRange = this.createRange(60);
+  no_classesRange: Array<number>;
+  class_sizeRange : Array<number>;
   profsInvolved : Array<any> = []; // stores selection before passing into final form
   tempInstructors : string;
   tempInstructor_ids : string;
@@ -40,8 +42,53 @@ export class CreateCourseComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.getSchedule(this.filterCourseDetails);
     this.createForm();
     this.getInstructors();
+    this.no_classesRange = this.createRange(12);
+    this.class_sizeRange = this.createRange(60);
+    this.filterCourseDetails();
+    
+  }
+
+  filterCourseDetails(){
+    let trimester = 0;
+    this.scheduleService.getSchedule(this.schedule_id).subscribe(
+      response => {
+        if(response.body.success){
+          trimester = response.body.trimester;
+          console.log('trimester:',trimester);
+          let currArray = courseDetails;
+          let options = [[3,5,7],[1,8],[2,4,6]];
+          let index = trimester-1;
+          
+          this.courseDetails = this.filterHelper(options[index], currArray);   
+        }
+      }, error => {
+        console.log("getSchedule error:",error);
+      } 
+    )
+  }
+
+  filterHelper(options: Array<number>, currArray: Array<any>){
+    let newArray = [];
+    for(let course of currArray){
+      if(options.includes(course.term)){
+        newArray.push(course);
+      }
+    }  
+    // console.log('unsorted array',newArray); // for testing
+    newArray.sort(function(a,b) {
+      if(a.pillar.localeCompare(b.pillar) === 0){
+        if(a.term == b.term){
+          return a.course_no.localeCompare(b.course_no);  
+        }else{ return a.term - b.term; }
+      }else{
+        return a.pillar.localeCompare(b.pillar);
+      }
+    })
+    // console.log('sorted array',newArray); // for testing
+    return newArray;
   }
 
   createForm(){ // assumes that u just want to add courses from existing database 
@@ -109,25 +156,17 @@ export class CreateCourseComponent implements OnInit {
   }
   deleteSession(index : number){ this.sessions.removeAt(index); }
 
-  pushToInstructorsArray(prof_name: string, index: number){
-    const instructorListFormArray = <FormArray> this.newForm.get(['sessions', index, 'selectedInstructors']);
-    instructorListFormArray.push(this.formBuilder.group({
-      instructor_name: ''
-    }));
-    console.log(instructorListFormArray.value);
-  }
-
   //for editting courses
-  setSessions(sessions: Session[]){
-    const sessionFormGroups = sessions.map(session => this.formBuilder.group(session));
-    const sessionFormArray = this.formBuilder.array(sessionFormGroups);
-    this.newForm.setControl('sessions', sessionFormArray);
-  }
-  setProfs(prof_list: String[]){
-    const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
-    const profsFormArray = this.formBuilder.array(profsFormGroups);
-    this.newForm.setControl('prof_list', profsFormArray);
-  }  
+  // setSessions(sessions: Session[]){
+  //   const sessionFormGroups = sessions.map(session => this.formBuilder.group(session));
+  //   const sessionFormArray = this.formBuilder.array(sessionFormGroups);
+  //   this.newForm.setControl('sessions', sessionFormArray);
+  // }
+  // setProfs(prof_list: String[]){
+  //   const profsFormGroups = prof_list.map(prof_list => this.formBuilder.group(prof_list));
+  //   const profsFormArray = this.formBuilder.array(profsFormGroups);
+  //   this.newForm.setControl('prof_list', profsFormArray);
+  // }  
 
   // turning form into Course
   translateDataToCourse() : Course{
@@ -184,9 +223,14 @@ export class CreateCourseComponent implements OnInit {
   // helper functions
   createRange(n : number) : number[]{
     let x=[];
+    if(n<1){
+      let error = new Error('range must start from 1');
+      error.name = 'WrongRangeException';
+      throw error;
+    }
     let i=1;
-    while(x.push(i++)<n);
-    return x;
+    while(x.push(i++)<n);  
+    return x;  
   }
 
   queryCourse(course_no, param: string): any{
@@ -198,13 +242,19 @@ export class CreateCourseComponent implements OnInit {
         if (param === "course_name"){
           return course.course_name;
         }
+        if(param === "pillar"){
+          return course.pillar;
+        }
+        else{
+          let error = new Error('param not found');
+          error.name = 'NoParamForQueryException';
+          throw error;      
+        }
       }
     }
-  }
-  
-  showCheckBox(): boolean{
-    if(this.prof_list.value) { return true; }
-    return false;
+    let error = new Error('course to be queried not found');
+    error.name = 'NoCourseForQueryException';
+    throw error;   
   }
 
   getInstructors(){
@@ -231,7 +281,9 @@ export class CreateCourseComponent implements OnInit {
       if (this.instructors[i].id==profId){
         return this.instructors[i].name;
       }
-    }
+    } let error = new Error("instructor to be queried not found");
+    error.name = 'NoInstructorForQueryException';
+    throw error;
   }
 
   updateProfsInvolved(event, sessionIndex: number, profId: number){
@@ -285,6 +337,10 @@ export class CreateCourseComponent implements OnInit {
       for (let session of sessions){
         array.push(session.venue_types);
       } 
+    }else{
+      let error = new Error('param not found');
+      error.name = 'NoParamForQueryException';
+      throw error; 
     }
     return array.join();
   }

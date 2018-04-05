@@ -4,5 +4,6 @@ export class Schedule{
     public year: number, 
     public courses?: string,
     public id?: number,
+    public generated?: number, // 0 or 1
   ) { }
 }
