@@ -86,7 +86,7 @@ var utilities = {
 		output.pillar = event.pillar;
 		output.schedule = [];
 
-		details.title = event.course + "\n\n" + event.location;
+		details.title = event.course + "\n" + event.location + "\n" + event.cohort;
 		details.start = fecha.format(startTime, 'HH:mm');
 		details.end = fecha.format(endTime, 'HH:mm');
 		details.dow = event.day.toString();
@@ -107,7 +107,7 @@ var utilities = {
 		var current = new Date();
 
 		// move current to monday
-		console.log(current.getDate());
+		console.log(current.toString());
 		while (current.getDay() != 1) {
 			this.incrementDate(current);
 		}
