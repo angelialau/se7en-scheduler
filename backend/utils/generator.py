@@ -465,7 +465,7 @@ def formatOutput(schedule):
                         #  +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
                         #  ",end:"+str(endTime) + "}")
                         
-                        print(json.dumps(response))
+                        print(json.dumps(response, separators=(',',':')))
                         time=endTime+1
                     sys.stdout.flush()
                 else:
