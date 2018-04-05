@@ -82,7 +82,11 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				console.log(Course.rowToJSON(rows[8]));
+				var input = {}
+				for (var i = 0; i < Object.keys(rows).length; i++) {
+					input[i] = Course.rowToJSON(rows[i]);
+				}
+				console.log(input);
 
 
 				// var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
