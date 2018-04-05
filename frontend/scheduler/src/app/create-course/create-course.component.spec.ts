@@ -180,7 +180,7 @@ describe('CreateCourseComponent', () => {
       errors = [courseDetails.errors, no_classes.errors, core.errors,
         prof_list.errors, sessions.errors];
       for(let i=0; i< errors.length; i++){
-        expect(errors[i]['required']).toBeTruthy();   
+        expect(errors[i]['required']).toBe(true);   
       }
    })
   });
@@ -211,7 +211,7 @@ describe('CreateCourseComponent', () => {
   it('should remove prof id and name when user deletes prof', ()=> {
     component.ngOnInit();
     fixture.whenStable().then(() => {
-      expect(component.newForm.valid).toBeFalsy();
+      expect(component.newForm.valid).toBe(false);
       let errors = [];
       let courseDetails = component.newForm.controls['courseDetails'];
       courseDetails.setValue('50.004');
@@ -236,7 +236,7 @@ describe('CreateCourseComponent', () => {
         "class_types": "Lab", 
         "venue_types": "No preference", 
         "sessions_hrs": "2" }  ]);
-      expect(component.newForm.valid).toBeTruthy();
+      expect(component.newForm.valid).toBe(true);
       component.deleteProf(0);
       component.deleteSession(0)
       let result = component.translateDataToCourse();
@@ -253,7 +253,7 @@ describe('CreateCourseComponent', () => {
       errors = [courseDetails.errors, no_classes.errors, core.errors,
         prof_list.errors, sessions.errors];
       for(let i=0; i< errors.length; i++){
-        expect(errors[i]['pattern']).toBeFalsy();   
+        expect(errors[i]['pattern']).toBe(false);   
       }
     })
   })
@@ -261,7 +261,7 @@ describe('CreateCourseComponent', () => {
   it('should build the correct course from the form submitted', () => {
     component.ngOnInit();
     fixture.whenStable().then(() => {
-      expect(component.newForm.valid).toBeFalsy();
+      expect(component.newForm.valid).toBe(false);
       let errors = [];
       let courseDetails = component.newForm.controls['courseDetails'];
       courseDetails.setValue('50.004');
@@ -283,7 +283,7 @@ describe('CreateCourseComponent', () => {
         "class_types": "Cohort Based Learning", 
         "venue_types": "Cohort Classroom", 
         "sessions_hrs": "1.5" } ]);
-      expect(component.newForm.valid).toBeTruthy();
+      expect(component.newForm.valid).toBe(true);
       let result = component.translateDataToCourse();
       expect(result instanceof Course).toBe(true);
       expect(result).toEqual( new Course(
@@ -298,7 +298,7 @@ describe('CreateCourseComponent', () => {
       errors = [courseDetails.errors, no_classes.errors, core.errors,
         prof_list.errors, sessions.errors];
       for(let i=0; i< errors.length; i++){
-        expect(errors[i]['pattern']).toBeFalsy();   
+        expect(errors[i]['pattern']).toBe(false);
       }
     })
   })
