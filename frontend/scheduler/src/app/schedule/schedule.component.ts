@@ -3,6 +3,7 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { Calendar } from 'fullcalendar';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
@@ -18,6 +19,7 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css']
 })
+
 export class ScheduleComponent implements OnInit {
   calendarOptions: Options;
   user : User = this.userService.getLoggedInUser();
@@ -28,6 +30,7 @@ export class ScheduleComponent implements OnInit {
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
+  csvFinal: string;
 
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
@@ -37,17 +40,18 @@ export class ScheduleComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private datePipe: DatePipe,
-    private snackBar: MatSnackBar,) {}
+    private snackBar: MatSnackBar) {}
 
   ngOnInit() {
-
     this.initialiseAppeal();
+
+    console.log(this.user);
 
     if (this.user.pillar == "Administrator"){
       this.isAdmin = true;
     }
-      this.eventService.getEvents().subscribe(data => {
-        this.fulldataset = data;
+    this.eventService.getEvents().subscribe(data => {
+      this.fulldataset = data;
       if (this.user.pillar != "Administrator"){
         for (let i of data){
           if (i.instructor == this.user.name && i.id == this.user.id){
@@ -65,18 +69,23 @@ export class ScheduleComponent implements OnInit {
        }
         this.scheduledata = allschedules;
       }
-     
-       this.calendarOptions = {
+
+      this.calendarOptions = {
         editable: false, //make this true to allow editing of events
         handleWindowResize: true,
         height: 590,
         weekends: false, //to hide weekends
         minTime: moment.duration("08:00:00"), //start time
         maxTime: moment.duration("18:00:00"), //end time
-        visibleRange: {
-            start: moment('20180201'),
-            end: moment('20180430')
+        fixedWeekCount: true,
+        /*visibleRange: {
+            start: '2018-03-01',
+            end: '2018-03-15'
          }, //why is this not working :(
+        validRange: {
+            start: '2018-03-01',
+            end: '2018-03-15'
+         },*/ //set this to blank out parts not involved in the term
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
@@ -87,10 +96,15 @@ export class ScheduleComponent implements OnInit {
           //right: 'month,agendaWeek,agendaDay,listMonth'
         },
         displayEventTime: true, //Display event
-        events: this.scheduledata
-      };
+        events: this.scheduledata,
+        eventRender: function(event, element, view) {
+        element.find(".fc-event-content")
+              .append("<b>Description</b>:" + event.description);
+            }
+    };
+
     });
-  }
+}
 
   changeView(){
     var pillarschedules: Object[] = [];
@@ -135,7 +149,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   showForm(){
-    this.show = true;
+    if (this.show){
+      this.show = false;
+    }
+    else if (!this.show){
+      this.show = true;
+    }
   }
 
   transformDate(date) {
@@ -161,6 +180,38 @@ export class ScheduleComponent implements OnInit {
        this.snackBar.open(errorMsg, null, {duration:1000});
        console.log("sever error in making appeal")
      })
+  }
+  downloadCalendar(){
+    var schedule = this.scheduledata;
+    console.log(schedule);
+    var csvHeader = "Subject,Start Time,End Time"
+
+    var header = Object.keys(this.scheduledata[1]);
+    console.log(header);
+    const replacer = (key, value) => value === null ? '' : value;
+    let csv = schedule.map(row => header.map(fieldName =>
+      JSON.stringify(row[fieldName], replacer)).join(','))
+    csv.unshift(header.join(','))
+    this.csvFinal = csv.join('\r\n');
+    console.log(this.csvFinal);
+
+    var filename = "termschedule.csv"; 
+    /*
+    if (!this.csvFinal.match(/^data:text\/csv/i)) {
+        this.csvFinal = 'data:text/csv;charset=utf-8,' + this.csvFinal; //data:text/csv;charset=utf-8
+      }
+        
+    var data = encodeURI(this.csvFinal);
+    var link = document.createElement('a');
+    link.setAttribute('href',data);
+    link.setAttribute('download',filename);
+    link.click();*/
 
   }
 }
+
+
+
+
+
+

@@ -18,6 +18,7 @@ export class EventService {
     private url: string =  'assets/eventdatainstru.json'; //change this link
     private loggedInUser: User;
     private serverUrl : string = "http://devostrum.no-ip.info:6666";
+    private data: any;
     headers = new HttpHeaders({ 
       'Content-Type': 'application/x-www-form-urlencoded' 
     });
@@ -30,8 +31,49 @@ export class EventService {
   }
   
   public getData(){
-      return this.http.get('assets/eventdatainstru.json')
-          .catch(this.handleError);
+    this.data = [{
+        "title": "Long Event Sudipta",
+        "start": "20180307",
+        "end": "20180310"
+      },
+      {
+        "title": "Conference Sudipta",
+        "start": "20180312T08",
+        "end": "20180314T13"
+      },
+      {
+        "title": "Meeting Sudipta",
+        "start": "20180319T1030",
+        "end": "20180319T1230"
+      },
+      {
+        "title": "Lunch Sudipta",
+        "start": "20180319T13",
+        "end": "20180319T14"
+      },
+      {
+        "title": "Meeting Sudipta",
+        "start": "20180321T1030",
+        "end": "20180321T1230"
+      },
+      {
+        "title": "ESC Meeting with Sudipta",
+        "start": "20180323T1030",
+        "end": "20180323T1230"
+      },
+      {
+        "title": "Lunch Break Sudipta",
+        "start": "20180323T1130",
+        "end": "20180323T1330"
+      },
+      {
+        "title": "Click for ISTD Website Sudipta",
+        "url": "http://istd.edu.sg",
+        "start": "20180328T0800",
+        "end": "20180328T1700"
+      }];
+
+      return this.data;
   }
 
   public getEvents(): Observable<any> {

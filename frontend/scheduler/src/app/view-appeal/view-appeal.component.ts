@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material';
 export class ViewAppealComponent implements OnInit {
 	appeals : Appeal[] = [];
 	columns: string[];
+  showhiden: boolean = true;
 
   constructor(
   	private userService: UserService,
@@ -63,5 +64,9 @@ export class ViewAppealComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  showContent(id: number){ //deal with this again
+     //document.getElementById(String(id)).innerHTML= "";
   }
 }
