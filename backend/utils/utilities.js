@@ -107,16 +107,16 @@ var utilities = {
 		var current = new Date();
 
 		// move current to monday
-		console.log(current.toString());
+		console.log(current.toDateString());
 		while (current.getDay() != 1) {
 			this.incrementDate(current);
 		}
-		console.log(current.getDate());
+		console.log(current.toDateString());
 		// move current to day of event
 		while (current.getDay() != event.day) {
 			this.incrementDate(current);
 		}
-		console.log(current.getDate());
+		console.log(current.toDateString());
 
 		output.instructor = event.prof;
 		output.id = event.prof_id;
