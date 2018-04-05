@@ -90,11 +90,10 @@ router.post('/Generate', function(req, res, next) {
 				console.log(JSON.stringify(input));
 				
 				var child = spawn('python3', ['./utils/generator.py', JSON.stringify(input)], options);
-				var result = "";
+				var result = [];
 
 				child.stdout.on('data', function(data) {
-					console.log(data.toString());
-					result += data.toString();
+					result.push(JSON.parse(data.toString()));
 				});
 
 				child.stderr.on('data', function(data) {

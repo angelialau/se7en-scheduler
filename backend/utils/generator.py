@@ -51,8 +51,8 @@ def referenceRows():
         roomType="Cohort Classroom"
         row.append(Room(roomName,roomType))
     for i in range(5):                          #42-46 Lecture Theatres
-        roomName="Lecture Theater "+str(i+1)
-        roomType="Lecture Theater"
+        roomName="Lecture Theatre "+str(i+1)
+        roomType="Lecture Theatre"
         row.append(Room(roomName,roomType))
     row.append(Room("Arms Lab 1,2","Lab"))      #47-51 Labs
     row.append(Room("Arms Lab 3","Lab"))
