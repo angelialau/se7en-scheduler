@@ -24,6 +24,7 @@ export class AppComponent {
   ngOnInit(){
   	if (this.cookieService.get('pillar').length > 1 ){
   		console.log(this.cookieService.get('pillar'));
+      this.userService.getLoggedInUser();
       this.loggedin = true;
   	}
   	else{
@@ -31,5 +32,6 @@ export class AppComponent {
       this.router.navigateByUrl('/login');
       console.log("App: User is not logged in. Please login.");
   	}
+
   }
 }
