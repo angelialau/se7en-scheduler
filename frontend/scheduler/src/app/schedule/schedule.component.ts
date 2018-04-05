@@ -3,7 +3,6 @@ import { CalendarComponent } from 'ng-fullcalendar';
 import { Options } from 'fullcalendar';
 import { Calendar } from 'fullcalendar';
 import * as moment from 'moment';
-import * as $ from 'jquery';
 import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
@@ -12,6 +11,8 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Appeal} from './../../models/appeal.model';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
+import { EventObject } from 'fullcalendar';
 
 
 @Component({
@@ -22,7 +23,6 @@ import { MatSnackBar } from '@angular/material';
 
 export class ScheduleComponent implements OnInit {
   calendarOptions: Options;
-  user : User = this.userService.getLoggedInUser();
   isAdmin: boolean = false;
   scheduledata: any ;
   fulldataset: any;
@@ -31,7 +31,8 @@ export class ScheduleComponent implements OnInit {
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
   csvFinal: string;
-
+  googleSchedule: any;
+  listCourses: any;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -40,21 +41,23 @@ export class ScheduleComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private datePipe: DatePipe,
-    private snackBar: MatSnackBar) {}
+    private snackBar: MatSnackBar,
+    private cookieService: CookieService) {}
 
   ngOnInit() {
     this.initialiseAppeal();
 
-    console.log(this.user);
+    console.log(this.cookieService.get('name'));
 
-    if (this.user.pillar == "Administrator"){
+    if (this.cookieService.get('pillar') == "Administrator"){
       this.isAdmin = true;
     }
+
     this.eventService.getEvents().subscribe(data => {
       this.fulldataset = data;
-      if (this.user.pillar != "Administrator"){
+      if (this.cookieService.get('pillar') != "Administrator"){
         for (let i of data){
-          if (i.instructor == this.user.name && i.id == this.user.id){
+          if (i.instructor == this.cookieService.get('name') && i.id == this.cookieService.get('id')){
             this.scheduledata = i.schedule;
           }
         }
@@ -85,7 +88,7 @@ export class ScheduleComponent implements OnInit {
         validRange: {
             start: '2018-03-01',
             end: '2018-03-15'
-         },*/ //set this to blank out parts not involved in the term
+         }, //set this to blank out parts not involved in the term*/
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
@@ -97,14 +100,40 @@ export class ScheduleComponent implements OnInit {
         },
         displayEventTime: true, //Display event
         events: this.scheduledata,
-        eventRender: function(event, element, view) {
-        element.find(".fc-event-content")
-              .append("<b>Description</b>:" + event.description);
-            }
+        eventRender: function(event, element, view){
+        return (event.ranges.filter(function(range){
+            return (moment(event.start).isBefore(range.end) &&
+                    moment(event.end).isAfter(range.start));
+        }).length)>0;
+    }
     };
+     
+     this.listCourses = []
+    for (let event of this.scheduledata){
+      var course = event.title.replace(/\n/g, " ") + " from " + event.start + " to " + event.end;
+      if (event.dow == 1){
+        course += " on Mondays";
+      }
+      else if (event.dow == 2){
+        course += " on Tuesdays";
+      }
+      else if (event.dow == 3){
+        course += " on Wednesdays";
+      }
+      else if (event.dow == 4){
+        course += " on Thursdays";
+      }
+      else if (event.dow == 5){
+        course += " on Fridays";
+      }
 
-    });
-}
+      this.listCourses.push(course);
+    }
+
+    console.log(this.listCourses);
+
+    });}
+
 
   changeView(){
     var pillarschedules: Object[] = [];
@@ -147,6 +176,11 @@ export class ScheduleComponent implements OnInit {
     this.specificPillar = "ISTD";
     this.changeView();
   }
+  displayHASS(){
+    console.log("HASS calendar view");
+    this.specificPillar = "HASS";
+    this.changeView();
+  }
 
   showForm(){
     if (this.show){
@@ -178,35 +212,47 @@ export class ScheduleComponent implements OnInit {
     }, 
      error => {
        this.snackBar.open(errorMsg, null, {duration:1000});
-       console.log("sever error in making appeal")
+       console.log("sever error in making appeal");
      })
   }
   downloadCalendar(){
-    var schedule = this.scheduledata;
-    console.log(schedule);
-    var csvHeader = "Subject,Start Time,End Time"
+    let errorMsg : string = "Something went wrong with making appeal, please try again later!";
+    this.eventService.getGoogleEvents().subscribe(data => {
+      for (let i of data){
+          if (i.instructor == this.cookieService.get('name') && i.id == this.cookieService.get('id')){
+            console.log(i.schedule);
+            console.log(Object.keys(i.schedule[1]));
+            this.googleSchedule = i.schedule;
 
-    var header = Object.keys(this.scheduledata[1]);
-    console.log(header);
-    const replacer = (key, value) => value === null ? '' : value;
-    let csv = schedule.map(row => header.map(fieldName =>
-      JSON.stringify(row[fieldName], replacer)).join(','))
-    csv.unshift(header.join(','))
-    this.csvFinal = csv.join('\r\n');
-    console.log(this.csvFinal);
+            var header = Object.keys(this.googleSchedule[1]);
+            console.log(header);
+            const replacer = (key, value) => value === null ? '' : value;
+            let csv = this.googleSchedule.map(row => header.map(fieldName =>
+            JSON.stringify(row[fieldName], replacer)).join(','))
+            csv.unshift(header.join(','))
+            this.csvFinal = csv.join('\r\n');
+            console.log(this.csvFinal);
 
-    var filename = "termschedule.csv"; 
-    /*
-    if (!this.csvFinal.match(/^data:text\/csv/i)) {
-        this.csvFinal = 'data:text/csv;charset=utf-8,' + this.csvFinal; //data:text/csv;charset=utf-8
-      }
+            var filename = "termschedule.csv"; 
+    
+            if (!this.csvFinal.match(/^data:text\/csv/i)) {
+                this.csvFinal = 'data:text/csv;charset=utf-8,' + this.csvFinal; //data:text/csv;charset=utf-8
+            }
         
-    var data = encodeURI(this.csvFinal);
-    var link = document.createElement('a');
-    link.setAttribute('href',data);
-    link.setAttribute('download',filename);
-    link.click();*/
+            var googledata = encodeURI(this.csvFinal);
+            var link = document.createElement('a');
+            link.setAttribute('href',googledata);
+            link.setAttribute('download',filename);
+            link.click();
 
+            //window.location.href = "https://calendar.google.com/calendar"
+          }
+        }
+      },
+      error => {
+        this.snackBar.open(errorMsg, null, {duration:1000});
+        console.log("sever error in getting information. Please try again.");
+      });
   }
 }
 

@@ -12,6 +12,9 @@
 		<label class="radio-inline"><span *ngIf = "isAdmin">
 			<input type="radio" name="optradio"
 			(click)="displayISTD()">ISTD</span></label>
+      <label class="radio-inline"><span *ngIf = "isAdmin">
+      <input type="radio" name="optradio"
+      (click)="displayHASS()">HASS</span></label>
 	</div>
 	<div *ngIf="calendarOptions">
 		<ng-fullcalendar #ucCalendar [options]="calendarOptions"></ng-fullcalendar>
@@ -31,14 +34,14 @@
     	<br>
       <!-- title of announcement -->
       <div class="form-group">
-        <div class="input-group">
+        <div class="input-group mb-3">
           <div class="input-group-prepend">
             <label class="input-group-text" for="title"> Title </label>
           </div>
-          <input type="text" id="title" 
-          required class="form-control"
-          placeholder="Enter the class/lecture" 
-           [(ngModel)]="newAppeal.title" name="title" />
+          <select class="custom-select" id="title"
+        [(ngModel)]="newAppeal.title" name="title">
+          <option *ngFor="let course of listCourses">{{course}}</option>
+        </select>
         </div>
       </div>  
       <!-- content -->
