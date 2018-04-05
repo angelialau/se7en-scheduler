@@ -65,7 +65,7 @@ describe('NavbarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.administrator).toBeFalsy();
+    expect(component.administrator).toBeDefined();
   });
   
   it('should have user service injected and instantiated', () => {

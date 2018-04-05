@@ -83,13 +83,17 @@ describe('NotificationsComponent', () => {
       expect(userspy).toHaveBeenCalled();
     })
   })
+  
   it('should invoke user service when deleting announcements', ()=>{
     let snackbarspy = spyOn(snackBar, 'open');
-    let userspy = spyOn(userServiceStub, 'deleteAnnouncement').and.callFake(()=>{
+    let userspy = spyOn(userServiceStub, 'deleteAnnouncement').and.callFake((id)=>{
       snackBar.open('msg');
       return (Observable.of(HttpResponse))
     })
-    component.ngOnInit();
+    let deletespy = spyOn(component, 'deleteAnnouncement').and.callFake((id)=>{
+      userServiceStub.deleteAnnouncement(id);
+    })
+    component.deleteAnnouncement(1);
     fixture.autoDetectChanges();
     fixture.whenStable().then(()=>{
       expect(snackbarspy).toHaveBeenCalled();

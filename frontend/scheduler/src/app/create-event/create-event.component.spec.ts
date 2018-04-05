@@ -93,9 +93,9 @@ describe('CreateEventComponent', () => {
     fixture.detectChanges()
     expect(Number(component.schedule_id)).toBe(4);
     expect(component.today).toBe(scheduleServiceStub.getTodayDate());
-    expect(component.searchForm instanceof Event).toBeTruthy();
+    expect(component.searchForm instanceof Event).toBe(true);
     expect(Number(component.searchForm.schedule_id)).toBe(4);
-    expect(component.newEvent instanceof Event).toBeTruthy();
+    expect(component.newEvent instanceof Event).toBe(true);
     expect(Number(component.newEvent.schedule_id)).toBe(4);
     expect(component.timeslots).toEqual([]);    
   })

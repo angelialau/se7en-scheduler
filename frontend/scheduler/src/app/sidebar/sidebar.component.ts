@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from './../../models/user.model';
-import { UserService } from './../services/user.service';
 import { CookieService } from 'ng2-cookies';
 import { Router } from '@angular/router';
 
@@ -11,9 +9,8 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 	isAdmin: boolean = false;
-	user: User = null;
+
   constructor(
-  	private userService: UserService,
     private cookieService: CookieService,
   	private router: Router,
   	) { }

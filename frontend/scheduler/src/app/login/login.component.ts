@@ -48,10 +48,8 @@ export class LoginComponent implements OnInit {
           this.cookieService.set('email', email);
           this.cookieService.set('schedules', schedules);
           this.cookieService.set('courses', courses);
-
-          let set :boolean = this.userService.setUser(new User(email, this.user.password, pillar, name, phone, id, schedules, courses));
          
-          if (set){
+          if (this.userService.getLoggedInUser()){
             this.router.navigateByUrl('/home');  
           }
           

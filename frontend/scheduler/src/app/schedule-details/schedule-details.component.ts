@@ -11,9 +11,8 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./schedule-details.component.css']
 })
 export class ScheduleDetailsComponent implements OnInit {
-  @Input() schedule: Schedule;
   schedule_id : number;
-  generated : boolean;
+  generated : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
   showCourseList : boolean = true;
@@ -30,8 +29,8 @@ export class ScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCourses();
-    // this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
-    this.generated = true; // for testing
+    this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
+    // this.generated = true; // for testing
   }
 
   refreshCourses($event?){
@@ -43,11 +42,13 @@ export class ScheduleDetailsComponent implements OnInit {
     this.scheduleService.getCoursesInSchedule(id)
     .subscribe( 
       response => {
-        if(response.body.success){
-          let array : Course[] = response.body;
-          this.courses = array;
-        }else if(response.body.message == "no rows found"){
-          this.courses = new Array<any>;
+        if(response.status ==200){
+          if(response.body.success != undefined && response.body.success===false){
+            this.courses = new Array;
+          }else{
+            let array : Course[] = response.body;
+            this.courses = array;  
+          }
         }else{
           console.log("error getting courses for schedule:"); 
           console.log(response);

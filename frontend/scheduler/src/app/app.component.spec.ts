@@ -1,83 +1,78 @@
-// import { TestBed, async } from '@angular/core/testing';
+// // general testing imports 
+// import { async, ComponentFixture, TestBed, fakeAsync, inject } from '@angular/core/testing';
+// import { HttpResponse } from '@angular/common/http';
+// import { Observable } from 'rxjs/Observable';
+// // general imports 
 // import { NO_ERRORS_SCHEMA } from '@angular/core';
 // import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserModule, By } from '@angular/platform-browser';
 // import { HttpClientModule, HttpClient } from '@angular/common/http';
-// import { Location } from "@angular/common";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 // import { RouterTestingModule } from '@angular/router/testing';
-// import { MatToolbarModule, MatButtonModule, MatIconModule,
-//  MatSidenavModule, MatListModule, MatCardModule, MatFormFieldModule,
-//  MatInputModule, MatSnackBarModule } from '@angular/material';
-// import { ROUTES } from "./app.module";
-
+// // component specific imports 
+// import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+// import { DatePipe } from '@angular/common';
+// import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
+//   SimpleSnackBar } from '@angular/material';
+// import { User } from './../models/user.model';
+// import { CookieService } from 'ng2-cookies';
 // import { UserService } from './services/user.service'; 
-// import { ScheduleService } from './services/schedule.service'; 
+// import {Location} from '@angular/common';
 
 // // component imports 
 // import { AppComponent } from './app.component';
-// import { NavbarComponent } from './navbar/navbar.component';
-// import { SidebarComponent } from './sidebar/sidebar.component';
-// import { LoginComponent } from './login/login.component';
-// import { CreateUserComponent } from './create-user/create-user.component';
-// import { NotificationsComponent } from './notifications/notifications.component';
-// import { ViewSchedulesComponent } from './view-schedules/view-schedules.component';
-// import { ChangePasswordComponent } from './change-password/change-password.component';
-// import { ScheduleDetailsComponent } from './schedule-details/schedule-details.component';
-// import { CreateCourseComponent } from './create-course/create-course.component'
+
+// export class MockUserService extends UserService{}
+// export class MockCookieService extends CookieService{}
+
 // describe('AppComponent', () => {
 //   let component: AppComponent;
+//   let fixture: ComponentFixture<AppComponent>;
 //   let location: Location;
 //   let router: Router;
-//   let fixture;
+//   let userServiceStub: MockUserService;
+//   let testBedUserService: MockUserService;
+//   let cookieServiceStub: MockCookieService;
+//   let testBedCookieService: MockCookieService;
 
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
 //       declarations: [
 //         AppComponent,
-//         NavbarComponent,
-//         SidebarComponent,
-//         LoginComponent,
-//         CreateUserComponent,
-//         NotificationsComponent,
-//         ViewSchedulesComponent,
-//         ChangePasswordComponent,
-//         ScheduleDetailsComponent,
-//         CreateCourseComponent
 //       ],
 //       imports: [
 //         BrowserModule,
 //         HttpClientModule,
 //         BrowserAnimationsModule,
-//         RouterModule, 
+//         MatSnackBarModule,
 //         FormsModule,
 //         ReactiveFormsModule,
-//         RouterTestingModule.withRoutes(ROUTES),
-//         MatToolbarModule, 
-//         MatButtonModule, 
-//         MatIconModule, 
-//         MatSidenavModule, 
-//         MatListModule, 
-//         MatCardModule,
-//         MatFormFieldModule, 
-//         MatInputModule,
-//         MatSnackBarModule
+//         RouterTestingModule
 
-//       ], providers: [
-//         UserService, ScheduleService
+//       ],
+//       providers: [ 
+//         {provide: UserService, useClass: MockUserService}, 
+//         {provide: CookieService, useClass: MockCookieService}, 
+//         HttpClientModule, 
+//         Location
 //       ],
 //       schemas: [ NO_ERRORS_SCHEMA ]
 //     }).compileComponents();
 
-//     router = TestBed.get(Router);
-//     location = TestBed.get(Location);
-//     fixture = TestBed.createComponent(AppComponent);
-//     router.initialNavigation();
 //   }));
 //   beforeEach(() => {
 //     fixture = TestBed.createComponent(AppComponent);
+//     router = TestBed.get(Router);
+//     location = TestBed.get(Location);
+//     router.initialNavigation();
+
 //     component = fixture.componentInstance;
+//     testBedUserService = TestBed.get(UserService);
+//     userServiceStub = fixture.debugElement.injector.get(UserService);
+//     testBedCookieService = TestBed.get(CookieService);
+//     cookieServiceStub = fixture.debugElement.injector.get(CookieService);
+
 //     fixture.detectChanges();
 //   });
 
