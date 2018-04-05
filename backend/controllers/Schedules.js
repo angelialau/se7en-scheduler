@@ -99,7 +99,8 @@ router.post('/Generate', function(req, res, next) {
 				});
 
 				child.on('close', function(code) {
-					res.json((result.substring(0, result.length - 2)));
+					var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
+					res.json(output);
 				});
 			}
 		});
