@@ -24,23 +24,7 @@ router.post('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
-			if (err) {
-				err.success = false;
-				res.json(err);
-			} else {
-				var formatted;
-				var output = {}
-				rows.forEach(function(entry) {
-					formatted = utils.eventToCalendar(entry);
-					if (output[formatted.id]) {
-						output[formatted.id].schedule.push(formatted.schedule[0]);
-					} else {
-						output[formatted.id] = formatted;
-					}
-				});
-
-				res.json(Object.values(output));
-			}
+			utils.basicGetCallback(res, err, rows, null);
 		});
 	}
 });
@@ -130,7 +114,7 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 				var roomAvailability = {}
 				for (var week = 0; week < num_weeks; week++) {
 					available[week].forEach(function(day) {
-						incrementDate(current);
+						utils.incrementDate(current);
 						roomAvailability[current.toDateString()] = day;
 					});
 				}
@@ -141,15 +125,54 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 			res.json(output);
 		}
 	});
-})
+});
 
-function incrementDate(date) {
-	var day = date.getDay();
-	if (day != 5) {
-		date.setDate(date.getDate()+1);
-	} else {
-		date.setDate(date.getDate()+3);
+// Get calendar entries in full calendar json format
+router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var formatted;
+				var output = {}
+				rows.forEach(function(entry) {
+					formatted = utils.eventToFullCalendar(entry);
+					if (output[formatted.id]) {
+						output[formatted.id].schedule.push(formatted.schedule[0]);
+					} else {
+						output[formatted.id] = formatted;
+					}
+				});
+				res.json(Object.values(output));
+			}
+		});
 	}
-}
+});
+
+// Get calendar entries in google calendar json format
+router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var formatted;
+				var output = {}
+				rows.forEach(function(entry) {
+					formatted = utils.eventToGoogleCalendar(entry);
+					if (output[formatted.id]) {
+						output[formatted.id].schedule.push(formatted.schedule[0]);
+					} else {
+						output[formatted.id] = formatted;
+					}
+				});
+				res.json(Object.values(output));
+			}
+		});
+	}
+});
 
 module.exports = router;
