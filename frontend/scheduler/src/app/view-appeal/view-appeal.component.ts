@@ -25,9 +25,9 @@ export class ViewAppealComponent implements OnInit {
   refreshAppeals(){
     this.userService.getAppeals()
     .map((data: any) => {
-      /*data.body.sort(function(a,b){
-        return a.getTime() - b.getTime();
-      });*/
+      data.body.sort(function(a,b){
+        return a.date > b.date;
+      });
 
       for (let entry of data.body){
         var tempdate = new Date(entry.date);
@@ -35,6 +35,9 @@ export class ViewAppealComponent implements OnInit {
       }
 
       this.appeals = data.body;
+
+      console.log(this.appeals);
+      console.log(typeof this.appeals);
     } )
     .subscribe(
       response => {
