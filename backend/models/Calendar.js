@@ -60,6 +60,34 @@ var Calendar = {
 			 data.end],
 			 callback);
 	},
+	addGeneratedEvent:function(schedule_id, data, callback) {
+		return db.query("INSERT INTO " + 
+			TABLE_NAME + "(`" +
+			COLUMN_SCHEDULE_ID + "`,`" +
+			COLUMN_TERM + "`,`" +
+			COLUMN_PILLAR + "`,`" + 
+			COLUMN_COURSE + "`,`" +
+			COLUMN_PROF + "`,`" + 
+			COLUMN_PROF_ID + "`,`" +
+			COLUMN_COHORT + "`,`" +
+			COLUMN_LOCATION + "`,`" +
+			COLUMN_DAY + "`,`" +
+			COLUMN_START + "`,`" +
+			COLUMN_END + "`)" + 
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+			[schedule_id,
+			 data.term,
+			 data.pillar,
+			 data.course,
+			 data.prof,
+			 data.prof_id,
+			 data.cohort,
+			 data.location,
+			 data.day,
+			 data.start,
+			 data.end],
+			 callback);
+	},
 	getEventsByPillar:function(schedule_id, pillar, callback) {
 		return db.query("SELECT * FROM " + 
 						TABLE_NAME + " WHERE " + 

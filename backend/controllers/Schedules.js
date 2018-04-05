@@ -1,6 +1,7 @@
 var express = require("express");
 var Schedule = require("../models/Schedule");
 var Course = require("../models/Course");
+var Calendar = require("../models/Calendar");
 var utils = require("../utils/utilities");
 var spawn = require("child_process").spawn;
 var router = express.Router();
@@ -82,24 +83,36 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
+				// change rows to format needed for algo
 				var input = {}
 				for (var i = 0; i < Object.keys(rows).length; i++) {
 					input[i] = Course.rowToJSON(JSON.parse(JSON.stringify(rows[i])));
 				}
 				
+				// start child algo process
 				var child = spawn('python3', ['./utils/generator.py', JSON.stringify(input)], options);
 				var result = "";
 
+				// save all the outputs
 				child.stdout.on('data', function(data) {
 					result += data.toString();
 				});
 
+				// log error if any
 				child.stderr.on('data', function(data) {
 					console.log("ERR child process: " + data.toString());
 				});
 
+				// once child process ends, update SQL table
 				child.on('close', function(code) {
 					var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
+					output.forEach(function(entry) {
+						Calendar.addGeneratedEvent(req.body.id, entry, function(err, count) {
+							if (err) {
+								console.log(err);
+							}
+						})
+					});
 					res.json(output);
 				});
 			}
