@@ -21,7 +21,7 @@ def readJson(url):
     global term78
     #weather = urlopen(url)
     weather = sys.argv[1]
-    wjson = json.load(weather)
+    wjson = json.loads(weather)
     courses=[]
     i=0
     for key,value in wjson.items():
