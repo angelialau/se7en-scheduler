@@ -448,9 +448,24 @@ def formatOutput(schedule):
                         startTime=int(time)
                         endTime=int(time+float(courses[courseNum].sessions[sessionNum]["time"])*2-1)
                         profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
-                        print("{\"term\":\""+str(courses[courseNum].term)+"\",\"pillar\":\""+courses[courseNum].pillar+"\",\"course\":\""+courses[courseNum].courseName+"\",\"prof\":\""+profName+"\",\"prof_id\":\""+profID+"\",\"cohort\":\""
-                          +classStr+"\",\"location\":\""+str(rowRef[roos].roomName)+"\",\"day\":\""+str(day+1)+"\",\"start\":\""+str(startTime)+
-                          "\",\"end\":\""+str(endTime) + "\"}")
+                        
+                        response = {}
+                        response["term"] = str(courses[courseNum].term)
+                        response["pillar"] = courses[courseNum].pillar
+                        response["course"] = courses[courseNum].courseName
+                        response["prof"] = profName
+                        response["prof_id"] = profID
+                        response["cohort"] = classStr
+                        response["location"] = str(rowRef[roos].roomName)
+                        response["day"] = str(day+1)
+                        response["start"] = str(startTime)
+                        response["end"] = str(endTime)
+
+                        #print("{\"term\":\""+str(courses[courseNum].term)+"\",\"pillar\":\""+courses[courseNum].pillar+"\",\"course\":\""+courses[courseNum].courseName+"\",\"prof\":\""+profName+"\",\"prof_id\":\""+profID+"\",\"cohort\":\""
+                        #  +classStr+"\",\"location\":\""+str(rowRef[roos].roomName)+"\",\"day\":\""+str(day+1)+"\",\"start\":\""+str(startTime)+
+                        #  "\",\"end\":\""+str(endTime) + "\"}")
+                        
+                        print(json.dumps(response))
                         time=endTime+1
                     sys.stdout.flush()
                 else:
