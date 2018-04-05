@@ -57,6 +57,30 @@ var utilities = {
 	},
 
 	/**
+	 * Converts an event entry, into a format that can be displayed on 
+	 * the calender
+	 */
+	eventToCalendar:function(event){
+		var output = {};
+		var details = {};
+		var startTime = new Date(this.zeroTime.getTime() + event.start*(30*6*10000));
+		var endTime =  new Date(this.zeroTime.getTime() + event.end*(30*6*10000));
+		
+		output.instructor = event.prof;
+		output.id = event.prof_id;
+		output.pillar = event.pillar;
+		output.schedule = [];
+
+		details.title = event.course + "\n\n" + event.location;
+		details.start = fecha.format(startTime, 'HH:mm');
+		details.end = fecha.format(endTime, 'HH:mm');
+		details.dow = event.day;
+
+		output.schedule.push(details);
+		return output;
+	},
+
+	/**
 	 * List of all possible rooms within SUTD
 	 */
 	availableRooms:[
@@ -107,7 +131,9 @@ var utilities = {
 		"Lecture Theatre 3",
 		"Lecture Theatre 4",
 		"Lecture Theatre 5"
-	]
+	],
+
+	zeroTime: new Date("1995-11-03 08:30")
 }
 
 module.exports=utilities;

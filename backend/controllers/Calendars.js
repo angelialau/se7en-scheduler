@@ -24,7 +24,23 @@ router.post('/', function(req, res, next) {
 router.get('/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
-			utils.basicGetCallback(res, err, rows, null);
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var formatted;
+				var output = {}
+				rows.forEach(function(entry) {
+					formatted = utils.eventToCalendar(entry);
+					if (output[formatted.id]) {
+						output[formatted.id][schedule].push(formatted[schedule][0]);
+					} else {
+						output[formatted.id] = formatted;
+					}
+				});
+
+				res.json(output);
+			}
 		});
 	}
 });
