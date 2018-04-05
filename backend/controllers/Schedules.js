@@ -91,8 +91,7 @@ router.post('/Generate', function(req, res, next) {
 				var result = [];
 
 				child.stdout.on('data', function(data) {
-					console.log(data);
-					result.push(JSON.parse(data.toString().trim()));
+					result.push(data.toString());
 				});
 
 				child.stderr.on('data', function(data) {
