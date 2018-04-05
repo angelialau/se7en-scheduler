@@ -91,7 +91,7 @@ router.post('/Generate', function(req, res, next) {
 				var result = [];
 
 				child.stdout.on('data', function(data) {
-					result.push(utils.replaceAll(data.toString(), "\\", "");
+					result.push(utils.replaceAll(data.toString(), "\\", ""));
 				});
 
 				child.stderr.on('data', function(data) {
