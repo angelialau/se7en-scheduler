@@ -130,10 +130,10 @@ def initializeValue():                      #initialize rooms, cohort list, prof
             claNum=claStart
         
         for k in range(len(course.sessions)):
-            comp=course.sessions[k]["preference"]
+            #comp=course.sessions[k]["preference"]
             classSize=course.size
-            if comp=="no preference":
-                comp=course.sessions[k]["class_type"]
+            #if comp=="no preference":
+            comp=course.sessions[k]["class_type"]
                 
             course.sessions[k]["roomList"]=list()
             
