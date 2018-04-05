@@ -14,8 +14,7 @@
 			(click)="displayISTD()">ISTD</span></label>
 	</div>
 	<div *ngIf="calendarOptions">
-		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
-        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+		<ng-fullcalendar #ucCalendar [options]="calendarOptions"></ng-fullcalendar>
 	</div>
 	<br>
 
@@ -25,7 +24,7 @@
     Make an appeal</button></span>
 
     <span *ngIf = "show">
-    <form #newAppeal="ngForm">
+    <form #AppealForm="ngForm">
     	<br>
       <!-- title of announcement -->
       <div class="form-group">
@@ -55,7 +54,7 @@
       <!-- send to -->
 
       <button type="submit" class="btn btn-success" style="float: right;" 
-      [disabled]="newAppeal.form.invalid" 
+      [disabled]="AppealForm.form.invalid" 
       (click)="makeAppeal()">
         <i class="fas fa-bullhorn"></i> Make Appeal
       </button>
