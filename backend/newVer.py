@@ -237,17 +237,15 @@ def setAllSchedule(schedule,classList,profList,room,i,j,value):
 class Course(object):
     def __init__(self,name,boolean,num_of_sessions,term,classes,studentSize):
         self.courseName = name
-        self.courseType = boolean
-        self.numSessions = num_of_sessions
-        self.term=term
+        self.courseType = int(boolean)
+        self.numSessions = int(num_of_sessions)
+        self.term=int(term)
         self.sessions=[]
-        self.classes=classes
-        self.size=studentSize
+        self.classes=int(classes)
+        self.size=int(studentSize)
         self.classlist=[]
         self.priority = 0
         self.finish=False
-    def setInstructors(self,ins):    
-        self.instructors=ins
     def setPriority(self,c1,c2,c3,c4):
         if self.courseType: 
             j=2
@@ -300,7 +298,7 @@ def generator(c1,c2,c3,c4):
         for k in range(len(classlist)):
             classRanCheck.append(0)
         for l in range(i):
-            clength=int(courses[count].sessions[l]["time"]*2)
+            clength=int(float(courses[count].sessions[l]["time"])*2)
             if courses[count].sessions[l]["class_type"]=="Cohort Based Learning"or courses[count].sessions[l]["class_type"]=="Lab":
                 classCheck=copy.deepcopy(classlist)
                 for num in range(len(classlist)):
@@ -446,7 +444,7 @@ def formatOutput(schedule):
                                 roos=room
                                 break
                         startTime=int(time)
-                        endTime=int(time+courses[courseNum].sessions[sessionNum]["time"]*2-1)
+                        endTime=int(time+float(courses[courseNum].sessions[sessionNum]["time"])*2-1)
                         profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
                         print("term:"+str(courses[courseNum].term)+",pillar:"+courses[courseNum].pillar+",course:"+courses[courseNum].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
                           +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
