@@ -86,7 +86,7 @@ var utilities = {
 		output.pillar = event.pillar;
 		output.schedule = [];
 
-		details.title = event.course + "\n" + event.location + "\n" + event.cohort;
+		details.title = event.course + "\n" + event.location + "\n" + "Cohort " + event.cohort;
 		details.start = fecha.format(startTime, 'HH:mm');
 		details.end = fecha.format(endTime, 'HH:mm');
 		details.dow = event.day.toString();
@@ -123,6 +123,7 @@ var utilities = {
 
 		details.Subject = event.course;
 		details.Location = event.location;
+		details.Description = "Cohort " + event.cohort;
 		details["Start Time"] = fecha.format(startTime, 'hh:mm A');
 		details["End Time"] = fecha.format(endTime, 'hh:mm A');
 		details["Start Date"] = fecha.format(current, 'YYYY/MM/DD');
