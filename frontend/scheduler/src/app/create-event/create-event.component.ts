@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service';
 import { ScheduleService } from './../services/schedule.service';
 import { User } from './../../models/user.model';
-import { Event, Search, days , Slot} from './../../models/event.model';
+import { Event, Search, days} from './../../models/event.model';
 import { ActivatedRoute } from '@angular/router'
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
@@ -46,7 +46,6 @@ export class CreateEventComponent implements OnInit {
     this.filterCourseDetails();
     this.getInstructors();
     this.refreshTimeSlots();
-    
   }
 
   // updates list of all time slots

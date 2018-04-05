@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserService } from './../services/user.service';
 import { CookieService } from 'ng2-cookies';
 import { User } from './../../models/user.model';
-import { CookieService } from 'ng2-cookies';
 
 import { NavbarComponent } from './navbar.component';
 
