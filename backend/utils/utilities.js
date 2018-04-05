@@ -125,8 +125,8 @@ var utilities = {
 		details.Location = event.location;
 		details["Start Time"] = fecha.format(startTime, 'hh:mm A');
 		details["End Time"] = fecha.format(endTime, 'hh:mm A');
-		details["Start Date"] = fecha.format(current.getDate(), 'YYYY/MM/DD');
-		details["End Date"] = fecha.format(current.getDate(), 'YYYY/MM/DD');
+		details["Start Date"] = fecha.format(current.getDate(), 'YYYY-MM-DD');
+		details["End Date"] = fecha.format(current.getDate(), 'YYYY-MM-DD');
 		details.Private = true;
 
 		output.schedule.push(details);
