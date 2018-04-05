@@ -113,6 +113,7 @@ router.post('/Generate', function(req, res, next) {
 							}
 						})
 					});
+					Schedule.updateGenerated(req.body.id);
 					res.json(output);
 				});
 			}
