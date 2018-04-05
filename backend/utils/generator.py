@@ -283,8 +283,8 @@ def generator(c1,c2,c3,c4):
         sequence.append((courses[i].priority,i))
     sor=sorted(sequence)
     newSche=timetableInitial()
-    if not term78==-1:
-        newSche = capstoneInitial(newSche)
+    #if not term78==-1:
+    #    newSche = capstoneInitial(newSche)
         
     for c in sor:
         count=c[1]
