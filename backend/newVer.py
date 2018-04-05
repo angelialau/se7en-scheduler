@@ -12,6 +12,8 @@ import random
 import copy
 import time
 import re
+import sys
+
 tt,cc,lt,lab,ttt,capstone,cla,pro=0,26,42,47,55,61,71,121
 proNum=121
 claNum=83
@@ -20,7 +22,7 @@ def readJson(url):
     global term78
     #weather = urlopen(url)
     weather = sys.argv[1]
-    wjson = json.load(weather)
+    wjson = json.loads(weather)
     courses=[]
     i=0
     for key,value in wjson.items():
@@ -450,6 +452,7 @@ def formatOutput(schedule):
                           +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
                           ",end:"+str(endTime))
                         time=endTime+1
+                    sys.stdout.flush()
                 else:
                     time+=1
             
