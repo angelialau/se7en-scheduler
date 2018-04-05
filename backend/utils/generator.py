@@ -336,6 +336,7 @@ def formatOutput(schedule):
 main function
 """
 print("python child is alive")
+sys.stdout.flush()
 start = time.time()
 courses = readJson("https://api.myjson.com/bins/1dy7sn")
 start1 = time.time()
