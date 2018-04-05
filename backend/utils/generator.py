@@ -326,6 +326,7 @@ def formatOutput(schedule):
                     print("term:"+str(courses[schedule[prof][day*19+endTime]].term)+",pillar:"+courses[schedule[prof][day*19+endTime]].pillar+",course:"+courses[schedule[prof][day*19+endTime]].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
                           +str(rowRef[clas])+",location:"+str(rowRef[roos])+",day:"+str(day+1)+",start:"+str(startTime)+
                           ",end:"+str(endTime))
+                    sys.stdout.flush()
                 else:
                     time+=1
             
@@ -335,8 +336,6 @@ def formatOutput(schedule):
 """
 main function
 """
-print("python child is alive")
-sys.stdout.flush()
 start = time.time()
 courses = readJson("https://api.myjson.com/bins/1dy7sn")
 start1 = time.time()
@@ -375,7 +374,6 @@ for i in range(5):
     #print("at the loop no.: ",i,"Score is ",score)
 index,score=checkScore()
 formatOutput(rawSchedule[index[0]])
-sys.stdout.flush()
 #end=time.time()    
 #print(end-start,end-start1)
 
