@@ -87,12 +87,12 @@ def initializeValue():                      #initialize rooms, cohort list, prof
     rowRef=referenceRows()
     global proNum
     global claNum
-    ISTDterm45={"CC":[cc+12,cc+13],"LT":[lt+1,lt+2],"LAB":[lab+2]}    #pre-defined rooms for pillar and term
+    ISTDterm45={"CC":[cc+12,cc+13],"LT":[lt+1,lt+2],"TT":[],"LAB":[lab+2]}    #pre-defined rooms for pillar and term
     ISTDterm678={"CC":[cc+10,cc+12,cc+13],"LT":[lt+1,lt+2],"TT":[tt+15,tt+16,tt+17],"TTT":[ttt],"LAB":[lab+2]}
     EPDterm45={"CC":[cc+14,cc+15],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt+14],"LAB":[lab,lab+2]}
-    EPDterm678={"CC":[cc+14,cc+15,cc+16],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5],"LAB":[lab,lab+2],"TTT":[ttt+2]}
-    ESDterm45={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+8,tt+9],"LAB":[lab+3]}
-    ESDterm678={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+6,tt+7,tt+8,tt+9],"LAB":[lab+3],"TTT":[ttt+1]}
+    EPDterm678={"CC":[cc+14,cc+15,cc+16],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5],"LT":[lt+2,lt+3,lt+4],"LAB":[lab,lab+2],"TTT":[ttt+2]}
+    ESDterm45={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+8,tt+9],"LAB":[lab+3],"TTT":[]}
+    ESDterm678={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"LAB":[lab+3],"TT":[tt+6,tt+7,tt+8,tt+9],"LAB":[lab+3],"TTT":[ttt+1]}
     Hass={"CC":[cc+10,cc+12,cc+13],"LT":[lt+2,lt+3,lt+4],"TT":[tt+6,tt+7,tt+8,tt+9,tt+10,tt+11,tt+15,tt+16,tt+17,tt+22,tt+23],"LAB":[lab+4],"TTT":[ttt,ttt+1]}
     for course in courses:
         pillarTerm=dict()

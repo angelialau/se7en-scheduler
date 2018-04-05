@@ -102,6 +102,8 @@ var utilities = {
 	/**
 	 * Converts an event entry, into a format that can be displayed on 
 	 * the google calendar
+	 *
+	 * Returns a JSONObject
 	 */
 	eventToGoogleCalendar:function(event){
 		var output = {};

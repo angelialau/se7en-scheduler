@@ -13,6 +13,7 @@ import copy
 import time
 import re
 import sys
+
 tt,cc,lt,lab,ttt,capstone,cla,pro=0,26,42,47,55,61,71,121
 proNum=121
 claNum=83
@@ -22,6 +23,9 @@ def readJson(url):
     #weather = urlopen(url)
     weather = sys.argv[1]
     wjson = json.loads(weather)
+    weather = urlopen(url)
+    #weather = sys.argv[1]
+    wjson = json.load(weather)
     courses=[]
     i=0
     for key,value in wjson.items():
@@ -131,10 +135,10 @@ def initializeValue():                      #initialize rooms, cohort list, prof
             claNum=claStart
         
         for k in range(len(course.sessions)):
-            comp=course.sessions[k]["preference"]
+            #comp=course.sessions[k]["preference"]
             classSize=course.size
-            if comp=="no preference":
-                comp=course.sessions[k]["class_type"]
+            #if comp=="no preference":
+            comp=course.sessions[k]["class_type"]
                 
             course.sessions[k]["roomList"]=list()
             
@@ -417,7 +421,7 @@ def formatJson(term,pillar,course,prof,profid,cohort,location,day,start,end):
     response["start"] = start
     response["end"] = end
     print(json.dumps(response) + ",")
-    sys.stdout.flush()
+    #sys.stdout.flush()
     
 def formatOutput(schedule):
     global courses
