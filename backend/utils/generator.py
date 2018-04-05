@@ -51,8 +51,8 @@ def referenceRows():
         roomType="Cohort Classroom"
         row.append(Room(roomName,roomType))
     for i in range(5):                          #42-46 Lecture Theatres
-        roomName="Lecture Theater "+str(i+1)
-        roomType="Lecture Theater"
+        roomName="Lecture Theatre "+str(i+1)
+        roomType="Lecture Theatre"
         row.append(Room(roomName,roomType))
     row.append(Room("Arms Lab 1,2","Lab"))      #47-51 Labs
     row.append(Room("Arms Lab 3","Lab"))
@@ -415,9 +415,9 @@ def formatOutput(schedule):
                 if schedule[prof][realTime]!=-1 and schedule[prof][realTime]!=-500:
                     if type(schedule[prof][realTime])==str:
                         profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
-                        print("term:"+str(term78)+",pillar:Capstone,course:Capstone,prof:"+profName+",prof_id:"+profID+",cohort:1" #what cohort to put?
+                        print("{term:"+str(term78)+",pillar:Capstone,course:Capstone,prof:"+profName+",prof_id:"+profID+",cohort:1" #what cohort to put?
                           +",location:Capstone,day:"+str(day+1)+",start:"+str(int(time))+
-                          ",end:"+str(int(time+5)))
+                          ",end:"+str(int(time+5)) + "}")
                         time+=6
                     else:
                         courseNum=schedule[prof][realTime]//10
@@ -448,9 +448,24 @@ def formatOutput(schedule):
                         startTime=int(time)
                         endTime=int(time+float(courses[courseNum].sessions[sessionNum]["time"])*2-1)
                         profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
-                        print("term:"+str(courses[courseNum].term)+",pillar:"+courses[courseNum].pillar+",course:"+courses[courseNum].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
-                          +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
-                          ",end:"+str(endTime))
+                        
+                        response = {}
+                        response["term"] = str(courses[courseNum].term)
+                        response["pillar"] = courses[courseNum].pillar
+                        response["course"] = courses[courseNum].courseName
+                        response["prof"] = profName
+                        response["prof_id"] = profID
+                        response["cohort"] = classStr
+                        response["location"] = str(rowRef[roos].roomName)
+                        response["day"] = str(day+1)
+                        response["start"] = str(startTime)
+                        response["end"] = str(endTime)
+
+                        #print("{term:"+str(courses[courseNum].term)+",pillar:"+courses[courseNum].pillar+",course:"+courses[courseNum].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
+                        #  +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
+                        #  ",end:"+str(endTime) + "}")
+                        
+                        print(json.dumps(response) + ",")
                         time=endTime+1
                     sys.stdout.flush()
                 else:

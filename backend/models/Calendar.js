@@ -11,6 +11,7 @@ var COLUMN_PROF_ID = "prof_id";
 var COLUMN_COHORT = "cohort";
 var COLUMN_LOCATION = "location";
 var COLUMN_DAY = "day";
+var COLUMN_DATE = "date";
 var COLUMN_START = "start";
 var COLUMN_END = "end";
 
@@ -25,6 +26,7 @@ var Calendar = {
 		cohort:null,
 		location:null,
 		day:null,
+		date:null,
 		start:null,
 		end:null
  	},
@@ -39,11 +41,41 @@ var Calendar = {
 			COLUMN_PROF_ID + "`,`" +
 			COLUMN_COHORT + "`,`" +
 			COLUMN_LOCATION + "`,`" +
-			COLUMN_DAY + "`,`" + 
+			COLUMN_DAY + "`,`" +
+			COLUMN_DATE + "`,`"  + 
+			COLUMN_START + "`,`" +
+			COLUMN_END + "`)" + 
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+			[data.schedule_id,
+			 data.term,
+			 data.pillar,
+			 data.course,
+			 data.prof,
+			 data.prof_id,
+			 data.cohort,
+			 data.location,
+			 data.day,
+			 data.date,
+			 data.start,
+			 data.end],
+			 callback);
+	},
+	addGeneratedEvent:function(schedule_id, data, callback) {
+		return db.query("INSERT INTO " + 
+			TABLE_NAME + "(`" +
+			COLUMN_SCHEDULE_ID + "`,`" +
+			COLUMN_TERM + "`,`" +
+			COLUMN_PILLAR + "`,`" + 
+			COLUMN_COURSE + "`,`" +
+			COLUMN_PROF + "`,`" + 
+			COLUMN_PROF_ID + "`,`" +
+			COLUMN_COHORT + "`,`" +
+			COLUMN_LOCATION + "`,`" +
+			COLUMN_DAY + "`,`" +
 			COLUMN_START + "`,`" +
 			COLUMN_END + "`)" + 
 			" VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-			[data.schedule_id,
+			[schedule_id,
 			 data.term,
 			 data.pillar,
 			 data.course,
@@ -77,6 +109,45 @@ var Calendar = {
 						" WHERE " + COLUMN_SCHEDULE_ID + "=?",
 						[schedule_id],
 						callback);
+	},
+	filterTimeSlots:function(data, schedule_id, callback) {
+		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
+		var tokens = "1";
+		var dayFilter = COLUMN_DAY + "=?";
+		var sTimeFilter = "(" + COLUMN_START + ">=?" + " AND " + COLUMN_START + "<?)";
+		var eTimeFilter = "(" + COLUMN_END + ">?" + " AND " + COLUMN_END + "<=?)";
+		var scheduleFilter = COLUMN_SCHEDULE_ID + "=?";
+		var params = [];
+
+		// filter by start and end times
+		if (data.sTime && data.eTime) {
+			tokens = sTimeFilter + " OR " + eTimeFilter;
+			params.push(data.sTime);
+			params.push(data.eTime);
+			params.push(data.sTime);
+			params.push(data.eTime);
+		} else if (data.sTime) {
+			tokens = sTimeFilter;
+			params.push(data.sTime);
+			params.push(data.eTime);
+		} else if (data.eTime) {
+			tokens = eTimeFilter;
+			params.push(data.sTime);
+			params.push(data.eTime);
+		}
+
+		// filter by day of week
+		if (data.day) {
+			tokens = "(" + tokens + ") AND " + dayFilter;
+			params.push(data.day);
+		}
+
+		// choose only relevant schedules
+		tokens = "(" + tokens + ") AND " + scheduleFilter;
+		params.push(schedule_id);
+
+		selectStatement += tokens;
+		return db.query(selectStatement, params, callback);
 	}
 };
 

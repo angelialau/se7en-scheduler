@@ -21,7 +21,10 @@
 	<div align="center">
 	<span *ngIf = "!isAdmin">
     <button type="button" (click) = "showForm()" class="btn btn-primary">
-    Make an appeal</button></span>
+    Make an appeal</button>
+    <button type="button" (click) = "downloadCalendar()" class="btn btn-primary">
+    Download Calendar</button></span>
+
 
     <span *ngIf = "show">
     <form #AppealForm="ngForm">
