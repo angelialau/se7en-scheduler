@@ -13,7 +13,7 @@ formResetError = "form input fields did not revert to ng-pristine after refreshi
 def broken_function():
     raise Exception('This is broken')
 
-class FormsTest(unittest.TestCase):
+class FormsInstructorTest(unittest.TestCase):
 
     def setUp(self):
         chrome_options = webdriver.ChromeOptions()
@@ -24,7 +24,7 @@ class FormsTest(unittest.TestCase):
         self.driver.get("http://localhost:4200/login")
     
         email = self.driver.find_element_by_id("email")
-        email.send_keys("email@email.com")
+        email.send_keys("oka_kurniawan@sutd.edu.sg")
 
         password = self.driver.find_element_by_id("password")
         password.send_keys("password")
@@ -33,55 +33,22 @@ class FormsTest(unittest.TestCase):
         header = WebDriverWait(self.driver,10).until(
             EC.visibility_of_element_located((By.ID, 'logoutButton')))
 
-    def test_make_announcement(self):
-        driver = self.driver
-        driver.find_element_by_id("makeAnnouncementBtn").click()
-        header = driver.find_element_by_tag_name('h5')
-        self.assertIn("Make an Announcement", header.text)
-        
-        submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "announcementButton")))
-        self.assertEqual(submit.is_enabled(), False, preButtonError)
+    # def test_make_announcement(self):
+    #     driver = self.driver
+    #     driver.find_element_by_id("makeAnnouncementBtn")
+    #     with self.assertRaises(NoSuchElementException) as context:
+    #         broken_function()
 
-        title = driver.find_element_by_id("title")
-        title.send_keys("Test Announcement")
-
-        content = driver.find_element_by_id("announcementContent")
-        content.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mollis nunc sed id semper risus. Diam maecenas sed enim ut. Pulvinar etiam non quam lacus suspendisse. Quis varius quam quisque id diam. Ultricies mi quis hendrerit dolor magna eget est lorem ipsum. Augue ut lectus arcu bibendum at varius vel. Diam sollicitudin tempor id eu nisl nunc. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique. Et tortor consequat id porta nibh venenatis cras. Risus in hendrerit gravida rutrum quisque. Morbi tristique senectus et netus. Nam libero justo laoreet sit. Diam donec adipiscing tristique risus. Maecenas accumsan lacus vel facilisis. Viverra aliquet eget sit amet tellus cras. Nunc sed velit dignissim sodales ut eu sem integer vitae. Non blandit massa enim nec dui nunc mattis. Viverra nibh cras pulvinar mattis nunc.")
-
-        submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "announcementButton")))
-        self.assertEqual(submit.is_enabled(), True, postButtonError)
+    #     self.assertTrue('This is broken' in context.exception)
 
 
-    def test_add_user(self):
-        driver = self.driver
-        driver.get("http://localhost:4200/user")
-        button = driver.find_element_by_id("sbAddUser").click() #move to navigation test
-        
-        submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'submitFormButton')))
-        self.assertEqual(submit.is_enabled(), False, preButtonError)
+    # def test_add_user(self):
+    #     driver = self.driver
+    #     driver.find_element_by_id("sbAddUser")
+    #     with self.assertRaises(NoSuchElementException) as context:
+    #         broken_function()
 
-        select = driver.find_element_by_id("pillar")
-        options = select.find_elements_by_tag_name("option")
-        for option in options:
-            if(option.text=="ISTD"):
-                option.click()
-                break
-        name = driver.find_element_by_id("name")
-        name.send_keys("Add User Selenium Test")
-
-        email = driver.find_element_by_id("email")
-        email.send_keys("selenium@sutd.edu.sg")
-
-        phone = driver.find_element_by_id("phone")
-        phone.send_keys("63036662")
-
-        password = driver.find_element_by_id("password")
-        password.send_keys("password")
-
-        submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'submitFormButton')))
-        self.assertEqual(submit.is_enabled(), True, postButtonError)
-            
-        
+    #     self.assertTrue('This is broken' in context.exception)        
 
     def test_add_schedule(self):
         driver = self.driver
@@ -170,24 +137,39 @@ class FormsTest(unittest.TestCase):
         dropdown = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'courseDetail')))
         self.assertEqual("ng-pristine" in dropdown.get_attribute("class"), True, formResetError) 
 
+    def test_add_appeal(self):
+        driver = self.driver
+        driver.get('http://localhost:4200/viewschedule')
+        button = driver.find_element_by_id('appealButton')
+        button.click()
+
+        select = WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.ID,"title")))
+        options = select.find_elements_by_tag_name("option")
+        options[0].click()
+
+        content = driver.find_element_by_id('appealContent')
+        content.send_keys("hello")
+
+        submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'makeAppealButton')))
+        self.assertEqual(submit.is_enabled(), True, postButtonError)
+
     # def test_change_password(self):
     #     driver = self.driver
     #     driver.get('http://localhost:4200/password')
 
     #     oldP = driver.find_element_by_id('oldPassword')
-    #     oldP.send_keys('password')
+    #     oldP.send_keys("password")
 
     #     newP = driver.find_element_by_id('newPassword')
-    #     newP.send_keys('password')
+    #     newP.send_keys("password")
 
     #     confirmP = driver.find_element_by_id('confirmPassword')
-    #     confirmP.send_keys('password') 
+    #     confirmP.send_keys("password") 
 
     #     submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'submitChangePasswordFormButton')))
     #     self.assertEqual(submit.is_enabled(), True, postButtonError)
-    
+
     # add event
-    # add appeal
 
     def tearDown(self):
         self.driver.close()
