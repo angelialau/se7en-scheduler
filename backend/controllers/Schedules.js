@@ -88,10 +88,10 @@ router.post('/Generate', function(req, res, next) {
 				}
 				
 				var child = spawn('python3', ['./utils/generator.py', JSON.stringify(input)], options);
-				var result = [];
+				var result = "";
 
 				child.stdout.on('data', function(data) {
-					result.push(JSON.parse(data.toString().replace(/[\\]/g,"")));
+					result += data.toString();
 				});
 
 				child.stderr.on('data', function(data) {
@@ -99,7 +99,8 @@ router.post('/Generate', function(req, res, next) {
 				});
 
 				child.on('close', function(code) {
-					res.json(result);
+					result.substring(0, result.length - 1);
+					res.json(JSON.parse(result));
 				});
 			}
 		});
