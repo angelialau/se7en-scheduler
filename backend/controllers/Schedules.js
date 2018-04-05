@@ -86,8 +86,6 @@ router.post('/Generate', function(req, res, next) {
 				for (var i = 0; i < Object.keys(rows).length; i++) {
 					input[i] = Course.rowToJSON(JSON.parse(JSON.stringify(rows[i])));
 				}
-
-				console.log(JSON.stringify(input));
 				
 				var child = spawn('python3', ['./utils/generator.py', JSON.stringify(input)], options);
 				var result = [];
