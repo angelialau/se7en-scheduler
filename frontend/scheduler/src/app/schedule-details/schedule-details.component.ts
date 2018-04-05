@@ -11,7 +11,6 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./schedule-details.component.css']
 })
 export class ScheduleDetailsComponent implements OnInit {
-  @Input() schedule: Schedule;
   schedule_id : number;
   generated : boolean = false;
   courseIDs : string[] = [];
