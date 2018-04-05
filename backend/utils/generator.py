@@ -12,6 +12,8 @@ import random
 import copy
 import time
 import re
+import sys
+
 tt,cc,lt,cla,pro=0,26,42,50,100
 proNum=100
 claNum=53
