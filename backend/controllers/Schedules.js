@@ -100,7 +100,7 @@ router.post('/Generate', function(req, res, next) {
 
 				child.on('close', function(code) {
 					result.substring(0, result.length - 1);
-					res.json(JSON.parse(result));
+					res.json(result);
 				});
 			}
 		});
