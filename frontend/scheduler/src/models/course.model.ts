@@ -45,18 +45,18 @@ export const courseDetails = [
     term : 6,
     pillar: "ISTD"
   },
-  // {
-  //   course_no: "50.037",
-  //   course_name: "Blockchain Technology", 
-  //   term : 6,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.001",
-  //   course_name: "Introduction to Information Systems & Programming", 
-  //   term : 4,
-  //   pillar: "ISTD"
-  // },
+  {
+    course_no: "50.037",
+    course_name: "Blockchain Technology", 
+    term : 6,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.001",
+    course_name: "Introduction to Information Systems & Programming", 
+    term : 4,
+    pillar: "ISTD"
+  },
   {
     course_no: "50.002",
     course_name: "Computation Structures", 
@@ -93,18 +93,18 @@ export const courseDetails = [
     term : 7,
     pillar: "ISTD"
   },
-  // {
-  //   course_no: "50.020",
-  //   course_name: "Security", 
-  //   term : 7,
-  //   pillar: "ISTD"
-  // },
-  // {
-  //   course_no: "50.035",
-  //   course_name: "Computer Vision", 
-  //   term : 7,
-  //   pillar: "ISTD"
-  // },
+  {
+    course_no: "50.020",
+    course_name: "Security", 
+    term : 7,
+    pillar: "ISTD"
+  },
+  {
+    course_no: "50.035",
+    course_name: "Computer Vision", 
+    term : 7,
+    pillar: "ISTD"
+  },
   {
     course_no: "50.003",
     course_name: "Elements of Software Construction", 
@@ -117,54 +117,54 @@ export const courseDetails = [
     term : 5,
     pillar: "ISTD"
   },
-  // {
-  //   course_no: "50.034",
-  //   course_name: "Introduction to Probability and Statistics", 
-  //   term : 5,
-  //   pillar: "ISTD"
-  // }, 
-  // {
-  //   course_no: "30.104",
-  //   course_name: "Dynamics", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.105",
-  //   course_name: "Element Design", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.106",
-  //   course_name: "Microelectronics Circuits and Devices", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.107",
-  //   course_name: "Power Electronics", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.108",
-  //   course_name: "Material Science", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // },
-  // {
-  //   course_no: "30.109",
-  //   course_name: "Thermal Systems For Power and Environment", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.110",
-  //   course_name: "Digital Systems Laboratory", 
-  //   term : 6,
-  //   pillar: "EPD"
-  // }, 
+  {
+    course_no: "50.034",
+    course_name: "Introduction to Probability and Statistics", 
+    term : 5,
+    pillar: "ISTD"
+  }, 
+  {
+    course_no: "30.104",
+    course_name: "Dynamics", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.105",
+    course_name: "Element Design", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.106",
+    course_name: "Microelectronics Circuits and Devices", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.107",
+    course_name: "Power Electronics", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.108",
+    course_name: "Material Science", 
+    term : 6,
+    pillar: "EPD"
+  },
+  {
+    course_no: "30.109",
+    course_name: "Thermal Systems For Power and Environment", 
+    term : 6,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.110",
+    course_name: "Digital Systems Laboratory", 
+    term : 6,
+    pillar: "EPD"
+  }, 
   {
     course_no: "30.111",
     course_name: "Entrepreneurship", 
@@ -189,60 +189,60 @@ export const courseDetails = [
     term : 7,
     pillar: "EPD"
   }, 
-  // {
-  //   course_no: "30.115",
-  //   course_name: "Digital Signal Processing", 
-  //   term : 7,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.116",
-  //   course_name: "Introduction to Nano-electronics", 
-  //   term : 7,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.118",
-  //   course_name: "Optical Engineering & Communications", 
-  //   term : 7,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.123",
-  //   course_name: "Healthcare Product Design", 
-  //   term : 7,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.205",
-  //   course_name: "Aerodynamics", 
-  //   term : 7,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.117",
-  //   course_name: "Electric Power Systems Analysis and Design", 
-  //   term : 8,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.119",
-  //   course_name: "Intelligent Robotics", 
-  //   term : 8,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.200",
-  //   course_name: "Micro-Nano Projects Laboratory", 
-  //   term : 8,
-  //   pillar: "EPD"
-  // }, 
-  // {
-  //   course_no: "30.201",
-  //   course_name: "Wireless Communications and Internet of Things", 
-  //   term : 8,
-  //   pillar: "EPD"
-  // }, 
+  {
+    course_no: "30.115",
+    course_name: "Digital Signal Processing", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.116",
+    course_name: "Introduction to Nano-electronics", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.118",
+    course_name: "Optical Engineering & Communications", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.123",
+    course_name: "Healthcare Product Design", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.205",
+    course_name: "Aerodynamics", 
+    term : 7,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.117",
+    course_name: "Electric Power Systems Analysis and Design", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.119",
+    course_name: "Intelligent Robotics", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.200",
+    course_name: "Micro-Nano Projects Laboratory", 
+    term : 8,
+    pillar: "EPD"
+  }, 
+  {
+    course_no: "30.201",
+    course_name: "Wireless Communications and Internet of Things", 
+    term : 8,
+    pillar: "EPD"
+  }, 
   {
     course_no: "30.202",
     course_name: "Design of Intelligent Digital Integrated Circuits and Systems", 
@@ -267,12 +267,12 @@ export const courseDetails = [
     term : 6,
     pillar: "ESD"
   }, 
-  // {
-  //   course_no: "40.011",
-  //   course_name: "Data and Business Analytics", 
-  //   term : 6,
-  //   pillar: "ESD"
-  // }, 
+  {
+    course_no: "40.011",
+    course_name: "Data and Business Analytics", 
+    term : 6,
+    pillar: "ESD"
+  }, 
   {
     course_no: "01.104",
     course_name: "Advanced Topics in Optimization", 
@@ -297,30 +297,30 @@ export const courseDetails = [
     term : 7,
     pillar: "HASS"
   }, 
-  // {
-  //   course_no: "02.118",
-  //   course_name: "Film Studies II: Production", 
-  //   term : 7,
-  //   pillar: "HASS"
-  // }, 
-  // {
-  //   course_no: "02.201",
-  //   course_name: "Digital Sociology", 
-  //   term : 7,
-  //   pillar: "HASS"
-  // }, 
-  // {
-  //   course_no: "02.202",
-  //   course_name: "Organizational Processes", 
-  //   term : 7,
-  //   pillar: "HASS"
-  // }, 
-  // {
-  //   course_no: "02.206",
-  //   course_name: "Ethics and Social Responsibility", 
-  //   term : 7,
-  //   pillar: "HASS"
-  // }, 
+  {
+    course_no: "02.118",
+    course_name: "Film Studies II: Production", 
+    term : 7,
+    pillar: "HASS"
+  }, 
+  {
+    course_no: "02.201",
+    course_name: "Digital Sociology", 
+    term : 7,
+    pillar: "HASS"
+  }, 
+  {
+    course_no: "02.202",
+    course_name: "Organizational Processes", 
+    term : 7,
+    pillar: "HASS"
+  }, 
+  {
+    course_no: "02.206",
+    course_name: "Ethics and Social Responsibility", 
+    term : 7,
+    pillar: "HASS"
+  }, 
 ]
 
 

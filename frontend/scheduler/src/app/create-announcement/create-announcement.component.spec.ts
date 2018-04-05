@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 // component specific imports 
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { ScheduleService } from './../services/schedule.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
@@ -57,6 +58,7 @@ describe('CreateAnnouncementComponent', () => {
         { provide: ScheduleService, useClass: MockScheduleService } , 
         HttpClientModule, 
         DatePipe,
+        CookieService,
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

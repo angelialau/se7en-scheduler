@@ -9,6 +9,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // component specific imports 
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { User } from './../../models/user.model';
 import { CookieService } from 'ng2-cookies';
 
@@ -17,9 +18,6 @@ import { NavbarComponent } from './navbar.component';
 export class MockUserService extends UserService{
   postLogin(email : string, password : string ) : Observable<any>{
     return Observable.of(HttpResponse);
-  }
-  setUser(user: User): boolean {
-    return true;
   }
 }
 

@@ -4,6 +4,7 @@ import { Course } from './../../models/course.model'
 import { Schedule } from './../../models/schedule.model'
 import { Observable } from 'rxjs/Rx';
 import { DatePipe } from '@angular/common';
+import { Event, Search } from './../../models/event.model';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -156,6 +157,34 @@ export class ScheduleService {
 
   getTodayDate() {
     return this.datePipe.transform(Date.now(), 'yyyy-MM-dd').toString(); 
+  }
+
+  getTimeSlots(search: Search): Observable<any>{
+    let s = this.url + '/Calendars/Filter/' + search.schedule_id 
+    + '/' + search.day + '/' + search.startDate + '/' + search.endDate 
+    + '/' + search.startTime + '/' + search.endTime;
+    return this.http.get<Course>(s, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+  addEvent(event: Event) : Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('schedule_id', String(event.schedule_id)); 
+    body.set('term', String(event.term)); 
+    body.set('pillar', String(event.pillar)); 
+    body.set('course', String(event.course)); 
+    body.set('prof', String(event.prof)); 
+    body.set('prof_id', String(event.prof_id)); 
+    body.set('cohort', String(event.cohort)); 
+    body.set('location', String(event.location)); 
+    body.set('day', String(event.day)); 
+    body.set('date', String(event.date)); 
+    body.set('start', String(event.start)); 
+    body.set('end', String(event.end)); 
+    let extension = this.url + '/Calendars';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
   }
 
 }

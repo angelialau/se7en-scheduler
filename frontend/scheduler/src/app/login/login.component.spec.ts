@@ -25,9 +25,6 @@ export class MockUserService extends UserService{
   postLogin(email : string, password : string ) : Observable<any>{
     return Observable.of(HttpResponse);
   }
-  setUser(user: User): boolean {
-    return true;
-  }
 }
 
 export class MockCookieService extends CookieService {}
@@ -113,7 +110,7 @@ describe('LoginComponent', () => {
     let email = 'email@email.com';
     let password = 'password';
     let user = new User(email, password);
-    let bool = spyOn(userServiceStub, 'setUser').and.returnValue(true);
+    let bool = spyOn(userServiceStub, 'getLoggedInUser').and.returnValue(true);
     let routerspy = spyOn(router,'navigateByUrl');
     let snackBarSpy = spyOn(snackBar, "open").and.returnValue(MatSnackBarRef);
     let cookiesSpy = spyOn(cookieServiceStub, "set");
@@ -126,8 +123,7 @@ describe('LoginComponent', () => {
 
     let servicespy = spyOn(userServiceStub, 'postLogin').and.callFake(function(email,password){
       if(email == 'email@email.com' && password == 'password'){
-        let boo = userServiceStub.setUser(user);
-        if (boo){
+        if (true){
           cookieServiceStub.set('id',String(user.id));
           cookieServiceStub.set('pillar', user.pillar || '');
           cookieServiceStub.set('name', user.name || '');
@@ -135,6 +131,7 @@ describe('LoginComponent', () => {
           cookieServiceStub.set('schedules', user.schedules || '');
           cookieServiceStub.set('courses', user.courses || '');
           router.navigateByUrl('url');
+          userServiceStub.getLoggedInUser();
         }
       }else{
         snackBar.open('msg');
