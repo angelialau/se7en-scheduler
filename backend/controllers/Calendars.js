@@ -39,7 +39,7 @@ router.get('/:id(\\d+)', function(req, res, next) {
 					}
 				});
 
-				res.json(output);
+				res.json(Object.values(output));
 			}
 		});
 	}
