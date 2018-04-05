@@ -1,3 +1,5 @@
+var fecha = require("fecha");
+
 var utilities = {
 	// checked if an json object has no keys
 	isEmptyObject:function(obj) {
