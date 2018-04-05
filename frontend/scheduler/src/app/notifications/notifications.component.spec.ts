@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 // component specific imports 
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
   SimpleSnackBar } from '@angular/material';
@@ -45,6 +46,7 @@ describe('NotificationsComponent', () => {
         HttpClientModule, 
         DatePipe,
         {provide: UserService, useClass: MockUserService },
+        CookieService,
        ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

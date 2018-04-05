@@ -29,7 +29,20 @@ export class ScheduleDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCourses();
-    this.generated = this.scheduleService.getGeneratedStatus(this.schedule_id);
+    this.scheduleService.getSchedule(this.schedule_id).subscribe(
+      response => {
+        console.log(response);  
+        if(response.status == 200){
+          if(response.body.success != undefined && response.body.success===false){
+            this.snackBar.open("Some error occurred. Please try again later!", null, {duration: 1000,});
+          }else if(response.body.success){
+            if(response.body.generated == 1){
+              this.generated = true;
+            }
+          }
+        }
+      }
+    );
     // this.generated = true; // for testing
   }
 

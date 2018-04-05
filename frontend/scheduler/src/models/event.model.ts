@@ -1,18 +1,36 @@
 export class Event{
   constructor(
     public schedule_id: number,
-    // for actual event:
-    public id?: number,
-    public eventName?: string,
-    public instructorId?: number, // id of prof in charge of event
-    public location?: string, // assigned venue for event
-    // for both search and actual event:
-    public startDate?: Date, // YYYY-MM-DD
-    public endDate?: Date, // YYYY-MM-DD
-    public startTime?: string, // HH:MM
-    public endTime?: string, // HH:MM
-    public day?: string, 
-    public capacity?: number,
+    public term?: number,
+    public pillar?: string,
+    public course?: string, 
+    public prof?: string, // get from prof_id
+    public prof_id?: string, 
+    public cohort?: number,
+    public location?: string, // get from slot
+    public day?: string, // get from slot
+    public date?: string, // get from slot
+    public start?: string, 
+    public end?: string,
+  ){}
+}
+
+export class Slot{
+  constructor(
+    public venue: string, // eg Cohort Classroom 1
+    public date: string, // eg Fri Apr 06 2018 
+    public time: string, // HH:MM
+  ){}
+}
+
+export class Search{
+  constructor(
+    public schedule_id: number,
+    public startDate: string, // YYYY-MM-DD
+    public endDate: string, // YYYY-MM-DD
+    public startTime: string, // HH:MM
+    public endTime: string, // HH:MM
+    public day: string, 
   ){}
 }
 
