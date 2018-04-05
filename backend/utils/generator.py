@@ -415,9 +415,9 @@ def formatOutput(schedule):
                 if schedule[prof][realTime]!=-1 and schedule[prof][realTime]!=-500:
                     if type(schedule[prof][realTime])==str:
                         profName,profID,proEmpty=re.split('(\d+)',rowRef[prof])
-                        print("{\"term\":\""+str(term78)+"\",\"pillar\":\"Capstone\",\"course\":\"Capstone\",\"prof\":\""+profName+"\",\"prof_id\":\""+profID+"\",\"cohort\":\"1\"" #what cohort to put?
-                          +"\",\"location\":\"Capstone\",\"day\":\""+str(day+1)+"\",\"start\":\""+str(int(time))+
-                          "\",\"end\":\""+str(int(time+5)) + "\"}")
+                        print("{term:"+str(term78)+",pillar:Capstone,course:Capstone,prof:"+profName+",prof_id:"+profID+",cohort:1" #what cohort to put?
+                          +",location:Capstone,day:"+str(day+1)+",start:"+str(int(time))+
+                          ",end:"+str(int(time+5)) + "}")
                         time+=6
                     else:
                         courseNum=schedule[prof][realTime]//10
@@ -461,9 +461,9 @@ def formatOutput(schedule):
                         response["start"] = str(startTime)
                         response["end"] = str(endTime)
 
-                        #print("{\"term\":\""+str(courses[courseNum].term)+"\",\"pillar\":\""+courses[courseNum].pillar+"\",\"course\":\""+courses[courseNum].courseName+"\",\"prof\":\""+profName+"\",\"prof_id\":\""+profID+"\",\"cohort\":\""
-                        #  +classStr+"\",\"location\":\""+str(rowRef[roos].roomName)+"\",\"day\":\""+str(day+1)+"\",\"start\":\""+str(startTime)+
-                        #  "\",\"end\":\""+str(endTime) + "\"}")
+                        #print("{term:"+str(courses[courseNum].term)+",pillar:"+courses[courseNum].pillar+",course:"+courses[courseNum].courseName+",prof:"+profName+",prof_id:"+profID+",cohort:"
+                        #  +classStr+",location:"+str(rowRef[roos].roomName)+",day:"+str(day+1)+",start:"+str(startTime)+
+                        #  ",end:"+str(endTime) + "}")
                         
                         print(json.dumps(response))
                         time=endTime+1
