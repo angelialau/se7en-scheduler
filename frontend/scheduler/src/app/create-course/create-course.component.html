@@ -1,5 +1,4 @@
-<div class="container-fluid">
-  <div class="form-container">
+<div class="container mx-auto">
     <!-- <p>debugging: {{instructors}}</p> -->
     <form [formGroup]="newForm">
       <!-- course details - number, name, term -->
@@ -10,7 +9,7 @@
         <select class="custom-select" id="courseDetail"
           formControlName="courseDetail">
           <option *ngFor='let c of courseDetails' [value]=c.course_no>
-            {{c.course_no}} {{c.course_name}}
+            {{c.pillar}} Term {{c.term}} - {{c.course_no}} {{c.course_name}}
           </option>
         </select>
       </div>
@@ -101,8 +100,18 @@
               <label class="input-group-text" for="class_type"> Type of Class </label>
             </div>
             <select class="custom-select" id="class_type"
-              formControlName="class_types">
-              <option *ngFor='let i of class_type' [value]='i'>{{i}}</option>
+              formControlName="class_types" #class>
+              <option *ngFor='let i of class_type' [value]='i' >{{i}}</option>
+            </select>
+          </div>
+          <!-- type of preferred venue -->
+          <div class="input-group mb-3" [hidden]="class.value!='Cohort Based Learning' ">
+            <div class="input-group-prepend">
+              <label class="input-group-text"> Preferred Venue </label>
+            </div>
+            <select class="custom-select" 
+              formControlName="venue_types">
+              <option *ngFor='let i of venue_type' [value]='i' selected="true">{{i}}</option>
             </select>
           </div>
           <!-- duration of each lesson in hours -->
@@ -119,7 +128,7 @@
           <!-- profs involved -->  
           <div *ngIf="prof_list.dirty">
             <p>Professors involved</p>
-            <div class="form-inline no-ugly-red-line" formArrayName="profs_involved">
+            <div class="form-inline no-ugly-red-line">
               <div *ngFor='let p of prof_list.controls'>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="checkbox" id="checkbox"
@@ -153,10 +162,10 @@
         <button class="btn btn-warning" id="resetCourseButton"
         (click)="newForm.reset()">Reset</button>
         <!-- <button class="btn btn-dark" 
-        (click)="prof_listParser()">testing parser</button> -->
+        (click)="temp()">testing parser</button> -->
       </div>
     </form>
     <!-- <p>Form values: {{newForm.value | json : 2 }} </p>
     <p>Form status: {{newForm.status | json}} </p> -->
-  </div>
+
 </div>

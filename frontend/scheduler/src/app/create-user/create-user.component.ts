@@ -10,21 +10,17 @@ import { UserService } from './../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
   modelNewUser = new User(null,null);
-  submitted : boolean = false;
-  message : string = "User account created for ";
-  alertRequiredMessage : string = "This field is required";
 
   constructor(
     public snackBar: MatSnackBar, 
     private userService: UserService ) {
-    
   }
 
   ngOnInit() {
   }
 
   createUser(name: string){
-    let msg : string = this.message + this.modelNewUser.name + "!";
+    let msg : string = "User account created for " + this.modelNewUser.name + "!";
     let errorMessage: string = "There seems to have been a problem with creating a user, please try again later!";
     this.userService.postNewUser(this.modelNewUser)
     .subscribe(

@@ -1,10 +1,11 @@
 export class Appeal{
   constructor(
-    public username: string, // id
-    public pillar: string,
-    public date: string, 
+  	public date: string, 
     public title?: string,
     public content?: string,
+    public instructor?: string, // id
+    public instructorid?: number,
+    public id?: number
     ){}
   
 }

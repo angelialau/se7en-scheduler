@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service';
+import { ScheduleService } from './../services/schedule.service';
 import { User } from './../../models/user.model';
 import { Event, days } from './../../models/event.model';
 import { ActivatedRoute } from '@angular/router'
@@ -13,7 +14,7 @@ export class CreateEventComponent implements OnInit {
   schedule_id : number;
   days = days;
   instructors : User[]= []; 
-
+  today : string;
   searchForm : Event; 
   newEvent : Event;
   timeslots : Event[];
@@ -21,6 +22,7 @@ export class CreateEventComponent implements OnInit {
 
   constructor(
     private userService : UserService,
+    private scheduleService: ScheduleService,
     private route: ActivatedRoute,
      ) {
     this.schedule_id = route.snapshot.params['schedule_id'];
@@ -28,6 +30,7 @@ export class CreateEventComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.today = this.scheduleService.getTodayDate();
     this.searchForm = new Event(this.schedule_id);
     this.newEvent = new Event(this.schedule_id);
     this.refreshTimeSlots();
@@ -37,12 +40,17 @@ export class CreateEventComponent implements OnInit {
   // updates list of all time slots
   refreshTimeSlots(){
     // http call 
+    this.timeslots = [];
     console.log("Create Event: refreshed time slot!");
   }
 
   searchForTimeSlot(){
     // http request for available slots
     // use slotChosen here 
+    this.parseTime(this.searchForm.startTime);
+    // this.parseTime(this.searchForm.endTime);
+    // this.parseDay(this.searchForm.startDate);
+    // this.parseDay(this.searchForm.endDate);
     console.log("Create Event: searching for suitable time slots!");
   }
 
@@ -53,6 +61,10 @@ export class CreateEventComponent implements OnInit {
 
   addEvent(){
     // http request to submit event
+    this.parseTime(this.searchForm.startTime);
+    this.parseTime(this.searchForm.endTime);
+    this.parseDate(this.searchForm.startDate);
+    this.parseDate(this.searchForm.endDate);
     console.log("Create Event: added event!");
     console.log(this.newEvent);
   }
@@ -76,6 +88,32 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
-  get diagnostic() { return JSON.stringify(this.searchForm)};
+  parseTime(time: string): number{
+    let ans = -1;
+    //830 = 0, 1600 = 19
+    let hour : number = Number(time.substring(0,2));
+    let min : string = time.substring(3,5);
+    if(hour<8 || hour>16 || (min!="00" && min!="30") || time =="16:30" || time == "08:00"){
+      let error = new Error('invalid time given, should be between 0830 to 1600');
+      error.name = 'InvalidTimeException';
+      throw error;
+    }
+    ans = 2 * (hour-8);
+    if (min == "00"){
+      ans--;
+    }
+    // console.log(ans);
+    return ans;
+  }
+  // Monday is 1, Tues is 2 ...
+  parseDate(date: Date): number{
+    return (new Date(date)).getDay();
+  }
+
+  parseDay(){ 
+    return days.indexOf(this.searchForm.day) + 1; 
+  }
+
+  get diagnostic() { return JSON.stringify(this.searchForm)};    
 
 }

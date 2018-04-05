@@ -1,3 +1,25 @@
-<p>
-  view-appeal works!
-</p>
+<div class="container mx-auto">
+  <h2 align="center"> Appeals made </h2>
+  <br>
+
+  <table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th *ngFor = "let col of columns">
+      {{col}} 
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor = "let appeal of appeals">
+      <td *ngFor = "let col of columns">
+        {{appeal[col]}}
+      </td>
+      <td> 
+        <button class="btn btn-light"><i class="fas fa-eye"></i></button>
+        <button (click)="deleteAppeal(appeal.id)" 
+          class="btn btn-light"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+  </tbody>
+</table>
+</div>

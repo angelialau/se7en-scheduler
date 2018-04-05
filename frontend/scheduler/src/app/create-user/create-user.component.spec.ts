@@ -1,25 +1,29 @@
+// general testing imports 
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+// general imports 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, By } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { User } from './../../models/user.model';
+// component specific imports 
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { UserService } from './../services/user.service';
-import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
+  SimpleSnackBar } from '@angular/material';
+import { User } from './../../models/user.model'
 
 import { CreateUserComponent } from './create-user.component';
 
 export class MockUserService extends UserService{
-  postNewUser(newUser : User ) : Observable<any>{
-    return Observable.of(HttpResponse);
-  }
+  // postNewUser(user: User){
+  //   return Observable.of(HttpResponse);
+  // }
 }
 
 describe('CreateUserComponent', () => {
@@ -27,6 +31,8 @@ describe('CreateUserComponent', () => {
   let fixture : ComponentFixture<CreateUserComponent>;
   let userServiceStub : MockUserService;
   let testBedUserService : MockUserService;
+  let snackBar : MatSnackBar;
+  let snackBarSpy : jasmine.Spy;
 
 
   beforeEach(async(() => {
@@ -39,13 +45,14 @@ describe('CreateUserComponent', () => {
         MatSnackBarModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterTestingModule
-
+        RouterTestingModule,       
       ],
       providers: [ 
-        { provide: UserService, useClass: MockUserService } , 
         HttpClientModule, 
-      ],
+        DatePipe,
+        {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': '4'}}}},
+        {provide: UserService, useClass: MockUserService },
+       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
@@ -56,6 +63,9 @@ describe('CreateUserComponent', () => {
     component = fixture.componentInstance;
     testBedUserService = TestBed.get(UserService);
     userServiceStub = fixture.debugElement.injector.get(UserService);
+    snackBar = fixture.debugElement.injector.get(MatSnackBar);
+    snackBarSpy = spyOn(snackBar, "open").and.returnValue(MatSnackBarRef);
+
     fixture.detectChanges();
   });
 
@@ -63,43 +73,38 @@ describe('CreateUserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // test dependency injection 
-  it('UserService injected via inject(...) and TestBed.get(...) should be the same instance',
-      inject([UserService], (injectService: UserService) => {
-        expect(injectService).toBe(testBedUserService);
-      })
-  );
-
-  it('UserService injected via component should be an instance of MockUserService', () => {
+  it('should have user service injected and instantiated', () => {
     expect(userServiceStub instanceof MockUserService).toBeTruthy();
+    inject([UserService], (injectService: UserService) => {
+      expect(injectService).toBe(testBedUserService);
+    });
   });
 
-  it("modelNewUser should be null user at ngOnInit", () => {
+  it("should initialise null user at ngOnInit", () => {
     const nullUser = new User(null,null);
     expect(component.modelNewUser).toEqual(nullUser);
   });
 
-  it('should trigger openSnackBar() when create user button clicked',() => {
-    spyOn(component, 'openSnackBar');
-    let button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
+  // it('should be an invalid form when empty', () => {
+  //   expect(component.modelNewUser.valid).toBeFalsy();
+  // });
 
-    fixture.whenStable().then(() => {
-      expect(component.openSnackBar).toHaveBeenCalled();
-      }
-    )
+  it('should invoke createUser and snackbar when adding user',() => {
+    component.modelNewUser = new User('email@email.com','password','ISTD',
+      'tester',88881111,1,null,null);
+    
+    let createspy = spyOn(component, 'createUser').and.callFake(function(){
+      userServiceStub.postNewUser(component.modelNewUser);
+      snackBar.open('msg');
+    });
+    let servicespy = spyOn(userServiceStub, 'postNewUser').and.returnValue(
+      Observable.of(HttpResponse));
+
+    component.createUser(component.modelNewUser.name);
+
+    expect(createspy).toHaveBeenCalledWith(component.modelNewUser.name);
+    expect(servicespy).toHaveBeenCalled();
+    expect(snackBarSpy).toHaveBeenCalled();
   });
 
-  it('postNewUser() should call snackbar.open()', () => {
-    const spy = spyOn(userServiceStub, 'postNewUser').and.returnValue(
-      Observable.of(HttpResponse)
-    );
-    // component.ngOnInit();
-    let button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
-
-    fixture.detectChanges();
-    // expect(component.user).toBeDefined();
-    expect(spy.calls.any()).toEqual(true);
-  });
 });

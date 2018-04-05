@@ -1,18 +1,23 @@
+// general testing imports 
 import { async, ComponentFixture, TestBed, fakeAsync, inject } from '@angular/core/testing';
-
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+// general imports 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, By } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSnackBarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { User } from './../../models/user.model';
+// component specific imports 
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { UserService } from './../services/user.service';
-import { Observable } from 'rxjs/Observable';
-import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
+  SimpleSnackBar } from '@angular/material';
+import { User } from './../../models/user.model';
+import { CookieService } from 'ng2-cookies';
 
 import { LoginComponent } from './login.component';
 
@@ -20,13 +25,22 @@ export class MockUserService extends UserService{
   postLogin(email : string, password : string ) : Observable<any>{
     return Observable.of(HttpResponse);
   }
+  setUser(user: User): boolean {
+    return true;
+  }
 }
+
+export class MockCookieService extends CookieService {}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let userServiceStub: MockUserService;
   let testBedUserService: MockUserService;
+  let cookieServiceStub: MockCookieService;
+  let testBedCookieService: MockCookieService;
+  let router : Router;
+  let snackBar : MatSnackBar;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,6 +57,7 @@ describe('LoginComponent', () => {
       ],
       providers: [ 
         {provide: UserService, useClass: MockUserService}, 
+        {provide: CookieService, useClass: MockCookieService}, 
         HttpClientModule, 
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
@@ -55,6 +70,11 @@ describe('LoginComponent', () => {
     component = fixture.componentInstance;
     testBedUserService = TestBed.get(UserService);
     userServiceStub = fixture.debugElement.injector.get(UserService);
+    testBedCookieService = TestBed.get(CookieService);
+    cookieServiceStub = fixture.debugElement.injector.get(CookieService);
+    router = fixture.debugElement.injector.get(Router);
+    snackBar = fixture.debugElement.injector.get(MatSnackBar);
+    
     fixture.detectChanges();
   });
   
@@ -62,43 +82,72 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // test dependency injection 
-  it('UserService injected via inject(...) and TestBed.get(...) should be the same instance',
-      inject([UserService], (injectService: UserService) => {
-        expect(injectService).toBe(testBedUserService);
-      })
-  );
-
-  it('UserService injected via component should be an instance of MockUserService', () => {
+  it('should have user service injected and instantiated', () => {
     expect(userServiceStub instanceof MockUserService).toBeTruthy();
+    inject([UserService], (injectService: UserService) => {
+      expect(injectService).toBe(testBedUserService);
+    });
   });
 
-  it("user should be null user at ngOnInit", () => {
-    const nullUser = new User(null,null,null,null,null,null);
-    expect(component.user).toEqual(nullUser);
+  it('should have cookie service injected and instantiated', () => {
+    expect(cookieServiceStub instanceof MockCookieService).toBeTruthy();
+    inject([CookieService], (injectService: CookieService) => {
+      expect(injectService).toBe(testBedCookieService);
+    });
+  });
+
+  it("should have variables initialised at ngOnInit", () => {
+    let nullUser = new User(null,null);
+    expect(component.model).toEqual(nullUser);
+    expect(component.cookies).toBeUndefined();
   });
 
   it('should trigger login() when login button clicked',() => {
-    spyOn(component, 'login');
+    let spy = spyOn(component, 'login');
     let button = fixture.debugElement.nativeElement.querySelector('button');
     button.click();
+    expect(spy).toHaveBeenCalled();
+  });
 
-    fixture.whenStable().then(() => {
-      expect(component.login).toHaveBeenCalled();
+  it('should invoke user and cookie services when logging in', ()=>{
+    let email = 'email@email.com';
+    let password = 'password';
+    let user = new User(email, password);
+    let bool = spyOn(userServiceStub, 'setUser').and.returnValue(true);
+    let routerspy = spyOn(router,'navigateByUrl');
+    let snackBarSpy = spyOn(snackBar, "open").and.returnValue(MatSnackBarRef);
+    let cookiesSpy = spyOn(cookieServiceStub, "set");
+    let loginspy = spyOn(component, 'login').and.callFake(function(){
+      userServiceStub.postLogin(component.model.email, component.model.password);
+    })
+
+    component.model.email = email;
+    component.model.password = password;
+
+    let servicespy = spyOn(userServiceStub, 'postLogin').and.callFake(function(email,password){
+      if(email == 'email@email.com' && password == 'password'){
+        let boo = userServiceStub.setUser(user);
+        if (boo){
+          cookieServiceStub.set('id',String(user.id));
+          cookieServiceStub.set('pillar', user.pillar || '');
+          cookieServiceStub.set('name', user.name || '');
+          cookieServiceStub.set('email', user.email || '');
+          cookieServiceStub.set('schedules', user.schedules || '');
+          cookieServiceStub.set('courses', user.courses || '');
+          router.navigateByUrl('url');
+        }
+      }else{
+        snackBar.open('msg');
       }
-    )
-  });
+    });
+    
+    component.login();
 
-  it('login() should update user data', () => {
-    const spy = spyOn(userServiceStub, 'postLogin').and.returnValue(
-      Observable.of(HttpResponse)
-    );
-    // component.ngOnInit();
-    let button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
-
-    fixture.detectChanges();
-    expect(component.user).toBeDefined();
-    expect(spy.calls.any()).toEqual(true);
-  });
+    expect(servicespy).toHaveBeenCalled();
+    expect(loginspy).toHaveBeenCalled();
+    expect(bool).toHaveBeenCalled();
+    expect(routerspy).toHaveBeenCalled();
+    expect(cookiesSpy.calls.count()).toEqual(6);
+  })
+  
 });

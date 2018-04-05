@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angul
 import { Course } from './../../models/course.model'
 import { Schedule } from './../../models/schedule.model'
 import { Observable } from 'rxjs/Rx';
+import { DatePipe } from '@angular/common';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -10,13 +11,13 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ScheduleService {
-
   private url : string = "http://devostrum.no-ip.info:6666";
   headers = new HttpHeaders({ 
     'Content-Type': 'application/x-www-form-urlencoded' 
   });
   
   constructor(
+    private datePipe: DatePipe,
     private http: HttpClient) { }
 
   // creating a new schedule
@@ -42,6 +43,19 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  getGeneratedStatus(id:number) : boolean{
+    this.getSchedule(id).subscribe(response => {
+      if(response.body.success){
+        if(response.body.generated === 1){
+          return true;
+        }
+      }else{
+        console.log('getGeneratedStatus error', response);
+      }
+    })
+    return false;
+  }
+
   // get courses under a specific schedule
   getCoursesInSchedule(id: number): Observable<any>{
     return this.http.get<Course[]>(this.url + '/Courses/BySchedule/' + id, {observe: 'response'})
@@ -55,6 +69,7 @@ export class ScheduleService {
     body.set('year', String(newSchedule.year)); 
     body.set('courses', newSchedule.courses); 
     body.set('id', String(newSchedule.id)); 
+    body.set('generated', String(newSchedule.generated)); 
     let extension = this.url + '/Schedules/Update';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
@@ -137,6 +152,10 @@ export class ScheduleService {
     }
     console.error(errorMessage);
     return Observable.throw(errorMessage);
+  }
+
+  getTodayDate() {
+    return this.datePipe.transform(Date.now(), 'yyyy-MM-dd').toString(); 
   }
 
 }

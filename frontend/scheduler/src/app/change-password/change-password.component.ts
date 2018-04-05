@@ -8,10 +8,6 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-  private oldPassword : string;
-  private newPassword : string;
-  private confirmPassword : string;
-
   constructor(
     private userService : UserService,
     public snackBar : MatSnackBar,
@@ -27,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
       this.userService.changePassword(oldPassword, newPassword)
       .subscribe(
         response => {
-          if(JSON.parse(response).success){
+          if(response.success){
             this.snackBar.open("Password changed!", null, {duration: 1000});
           }else{
             this.snackBar.open(errorMsg, null, {duration: 1000});
