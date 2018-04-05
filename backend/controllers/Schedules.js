@@ -84,7 +84,7 @@ router.post('/Generate', function(req, res, next) {
 			} else {
 				var input = {}
 				for (var i = 0; i < Object.keys(rows).length; i++) {
-					input[i] = Course.rowToJSON(JSON.parse(rows[i]));
+					input[i] = Course.rowToJSON(JSON.parse(JSON.stringify(rows[i])));
 				}
 				console.log(input);
 
