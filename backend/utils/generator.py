@@ -353,9 +353,6 @@ for i in range(10):
         randBreak1=random.randint(5,10)     #random break 30mins for monday
         randBreak2=random.randint(62,67)         #random break 30mins for Thursday
         param1,param2,param3,param4=random.randint(1,10),random.randint(1,10),random.randint(1,10),random.randint(1,10)
-        
-        print("before generator")
-        sys.stdout.flush()
         currentSchedule=generator(param1,param2,param3,param4,randBreak1,randBreak2)
         if currentSchedule[0][0]!="Fail":
             break
