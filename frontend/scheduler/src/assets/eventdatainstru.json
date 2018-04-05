@@ -119,13 +119,15 @@
       {
         "title": "Meeting tummytingISTD",
         "start": "20180321T1030",
-        "end": "20180321T1230"
+        "end": "20180321T1230",
+        "description":"hellooooooo"
       },
       {
         "title": "ESC Meeting with Tummyting \n \n Cohort Classroom 12",
         "start": "10:30",
         "end": "12:30",
-        "dow": "[1,4]"
+        "dow": "[1]",
+        "ranges": "[{start:moment('2015-02-01','YYYY-MM-DD'), end: moment('2015-02-01','YYYY-MM-DD').endOf('month')}]"
       },
       {
         "title": "Lunch Break tummytingISTD \n \n Cohort Classroom 12",
@@ -170,18 +172,18 @@
         "end": "20180321T1230"
       },
       {
-        "title": "ESC Meeting with Tummyting \n \n Ahipasaoglu",
+        "title": "ESC Meeting  \n \n Ahipasaoglu",
         "start": "10:30",
         "end": "12:30",
         "dow": "[1,4]"
       },
       {
-        "title": "Lunch Break tummytingISTD \n \n Ahipasaoglu",
+        "title": "Lunch Break \n \n Ahipasaoglu",
         "start": "20180323T1130",
         "end": "20180323T1330"
       },
       {
-        "title": "Click for ISTD Website tummytingISTDs \n \n Ahipasaoglu",
+        "title": "Click for ISTD Website \n \n Ahipasaoglu",
         "url": "http://istd.edu.sg",
         "start": "20180328T0800",
         "end": "20180328T1700"

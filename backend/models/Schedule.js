@@ -6,6 +6,7 @@ var COLUMN_ID = "id";
 var COLUMN_COURSES = "courses";
 var COLUMN_YEAR = "year";
 var COLUMN_TRIMESTER = "trimester";
+var COLUMN_GENERATED = "generated";
 
 var Schedule = {
 	getAllSchedules:function(callback) {
@@ -75,6 +76,15 @@ var Schedule = {
 	deleteSchedule:function(id, callback) {
 		return db.query("DELETE FROM " + TABLE_NAME + " WHERE `" + COLUMN_ID +
 						"` =?", [id], callback);
+	},
+
+	updateGenerated:function(id, callback) {
+		return db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_GENERATED + 
+						"` =1 WHERE `" + COLUMN_ID + 
+						"`=?",
+						[id],
+						callback);
 	}
 };
 

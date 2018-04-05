@@ -1,25 +1,38 @@
-<div class="container mx-auto">
-  <h2 align="center"> Appeals made </h2>
-  <br>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
 
-  <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th *ngFor = "let col of columns">
-      {{col}} 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor = "let appeal of appeals">
-      <td *ngFor = "let col of columns">
-        {{appeal[col]}}
-      </td>
-      <td> 
-        <button class="btn btn-light"><i class="fas fa-eye"></i></button>
-        <button (click)="deleteAppeal(appeal.id)" 
-          class="btn btn-light"><i class="fas fa-trash-alt"></i></button></td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <h2 align="center"> Appeals </h2>
+
+  <div class="panel-group">
+    <div *ngFor = "let appeal of appeals">
+      <br>
+    <div class="panel panel-default">
+      <div class="panel-heading" style="height: 40px">
+        <h4 class="panel-title">
+          <button  style="float:right; margin-left: 8px" (click)="deleteAppeal(appeal.id)"><i class="fas fa-trash-alt"></i></button>
+          <!--button style="float:right; margin-left: 8px" (click)="showContent(appeal.id)"><i class="fas fa-eye"></i></button-->
+          <strong>{{appeal.title}}</strong> <span style="float: right"><i>by {{appeal.instructor}}, {{appeal.pillar}} </i></span>
+        </h4>
+      </div>
+        <div id="{{appeal.id}}" class="panel-body">
+          <div *ngIf = "showhiden">
+          <span style="float: right"><i>{{appeal.date}} </i></span>
+          <br>
+          <p style="text-align:left; margin-left: 5px">{{appeal.content}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div> 
 </div>
+
+</body>
+</html>
