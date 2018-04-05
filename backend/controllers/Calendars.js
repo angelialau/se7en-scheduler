@@ -33,7 +33,7 @@ router.get('/:id(\\d+)', function(req, res, next) {
 				rows.forEach(function(entry) {
 					formatted = utils.eventToCalendar(entry);
 					if (output[formatted.id]) {
-						output[formatted.id][schedule].push(formatted[schedule][0]);
+						output[formatted.id].schedule.push(formatted.schedule[0]);
 					} else {
 						output[formatted.id] = formatted;
 					}
