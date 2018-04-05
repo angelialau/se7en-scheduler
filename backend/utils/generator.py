@@ -344,6 +344,9 @@ rowRef=initializeValue()
 
 dayTime=[[0,12],[25,37],[38,47],[57,69],[76,81]]    #The available slots for every day
 
+print(courses)
+sys.stdout.flush()
+
 rawSchedules = []
 rawParams=[]
 for i in range(10):
