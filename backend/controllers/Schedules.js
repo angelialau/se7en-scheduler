@@ -82,9 +82,9 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				console.log(Course.rowToJson(rows[0]));
+				console.log(Course.rowToJSON(rows[0]));
 
-				
+
 				// var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
 				// var result = "";
 
