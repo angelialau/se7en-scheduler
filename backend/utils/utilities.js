@@ -107,14 +107,16 @@ var utilities = {
 		var current = new Date();
 
 		// move current to monday
+		console.log(current.getDate());
 		while (current.getDay() != 1) {
 			this.incrementDate(current);
 		}
-
+		console.log(current.getDate());
 		// move current to day of event
 		while (current.getDay() != event.day) {
 			this.incrementDate(current);
 		}
+		console.log(current.getDate());
 		
 		output.instructor = event.prof;
 		output.id = event.prof_id;
@@ -125,8 +127,8 @@ var utilities = {
 		details.Location = event.location;
 		details["Start Time"] = fecha.format(startTime, 'hh:mm A');
 		details["End Time"] = fecha.format(endTime, 'hh:mm A');
-		details["Start Date"] = fecha.format(current.getDate(), 'YYYY-MM-DD');
-		details["End Date"] = fecha.format(current.getDate(), 'YYYY-MM-DD');
+		details["Start Date"] = fecha.format(current.getDate(), 'YYYY/MM/DD');
+		details["End Date"] = fecha.format(current.getDate(), 'YYYY/MM/DD');
 		details.Private = true;
 
 		output.schedule.push(details);
