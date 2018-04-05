@@ -82,14 +82,14 @@ var utilities = {
 		var endTime =  new Date(this.zeroTime.getTime() + event.end*(30*6*10000));
 		
 		output.instructor = event.prof;
-		output.id = "\'" + event.prof_id + "\'";
+		output.id = event.prof_id.toString();
 		output.pillar = event.pillar;
 		output.schedule = [];
 
 		details.title = event.course + "\n\n" + event.location;
 		details.start = fecha.format(startTime, 'HH:mm');
 		details.end = fecha.format(endTime, 'HH:mm');
-		details.dow = "\'" + event.day + "\'";
+		details.dow = event.day.toString();
 
 		output.schedule.push(details);
 		return output;
