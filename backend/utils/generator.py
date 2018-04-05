@@ -21,7 +21,7 @@ claNum=53
 def readJson(url):
     #weather = urlopen(url)
     weather = sys.argv[1]
-    wjson = json.load(weather)
+    wjson = json.loads(weather)
     courses=[]
     i=0
     for key,value in wjson.items():
@@ -29,6 +29,7 @@ def readJson(url):
         courses[i].sessions=value["sessions"]
         i+=1
     return courses
+
 def referenceRows():
     row=[]
     for i in range(26):
