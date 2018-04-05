@@ -1,12 +1,16 @@
 var express = require("express");
 var Calendar = require("../models/Calendar");
 var utils = require("../utils/utilities");
+var fecha = require("fecha");
 var router = express.Router();
 
 // defining create event route
 router.post('/', function(req, res, next) {
 	// Check if necessary keys are there
 	if (utils.compareJSONKeys(req.body, Calendar.createStructure)) {
+		// Change date to MySQL date time format
+		req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
+		
 		// Create event
 		Calendar.createEvent(req.body, function(err, count) {
 			utils.basicPostCallback(res, err, count);

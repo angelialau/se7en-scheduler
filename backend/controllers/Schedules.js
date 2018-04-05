@@ -82,20 +82,23 @@ router.post('/Generate', function(req, res, next) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
-				var result = "";
+				console.log(Course.rowToJson(rows[0]));
 
-				child.stdout.on('data', function(data) {
-					result += data.toString();
-				});
+				
+				// var child = spawn('python', ['./utils/test.py', JSON.stringify(rows)], options);
+				// var result = "";
 
-				child.stderr.on('data', function(data) {
-					console.log("ERR child process: " + data.toString());
-				});
+				// child.stdout.on('data', function(data) {
+				// 	result += data.toString();
+				// });
 
-				child.on('close', function(code) {
-					res.json(result);
-				});
+				// child.stderr.on('data', function(data) {
+				// 	console.log("ERR child process: " + data.toString());
+				// });
+
+				// child.on('close', function(code) {
+				// 	res.json(result);
+				// });
 			}
 		});
 	} else {
