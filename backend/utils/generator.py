@@ -341,6 +341,7 @@ start1 = time.time()
 rowRef=referenceRows()
 rowRef=initializeValue()
 
+print("python child is alive")
 
 dayTime=[[0,12],[25,37],[38,47],[57,69],[76,81]]    #The available slots for every day
 
