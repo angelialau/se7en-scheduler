@@ -57,13 +57,6 @@ var utilities = {
 	},
 
 	/**
-	 * replaces all instances of <find> in <str> with <replace>
-	 */
-	replaceAll:function(str, find, replace){	
-	    return str.replace(new RegExp(find, 'g'), replace);
-	},
-
-	/**
 	 * List of all possible rooms within SUTD
 	 */
 	availableRooms:[
