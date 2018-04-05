@@ -8,6 +8,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
+import { CookieService } from 'ng2-cookies';
 
 @Injectable()
 export class UserService {
@@ -21,14 +22,20 @@ export class UserService {
   private Cookie;
   
   constructor(
-    private http: HttpClient) { }
-
-  setUser(user: User): boolean{
-    this.loggedInUser = user;
-    return true;
-  }
+    private http: HttpClient,
+    private cookieService: CookieService,
+    ) { }
 
   getLoggedInUser(){
+    let email = this.cookieService.get('email');
+    let password = 'password hidden';
+    let pillar =  this.cookieService.get('pillar');
+    let name =  this.cookieService.get('name');
+    let phone =  Number(this.cookieService.get('phone'));
+    let id =  Number(this.cookieService.get('id'));
+    let schedules =  this.cookieService.get('schedules');
+    let courses =  this.cookieService.get('courses');
+    this.loggedInUser = new User(email, password, pillar, name, phone, id, schedules, courses);
     return this.loggedInUser;
   }
 
@@ -100,7 +107,8 @@ export class UserService {
     body.set('senderId', String(this.loggedInUser.id)); 
     body.set('title', announcement.title); 
     body.set('content', announcement.content); 
-    body.set('sender', this.loggedInUser.name); 
+    body.set('sender', this.loggedInUser.name);
+    console.log('loggedInUser', this.loggedInUser); 
     let extension = this.url + '/Notifications';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
