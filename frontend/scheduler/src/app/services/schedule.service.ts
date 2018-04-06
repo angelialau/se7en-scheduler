@@ -26,6 +26,8 @@ export class ScheduleService {
     let body = new URLSearchParams(); 
     body.set('trimester', String(newSchedule.trimester)); 
     body.set('year', String(newSchedule.year)); 
+    body.set('start', String(newSchedule.startDate)); 
+    body.set('end', String(newSchedule.endDate)); 
     let extension = this.url + '/Schedules';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 

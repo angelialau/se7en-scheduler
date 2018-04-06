@@ -5,7 +5,7 @@ export class Schedule{
     public courses?: string,
     public id?: number,
     public generated?: number, // 0 or 1
-    // public startDate?: Date,
-    // public endDate?: Date,
+    public startDate?: Date,
+    public endDate?: Date,
   ) { }
 }

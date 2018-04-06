@@ -127,11 +127,20 @@ export class CreateEventComponent implements OnInit {
   addEvent(){
     this.newEvent.start = String(this.parseTime(this.newEvent.start));
     this.newEvent.end = String(this.parseTime(this.newEvent.end));
-    this.newEvent.term = this.queryCourse(this.newEvent.course, 'term');
-    this.newEvent.pillar = this.queryCourse(this.newEvent.course, 'pillar'); 
-    this.newEvent.course = this.queryCourse(this.newEvent.course, 'course_name'); 
     this.newEvent.day = this.newEvent.date;
-    this.newEvent.prof = this.queryInstructors(Number(this.newEvent.prof_id));
+    if(this.newEvent.pillar===undefined || this.newEvent.pillar === ""){
+      this.newEvent.pillar = "0";
+    }
+    if(this.newEvent.prof_id===undefined || this.newEvent.prof_id === ""){
+      this.newEvent.prof_id = "0";
+      this.newEvent.prof = "0";
+    }else{
+      this.newEvent.prof = this.queryInstructors(Number(this.newEvent.prof_id));  
+    }
+    if(this.newEvent.cohort===undefined){
+      this.newEvent.cohort = 0;
+    }
+    this.newEvent.term = 0;
     
     this.scheduleService.addEvent(this.newEvent).subscribe(
       response=>{
@@ -144,6 +153,15 @@ export class CreateEventComponent implements OnInit {
         }
       }
     )
+    console.log(this.newEvent);
+  }
+
+  getEvents(){
+
+  }
+
+  deleteEvent(index: number){
+
   }
 
   getInstructors(){
@@ -243,29 +261,29 @@ export class CreateEventComponent implements OnInit {
     return newArray;
   }
 
-  queryCourse(course_no, param: string): any{
-    for(let course of courseDetails){
-      if( course.course_no=== course_no){
-        if (param === "term"){
-          return course.term;
-        }
-        if (param === "course_name"){
-          return course.course_name;
-        }
-        if(param === "pillar"){
-          return course.pillar;
-        }
-        else{
-          let error = new Error('param not found');
-          error.name = 'NoParamForQueryException';
-          throw error;      
-        }
-      }
-    }
-    let error = new Error('course to be queried not found');
-    error.name = 'NoCourseForQueryException';
-    throw error;   
-  }
+  // queryCourse(course_no, param: string): any{
+  //   for(let course of courseDetails){
+  //     if( course.course_no=== course_no){
+  //       if (param === "term"){
+  //         return course.term;
+  //       }
+  //       if (param === "course_name"){
+  //         return course.course_name;
+  //       }
+  //       if(param === "pillar"){
+  //         return course.pillar;
+  //       }
+  //       else{
+  //         let error = new Error('param not found');
+  //         error.name = 'NoParamForQueryException';
+  //         throw error;      
+  //       }
+  //     }
+  //   }
+  //   let error = new Error('course to be queried not found');
+  //   error.name = 'NoCourseForQueryException';
+  //   throw error;   
+  // }
 
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){

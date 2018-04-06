@@ -2,6 +2,28 @@
   Sorry, there are no slots available. 
 </div> -->
 
+<!-- <div class="container mx-auto">
+  <div class="card-body">
+    <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> Select the time table you want to add event to</h5>
+  </div>
+  
+  <div *ngIf="showScheduleList">
+    <table class="table table-hover">
+      <tbody *ngFor="let schedule of schedules">
+        <tr>
+          <td [routerLink]="['./',schedule.id]"
+          title="View courses enrolled and add a course or event to this schedule"
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+
+
+
 <div class="container mx-auto">
     <div [hidden]='true'>
     <h6 class="card-subtitle mb-2 text-muted">Search for suitable timeslots</h6>
@@ -108,7 +130,7 @@
 
   <!-- adding event form -->
   <div>
-    <h6 class="card-subtitle mb-2 text-muted" id="eventDetailsTitle">Event details</h6>
+    <h6 class="card-subtitle mb-2 text-muted" id="eventDetailsTitle">Venue booking</h6>
       <!-- location -->
       <div class="form-group">
         <div class="input-group">
@@ -129,7 +151,7 @@
       <div class="form-group" *ngIf="showDateSelection">
         <div class="input-group">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="date"> Date of Event</label>
+            <label class="input-group-text" for="date"> Date</label>
           </div>
           <select class="custom-select" id="date" required (change)="getStartTimes()"
             [(ngModel)]="newEvent.date" name="date">
@@ -194,58 +216,74 @@
         </div>   -->
 
         <!-- list of instructors -->
+        <h6 class="card-subtitle mb-2 text-muted">Event information</h6>
         <div class="row">
           <div class="col">
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <label class="input-group-text" for="course"> Course</label>
+                  <label class="input-group-text" for="course"> Event Name</label>
                 </div>
-                <select class="custom-select" id="course" required 
-                [(ngModel)]="newEvent.course" name="course">
-                  <option *ngFor="let c of courseDetails" [value]=c.course_no>
-                    {{c.pillar}} Term {{c.term}} - {{c.course_no}} {{c.course_name}}
-                  </option>
-                </select>  
+                  <input type="text" id="course" required class="form-control" 
+                  [(ngModel)]="newEvent.course" name="course" placeholder="e.g. 2018 Blockchain Seminar">
               </div>
             </div>
           </div>
 
           
         </div>
-
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
               <label class="input-group-text" for="instructorId"> Professor in charge</label>
             </div>
-            <select class="custom-select" id="instructorId" required 
+            <select class="custom-select" id="instructorId" selected=default 
             [(ngModel)]="newEvent.prof_id" name="instructorId">
+              <option #dafault [value]="NA"> Not applicable </option>
               <option *ngFor='let prof of instructors' [value]=prof.id>
                 {{prof.pillar}} - {{prof.name}}
               </option>
             </select>  
           </div>
         </div>
-
+        <h6 class="card-subtitle mb-2 text-muted">Event is applicable to</h6>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="pillar"> Pillar</label>
+            </div>
+            <select class="custom-select" id="pillar" selected=defaultPillar
+            [(ngModel)]="newEvent.pillar" name="pillar">
+              <option #defaultPillar [value]="NA"> Not Applicable </option>
+              <option *ngFor='let pillar of ["ASD","EPD","ESD","ISTD"]' [value]=pillar>
+                {{pillar}}
+              </option>
+            </select>  
+          </div>
+        </div>
         <div class="form-group">
           <div class="input-group">
             <div class="input-group-prepend">
               <label class="input-group-text" for="cohort"> Cohort Class</label>
             </div>
-            <select class="custom-select" id="cohort" required 
+            <select class="custom-select" id="cohort" selected=defaultClass
             [(ngModel)]="newEvent.cohort" name="cohort">
-              <option *ngFor='let cohort of [1,2,3,4,5,6]' [value]=cohort>
+              <option #defaultClass [value]="NA"> Not Applicable </option>
+              <option *ngFor='let cohort of [0,1,2,3,4,5,6]' [value]=cohort>
                 {{cohort}}
               </option>
             </select>  
           </div>
         </div>
-        <!-- <p>Testing: {{diagnostic}}</p> -->
+
+        <p>Testing: {{diagnostic}}</p>
         <div>
-          <button type="submit" class="btn btn-success" style="float: right;" 
+          <button type="submit" class="btn btn-success" style="float: right;" id="submitEventButton"
           [disabled]="addingForm.form.invalid"
           (click)="addEvent();"><i class="fas fa-plus-circle"></i> Submit Event</button>
+
+          <button type="submit" class="btn btn-warning" style="float: right;" id="resetEventButton"
+          (click)="addingForm.reset();"><i class="fas fa-redo"></i> Reset</button>
         </div>
       </form>
     </div>
