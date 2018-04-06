@@ -54,7 +54,8 @@ Testing is split into 3 main components: algorithm used to generate schedules, f
 Unit testing is done using python unittest. To run,
 
 ```
-cd backend/TestAlgo.py
+cd backend
+python3 TestAlgo.py
 ```
 This test covers all algorithm functions that can be tested separately.
 
