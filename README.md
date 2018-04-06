@@ -23,9 +23,9 @@ The algorithm generates a conflict-minimising schedule using genetic algorithms.
 * Upload calendar to Google Calendar automatically
 * Add button to generate calendar
 * Support start and end dates of trimester
-* Support searching for empty slots
-* Support adding new event
 * Support replying to appeals
+* Algorithm needs to support capstone
+* Calendar needs allow manual editing
 
 ## Getting Started
 
@@ -82,8 +82,7 @@ npm test
 This test covers
 * All utility functions (eg. checking if JSONObjects have identical keys)
 
-Tests on Postman tries all API endpoints and check if the response is correct
-Here is an example of a Postman test
+Tests on Postman tries all API endpoints and check if the response is correct. Here is an example of a Postman test,
 ```
 pm.test("Status code is 200", function () {
     pm.response.to.have.status(200);
@@ -108,7 +107,11 @@ pm.test("Check known user was pulled", function () {
     pm.expect(pm.response.text()).to.include("Rayson Lim");
 });
 ```
-In general, we test for status code, response body, errors and expected result. 
+This test covers
+* status code
+* response body 
+* errors 
+* expected result. 
 
 ## Deployment
 
