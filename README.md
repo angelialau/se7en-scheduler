@@ -4,7 +4,7 @@
 This project is a web-based platform for SUTD instructors and coordinators to generate and manage academic schedules. It seeks to minimise clunky communication by email by providing a common platform for instructors to enrol courses for the upcoming schedule, allow coordinators to utilise a smart event scheduling algorithm to generate the term's schedule and for both end-users to communicate with each other based on the tasks at hand. Furthermore, coordinators will be able to ad-hoc events while all users will be able to view and integrate the respective schedules into their personal calendars (e.g. Google Calendar).
 
 #### The Algorithm
-The algorithm generates a conflict-minimising schedule using genetic algorithms...elab plz
+The algorithm generates a conflict-minimising schedule using genetic algorithms. Once the Coordinator click the generate schedule button, the courses details are passed to the algorithm. The algorithm then record course data and generate schedules that ensure no conflict between professors, rooms and classes. All generated schedules then pass through a checkScore function to calculate the conflicts between different terms (e.g. term 7 and term 5). The algorithm will then mutate the params(genes) of the top 10 schedules with minimal scores. In the next round, the schedule is generated using the mutated params. After 5 rounds, the schedule with the highest score(minimal conflict)will be output to the backend.
 
 #### Features implemented 
 * Schedule generator using smart scheduling algorithm
@@ -25,6 +25,7 @@ The algorithm generates a conflict-minimising schedule using genetic algorithms.
 * Support start and end dates of trimester
 * Support replying to appeals
 * Algorithm needs to support capstone
+* Algorithm needs to support error handling
 * Calendar needs allow manual editing
 
 ## Getting Started
@@ -48,13 +49,14 @@ ng build
 
 Testing is split into 3 main components: algorithm used to generate schedules, frontend and backend. 
 
-### Algorithm Testing
+### Algorithm Testing - Unit Testing, Robustness Testing
 
-Explain what these tests test and why
+Unit testing is done using python unittest. To run,
 
 ```
-Give an example
+cd backend/TestAlgo.py
 ```
+This test covers all algorithm functions that can be tested separately.
 
 ### Frontend - System Testing
 
@@ -142,7 +144,7 @@ This test covers
 * **Angelia Lau** - *1002417* - [angelialau](https://github.com/angelialau)
 * **Rayson Lim** - *1002026* - [nosyarlin](https://github.com/nosyarlin)
 * **Tham Yee Ting** - *1002516* - [thamyeeting](https://github.com/thamyeeting)
-* **Wu Yu Fei** - *1002192* - [RafaelaWu](https://github.com/RafaelaWu)
+* **Wu Yufei** - *1002192* - [RafaelaWu](https://github.com/RafaelaWu)
 
 ## Acknowledgments
 
