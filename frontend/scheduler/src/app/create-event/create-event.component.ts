@@ -6,6 +6,7 @@ import { Event, Search, days} from './../../models/event.model';
 import { ActivatedRoute } from '@angular/router'
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
+import { Schedule } from './../../models/schedule.model';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -14,38 +15,68 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-  schedule_id : number;
+  // form related vars
+  schedule_id : number = -1;
   days = days;
   instructors : User[]= []; 
-  today : string;
-  searchForm : Search; 
-  newEvent : Event;
+  schedules : Schedule[] = [];
   timeslots :  Array<any> = [];
   courseDetails = courseDetails;
   venues : string[] = [];
   dates : string[] = [];
   startTimes : string[] = [];
   endTimes : string[] = [];
+  newEvent : Event;
+  // unchecked
+  today : string;
+  searchForm : Search; 
+  // views 
+  showSchedules : boolean = true;
+  showEventForm : boolean = false;
   showDateSelection : boolean = false;
   showTimeSelection : boolean = false;
   showEndSelection : boolean = false;
+  
 
   constructor(
     private userService : UserService,
     private scheduleService: ScheduleService,
-    private route: ActivatedRoute,
     private snackBar : MatSnackBar,
      ) {
-    this.schedule_id = route.snapshot.params['schedule_id'];
     }
 
   ngOnInit() {
     this.today = this.scheduleService.getTodayDate();
-    this.searchForm = new Search(this.schedule_id,'', '','','','');
-    this.newEvent = new Event(this.schedule_id);
-    this.filterCourseDetails();
-    this.getInstructors();
-    this.refreshTimeSlots();
+    this.scheduleService.getSchedules()
+      .map((data: any) => {
+        let temp : Schedule[] = data.body;
+        for(let s of temp){
+          if (s.generated == 1){
+            this.schedules.push(s);
+          }
+        }
+      })
+      .subscribe(
+        response => {},
+        error => console.log("getSchedules error: " + error)
+    );    
+  }
+
+  setSchedId(id: number){
+    if(this.schedule_id != id){
+      this.schedule_id = id;
+      this.searchForm = new Search(this.schedule_id,'', '','','','');
+      this.newEvent = new Event(this.schedule_id);
+      this.getInstructors();
+      this.refreshTimeSlots();
+      this.showEventForm = true;  
+    }
+    this.showSchedules = false;
+  }
+
+  showSchedulesAgain(){
+    this.showSchedules = true;
+    this.showEventForm = false;
   }
 
   // updates list of all time slots
@@ -56,7 +87,7 @@ export class CreateEventComponent implements OnInit {
         if(response.status == 200){
           if(response.body.success == undefined){
             this.timeslots = response.body;
-            console.log('timeslots', this.timeslots);
+            // console.log('timeslots', this.timeslots);
             this.venues = this.getVenues();
           }
         }else{
@@ -114,15 +145,6 @@ export class CreateEventComponent implements OnInit {
     return this.endTimes;
   }
 
-  searchForTimeSlot(){
-    // http request for available slots
-    // use slotChosen here 
-    this.parseTime(this.searchForm.startTime);
-    // this.parseTime(this.searchForm.endTime);
-    // this.parseDay(this.searchForm.startDate);
-    // this.parseDay(this.searchForm.endDate);
-    console.log("Create Event: searching for suitable time slots!");
-  }
 
   addEvent(){
     this.newEvent.start = String(this.parseTime(this.newEvent.start));
@@ -153,7 +175,6 @@ export class CreateEventComponent implements OnInit {
         }
       }
     )
-    console.log(this.newEvent);
   }
 
   getEvents(){
@@ -222,68 +243,16 @@ export class CreateEventComponent implements OnInit {
     return days.indexOf(this.searchForm.day) + 1; 
   }
 
-  filterCourseDetails(){
-    let trimester = 0;
-    this.scheduleService.getSchedule(this.schedule_id).subscribe(
-      response => {
-        if(response.body.success){
-          trimester = response.body.trimester;
-          let currArray = courseDetails;
-          let options = [[3,5,7],[1,8],[2,4,6]];
-          let index = trimester-1;
-          
-          this.courseDetails = this.filterHelper(options[index], currArray);   
-        }
-      }, error => {
-        console.log("getSchedule error:",error);
-      } 
-    )
-  }
 
-  filterHelper(options: Array<number>, currArray: Array<any>){
-    let newArray = [];
-    for(let course of currArray){
-      if(options.includes(course.term)){
-        newArray.push(course);
-      }
-    }  
-    // console.log('unsorted array',newArray); // for testing
-    newArray.sort(function(a,b) {
-      if(a.pillar.localeCompare(b.pillar) === 0){
-        if(a.term == b.term){
-          return a.course_no.localeCompare(b.course_no);  
-        }else{ return a.term - b.term; }
-      }else{
-        return a.pillar.localeCompare(b.pillar);
-      }
-    })
-    // console.log('sorted array',newArray); // for testing
-    return newArray;
+  searchForTimeSlot(){
+    // http request for available slots
+    // use slotChosen here 
+    this.parseTime(this.searchForm.startTime);
+    // this.parseTime(this.searchForm.endTime);
+    // this.parseDay(this.searchForm.startDate);
+    // this.parseDay(this.searchForm.endDate);
+    console.log("Create Event: searching for suitable time slots!");
   }
-
-  // queryCourse(course_no, param: string): any{
-  //   for(let course of courseDetails){
-  //     if( course.course_no=== course_no){
-  //       if (param === "term"){
-  //         return course.term;
-  //       }
-  //       if (param === "course_name"){
-  //         return course.course_name;
-  //       }
-  //       if(param === "pillar"){
-  //         return course.pillar;
-  //       }
-  //       else{
-  //         let error = new Error('param not found');
-  //         error.name = 'NoParamForQueryException';
-  //         throw error;      
-  //       }
-  //     }
-  //   }
-  //   let error = new Error('course to be queried not found');
-  //   error.name = 'NoCourseForQueryException';
-  //   throw error;   
-  // }
 
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){

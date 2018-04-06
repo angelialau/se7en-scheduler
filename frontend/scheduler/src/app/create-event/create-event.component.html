@@ -2,133 +2,34 @@
   Sorry, there are no slots available. 
 </div> -->
 
-<!-- <div class="container mx-auto">
-  <div class="card-body">
-    <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> Select the time table you want to add event to</h5>
-  </div>
+<div class="container mx-auto">
   
-  <div *ngIf="showScheduleList">
+  
+  <div *ngIf="showSchedules">
+    <div class="card-body">
+      <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> Select the Schedule you want to add event to</h5>
+    </div>
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
         <tr>
-          <td [routerLink]="['./',schedule.id]"
-          title="View courses enrolled and add a course or event to this schedule"
+          <td (click)="setSchedId(schedule.id)"
+          title="Add event to this schedule"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} 
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-</div> -->
+</div>
 
-
-
-
-<div class="container mx-auto">
-    <div [hidden]='true'>
-    <h6 class="card-subtitle mb-2 text-muted">Search for suitable timeslots</h6>
-    <!-- <p>Testing: {{diagnostic}}</p> -->
-    
-    <form #searchingForm="ngForm">
-      <!-- day of week -->
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="day"> Day of week</label>
-          </div>
-          <select class="custom-select" id="day"
-          [(ngModel)]="searchForm.day" name="day" >
-            <option *ngFor="let day of days" 
-            [value]="day">{{day}}</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- dates -->
-      <div class="row">
-        <div class="col">
-          <!-- start date -->
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="startDate"> Start Date</label>
-              </div>
-              <input type="date" id="startDate"  class="form-control" #startDate min="today"
-               [(ngModel)]="searchForm.startDate" name="startDate" />
-               <span class="validity"></span>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <!-- end date -->
-            <div class="form-group">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="endDate"> End Date</label>
-                </div>
-                <input type="date" id="endDate"  class="form-control" #endDate min="today" 
-                 [(ngModel)]="searchForm.endDate" name="endDate" />
-                 <span class="validity"></span>
-              </div>
-            </div>
-        </div>
-      </div>
-
-      <!-- times -->
-      <div class="row">
-        <div class="col">
-          <!-- start time -->
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="startTime"> Start Time</label>
-              </div>
-              <input type="time" id="startTime" class="form-control"
-              min="8:30" max="20:00" step="1800" placeholder="8:00"
-               [(ngModel)]="searchForm.startTime" name="startTime" />
-               <span class="validity"></span>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <!-- end time -->
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="endTime"> End Time</label>
-              </div>
-              <input type="time" id="endTime" class="form-control"
-              min="8:30" max="20:00" step="1800" placeholder="8:00"
-               [(ngModel)]="searchForm.endTime" name="endTime" />
-               <span class="validity"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- event capacity -->
-      <!-- <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="capacity"> Estimated room capacity</label>
-          </div>
-          <input type="number" id="capacity"
-          placeholder="30" class="form-control"
-           [(ngModel)]="searchForm.capacity" name="capacity" />
-        </div>
-      </div> -->
-      
-      <div>
-        <button type="submit" class="btn btn-primary" id="searchTimeButton" #searchBtn
-        (click)="searchForTimeSlot()"><i class="fas fa-search"></i> Get timeslots</button>
-        <button class="btn btn-warning" id="resetSearchButton"
-        (click)="searchingForm.reset()"><i class="fas fa-redo"></i> Clear search</button>
-      </div>
-    </form>
-    <div class="dropdown-divider"></div><br>
-    </div>
-
+<div class="container mx-auto" *ngIf="showEventForm">
+  
   <!-- adding event form -->
+  <div class="card-body">
+    <button class="btn btn-light" (click)="showSchedulesAgain();"><i class="fas fa-long-arrow-alt-left" style="float: left;"></i></button>
+      <h5 class="card-title text-center" id="schedulesTitle">
+        <i class="fas fa-caret-right"></i> Enter Event Details</h5>
+    </div>
   <div>
     <h6 class="card-subtitle mb-2 text-muted" id="eventDetailsTitle">Venue booking</h6>
       <!-- location -->
@@ -199,22 +100,10 @@
       </div> 
       <!-- end of time -->
 
-    
+    <div class="dropdown-divider"></div>
 
     <div>
       <form #addingForm="ngForm">
-        <!-- name of event -->
-        <!-- <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <label class="input-group-text" for="eventName"> Event Name</label>
-            </div>
-            <input type="text" id="eventName" required
-            placeholder="Blockchain Seminar 2018" class="form-control"
-             [(ngModel)]="newEvent.eventName" name="eventName" />
-          </div>
-        </div>   -->
-
         <!-- list of instructors -->
         <h6 class="card-subtitle mb-2 text-muted">Event information</h6>
         <div class="row">
@@ -246,6 +135,9 @@
             </select>  
           </div>
         </div>
+
+        <div class="dropdown-divider"></div>
+
         <h6 class="card-subtitle mb-2 text-muted">Event is applicable to</h6>
         <div class="form-group">
           <div class="input-group">
