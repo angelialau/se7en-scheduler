@@ -51,21 +51,28 @@ class NaviTest(unittest.TestCase):
         header = driver.find_element_by_tag_name('h5')
         self.assertEqual("Courses under this Schedule", header.text)
 
-    def test_direct_to_add_event(self):
+    def test_direct_to_add_event(self): # first schedule
         driver = self.driver
         driver.find_element_by_id("sbViewSchedules").click()
-        schedules = driver.find_elements_by_tag_name('td')
-        schedules[2].click()
-        driver.find_element_by_id("eventFormTitle").click()
-        header = driver.find_element_by_tag_name('h6')
+        driver.find_elements_by_tag_name('td')[0].click()
+        header = driver.find_element_by_id("eventFormTitle")
+        self.assertEqual("Add an Event", header.text.strip())
+
+        header.click()
+        header = driver.find_element_by_id('eventDetailsTitle')
         self.assertEqual("Event details", header.text)
 
-    def test_direct_to_add_course(self):
+    def test_direct_to_add_course(self): # third schedule
         driver = self.driver
         driver.find_element_by_id("sbViewSchedules").click()
         driver.find_elements_by_tag_name("td")[2].click()
+        driver.refresh()
         header = driver.find_element_by_id("courseFormTitle")
-        self.assertEqual("Add a Course", header.text)
+        self.assertEqual("Add a Course", header.text.strip())
+
+        header.click()
+        header = driver.find_element_by_id('profDeetsTitle')
+        self.assertEqual("Details of Teaching Professors", header.text.strip())
 
     # should default back to home page with announcements
     def test_direct_to_login(self):

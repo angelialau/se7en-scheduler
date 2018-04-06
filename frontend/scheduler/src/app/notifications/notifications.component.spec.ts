@@ -60,6 +60,7 @@ describe('NotificationsComponent', () => {
     userServiceStub = fixture.debugElement.injector.get(UserService);
     snackBar = fixture.debugElement.injector.get(MatSnackBar);
     
+    
     fixture.detectChanges();
   });
 
@@ -76,14 +77,11 @@ describe('NotificationsComponent', () => {
   });
 
   it('should invoke refresh announcements and user service at ngOnInit', ()=>{
-    let spy = spyOn(component, 'refreshAnnouncements');
+    let refreshAnnouncementsSpy = spyOn(component, 'refreshAnnouncements').and.callThrough();
     let userspy = spyOn(userServiceStub, 'getAnnouncements').and.returnValue(Observable.of(HttpResponse));
     component.ngOnInit();
-    fixture.autoDetectChanges();
-    fixture.whenStable().then(()=>{
-      expect(spy).toHaveBeenCalled();
-      expect(userspy).toHaveBeenCalled();
-    })
+    expect(refreshAnnouncementsSpy).toHaveBeenCalled();
+    expect(userspy).toHaveBeenCalled();
   })
   
   it('should invoke user service when deleting announcements', ()=>{

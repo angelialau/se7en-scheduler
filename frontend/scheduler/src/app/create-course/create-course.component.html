@@ -58,7 +58,7 @@
 
       <!-- instructor details -->
       <div class="form-group no-ugly-red-line" formArrayName="prof_list">
-        <h6>Details of Teaching Professors</h6>
+        <h6 id="profDeetsTitle">Details of Teaching Professors</h6>
         <div *ngFor="let prof of newForm.controls.prof_list.controls; let a=index" formGroupName="{{a}}"
         class="no-ugly-red-line">
           <h5>Professor {{a+1}}

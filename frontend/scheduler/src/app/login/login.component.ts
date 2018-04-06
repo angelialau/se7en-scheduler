@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    if (this.cookieService.get('pillar').length > 1 ){
+    if (this.cookieService.get('pillar') != undefined){
       this.router.navigateByUrl('/home');
     }
     else{
