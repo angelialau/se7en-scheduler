@@ -19,9 +19,11 @@ claNum=83
 term78=-1 #become 7 or 8 if there is term7 or 8
 def readJson(url):
     global term78
-    weather = urlopen(url)
-    #weather = sys.argv[1]
-    wjson = json.load(weather)
+    #weather = urlopen(url)
+    filename = 'testDate.txt'
+    file = open(filename, 'r')
+    weather = file.read()
+    wjson = json.loads(weather)
     courses=[]
     i=0
     for key,value in wjson.items():
@@ -30,6 +32,7 @@ def readJson(url):
         if courses[i].term in [7,8]:
             term78=courses[i].term
         i+=1
+    file.close()
     return courses
 
 class Room():

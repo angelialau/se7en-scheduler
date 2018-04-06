@@ -7,6 +7,8 @@ Created on Fri Mar 16 04:37:14 2018
 
 import unittest
 import tempWhileRefactorInProgress as algo
+import random 
+
 tt,cc,lt,lab,ttt,capstone,cla,pro=0,26,42,47,55,61,71,121
 proNum=121
 claNum=83
@@ -29,9 +31,6 @@ class TestAlgo(unittest.TestCase):
         self.assertEqual(timet[0][6],-1)
         
     def test_c_initializeValue(self):
-        
-        
-        self.assertEqual(self.rowRef[pro+1],"Sai-Kit Yeung6")
         self.assertEqual(self.rowRef[cla+1],2)
         self.assertEqual(self.courses[0].pillar,"ISTD")
         
