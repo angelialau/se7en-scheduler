@@ -20,6 +20,9 @@ claNum=83
 term78=-1 #become 7 or 8 if there is term7 or 8
 def readJson(url):
     global term78
+    #weather = urlopen(url)
+    weather = sys.argv[1]
+    wjson = json.loads(weather)
     weather = urlopen(url)
     #weather = sys.argv[1]
     wjson = json.load(weather)
