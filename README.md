@@ -20,8 +20,12 @@ The algorithm generates a conflict-minimising schedule using genetic algorithms.
 * Change password (protection against misuse cases)
 
 #### To be integrated 
-* Downloading of `.csv` file for integration with Google Calendar
-* API calls for Events, Appeals
+* Upload calendar to Google Calendar automatically
+* Add button to generate calendar
+* Support start and end dates of trimester
+* Support searching for empty slots
+* Support adding new event
+* Support replying to appeals
 
 ## Getting Started
 
@@ -65,14 +69,46 @@ This test covers
 * Test of page navigations
 * Test of forms (e.g. adding a new schedule)
 
-### Backend Testing
+### Backend Testing 
 
-Explain what these tests test and why
+Unit testing is done using Mocha and Chai. API endpoint testing is done using Postman. 
 
+Steps to run mocha:
 ```
-Give an example
+cd backend
+npm test
 ```
 
+This test covers
+* All utility functions (eg. checking if JSONObjects have identical keys)
+
+Tests on Postman tries all API endpoints and check if the response is correct
+Here is an example of a Postman test
+```
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response must be valid and have a body", function () {
+     // assert that the status code is 200
+     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants
+     // assert that the response has a valid JSON body
+     pm.response.to.be.withBody;
+     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed
+     pm.response.to.not.have.jsonBody("message");
+});
+
+pm.test("No Errors found", function () {
+    pm.response.to.not.be.error; 
+    pm.response.to.have.jsonBody(""); 
+    pm.response.to.not.have.jsonBody("error"); 
+});
+
+pm.test("Check known user was pulled", function () {
+    pm.expect(pm.response.text()).to.include("Rayson Lim");
+});
+```
+In general, we test for status code, response body, errors and expected result. 
 
 ## Deployment
 
