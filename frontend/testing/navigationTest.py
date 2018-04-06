@@ -47,12 +47,34 @@ class NaviTest(unittest.TestCase):
     def test_direct_to_a_course(self):
         driver = self.driver
         driver.find_element_by_id("sbViewSchedules").click()
-        driver.find_element_by_tag_name("td").click()
+        driver.find_elements_by_tag_name("td")[2].click()
         header = driver.find_element_by_tag_name('h5')
         self.assertEqual("Courses under this Schedule", header.text)
 
+    def test_direct_to_add_event(self):
+        driver = self.driver
+        driver.find_element_by_id("sbViewSchedules").click()
+        schedules = driver.find_elements_by_tag_name('td')
+        schedules[2].click()
+        driver.find_element_by_id("eventFormTitle").click()
+        header = driver.find_element_by_tag_name('h6')
+        self.assertEqual("Event details", header.text)
+
+    def test_direct_to_add_course(self):
+        driver = self.driver
+        driver.find_element_by_id("sbViewSchedules").click()
+        driver.find_elements_by_tag_name("td")[2].click()
+        header = driver.find_element_by_id("courseFormTitle")
+        self.assertEqual("Add a Course", header.text)
+
     # should default back to home page with announcements
     def test_direct_to_login(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/login")
+        header = driver.find_element_by_tag_name('h5')
+        self.assertIn("Announcements", header.text)
+
+    def test_direct_to_view_calendar(self):
         driver = self.driver
         driver.find_element_by_id("sbViewCalendar").click()
         header = driver.find_element_by_tag_name("h2")
@@ -63,6 +85,12 @@ class NaviTest(unittest.TestCase):
         driver.find_element_by_id("sbChangePassword").click()
         header = driver.find_element_by_tag_name("h5")
         self.assertIn("Change Password", header.text)
+
+    def test_direct_to_view_appeals(self):
+        driver = self.driver
+        driver.find_element_by_id("sbViewAppeals").click()
+        header = driver.find_element_by_tag_name("h2")
+        self.assertIn("Appeals", header.text)
 
     def test_logout(self):
         driver = self.driver

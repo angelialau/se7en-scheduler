@@ -147,11 +147,11 @@ describe('CreateEventComponent', () => {
   })
 
   it('should reject index that is not between 0 and 19', ()=>{
-    let time = '-1';
+    let time = -1;
     expect(function(){component.reverseParseTime(time)}).toThrow(
       new Error('To reverse parse time, n must be between 0 and 19'));
 
-    time = '20';
+    time = 20;
     expect(function(){component.reverseParseTime(time)}).toThrow(
       new Error('To reverse parse time, n must be between 0 and 19'));
   })
@@ -183,7 +183,7 @@ describe('CreateEventComponent', () => {
 
   it('should return the correct day given a specific date', ()=>{
     let d = '2018-04-04';
-    let ans = component.parseDate(new Date(d));
+    let ans = component.parseDate(d);
     expect(ans).toEqual(3);
   })
 

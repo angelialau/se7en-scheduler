@@ -23,9 +23,11 @@
 
 	<div align="center">
 	<span *ngIf = "!isAdmin">
-    <button type="button" (click) = "showForm()" class="btn btn-primary">
+    <button type="button" (click) = "showForm()" id="appealButton"
+    class="btn btn-primary">
     Make an appeal</button>
-    <button type="button" (click) = "downloadCalendar()" class="btn btn-primary">
+    <button type="button" (click) = "downloadCalendar()" id="downloadButton"
+    class="btn btn-primary">
     Download Calendar</button></span>
 
 
@@ -60,7 +62,7 @@
       <!-- send to -->
 
       <button type="submit" class="btn btn-success" style="float: right;" 
-      [disabled]="AppealForm.form.invalid" 
+      [disabled]="AppealForm.form.invalid" id="makeAppealButton"
       (click)="makeAppeal()">
         <i class="fas fa-bullhorn"></i> Make Appeal
       </button>
