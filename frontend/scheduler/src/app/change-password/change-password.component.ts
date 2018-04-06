@@ -23,7 +23,7 @@ export class ChangePasswordComponent implements OnInit {
       this.userService.changePassword(oldPassword, newPassword)
       .subscribe(
         response => {
-          if(response.success){
+          if(JSON.parse(response).success){
             this.snackBar.open("Password changed!", null, {duration: 1000});
           }else{
             this.snackBar.open(errorMsg, null, {duration: 1000});
