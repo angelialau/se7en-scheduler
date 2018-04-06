@@ -24,7 +24,7 @@ export class AppComponent {
   ngOnInit(){
   	if (this.cookieService.get('pillar').length > 1 ){
   		console.log(this.cookieService.get('pillar'));
-      this.userService.getLoggedInUser();
+      // this.userService.getLoggedInUser(); //potential log out bug?
       this.loggedin = true;
   	}
   	else{

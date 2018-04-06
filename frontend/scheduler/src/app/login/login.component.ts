@@ -23,12 +23,14 @@ export class LoginComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    if (this.cookieService.get('pillar') != undefined){
+    let cookie = this.cookieService.get('pillar');
+    if (cookie != undefined && cookie != ''){
       this.router.navigateByUrl('/home');
     }
-    else{
-      this.user = this.userService.getLoggedInUser();  
-    }
+    //potential log out bug?
+    // else{
+    //   this.user = this.userService.getLoggedInUser();  
+    // }
   }
 
   login(){

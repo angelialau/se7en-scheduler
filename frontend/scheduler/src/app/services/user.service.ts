@@ -42,6 +42,7 @@ export class UserService {
   // used to reset loggedInUser when user signs out 
   resetUser(){
     this.loggedInUser = new User("not logged in","password hidden");
+    this.cookieService.deleteAll();
   }
 
   getAllUsers(): Observable<any>{
