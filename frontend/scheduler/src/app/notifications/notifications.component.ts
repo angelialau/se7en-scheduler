@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Announcement } from './../../models/announcement.model';
 import { UserService } from './../services/user.service';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-notifications',
@@ -10,15 +11,21 @@ import { MatSnackBar } from '@angular/material';
 })
 export class NotificationsComponent implements OnInit {
   announcements : Announcement[] = [];
+  isAdmin : boolean = false;
   
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar,
+    private cookieService : CookieService,
     ) { 
   }
 
   ngOnInit() {
     this.refreshAnnouncements();
+    if (this.cookieService.get('pillar') == "Administrator"){
+      console.log("This is an administrator account.")
+      this.isAdmin = true;
+    }
   }
 
   refreshAnnouncements(){
