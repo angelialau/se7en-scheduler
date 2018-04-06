@@ -13,6 +13,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 // component specific imports 
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { ScheduleService } from './../services/schedule.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
@@ -56,6 +57,7 @@ describe('CreateCourseComponent', () => {
         {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': '4'}}}},
         {provide: UserService, useClass: MockUserService },
         {provide: ScheduleService, useClass: MockScheduleService },
+        CookieService,
        ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 // component specific imports 
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
   SimpleSnackBar } from '@angular/material';
 
@@ -48,6 +49,7 @@ describe('ChangePasswordComponent', () => {
       providers: [ 
         { provide: UserService, useClass: MockUserService } , 
         HttpClientModule, 
+        CookieService,
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

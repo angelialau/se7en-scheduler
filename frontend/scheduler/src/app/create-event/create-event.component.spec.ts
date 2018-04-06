@@ -13,12 +13,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 // component specific imports 
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
 import { ScheduleService } from './../services/schedule.service';
 import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
   SimpleSnackBar } from '@angular/material';
 import { User } from './../../models/user.model'
-import { Event, days } from './../../models/event.model';
+import { Event, Search, days} from './../../models/event.model';
 
 import { CreateEventComponent } from './create-event.component';
 
@@ -50,9 +51,10 @@ describe('CreateEventComponent', () => {
       providers: [ 
         HttpClientModule, 
         DatePipe,
-        {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': '4'}}}},
+        {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': 4}}}},
         {provide: UserService, useClass: MockUserService },
         {provide: ScheduleService, useClass: MockScheduleService },
+        CookieService,
        ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -91,13 +93,37 @@ describe('CreateEventComponent', () => {
 
   it('should initialise schedule id and form options at ngOnInit', ()=>{
     fixture.detectChanges()
-    expect(Number(component.schedule_id)).toBe(4);
+    expect(component.schedule_id).toBe(4);
     expect(component.today).toBe(scheduleServiceStub.getTodayDate());
-    expect(component.searchForm instanceof Event).toBe(true);
-    expect(Number(component.searchForm.schedule_id)).toBe(4);
+
+    expect(component.today).toBeDefined();
+    
+    expect(component.searchForm instanceof Search).toBe(true);
+    expect(component.searchForm.schedule_id).toBe(4);
+
     expect(component.newEvent instanceof Event).toBe(true);
-    expect(Number(component.newEvent.schedule_id)).toBe(4);
-    expect(component.timeslots).toEqual([]);    
+    expect(component.newEvent.schedule_id).toBe(4);
+    
+    expect(component.timeslots).toEqual([]); 
+    expect(component.venues).toEqual([]); 
+    expect(component.dates).toEqual([]); 
+    expect(component.startTimes).toEqual([]); 
+    expect(component.endTimes).toEqual([]); 
+
+    expect(component.showDateSelection).toBe(false);   
+    expect(component.showTimeSelection).toBe(false);   
+    expect(component.showEndSelection).toBe(false);   
+  })
+
+  it('should call service when adding event', ()=>{
+    let event: Event;
+    let spy = spyOn(scheduleServiceStub, 'addEvent');
+    let compspy = spyOn(component, 'addEvent').and.callFake(()=>{
+      scheduleServiceStub.addEvent(event);
+    });
+    component.addEvent();
+    expect(spy).toHaveBeenCalled();
+    expect(compspy).toHaveBeenCalled();
   })
 
   it('should invoke user service when getting instructors', ()=>{
@@ -108,6 +134,26 @@ describe('CreateEventComponent', () => {
     component.getInstructors();
     expect(spy).toHaveBeenCalled();
     expect(servicespy).toHaveBeenCalled();
+  })
+
+  it('should return correct HH:MM given specific index', ()=>{
+    let time = 0;
+    let ans = component.reverseParseTime(time);
+    expect(ans).toEqual('08:30');
+
+    time = 13;
+    ans = component.reverseParseTime(time);
+    expect(ans).toEqual('15:00');
+  })
+
+  it('should reject index that is not between 0 and 19', ()=>{
+    let time = '-1';
+    expect(function(){component.reverseParseTime(time)}).toThrow(
+      new Error('To reverse parse time, n must be between 0 and 19'));
+
+    time = '20';
+    expect(function(){component.reverseParseTime(time)}).toThrow(
+      new Error('To reverse parse time, n must be between 0 and 19'));
   })
 
   it('should return correct time slot given a specific HH:MM time', ()=>{
