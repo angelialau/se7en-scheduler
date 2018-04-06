@@ -123,11 +123,16 @@ In general, we test for status code, response body, errors and expected result.
 
 ## Built With
 
+* [NodeJS](https://nodejs.org/en/) - The JavaScript execution engine
 * [Angular](https://angular.io/) - The web framework used
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [FullCalendar](https://fullcalendar.io/docs/typescript/) - Calendar Viewer 
 * [Jasmine](https://jasmine.github.io/) - Frontend unit testing tool
 * [Selenium](http://www.seleniumhq.org/) - System testing tool
+* [MySQL](https://www.mysql.com) - Database system 
+* [phpMyAdmin](https://www.phpmyadmin.net) - Database management
+* [Postman](https://www.getpostman.com) - API endpoint testing tool
+* [Mocha](https://mochajs.org) - Backend unit testing framework
 
 ## Authors
 
