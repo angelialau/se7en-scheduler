@@ -9,11 +9,18 @@ router.post('/', function(req, res, next) {
 	// Check if necessary keys are there
 	if (utils.compareJSONKeys(req.body, Calendar.createStructure)) {
 
-		if (req.body.date !== "NULL") {
+		if (req.body.date !== "null") {
 			// Change date to MySQL date time format
 			req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
 		}
 		
+		// change null string to null keyword
+		for (var key in req.body) {
+			if (req.body[key] === "null") {
+				req.body[key] = null;
+			}
+		}
+
 		// Create event
 		Calendar.createEvent(req.body, function(err, count) {
 			utils.basicPostCallback(res, err, count);
