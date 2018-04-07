@@ -8,8 +8,11 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
 	// Check if necessary keys are there
 	if (utils.compareJSONKeys(req.body, Calendar.createStructure)) {
-		// Change date to MySQL date time format
-		req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
+
+		if (req.body.date !== "NULL") {
+			// Change date to MySQL date time format
+			req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
+		}
 		
 		// Create event
 		Calendar.createEvent(req.body, function(err, count) {
