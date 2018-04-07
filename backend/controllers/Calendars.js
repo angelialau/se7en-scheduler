@@ -47,6 +47,15 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 	}
 });
 
+// defining get non-course events route
+router.get('/Events/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		Calendar.getNonCourseEvents(req.params.id, function(err, rows){
+			utils.basicGetCallback(res, err, rows, null);
+		});
+	}
+});
+
 // defining filter route
 router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\d{2}-\\d{2})?/?:sTime(\\d{1,2})?/?:eTime(\\d{1,2})?', function(req, res, next) {
 	Calendar.filterTimeSlots(req.params, req.params.schedule_id, function(err, rows) {

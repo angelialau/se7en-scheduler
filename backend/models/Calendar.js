@@ -110,6 +110,13 @@ var Calendar = {
 						[schedule_id],
 						callback);
 	},
+	getNonCourseEvents:function(id, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + 
+						" WHERE " + COLUMN_DATE + " IS NOT NULL" + 
+						" AND " + COLUMN_SCHEDULE_ID + "=?",
+						[id],
+						callback);
+	},
 	filterTimeSlots:function(data, schedule_id, callback) {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
 		var tokens = "1";
