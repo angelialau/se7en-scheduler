@@ -205,8 +205,8 @@ export class CreateEventComponent implements OnInit {
     //830 = 0, 1600 = 19
     let hour : number = Number(time.substring(0,2));
     let min : string = time.substring(3,5);
-    if(hour<8 || hour>16 || (min!="00" && min!="30") || time =="16:30" || time == "08:00"){
-      let error = new Error('invalid time given, should be between 0830 to 1600');
+    if(hour<8 || hour>18 || (min!="00" && min!="30") || time =="18:30" || time == "08:00"){
+      let error = new Error('invalid time given, should be between 0830 to 1800');
       error.name = 'InvalidTimeException';
       throw error;
     }

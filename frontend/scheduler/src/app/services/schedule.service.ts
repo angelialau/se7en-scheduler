@@ -26,8 +26,8 @@ export class ScheduleService {
     let body = new URLSearchParams(); 
     body.set('trimester', String(newSchedule.trimester)); 
     body.set('year', String(newSchedule.year)); 
-    body.set('start', String(newSchedule.startDate)); 
-    body.set('end', String(newSchedule.endDate)); 
+    body.set('startDate', String(newSchedule.startDate)); 
+    body.set('endDate', String(newSchedule.endDate)); 
     let extension = this.url + '/Schedules';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
@@ -108,6 +108,7 @@ export class ScheduleService {
     body.set('class_types', String(course.class_types)); 
     body.set('instructors', String(course.instructors)); 
     body.set('instructor_ids', String(course.instructor_ids)); 
+    body.set('venue_types', String(course.venue_types)); 
     body.set('split', String(course.split)); 
     
     let extension = this.url + '/Courses';
