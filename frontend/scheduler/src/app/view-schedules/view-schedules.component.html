@@ -9,7 +9,7 @@
         <tr>
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} - {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}
           <button (click)="deleteSchedule(schedule)" 
           title="Delete this schedule" 
           class="btn" 

@@ -25,6 +25,13 @@ export class ViewEventsComponent implements OnInit {
             this.schedules.push(s);
           }
         }
+        this.schedules.sort(function(a,b) {
+          if(a.year - b.year === 0){
+            return a.trimester - b.trimester;
+          } else{
+            return a.year - b.year;
+          }
+        });
       })
       .subscribe(
         response => {},
