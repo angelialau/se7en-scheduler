@@ -21,6 +21,16 @@ router.post('/', function(req, res, next) {
 			}
 		}
 
+		// check if day is proper input
+		if (req.body.day < 1 || req.body.day > 5 || !Number.isInteger(req.body.day)) {
+			if (req.body.date) {
+				req.body.day = new Date(req.body.date).getDay();
+			}
+			else {
+				res.json({"success":false, "message":"need at least date or day to be provided"});
+			}
+		}
+
 		// Create event
 		Calendar.createEvent(req.body, function(err, count) {
 			utils.basicPostCallback(res, err, count);
