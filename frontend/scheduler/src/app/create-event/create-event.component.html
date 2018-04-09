@@ -1,36 +1,34 @@
-<!-- <div *ngIf="timeslots.length==0" class="p-3 mb-2 bg-info text-white">
-  Sorry, there are no slots available. 
-</div> -->
-
-<div class="container mx-auto">
-  
-  
-  <div *ngIf="showSchedules">
-    <div class="card-body">
-      <h5 class="card-title text-center" id="schedulesTitle"><i class="fas fa-caret-right"></i> Select the Schedule you want to add event to</h5>
-    </div>
-    <table class="table table-hover">
-      <tbody *ngFor="let schedule of schedules">
-        <tr>
-          <td (click)="setSchedId(schedule.id)"
-          title="Add event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="container mx-auto" >  
+  <button class="btn btn-light" routerLink="/events"><i class="fas fa-long-arrow-alt-left" style="float: left;"></i></button>
+  <!-- view & header -->
+  <div class="card-body" (click)="showListOfEvents()">
+    <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-caret-down"></i> Events added to this Schedule</h5>
   </div>
-</div>
-
-<div class="container mx-auto" *ngIf="showEventForm">
-  
-  <!-- adding event form -->
-  <div class="card-body">
-    <button class="btn btn-light" (click)="showSchedulesAgain();"><i class="fas fa-long-arrow-alt-left" style="float: left;"></i></button>
-      <h5 class="card-title text-center" id="schedulesTitle">
-        <i class="fas fa-caret-right"></i> Enter Event Details</h5>
+  <div *ngIf="showEventList">
+    <!-- display list of courses -->
+    <div *ngFor="let event of events">
+      <div class="card" style="margin: 0 5% 5% 5%;">
+        <div class="card-header">{{event.course}}
+        </div>
+        <div class="card-body">
+          Date: {{event.date | date:'fullDate'}} <br>
+          Time: {{event.start}} to {{event.end}} <br>
+          Location {{event.location}} <br>
+          <div *ngIf="event.prof!='null'">Professor in charge: {{event.prof}} <br></div>
+          <div *ngIf="event.pillar!='null'">Pillar concerned: {{event.pillar}} <br></div>
+          <div *ngIf="event.cohort!='null'">Cohort class concerned: {{event.cohort}} <br></div>
+        </div>
+      </div>
     </div>
-  <div>
+  </div>
+
+
+  <!-- form & header-->
+  <div class="card-body" (click)="showForm();">
+      <h5 class="card-title text-center" id="schedulesTitle">
+        <i class="fas fa-caret-right"></i> Create a new event</h5>
+    </div>
+  <div *ngIf="showEventForm">
     <h6 class="card-subtitle mb-2 text-muted" id="eventDetailsTitle">Venue booking</h6>
       <!-- location -->
       <div class="form-group">
@@ -161,7 +159,7 @@
             <select class="custom-select" id="cohort" selected=defaultClass
             [(ngModel)]="newEvent.cohort" name="cohort">
               <option #defaultClass [value]="NA"> Not Applicable </option>
-              <option *ngFor='let cohort of [0,1,2,3,4,5,6]' [value]=cohort>
+              <option *ngFor='let cohort of [1,2,3,4,5,6]' [value]=cohort>
                 {{cohort}}
               </option>
             </select>  
@@ -172,10 +170,10 @@
         <div>
           <button type="submit" class="btn btn-success" style="float: right;" id="submitEventButton"
           [disabled]="addingForm.form.invalid"
-          (click)="addEvent();"><i class="fas fa-plus-circle"></i> Submit Event</button>
+          (click)="addEvent(); addingForm.reset()"><i class="fas fa-plus-circle"></i> Submit Event</button>
 
-          <button type="submit" class="btn btn-warning" style="float: right;" id="resetEventButton"
-          (click)="addingForm.reset();"><i class="fas fa-redo"></i> Reset</button>
+          <!-- <button type="submit" class="btn btn-warning" style="float: right;" id="resetEventButton"
+          (click)="addingForm.reset();"><i class="fas fa-redo"></i> Reset</button> -->
         </div>
       </form>
     </div>

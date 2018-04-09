@@ -189,4 +189,9 @@ export class ScheduleService {
       .catch(this.handleError); 
   }
 
+  getEvents(schedule_id: number) : Observable<any>{
+    return this.http.get<Course>(this.url + '/Calendars/Events/' + schedule_id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
 }

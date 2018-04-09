@@ -16,10 +16,9 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CreateEventComponent implements OnInit {
   // form related vars
-  schedule_id : number = -1;
+  schedule_id : number;
   days = days;
   instructors : User[]= []; 
-  schedules : Schedule[] = [];
   timeslots :  Array<any> = [];
   courseDetails = courseDetails;
   venues : string[] = [];
@@ -27,11 +26,10 @@ export class CreateEventComponent implements OnInit {
   startTimes : string[] = [];
   endTimes : string[] = [];
   newEvent : Event;
-  // unchecked
-  today : string;
+  events : Event[] = [];
   searchForm : Search; 
   // views 
-  showSchedules : boolean = true;
+  showEventList : boolean = true;
   showEventForm : boolean = false;
   showDateSelection : boolean = false;
   showTimeSelection : boolean = false;
@@ -42,46 +40,22 @@ export class CreateEventComponent implements OnInit {
     private userService : UserService,
     private scheduleService: ScheduleService,
     private snackBar : MatSnackBar,
+    private route: ActivatedRoute, 
      ) {
+    
     }
 
   ngOnInit() {
-    this.today = this.scheduleService.getTodayDate();
-    this.scheduleService.getSchedules()
-      .map((data: any) => {
-        let temp : Schedule[] = data.body;
-        for(let s of temp){
-          if (s.generated == 1){
-            this.schedules.push(s);
-          }
-        }
-      })
-      .subscribe(
-        response => {},
-        error => console.log("getSchedules error: " + error)
-    );    
-  }
-
-  setSchedId(id: number){
-    if(this.schedule_id != id){
-      this.schedule_id = id;
-      this.searchForm = new Search(this.schedule_id,'', '','','','');
-      this.newEvent = new Event(this.schedule_id);
-      this.getInstructors();
-      this.refreshTimeSlots();
-      this.showEventForm = true;  
-    }
-    this.showSchedules = false;
-  }
-
-  showSchedulesAgain(){
-    this.showSchedules = true;
-    this.showEventForm = false;
+    this.schedule_id = this.route.snapshot.params['schedule_id'];
+    this.searchForm = new Search(this.schedule_id,'', '','','','');
+    this.newEvent = new Event(this.schedule_id);
+    this.getInstructors();
+    this.refreshTimeSlots();
+    this.getEvents();
   }
 
   // updates list of all time slots
   refreshTimeSlots(){
-    // http call 
     this.scheduleService.getTimeSlots(this.searchForm).subscribe(
       response=>{
         if(response.status == 200){
@@ -100,6 +74,7 @@ export class CreateEventComponent implements OnInit {
     )   
   }
 
+  // helper funcs
   getVenues(){
     let array : string[] = [];
     for(let venue in this.timeslots){
@@ -145,40 +120,51 @@ export class CreateEventComponent implements OnInit {
     return this.endTimes;
   }
 
-
   addEvent(){
     this.newEvent.start = String(this.parseTime(this.newEvent.start));
     this.newEvent.end = String(this.parseTime(this.newEvent.end));
-    this.newEvent.day = this.newEvent.date;
+    this.newEvent.day = (new Date(this.newEvent.date)).getDay() ;
     if(this.newEvent.pillar===undefined || this.newEvent.pillar === ""){
-      this.newEvent.pillar = "0";
+      this.newEvent.pillar = "null";
     }
     if(this.newEvent.prof_id===undefined || this.newEvent.prof_id === ""){
-      this.newEvent.prof_id = "0";
-      this.newEvent.prof = "0";
+      this.newEvent.prof_id = "null";
+      this.newEvent.prof = "null";
     }else{
       this.newEvent.prof = this.queryInstructors(Number(this.newEvent.prof_id));  
     }
     if(this.newEvent.cohort===undefined){
-      this.newEvent.cohort = 0;
+      this.newEvent.cohort = "null";
     }
-    this.newEvent.term = 0;
+    this.newEvent.term = "null"; // not needed
     
     this.scheduleService.addEvent(this.newEvent).subscribe(
       response=>{
-        console.log('response',response);
-        console.log('event',this.newEvent);
-        if(response.success===true){
+        console.log('debug: event',this.newEvent);
+        if(JSON.parse(response).success){
           this.snackBar.open("Event added!", null, {duration:1200});
-        }else{
-          this.snackBar.open("Something went wrong. Please try again later!", null, {duration:1200});
+          this.getEvents();
+        }else if(response.body.success != undefined && response.body.success === false){
+          this.snackBar.open("Something went wrong with adding your event. Please try again later!", null, {duration:1200});
+          console.log("add event error", response);
         }
+      }, error =>{
+        this.snackBar.open("Something went wrong with the server. Please try again later!", null, {duration:1200});
+        console.log(error);
       }
     )
   }
 
   getEvents(){
-
+    this.scheduleService.getEvents(this.schedule_id).subscribe(
+      response => {
+        if(response.body.success === undefined || response.body.success === true){
+          this.events = response.body;
+        }
+      }, 
+      error =>{
+        this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
+      })
   }
 
   deleteEvent(index: number){
@@ -202,6 +188,16 @@ export class CreateEventComponent implements OnInit {
         console.log("getInstructors error"); 
         console.log(error)
       });
+  }
+
+  queryInstructors(profId:number){
+    for(let i=0; i<this.instructors.length; i++){
+      if (this.instructors[i].id==profId){
+        return this.instructors[i].name;
+      }
+    } let error = new Error("instructor to be queried not found");
+    error.name = 'NoInstructorForQueryException';
+    throw error;
   }
 
   parseTime(time: string): number{
@@ -243,26 +239,15 @@ export class CreateEventComponent implements OnInit {
     return days.indexOf(this.searchForm.day) + 1; 
   }
 
-
   searchForTimeSlot(){
     // http request for available slots
     // use slotChosen here 
-    this.parseTime(this.searchForm.startTime);
-    // this.parseTime(this.searchForm.endTime);
-    // this.parseDay(this.searchForm.startDate);
-    // this.parseDay(this.searchForm.endDate);
+    // this.parseTime(this.searchForm.startTime);
     console.log("Create Event: searching for suitable time slots!");
   }
 
-  queryInstructors(profId:number){
-    for(let i=0; i<this.instructors.length; i++){
-      if (this.instructors[i].id==profId){
-        return this.instructors[i].name;
-      }
-    } let error = new Error("instructor to be queried not found");
-    error.name = 'NoInstructorForQueryException';
-    throw error;
-  }
+  showForm(){ this.showEventForm = !this.showEventForm};
+  showListOfEvents(){ this.showEventList = !this.showEventList};
 
   get diagnostic() { return JSON.stringify(this.newEvent)};    
 

@@ -1,14 +1,14 @@
 export class Event{
   constructor(
     public schedule_id: number,
-    public term?: number,
+    public term?: string,
     public pillar?: string,
     public course?: string, 
     public prof?: string, // get from prof_id
     public prof_id?: string, 
-    public cohort?: number,
+    public cohort?: string,
     public location?: string, // get from slot
-    public day?: string, // get from slot
+    public day?: number, // get from slot
     public date?: string, // get from slot
     public start?: string, 
     public end?: string,
