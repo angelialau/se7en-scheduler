@@ -27,7 +27,7 @@ var Schedule = {
 			COLUMN_START_DATE + "`,`" +
 			COLUMN_END_DATE + "`,`" +
 			COLUMN_TRIMESTER + "`)" +  
-			" VALUES(?,?)", 
+			" VALUES(?,?,?,?)", 
 			[year, startDate, endDate, trimester],
 			callback);
 	},
