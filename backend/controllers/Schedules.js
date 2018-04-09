@@ -28,11 +28,16 @@ router.get('/:id(\\d+)', function(req, res, next) {
 
 // defining route for creating a schedule
 router.post('/', function(req, res, next) {
-	if (req.body.year && req.body.trimester) {
+	if (req.body.year && 
+		req.body.trimester &&
+		req.body.startDate &&
+		req.body.endDate) {
 
 		Schedule.createSchedule(
 			req.body.year, 
 			req.body.trimester,
+			req.body.startDate,
+			req.body.endDate,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}

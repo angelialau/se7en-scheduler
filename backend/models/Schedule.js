@@ -7,6 +7,8 @@ var COLUMN_COURSES = "courses";
 var COLUMN_YEAR = "year";
 var COLUMN_TRIMESTER = "trimester";
 var COLUMN_GENERATED = "generated";
+var COLUMN_START_DATE = "startDate";
+var COLUMN_END_DATE = "endDate";
 
 var Schedule = {
 	getAllSchedules:function(callback) {
@@ -18,13 +20,15 @@ var Schedule = {
 						" =?", [id], callback);
 	},
 
-	createSchedule:function(year, trimester, callback) {
+	createSchedule:function(year, trimester, startDate, endDate, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" + 
 			COLUMN_YEAR + "`,`" +
+			COLUMN_START_DATE + "`,`" +
+			COLUMN_END_DATE + "`,`" +
 			COLUMN_TRIMESTER + "`)" +  
 			" VALUES(?,?)", 
-			[year, trimester],
+			[year, startDate, endDate, trimester],
 			callback);
 	},
 
