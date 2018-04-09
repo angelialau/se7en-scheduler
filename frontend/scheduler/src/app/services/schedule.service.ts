@@ -35,7 +35,7 @@ export class ScheduleService {
   }
 
   // getting all schedules
-  getSchedules(): Observable<Schedule[]>{
+  getSchedules(): Observable<any>{
     return this.http.get<Schedule[]>(this.url + '/Schedules', { observe: 'response' })
       .catch(this.handleError);
   }

@@ -46,10 +46,16 @@ export class ViewSchedulesComponent implements OnInit {
 
   getSchedules(){
     this.scheduleService.getSchedules()
-      .map((data: any) => this.schedules = data.body)
       .subscribe(
-        allSchedules => {
-          // JSON.stringify(allSchedules); 
+        data => {
+          this.schedules = data.body.sort(function(a,b) {
+            if(a.year - b.year === 0){
+              return a.trimester - b.trimester;
+            } else{
+              return a.year - b.year;
+            }
+          });
+          this.getSchedules();
         },
         error => console.log("getSchedules error: " + error)
     );
@@ -58,19 +64,13 @@ export class ViewSchedulesComponent implements OnInit {
   deleteSchedule(schedule : Schedule){
     this.scheduleService.deleteSchedule(schedule).subscribe(
       success => {
-        console.log("deleted schedule!");
         this.snackBar.open("Deleted schedule!", null, { duration: 1000, });
       }, 
       error =>{
         console.log("could not trash schedule!");
         console.log(error);
         this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1000, });
-      }, 
-      () => {
-        this.getSchedules();
-      }
-
-      )
+      })
   }
 
   showSchedules() { this.showScheduleList = ! this.showScheduleList }
