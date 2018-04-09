@@ -3,6 +3,7 @@ var Schedule = require("../models/Schedule");
 var Course = require("../models/Course");
 var Calendar = require("../models/Calendar");
 var utils = require("../utils/utilities");
+var fecha = require("fecha");
 var spawn = require("child_process").spawn;
 var router = express.Router();
 var options = {
@@ -33,11 +34,14 @@ router.post('/', function(req, res, next) {
 		req.body.startDate &&
 		req.body.endDate) {
 
+		var startDate = fecha.format(new Date(req.body.startDate), 'YYYY-MM-DD HH:mm:ss');
+		var endDate = fecha.format(new Date(req.body.endDate), 'YYYY-MM-DD HH:mm:ss');
+
 		Schedule.createSchedule(
 			req.body.year, 
 			req.body.trimester,
-			req.body.startDate,
-			req.body.endDate,
+			startDate,
+			endDate,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
