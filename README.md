@@ -4,7 +4,7 @@
 This project is a web-based platform for SUTD instructors and coordinators to generate and manage academic schedules. It seeks to minimise clunky communication by email by providing a common platform for instructors to enrol courses for the upcoming schedule, allow coordinators to utilise a smart event scheduling algorithm to generate the term's schedule and for both end-users to communicate with each other based on the tasks at hand. Furthermore, coordinators will be able to ad-hoc events while all users will be able to view and integrate the respective schedules into their personal calendars (e.g. Google Calendar).
 
 #### The Algorithm
-The algorithm generates a conflict-minimising schedule using genetic algorithms...elab plz
+The algorithm generates a conflict-minimising schedule using genetic algorithms. Once the Coordinator click the generate schedule button, the courses details are passed to the algorithm. The algorithm then record course data and generate schedules that ensure no conflict between professors, rooms and classes. All generated schedules then pass through a checkScore function to calculate the conflicts between different terms (e.g. term 7 and term 5). The algorithm will then mutate the params(genes) of the top 10 schedules with minimal scores. In the next round, the schedule is generated using the mutated params. After 5 rounds, the schedule with the highest score(minimal conflict)will be output to the backend.
 
 #### Features implemented 
 * Schedule generator using smart scheduling algorithm
@@ -20,8 +20,13 @@ The algorithm generates a conflict-minimising schedule using genetic algorithms.
 * Change password (protection against misuse cases)
 
 #### To be integrated 
-* Downloading of `.csv` file for integration with Google Calendar
-* API calls for Events, Appeals
+* Upload calendar to Google Calendar automatically
+* Add button to generate calendar
+* Support start and end dates of trimester
+* Support replying to appeals
+* Algorithm needs to support capstone
+* Algorithm needs to support error handling
+* Calendar needs allow manual editing
 
 ## Getting Started
 
@@ -44,13 +49,15 @@ ng build
 
 Testing is split into 3 main components: algorithm used to generate schedules, frontend and backend. 
 
-### Algorithm Testing
+### Algorithm Testing - Unit Testing, Robustness Testing
 
-Explain what these tests test and why
+Unit testing is done using python unittest. To run,
 
 ```
-Give an example
+cd backend
+python3 TestAlgo.py
 ```
+This test covers all algorithm functions that can be tested separately.
 
 ### Frontend - System Testing
 
@@ -65,14 +72,49 @@ This test covers
 * Test of page navigations
 * Test of forms (e.g. adding a new schedule)
 
-### Backend Testing
+### Backend Testing 
 
-Explain what these tests test and why
+Unit testing is done using Mocha and Chai. API endpoint testing is done using Postman. 
 
+Steps to run mocha:
 ```
-Give an example
+cd backend
+npm test
 ```
 
+This test covers
+* All utility functions (eg. checking if JSONObjects have identical keys)
+
+Tests on Postman tries all API endpoints and check if the response is correct. Here is an example of a Postman test,
+```
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response must be valid and have a body", function () {
+     // assert that the status code is 200
+     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants
+     // assert that the response has a valid JSON body
+     pm.response.to.be.withBody;
+     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed
+     pm.response.to.not.have.jsonBody("message");
+});
+
+pm.test("No Errors found", function () {
+    pm.response.to.not.be.error; 
+    pm.response.to.have.jsonBody(""); 
+    pm.response.to.not.have.jsonBody("error"); 
+});
+
+pm.test("Check known user was pulled", function () {
+    pm.expect(pm.response.text()).to.include("Rayson Lim");
+});
+```
+This test covers
+* status code
+* response body 
+* errors 
+* expected result. 
 
 ## Deployment
 
@@ -87,18 +129,23 @@ Give an example
 
 ## Built With
 
+* [NodeJS](https://nodejs.org/en/) - The JavaScript execution engine
 * [Angular](https://angular.io/) - The web framework used
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [FullCalendar](https://fullcalendar.io/docs/typescript/) - Calendar Viewer 
 * [Jasmine](https://jasmine.github.io/) - Frontend unit testing tool
 * [Selenium](http://www.seleniumhq.org/) - System testing tool
+* [MySQL](https://www.mysql.com) - Database system 
+* [phpMyAdmin](https://www.phpmyadmin.net) - Database management
+* [Postman](https://www.getpostman.com) - API endpoint testing tool
+* [Mocha](https://mochajs.org) - Backend unit testing framework
 
 ## Authors
 
 * **Angelia Lau** - *1002417* - [angelialau](https://github.com/angelialau)
 * **Rayson Lim** - *1002026* - [nosyarlin](https://github.com/nosyarlin)
 * **Tham Yee Ting** - *1002516* - [thamyeeting](https://github.com/thamyeeting)
-* **Wu Yu Fei** - *1002192* - [RafaelaWu](https://github.com/RafaelaWu)
+* **Wu Yufei** - *1002192* - [RafaelaWu](https://github.com/RafaelaWu)
 
 ## Acknowledgments
 
