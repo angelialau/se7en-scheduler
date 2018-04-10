@@ -123,6 +123,7 @@ router.post('/Generate', function(req, res, next) {
 						})
 					});
 					Schedule.updateGenerated(req.body.id);
+					output.success = true;
 					res.json(output);
 				});
 			}
