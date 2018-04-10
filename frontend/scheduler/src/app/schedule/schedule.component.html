@@ -17,7 +17,8 @@
       (click)="displayHASS()">HASS</span></label>
 	</div>
 	<div *ngIf="calendarOptions">
-		<ng-fullcalendar #ucCalendar [options]="calendarOptions"></ng-fullcalendar>
+		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
 	</div>
 	<br>
 

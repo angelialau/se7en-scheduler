@@ -7,10 +7,11 @@ import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
 import { EventService } from './../services/event.service';
+import { WindowService } from './../services/window.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Appeal} from './../../models/appeal.model';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from 'ng2-cookies';
 import { EventObject } from 'fullcalendar';
 
@@ -33,6 +34,8 @@ export class ScheduleComponent implements OnInit {
   csvFinal: string;
   googleSchedule: any;
   listCourses: any;
+  nativeWindow: any;
+  displayEvent: any;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -42,7 +45,11 @@ export class ScheduleComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
-    private cookieService: CookieService) {}
+    private cookieService: CookieService,
+    private dialog: MatDialog,
+    private windowService: WindowService) {
+    this.nativeWindow = windowService.getNativeWindow();
+  }
 
   ngOnInit() {
     this.initialiseAppeal();
@@ -75,6 +82,7 @@ export class ScheduleComponent implements OnInit {
 
       this.calendarOptions = {
         editable: false, //make this true to allow editing of events
+        //eventStartEditable: true,
         handleWindowResize: true,
         height: 590,
         weekends: false, //to hide weekends
@@ -100,12 +108,12 @@ export class ScheduleComponent implements OnInit {
         },
         displayEventTime: true, //Display event
         events: this.scheduledata,
-        eventRender: function(event, element, view){
+        /*eventRender: function(event, element, view){
         return (event.ranges.filter(function(range){
             return (moment(event.start).isBefore(range.end) &&
                     moment(event.end).isAfter(range.start));
         }).length)>0;
-    }
+    }*/
     };
      
      this.listCourses = []
@@ -133,6 +141,39 @@ export class ScheduleComponent implements OnInit {
     console.log(this.listCourses);
 
     });}
+
+  clickButton(model: any) {
+    this.displayEvent = model;
+  }
+  eventClick(model: any) {
+    model = {
+      event: {
+        id: model.event.id,
+        start: model.event.start,
+        end: model.event.end,
+        title: model.event.title,
+        allDay: model.event.allDay
+        // other params
+      },
+      duration: {}
+    }
+    this.displayEvent = model;
+  }
+  updateEvent(model: any) {
+    model = {
+      event: {
+        id: model.event.id,
+        start: model.event.start,
+        end: model.event.end,
+        title: model.event.title
+        // other params
+      },
+      duration: {
+        _data: model.duration._data
+      }
+    }
+    this.displayEvent = model;
+  }
 
 
   changeView(){
@@ -244,8 +285,6 @@ export class ScheduleComponent implements OnInit {
             link.setAttribute('href',googledata);
             link.setAttribute('download',filename);
             link.click();
-
-            //window.location.href = "https://calendar.google.com/calendar"
           }
         }
       },
@@ -254,6 +293,11 @@ export class ScheduleComponent implements OnInit {
         console.log("sever error in getting information. Please try again.");
       });
   }
+
+  openDialog(){
+     var newWindow = this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
+     }
+  
 }
 
 

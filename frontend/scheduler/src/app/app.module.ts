@@ -11,12 +11,13 @@ import { FullCalendarModule } from 'ng-fullcalendar';
 // material.angular imports
 import { MatToolbarModule, MatButtonModule, MatIconModule,
  MatSidenavModule, MatListModule, MatCardModule, MatFormFieldModule,
- MatInputModule, MatSnackBarModule } from '@angular/material';
+ MatInputModule, MatSnackBarModule, MatDialogModule } from '@angular/material';
 
 // service imports 
 import { UserService } from './services/user.service'; 
 import { ScheduleService } from './services/schedule.service'; 
 import { EventService } from './services/event.service';
+import { WindowService } from './services/window.service'
 import { CookieService } from 'ng2-cookies';
 
 // component imports 
@@ -33,7 +34,8 @@ import { CreateCourseComponent } from './create-course/create-course.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component';
-import { ViewAppealComponent } from './view-appeal/view-appeal.component'
+import { ViewAppealComponent } from './view-appeal/view-appeal.component';
+import { AppealreplyComponent } from './appealreply/appealreply.component'
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -47,7 +49,8 @@ export const ROUTES: Routes = [
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
   { path: 'event', component: CreateEventComponent},
-  { path: 'viewappeal', component: ViewAppealComponent}
+  { path: 'viewappeal', component: ViewAppealComponent},
+  { path: 'appealreply', component: AppealreplyComponent}
 ];
 
 @NgModule({
@@ -65,7 +68,8 @@ export const ROUTES: Routes = [
     ScheduleComponent,
     CreateEventComponent,
     CreateAnnouncementComponent,
-    ViewAppealComponent
+    ViewAppealComponent,
+    AppealreplyComponent
   ],
   imports: [
     BrowserModule, 
@@ -84,9 +88,10 @@ export const ROUTES: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatDialogModule,
     FullCalendarModule,
   ],
-  providers: [UserService, ScheduleService, EventService, DatePipe, CookieService],
+  providers: [UserService, ScheduleService, EventService, DatePipe, CookieService, WindowService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
