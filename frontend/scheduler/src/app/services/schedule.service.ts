@@ -26,6 +26,8 @@ export class ScheduleService {
     let body = new URLSearchParams(); 
     body.set('trimester', String(newSchedule.trimester)); 
     body.set('year', String(newSchedule.year)); 
+    body.set('startDate', String(newSchedule.startDate)); 
+    body.set('endDate', String(newSchedule.endDate)); 
     let extension = this.url + '/Schedules';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
@@ -33,7 +35,7 @@ export class ScheduleService {
   }
 
   // getting all schedules
-  getSchedules(): Observable<Schedule[]>{
+  getSchedules(): Observable<any>{
     return this.http.get<Schedule[]>(this.url + '/Schedules', { observe: 'response' })
       .catch(this.handleError);
   }
@@ -106,6 +108,7 @@ export class ScheduleService {
     body.set('class_types', String(course.class_types)); 
     body.set('instructors', String(course.instructors)); 
     body.set('instructor_ids', String(course.instructor_ids)); 
+    body.set('venue_types', String(course.venue_types)); 
     body.set('split', String(course.split)); 
     
     let extension = this.url + '/Courses';
@@ -182,6 +185,20 @@ export class ScheduleService {
     body.set('start', String(event.start)); 
     body.set('end', String(event.end)); 
     let extension = this.url + '/Calendars';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  getEvents(schedule_id: number) : Observable<any>{
+    return this.http.get<Course>(this.url + '/Calendars/Events/' + schedule_id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+  deleteEvent(eventId: number): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('id', String(eventId)); 
+    let extension = this.url + '/Calendars/Delete';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 

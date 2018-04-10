@@ -4,17 +4,22 @@
   </div>
   
   <div *ngIf="showScheduleList">
-    <table class="table table-hover">
+    <table class="table">
       <tbody *ngFor="let schedule of schedules">
         <tr>
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
-          <button (click)="deleteSchedule(schedule)" 
-          title="Delete this schedule" 
-          class="btn" 
-          style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
+          <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
+          <span *ngIf="schedule.generated == '1'"> Generated</span>
+          <span>
+            <button (click)="deleteSchedule(schedule)" 
+            title="Delete this schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" ><i class="fas fa-trash-alt"></i></button>
+          </span>
           </td>
+          
         </tr>
       </tbody>
     </table>
@@ -30,37 +35,78 @@
     
       <form #newScheduleForm="ngForm">
         <!-- trimester type -->
-        <div class="form-group">
-          <label for="trimester"> Academic Term * </label>
-          <select class="form-control" id="trimester"
-          required
-           [(ngModel)]="schedule.trimester" name="trimester">
-            <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
-            <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
-            <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
-          </select>
+        <div class="">
+          <div class="">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="trimester"> Academic Term </label>
+                </div>
+                <select class="form-control" id="trimester"
+                required
+                 [(ngModel)]="schedule.trimester" name="trimester">
+                  <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
+                  <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
+                  <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="year"> Year</label>
+                </div>
+                <select class="form-control" id="year" required
+                 [(ngModel)]="schedule.year" name="year">
+                 <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
+                  value={{i}}>{{i}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- year -->
-        <div class="form-group">
-          <label for="year"> Year </label>
-          <select class="form-control" id="year"
-          required
-           [(ngModel)]="schedule.year" name="year">
-           <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
-            value={{i}}>{{i}}</option>
-          </select>
-        </div>        
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="start"> Start date</label>
+                </div>
+                  <input class="form-control"
+                  type="date" name="start" id="start" required 
+                  [(ngModel)]="schedule.startDate">
+              </div>
+            </div>
+          </div>
 
+          <div class="col">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="end"> End date</label>
+                </div>
+                  <input class="form-control"
+                  type="date" name="end" id="end" required 
+                  [(ngModel)]="schedule.endDate">
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div style="float: right;">
           <button type="submit" class="btn btn-success" 
           [disabled]="!newScheduleForm.form.valid" id="addScheduleSubmitButton"
-          (click)="onSend()">Create schedule</button>
+          (click)="addSchedule()">Create schedule</button>
           <button class="btn btn-warning" id="addSchedResetButton"
           (click)="newScheduleForm.reset()">Reset</button>
         </div>
       </form>
-    
+    <!-- <p>{{newScheduleForm.value | json}} </p>
+    <p>{{newScheduleForm.status | json}} </p> -->
   </div>
 
 </div>

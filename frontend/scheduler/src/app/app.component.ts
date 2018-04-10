@@ -11,7 +11,6 @@ import { CookieService } from 'ng2-cookies';
 })
 export class AppComponent {
   loggedin : boolean = false; 
-
   location;
 
   constructor(

@@ -35,7 +35,8 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { CreateAnnouncementComponent } from './create-announcement/create-announcement.component';
 import { ViewAppealComponent } from './view-appeal/view-appeal.component';
-import { AppealreplyComponent } from './appealreply/appealreply.component'
+import { AppealreplyComponent } from './appealreply/appealreply.component';
+import { ViewEventsComponent } from './view-events/view-events.component'
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -45,12 +46,14 @@ export const ROUTES: Routes = [
   { path: 'user', component: CreateUserComponent },
   { path: 'schedules', component: ViewSchedulesComponent },
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
-  // { path: 'schedules/courses/add', component: CreateCourseComponent },
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
   { path: 'event', component: CreateEventComponent},
   { path: 'viewappeal', component: ViewAppealComponent},
-  { path: 'appealreply', component: AppealreplyComponent}
+  { path: 'appealreply', component: AppealreplyComponent},
+  { path: 'events', component: ViewEventsComponent},
+  { path: 'events/:schedule_id', component: CreateEventComponent},
+  { path: 'viewappeal', component: ViewAppealComponent}
 ];
 
 @NgModule({
@@ -69,7 +72,8 @@ export const ROUTES: Routes = [
     CreateEventComponent,
     CreateAnnouncementComponent,
     ViewAppealComponent,
-    AppealreplyComponent
+    AppealreplyComponent,
+    ViewEventsComponent
   ],
   imports: [
     BrowserModule, 

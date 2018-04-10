@@ -21,7 +21,11 @@
     <a id="sbChangePassword" class="list-group-item-action" routerLink="/password"> <i class="fas fa-cog"></i> Change Password</a>
   </li>
 
-    <li class="list-group-item" *ngIf = "isAdmin" >
+  <li class="list-group-item" *ngIf = "isAdmin" >
+    <a id="sbAddEvents" class="list-group-item-action" routerLink="/events"><i class="fas fa-plus-circle"></i> Add Events </a>
+  </li>
+
+  <li class="list-group-item" *ngIf = "isAdmin" >
     <a id="sbViewAppeals" class="list-group-item-action" routerLink="/viewappeal"><i class="fas fa-eye"></i> View Appeals </a>
   </li>
 <!-- </mat-list> -->

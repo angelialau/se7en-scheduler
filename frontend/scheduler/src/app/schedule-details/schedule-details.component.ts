@@ -17,7 +17,7 @@ export class ScheduleDetailsComponent implements OnInit {
   courses: Course[] = [];
   showCourseList : boolean = true;
   showEventForm : boolean = false;
-  showCourseForm : boolean = false;
+  showCourseForm : boolean = true;
 
   constructor(
     private scheduleService: ScheduleService,
@@ -31,7 +31,6 @@ export class ScheduleDetailsComponent implements OnInit {
     this.refreshCourses();
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
       response => {
-        console.log(response);  
         if(response.status == 200){
           if(response.body.success != undefined && response.body.success===false){
             this.snackBar.open("Some error occurred. Please try again later!", null, {duration: 1000,});
