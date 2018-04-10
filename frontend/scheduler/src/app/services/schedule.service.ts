@@ -195,4 +195,13 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  deleteEvent(eventId: number): Observable<any>{
+    let body = new URLSearchParams(); 
+    body.set('id', String(eventId)); 
+    let extension = this.url + '/Calendars/Delete';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
 }

@@ -9,14 +9,18 @@
     <div *ngFor="let event of events">
       <div class="card" style="margin: 0 5% 5% 5%;">
         <div class="card-header">{{event.course}}
+          <button class="btn btn-light" style="float: right;"
+          (click)="deleteEvent(event.id);" title="Delete this event">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </div>
         <div class="card-body">
           Date: {{event.date | date:'fullDate'}} <br>
-          Time: {{event.start}} to {{event.end}} <br>
-          Location {{event.location}} <br>
-          <div *ngIf="event.prof!='null'">Professor in charge: {{event.prof}} <br></div>
-          <div *ngIf="event.pillar!='null'">Pillar concerned: {{event.pillar}} <br></div>
-          <div *ngIf="event.cohort!='null'">Cohort class concerned: {{event.cohort}} <br></div>
+          Time: {{reverseParseTime(event.start)}} to {{reverseParseTime(event.end)}} <br>
+          Location: {{event.location}} <br>
+          <div *ngIf="event.prof!=null">Professor in charge: {{event.prof}} <br></div>
+          <div *ngIf="event.pillar!=null">Pillar concerned: {{event.pillar}} <br></div>
+          <div *ngIf="event.cohort!=null && event.cohort!='0'">Cohort class concerned: {{event.cohort}} <br></div>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@
         </div>
         <select class="custom-select" id="courseDetail"
           formControlName="courseDetail">
+          <option> - Please select - </option>
           <option *ngFor='let c of courseDetails' [value]=c.course_no>
             {{c.pillar}} Term {{c.term}} - {{c.course_no}} {{c.course_name}}
           </option>

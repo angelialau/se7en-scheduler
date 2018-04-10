@@ -125,18 +125,18 @@ export class CreateEventComponent implements OnInit {
     this.newEvent.end = String(this.parseTime(this.newEvent.end));
     this.newEvent.day = (new Date(this.newEvent.date)).getDay() ;
     if(this.newEvent.pillar===undefined || this.newEvent.pillar === ""){
-      this.newEvent.pillar = "null";
+      this.newEvent.pillar = null;
     }
     if(this.newEvent.prof_id===undefined || this.newEvent.prof_id === ""){
-      this.newEvent.prof_id = "null";
-      this.newEvent.prof = "null";
+      this.newEvent.prof_id = null;
+      this.newEvent.prof = null;
     }else{
       this.newEvent.prof = this.queryInstructors(Number(this.newEvent.prof_id));  
     }
     if(this.newEvent.cohort===undefined){
-      this.newEvent.cohort = "null";
+      this.newEvent.cohort = null;
     }
-    this.newEvent.term = "null"; // not needed
+    this.newEvent.term = null; // not needed
     
     this.scheduleService.addEvent(this.newEvent).subscribe(
       response=>{
@@ -158,17 +158,36 @@ export class CreateEventComponent implements OnInit {
   getEvents(){
     this.scheduleService.getEvents(this.schedule_id).subscribe(
       response => {
+        console.log(response);
         if(response.body.success === undefined || response.body.success === true){
           this.events = response.body;
+          this.refreshTimeSlots(); // so that it reflects any events that have just been added. 
+        }else{
+          this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
+          console.log("get events error", response);
         }
       }, 
       error =>{
-        this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
+        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1000,})
+        console.log("get events server error", error);
       })
   }
 
   deleteEvent(index: number){
-
+    this.scheduleService.deleteEvent(index).subscribe(
+      response =>{
+        if(JSON.parse(response).success){
+          this.snackBar.open("Deleted event!", null, {duration:1000});
+          this.getEvents();
+        }else{
+          this.snackBar.open("There's some problem with deleting the event. Please try again later!", null, {duration: 1000,})
+          console.log("delete event error", response);
+        }
+      }, error =>{
+        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1000,})
+        console.log("delete events server error", error);
+      }
+    )
   }
 
   getInstructors(){
@@ -200,9 +219,9 @@ export class CreateEventComponent implements OnInit {
     throw error;
   }
 
+  // from hours to index e.g. 08:30 = 0, 18:00 = 19
   parseTime(time: string): number{
     let ans = -1;
-    //830 = 0, 1600 = 19
     let hour : number = Number(time.substring(0,2));
     let min : string = time.substring(3,5);
     if(hour<8 || hour>18 || (min!="00" && min!="30") || time =="18:30" || time == "08:00"){
@@ -218,6 +237,7 @@ export class CreateEventComponent implements OnInit {
     return ans;
   }
 
+  // from index to hours
   reverseParseTime(n: number): string {
     if(n<0 || n> 19){
       let error = new Error('To reverse parse time, n must be between 0 and 19');
