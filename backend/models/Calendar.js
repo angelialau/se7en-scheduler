@@ -155,6 +155,12 @@ var Calendar = {
 
 		selectStatement += tokens;
 		return db.query(selectStatement, params, callback);
+	},
+	deleteEvent:function(id, callback) {
+		return db.query("DELETE FROM " + TABLE_NAME + 
+						" WHERE " + COLUMN_ID + "=?",
+						[id],
+						callback);
 	}
 };
 

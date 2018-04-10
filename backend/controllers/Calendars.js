@@ -76,6 +76,17 @@ router.get('/Events/:id(\\d+)', function(req, res, next) {
 	}
 });
 
+// defining delete event route
+router.post('/Delete/', function(req, res, next) {
+	if (req.body.id) {
+		Calendar.deleteEvent(req.body.id, function(err, count) {
+			utils.basicPostCallback(res, err, count);
+		});
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
 // defining filter route
 router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})?/?:eDate(\\d{4}-\\d{2}-\\d{2})?/?:sTime(\\d{1,2})?/?:eTime(\\d{1,2})?', function(req, res, next) {
 	Calendar.filterTimeSlots(req.params, req.params.schedule_id, function(err, rows) {
