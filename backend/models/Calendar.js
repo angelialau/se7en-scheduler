@@ -30,6 +30,16 @@ var Calendar = {
 		start:null,
 		end:null
  	},
+ 	updateNoDateStructure:{
+ 		id:null,
+		pillar:null,
+		course:null,
+		prof:null,
+		prof_id:null,
+		day:null,
+		start:null,
+		end:null
+ 	},
 	createEvent:function(data, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" +
@@ -161,6 +171,25 @@ var Calendar = {
 						" WHERE " + COLUMN_ID + "=?",
 						[id],
 						callback);
+	},
+	updateEventNoDate:function(data, callback) {
+		return db.query("UPDATE " + TABLE_NAME + " SET `" +
+						COLUMN_PILLAR + "` =?, `" +
+						COLUMN_COURSE + "` =?, `" + 
+						COLUMN_PROF + "` =?, `" + 
+						COLUMN_PROF_ID + "` =?, `" +
+						COLUMN_DAY + "` =?, `" + 
+						COLUMN_START + "` =?, `" +
+						COLUMN_END + "` =? " + 
+						" WHERE `" + COLUMN_ID + "` =?",
+						[data.pillar,
+						 data.course,
+						 data.prof,
+						 data.prof_id,
+						 data.day,
+						 data.start,
+						 data.end],
+						 callback);
 	}
 };
 
