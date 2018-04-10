@@ -188,7 +188,8 @@ var Calendar = {
 						 data.prof_id,
 						 data.day,
 						 data.start,
-						 data.end],
+						 data.end,
+						 data.id],
 						 callback);
 	}
 };
