@@ -86,7 +86,8 @@ var utilities = {
 		var endTime =  new Date(this.zeroTime.getTime() + (event.end+1)*(30*6*10000));
 		
 		output.instructor = event.prof;
-		output.id = event.prof_id.toString();
+		output.id = event.id.toString();
+		output.prof_id = event.prof_id.toString();
 		output.pillar = event.pillar;
 		output.schedule = [];
 
