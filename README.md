@@ -22,7 +22,6 @@ The algorithm generates a conflict-minimising schedule using genetic algorithms.
 #### To be integrated 
 * Upload calendar to Google Calendar automatically
 * Add button to generate calendar
-* Support start and end dates of trimester
 * Support replying to appeals
 * Algorithm needs to support capstone
 * Algorithm needs to support error handling
@@ -35,7 +34,9 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 The project has dependencies that require [Node 6.9.0](https://nodejs.org/en/download/) or higher, together with [NPM](https://www.npmjs.com/get-npm) 3 or higher. You will also need Angular CLI which you can get by running in the Terminal:
 
-```npm install @angular/cli```
+```
+npm install @angular/cli
+```
 
 ### Installing
 After cloning the project,
@@ -71,6 +72,19 @@ This test covers
 * Test of login and logout functionality
 * Test of page navigations
 * Test of forms (e.g. adding a new schedule)
+
+### Frontend - Unit Testing
+
+Unit tests of Angular2 components in Jasmine framework. To run,
+
+```
+cd frontend/schedule/src
+np test
+```
+This test isolated tests of components (includes child components): 
+* Authentication, Announcement, Schedules, Courses, Events, Changing password, Adding users
+
+It tests logical methods and dependency injections. 
 
 ### Backend Testing 
 
@@ -133,7 +147,7 @@ This test covers
 * [Angular](https://angular.io/) - The web framework used
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [FullCalendar](https://fullcalendar.io/docs/typescript/) - Calendar Viewer 
-* [Jasmine](https://jasmine.github.io/) - Frontend unit testing tool
+* [Jasmine](https://jasmine.github.io/) - Frontend unit testing framework
 * [Selenium](http://www.seleniumhq.org/) - System testing tool
 * [MySQL](https://www.mysql.com) - Database system 
 * [phpMyAdmin](https://www.phpmyadmin.net) - Database management
