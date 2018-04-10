@@ -128,8 +128,12 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 
 				// remove unavailable timings
 				for (var i = 0; i < rows.length; i++) {
-					// only care if it concerns current room
-					if (rows[i].location === room) {
+					// only care if it concerns current room and is weekly event
+					if (rows[i].date !== 'null') {
+						console.log(rows[i]);
+					}
+
+					if (rows[i].location === room && rows[i].date === 'null') {
 						var j = rows[i].start
 						while (j < rows[i].end) {
 							// go through week by week
