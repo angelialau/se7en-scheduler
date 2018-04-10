@@ -238,6 +238,11 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 // defining update calendar entry endpoint
 router.post('/Update', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Calendar.updateNoDateStructure)) {
+		// change time format
+		req.body.start = utils.timeToInt(req.body.start);
+		req.body.end = utils.timeToInt(req.body.end);
+
+		// update
 		Calendar.updateEventNoDate(req.body, function(err, count) {
 			utils.basicPostCallback(res, err, count);
 		});

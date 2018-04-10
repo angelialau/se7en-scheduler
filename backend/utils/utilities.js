@@ -194,7 +194,23 @@ var utilities = {
 		// "Lecture Theatre 5"
 	],
 
-	zeroTime: new Date("1995-11-03 08:30")
+	/**
+	 * Our integer 'time' range from 0 to 19, where 0 is 8:30 am
+	 * Every increment is half an hour
+	 * Defining zero here for later use
+	 */
+	zeroTime: new Date("1995-11-03 08:30"),
+	
+	/**
+	 * Converts normal human time to our integer time
+	 * 
+	 * time is a string, eg "09:00" or "12:30". Only in increments of 30mins
+	 * returns an integer
+	 */
+	timeToInt:function(time) {
+		var difference  = new Date("1995-11-03 " + time).getTime() - this.zeroTime.getTime();
+		return difference/30/6/10000
+	}
 }
 
 module.exports=utilities;
