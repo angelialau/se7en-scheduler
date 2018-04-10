@@ -4,17 +4,22 @@
   </div>
   
   <div *ngIf="showScheduleList">
-    <table class="table table-hover">
+    <table class="table">
       <tbody *ngFor="let schedule of schedules">
         <tr>
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} - {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}
-          <button (click)="deleteSchedule(schedule)" 
-          title="Delete this schedule" 
-          class="btn" 
-          style="float: right; margin: 0 5px;"><i class="fas fa-trash-alt"></i></button>
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
+          <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
+          <span *ngIf="schedule.generated == '1'"> Generated</span>
+          <span>
+            <button (click)="deleteSchedule(schedule)" 
+            title="Delete this schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" ><i class="fas fa-trash-alt"></i></button>
+          </span>
           </td>
+          
         </tr>
       </tbody>
     </table>
@@ -95,7 +100,7 @@
         <div style="float: right;">
           <button type="submit" class="btn btn-success" 
           [disabled]="!newScheduleForm.form.valid" id="addScheduleSubmitButton"
-          (click)="onSend()">Create schedule</button>
+          (click)="addSchedule()">Create schedule</button>
           <button class="btn btn-warning" id="addSchedResetButton"
           (click)="newScheduleForm.reset()">Reset</button>
         </div>

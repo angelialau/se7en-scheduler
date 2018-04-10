@@ -2,7 +2,7 @@
   <button class="btn btn-light" routerLink="/schedules"><i class="fas fa-long-arrow-alt-left" ></i></button>
   <div *ngIf="!generated">
     <div class="card-body" (click)="showListOfCourses()">
-      <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-caret-down"></i> Courses under this Schedule</h5>
+      <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-eye"></i> Courses under this Schedule</h5>
     </div>
     <div *ngIf="showCourseList">
       <!-- display list of courses -->
@@ -12,44 +12,35 @@
           </div>
           <div class="card-body">
             Term: {{course.term}} <br>
-            Course type: {{course.core}} <br>
-            Number of classes enrolled:{{course.no_classes}} <br>
+            Number of classes enrolled: {{course.no_classes}} <br>
             Size of each class: {{course.class_size}} <br>
-            <!-- Instructors: {{course.instructors}} <br> -->
+            Instructors: {{course.instructors.split(',').join(', ')}} <br>
+            <div *ngIf="course.course_no !== '01.400'">
+            Course type: {{course.core}} <br>
             Sessions: {{course.class_types}} <br>
-            Hours for each session: {{course.sessions_hrs}}<br>
+            Hours for each session: {{course.sessions_hrs}}<br>  
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>  
-  
-  <!-- form to add an ad hoc event -->
-  <div *ngIf="generated">
-    <div class="dropdown-divider"></div>
-    <div class="card-body" (click)="showAddEventForm()">
-      <h5 class="card-title text-center" 
-      title="Click to add an event" 
-      id="eventFormTitle"><i class="fas fa-caret-right"></i> Add an Event</h5>
-    </div>  
-    <div *ngIf="showEventForm">
-        <app-create-event></app-create-event>
-      </div>
-  </div>
-  
-  <!-- form to add a new course -->
-  <div *ngIf="!generated">
+
+    <!-- form to add a new course -->
     <div class="dropdown-divider"></div>
     <div class="card-body" (click)="showAddCourseForm()">
       <h5 class="card-title text-center"
       title="Click to enrol a course"
-      id="courseFormTitle"><i class="fas fa-caret-right"></i> Add a Course</h5>
+      id="courseFormTitle"><i class="fas fa-plus-circle" ></i> Add a Course</h5>
     </div>  
     <div *ngIf="showCourseForm">
       <app-create-course (addedCourse)="refreshCourses($event)" ></app-create-course>
       <br>
     </div>
-  </div>
+  </div>  
   
+  <!-- form to add an ad hoc event -->
+  <div *ngIf="generated">
+    <app-create-event></app-create-event>
+  </div>
  
 </div>

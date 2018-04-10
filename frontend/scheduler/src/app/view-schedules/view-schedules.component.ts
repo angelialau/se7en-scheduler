@@ -19,7 +19,7 @@ export class ViewSchedulesComponent implements OnInit {
   constructor(
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
      ) { 
   }
 
@@ -27,20 +27,21 @@ export class ViewSchedulesComponent implements OnInit {
     this.getSchedules();
   }
 
-  onSend(){
+  addSchedule(){
     this.scheduleService.createSchedule(this.schedule).subscribe(
-      success => {
-        console.log("created new schedule!");
-        this.snackBar.open("Created schedule!", null, { duration: 1000, });
+      response => {
+        if(JSON.parse(response).success){
+          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.getSchedules();
+        }else{
+          this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1000, });
+          console.log("create schedule client error", response);
+        }
       }, 
       error =>{
-        console.log("could not create schedule!");
-        console.log(error);
+        console.log("create schedule server", error);        
         this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1000, });
       }, 
-      () => {
-        this.getSchedules();
-      }
     );
   }
 
@@ -63,8 +64,14 @@ export class ViewSchedulesComponent implements OnInit {
 
   deleteSchedule(schedule : Schedule){
     this.scheduleService.deleteSchedule(schedule).subscribe(
-      success => {
-        this.snackBar.open("Deleted schedule!", null, { duration: 1000, });
+      response => {
+        if(JSON.parse(response).success){
+          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.getSchedules();
+        }else{
+          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1000, });
+          console.log("delete schedule client error", response);
+        }
       }, 
       error =>{
         console.log("could not trash schedule!");

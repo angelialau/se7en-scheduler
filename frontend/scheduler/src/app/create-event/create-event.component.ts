@@ -140,7 +140,7 @@ export class CreateEventComponent implements OnInit {
     
     this.scheduleService.addEvent(this.newEvent).subscribe(
       response=>{
-        console.log('debug: event',this.newEvent);
+        // console.log('debug: event',this.newEvent);
         if(JSON.parse(response).success){
           this.snackBar.open("Event added!", null, {duration:1200});
           this.getEvents();
@@ -158,7 +158,6 @@ export class CreateEventComponent implements OnInit {
   getEvents(){
     this.scheduleService.getEvents(this.schedule_id).subscribe(
       response => {
-        console.log(response);
         if(response.body.success === undefined || response.body.success === true){
           this.events = response.body;
           this.refreshTimeSlots(); // so that it reflects any events that have just been added. 
@@ -233,7 +232,6 @@ export class CreateEventComponent implements OnInit {
     if (min == "00"){
       ans--;
     }
-    // console.log(ans);
     return ans;
   }
 
@@ -257,13 +255,6 @@ export class CreateEventComponent implements OnInit {
 
   parseDay(){ 
     return days.indexOf(this.searchForm.day) + 1; 
-  }
-
-  searchForTimeSlot(){
-    // http request for available slots
-    // use slotChosen here 
-    // this.parseTime(this.searchForm.startTime);
-    console.log("Create Event: searching for suitable time slots!");
   }
 
   showForm(){ this.showEventForm = !this.showEventForm};

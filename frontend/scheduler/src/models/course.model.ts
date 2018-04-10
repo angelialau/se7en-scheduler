@@ -34,6 +34,18 @@ export class CourseDetail {
 
 export const courseDetails = [
   {
+    course_no: "01.400",
+    course_name: "Capstone", 
+    term : 7,
+    pillar: "All"
+  },
+  {
+    course_no: "01.400",
+    course_name: "Capstone", 
+    term : 8,
+    pillar: "All"
+  },
+  {
     course_no: "01.112",
     course_name: "Machine Learning", 
     term : 6,
