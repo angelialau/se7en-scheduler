@@ -126,13 +126,10 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 					available.push(weekdays);
 				}
 
+				var rowsWithDates = [];
 				// remove unavailable timings
 				for (var i = 0; i < rows.length; i++) {
 					// only care if it concerns current room and is weekly event
-					if (rows[i].date !== 'null') {
-						console.log(rows[i]);
-					}
-
 					if (rows[i].location === room && rows[i].date === 'null') {
 						var j = rows[i].start
 						while (j < rows[i].end) {
@@ -145,7 +142,10 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 							}	
 							j++;
 						}
-					}	
+					} else if (rows[i].location === room && rows[i].date !== 'null') {
+						// save rows with dates for faster loop later
+						rowsWithDates.push(rows[i]);
+					}
 				}
 
 				// remove based on today's day
@@ -162,6 +162,22 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 						roomAvailability[current.toDateString()] = day;
 					});
 				}
+
+				// remove unavailable timings based on dates
+				rowsWithDates.forEach(function(row) {
+					var dateString = new Date(row.date).toDateString();
+					var tempAvailability = roomAvailability[dateString];
+
+					var j = row.start
+					while (j < row.end) {
+						var index = tempAvailability.indexOf(j);	
+						if (index != -1) {
+							tempAvailability.splice(index, 1);
+						}
+						j++;
+					}
+					roomAvailability[dateString] = tempAvailability;
+				});
 
 				output[room] = roomAvailability;
 			});
