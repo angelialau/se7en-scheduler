@@ -87,11 +87,14 @@ var utilities = {
 		
 		output.instructor = event.prof;
 		output.id = event.id.toString();
-		output.prof_id = event.prof_id == null ? '' : event.prof_id.toString();
+		output.prof_id = event.prof_id == null ? null : event.prof_id.toString();
 		output.pillar = event.pillar;
 		output.schedule = [];
 
-		details.title = event.course + "\n" + event.location + "\n" + "Cohort " + event.cohort;
+		details.title = event.course + "\n" + event.location;
+		if (event.cohort != null) {
+			details.title += "\n" + "Cohort " + event.cohort;
+		}
 		details.start = fecha.format(startTime, 'HH:mm');
 		details.end = fecha.format(endTime, 'HH:mm');
 		details.dow = event.day.toString();
