@@ -11,7 +11,7 @@
           title="View courses enrolled and add a course or event to this schedule"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
           <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
-          <span *ngIf="schedule.generated == '1'"> Generated</span>
+          <span *ngIf="schedule.generated == '1'" class="badge badge-success"> Generated</span>
           <span>
             <button (click)="deleteSchedule(schedule)" 
             title="Delete this schedule" 
