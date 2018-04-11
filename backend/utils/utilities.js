@@ -87,7 +87,7 @@ var utilities = {
 		
 		output.instructor = event.prof;
 		output.id = event.id.toString();
-		output.prof_id = event.prof_id.toString();
+		output.prof_id = event.prof_id == null ? '' : event.prof_id.toString();
 		output.pillar = event.pillar;
 		output.schedule = [];
 
