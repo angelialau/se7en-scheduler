@@ -57,7 +57,6 @@ export class ViewSchedulesComponent implements OnInit {
               return a.year - b.year;
             }
           });
-          this.getSchedules();
         },
         error => console.log("getSchedules error: " + error)
     );

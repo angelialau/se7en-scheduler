@@ -4,14 +4,14 @@
   </div>
   
   <div *ngIf="showScheduleList">
-    <table class="table">
+    <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
         <tr>
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
           <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
-          <span *ngIf="schedule.generated == '1'"> Generated</span>
+          <span *ngIf="schedule.generated == '1'" class="badge badge-success"> Generated</span>
           <span>
             <button (click)="deleteSchedule(schedule)" 
             title="Delete this schedule" 
@@ -22,7 +22,6 @@
             class="btn btn-light"><i class="fas fa-eye"></i></button>
           </span>
           </td>
-          
         </tr>
       </tbody>
     </table>

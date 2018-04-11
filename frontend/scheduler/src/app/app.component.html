@@ -1,17 +1,21 @@
-<div *ngIf="!loggedin else loggedin"><app-login></app-login></div>
+<div *ngIf="!loggedin else loggedin" ><app-login></app-login></div>
 
-<ng-template #loggedin>
-<app-navbar *ngIf="!(location === '/login' || location === '/')"></app-navbar>
-<mat-sidenav-container class="mat-sidenav-container" autosize>
-  <!-- sidenav content -->
-  <mat-sidenav mode="side" opened="true" class="sidebar" *ngIf="!(location === '/login' || location === '/')">
-    <app-sidebar></app-sidebar>
-  </mat-sidenav>
-  <!-- main content -->
-  <mat-sidenav-content class="main">
-    <router-outlet></router-outlet>  
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<ng-template #loggedin id="login-bg">
+  <!-- navbar -->
+  <app-navbar *ngIf="!(location === '/login' || location === '/')" class="navbar"></app-navbar>
+  
+  <!-- sidebar + body -->
+  <mat-sidenav-container class="mat-sidenav-container" autosize id="login-bg" class="main">
+    <!-- sidebar -->
+    <mat-sidenav 
+      mode="side" opened="true" 
+      *ngIf="!(location === '/login' || location === '/')"
+      class="sidebar" >
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+    <!-- main -->
+    <mat-sidenav-content class="main">
+      <router-outlet></router-outlet>  
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </ng-template>
-
-
