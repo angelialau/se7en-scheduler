@@ -36,17 +36,20 @@ describe('rowToJSON()', function () {
 				  "sessions": 
 				   [ {'class_type': 'Cohort Based Learning',
 				      'time': '2',
-				      'instructors': ['58','32'],
+				      'instructors': ['David Yau','Jit Biswas'],
+				      'instructor_ids': ['58','32'],
 				      'split': '1',
 				      'preference': 'no preference'},
 				     {'class_type': 'Cohort Based Learning',
 				      'time': '2',
-				      'instructors': ['58','32'],
+				      'instructors': ['David Yau','Jit Biswas'],
+				      'instructor_ids': ['58','32'],
 				      'split': '1',
 				      'preference': 'no preference'},
 				     {'class_type': 'Cohort Based Learning',
 				      'time': '2',
-				      'instructors': ['58','32'],
+				      'instructors': ['David Yau','Jit Biswas'],
+				      'instructor_ids': ['58','32'],
 				      'split': '1',
 				  	  'preference': 'no preference'} 
 				    ] 
