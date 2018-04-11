@@ -31,7 +31,9 @@ export class NotificationsComponent implements OnInit {
   refreshAnnouncements(){
     this.userService.getAnnouncements()
     .map((data: any) => {
-      this.announcements = data.body;
+      this.announcements = data.body.sort((a,b)=>{
+        return -(a.date.toString().localeCompare(b.date.toString()));
+      }) ;
     } )
     .subscribe(
       response => {

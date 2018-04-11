@@ -37,7 +37,7 @@ export class CreateCourseComponent implements OnInit {
     private snackBar : MatSnackBar,
     private scheduleService : ScheduleService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, 
      ) {
     this.schedule_id = route.snapshot.params['schedule_id'];
   }
