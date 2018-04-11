@@ -16,7 +16,10 @@
             <button (click)="deleteSchedule(schedule)" 
             title="Delete this schedule" 
             style="float: right; margin: 0 5px;"
-            class="btn btn-light" ><i class="fas fa-trash-alt"></i></button>
+            class="btn btn-light" ><i class="fas fa-trash-alt"></i></button> 
+            <button *ngIf="schedule.generated == '1'" (click)="viewCalendar(schedule.id)"
+            title="View this calendar" style="float: right; margin: 0 5px;"
+            class="btn btn-light"><i class="fas fa-eye"></i></button>
           </span>
           </td>
           
@@ -108,5 +111,3 @@
     <!-- <p>{{newScheduleForm.value | json}} </p>
     <p>{{newScheduleForm.status | json}} </p> -->
   </div>
-
-</div>

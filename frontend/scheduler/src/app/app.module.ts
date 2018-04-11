@@ -48,12 +48,14 @@ export const ROUTES: Routes = [
   { path: 'schedules/:schedule_id', component: ScheduleDetailsComponent },
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
+  { path: 'viewschedule/:calendar_id', component: ScheduleComponent},
   { path: 'event', component: CreateEventComponent},
   { path: 'viewappeal', component: ViewAppealComponent},
   { path: 'appealreply', component: AppealreplyComponent},
   { path: 'events', component: ViewEventsComponent},
   { path: 'events/:schedule_id', component: CreateEventComponent},
-  { path: 'viewappeal', component: ViewAppealComponent}
+  { path: 'viewappeal', component: ViewAppealComponent},
+
 ];
 
 @NgModule({
