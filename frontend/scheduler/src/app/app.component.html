@@ -6,14 +6,14 @@
   
   <!-- sidebar + body -->
   <mat-sidenav-container class="mat-sidenav-container" autosize id="login-bg" class="main">
-    <!-- sidenav -->
+    <!-- sidebar -->
     <mat-sidenav 
-    mode="side" opened="true" 
-    *ngIf="!(location === '/login' || location === '/')"
-    class="sidebar" >
+      mode="side" opened="true" 
+      *ngIf="!(location === '/login' || location === '/')"
+      class="sidebar" >
       <app-sidebar></app-sidebar>
     </mat-sidenav>
-    <!-- body -->
+    <!-- main -->
     <mat-sidenav-content class="main">
       <router-outlet></router-outlet>  
     </mat-sidenav-content>

@@ -31,7 +31,3 @@ div.container {
   max-width: 75%;
   min-width: 300px;
 }
-
-.no-ugly-red-line {
-  border-left: none;
-}

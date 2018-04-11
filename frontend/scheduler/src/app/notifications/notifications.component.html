@@ -2,9 +2,14 @@
   <div class="card-body">
     <h5 class="card-title text-center">Announcements 
     <button *ngIf="isAdmin"
-    id="makeAnnouncementBtn" class="btn btn-light" routerLink="/announcements" style="float: right;">
-      <i class="fas fa-bullhorn"></i> Make an Announcement
-    </button>
+      id="makeAnnouncementBtn" 
+      class="btn btn-light" 
+      routerLink="/announcements" 
+      style="float: right;" 
+      data-toggle="tooltip" 
+      data-placement="bottom" 
+      title="Make an Announcement" > <i class="fas fa-bullhorn"></i></button>
+      
     </h5>
   </div>
   <div *ngFor="let announcement of announcements">
