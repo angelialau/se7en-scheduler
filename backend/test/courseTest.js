@@ -7,42 +7,48 @@ describe('rowToJSON()', function () {
 
 			// Setup
 			course = {
-		        "id": 58,
+		        "id": 88,
 		        "schedule_id": 25,
-		        "term": 1,
-		        "course_no": "50.003",
-		        "course_name": "Elements of Software Construction",
+		        "term": 4,
+		        "course_no": "50.004",
+		        "course_name": "Computer System Engineering",
 		        "core": 1,
 		        "no_classes": 3,
 		        "class_size": 50,
 		        "no_sessions": 3,
-		        "sessions_hrs": "2,2,1",
-		        "class_types": "Lecture,Lecture,Lecture",
-		        "instructors": "31,32,33",
-		        "split": "1,1,1"
+		        "sessions_hrs": "2,2,2",
+		        "class_types": "Cohort Based Learning,Cohort Based Learning,Cohort Based Learning",
+		        "instructors": "David Yau,Jit Biswas|David Yau,Jit Biswas|David Yau,Jit Biswas",
+		        "instructor_ids": "58,32|58,32|58,32",
+		        "split": "1,1,1",
+		        "venue_types": "no preference,no preference,no preference"
     		}
 
+    		// expected result
     		correct = { 
-    			  "term": 1,
-				  "course_no": '50.003',
-				  "course_name": 'Elements of Software Construction',
+    			  "term": 4,
+				  "course_no": '50.004',
+				  "course_name": 'Computer System Engineering',
 				  "core": 1,
 				  "no_classes": 3,
 				  "class_size": 50,
 				  "no_sessions": 3,
 				  "sessions": 
-				   [ { 'class_type': 'Lecture',
-				       'time': '2',
-				       'instructors': ['31','32','33'],
-				       'split': '1' },
-				     { 'class_type': 'Lecture',
-				       'time': '2',
-				       'instructors': ['31','32','33'],
-				       'split': '1' },
-				     { 'class_type': 'Lecture',
-				       'time': '1',
-				       'instructors': ['31','32','33'],
-				       'split': '1' } 
+				   [ {'class_type': 'Cohort Based Learning',
+				      'time': '2',
+				      'instructors': ['58','32'],
+				      'split': '1',
+				      'preference': 'no preference'},
+				     {'class_type': 'Cohort Based Learning',
+				      'time': '2',
+				      'instructors': ['58','32'],
+				      'split': '1',
+				      'preference': 'no preference'},
+				     {'class_type': 'Cohort Based Learning',
+				      'time': '2',
+				      'instructors': ['58','32'],
+				      'split': '1',
+				  	  'preference': 'no preference'} 
 				    ] 
 			}
 
