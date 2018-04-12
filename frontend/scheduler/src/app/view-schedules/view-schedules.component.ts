@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -20,6 +20,7 @@ export class ViewSchedulesComponent implements OnInit {
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
     private route: ActivatedRoute,
+    private router: Router
      ) { 
   }
 
@@ -83,4 +84,7 @@ export class ViewSchedulesComponent implements OnInit {
   showScheduleForm() { this.showAddScheduleForm = ! this.showAddScheduleForm }
   get diagnostic() { return JSON.stringify(this.schedules)};
 
+  viewCalendar(id: number){
+    this.router.navigateByUrl("/viewschedule/id");
+  }
 }

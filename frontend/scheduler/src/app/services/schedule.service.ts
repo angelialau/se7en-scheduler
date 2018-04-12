@@ -79,6 +79,15 @@ export class ScheduleService {
       .catch(this.handleError); 
   }
 
+  generateSchedule(id:number): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    let extension = this.url + '/Schedules/Generate';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
   //deleting an existing schedule 
   deleteSchedule(schedule : Schedule): Observable<any>{
     let body = new URLSearchParams(); 
