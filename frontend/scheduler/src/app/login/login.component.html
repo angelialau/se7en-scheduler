@@ -1,16 +1,15 @@
+<div id="main">
 <div class="form-container">
-<h1 style="text-align: center;"> Login to Se7enScheduler</h1>
+<img src="./../assets/logo.png" class="logo" id="logo">
   <form  #LoginForm="ngForm">
     <div class="form-group">
-      <label for="email"> Email </label>  
-      <input type="email" class="form-control" id="email" required minlength="5"
-      [(ngModel)]="model.email" name="email"> 
+      <input type="email" class="form-control no-ugly-red-line" id="email" required minlength="5"
+      [(ngModel)]="model.email" name="email" placeholder="Email"> 
     </div>
 
     <div class="form-group">
-      <label for="password"> Password </label>
-      <input type="password" class="form-control" id="password" required minlength="5"
-      [(ngModel)]="model.password" name="password">
+      <input type="password" class="form-control no-ugly-red-line" id="password" required minlength="5"
+      [(ngModel)]="model.password" name="password" placeholder="Password">
     </div>
 
     <button type="submit" class="btn btn-primary btn-lg btn-block"
@@ -18,4 +17,5 @@
     (click)="login()"> Login </button>
 
   </form>
+</div>
 </div>

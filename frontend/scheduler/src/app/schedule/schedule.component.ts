@@ -7,10 +7,11 @@ import 'rxjs/add/operator/map'
 import { UserService } from './../services/user.service';
 import { User } from './../../models/user.model';
 import { EventService } from './../services/event.service';
-import { Router } from '@angular/router';
+import { WindowService } from './../services/window.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Appeal} from './../../models/appeal.model';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from 'ng2-cookies';
 import { EventObject } from 'fullcalendar';
 
@@ -22,38 +23,45 @@ import { EventObject } from 'fullcalendar';
 })
 
 export class ScheduleComponent implements OnInit {
+  calendar_id: number;
   calendarOptions: Options;
   isAdmin: boolean = false;
   scheduledata: any ;
   fulldataset: any;
-  specificPillar: string = "ASD"; //default ASD view for admins
+  specificPillar: string = "EPD"; //default ASD view for admins
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
   csvFinal: string;
   googleSchedule: any;
   listCourses: any;
+  nativeWindow: any;
+  displayEvent: any;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
   constructor(
     protected eventService: EventService,
     private userService: UserService,
+    private route: ActivatedRoute,
     private router: Router,
     private datePipe: DatePipe,
     private snackBar: MatSnackBar,
-    private cookieService: CookieService) {}
+    private cookieService: CookieService,
+    private dialog: MatDialog,
+    private windowService: WindowService) {
+    this.nativeWindow = windowService.getNativeWindow();
+    this.calendar_id = route.snapshot.params['calendar_id'];
+  }
 
   ngOnInit() {
     this.initialiseAppeal();
-
-    console.log(this.cookieService.get('name'));
 
     if (this.cookieService.get('pillar') == "Administrator"){
       this.isAdmin = true;
     }
 
-    this.eventService.getEvents().subscribe(data => {
+    this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
       if (this.cookieService.get('pillar') != "Administrator"){
         for (let i of data){
@@ -75,6 +83,7 @@ export class ScheduleComponent implements OnInit {
 
       this.calendarOptions = {
         editable: false, //make this true to allow editing of events
+        //eventStartEditable: true,
         handleWindowResize: true,
         height: 590,
         weekends: false, //to hide weekends
@@ -100,12 +109,12 @@ export class ScheduleComponent implements OnInit {
         },
         displayEventTime: true, //Display event
         events: this.scheduledata,
-        eventRender: function(event, element, view){
+        /*eventRender: function(event, element, view){
         return (event.ranges.filter(function(range){
             return (moment(event.start).isBefore(range.end) &&
                     moment(event.end).isAfter(range.start));
         }).length)>0;
-    }
+    }*/
     };
      
      this.listCourses = []
@@ -134,6 +143,39 @@ export class ScheduleComponent implements OnInit {
 
     });}
 
+  clickButton(model: any) {
+    this.displayEvent = model;
+  }
+  eventClick(model: any) {
+    model = {
+      event: {
+        id: model.event.id,
+        start: model.event.start,
+        end: model.event.end,
+        title: model.event.title,
+        allDay: model.event.allDay
+        // other params
+      },
+      duration: {}
+    }
+    this.displayEvent = model;
+  }
+  updateEvent(model: any) {
+    model = {
+      event: {
+        id: model.event.id,
+        start: model.event.start,
+        end: model.event.end,
+        title: model.event.title
+        // other params
+      },
+      duration: {
+        _data: model.duration._data
+      }
+    }
+    this.displayEvent = model;
+  }
+
 
   changeView(){
     var pillarschedules: Object[] = [];
@@ -155,12 +197,6 @@ export class ScheduleComponent implements OnInit {
     this.ucCalendar.fullCalendar('rerenderEvents');
 
     }
-
-  displayASD(){
-    console.log("ASD calendar view");
-    this.specificPillar = "ASD";
-    this.changeView();
-  }
   displayEPD(){
     console.log("EPD calendar view");
     this.specificPillar = "EPD";
@@ -217,7 +253,7 @@ export class ScheduleComponent implements OnInit {
   }
   downloadCalendar(){
     let errorMsg : string = "Something went wrong with making appeal, please try again later!";
-    this.eventService.getGoogleEvents().subscribe(data => {
+    this.eventService.getGoogleEvents(this.calendar_id).subscribe(data => {
       for (let i of data){
           if (i.instructor == this.cookieService.get('name') && i.id == this.cookieService.get('id')){
             console.log(i.schedule);
@@ -244,8 +280,6 @@ export class ScheduleComponent implements OnInit {
             link.setAttribute('href',googledata);
             link.setAttribute('download',filename);
             link.click();
-
-            //window.location.href = "https://calendar.google.com/calendar"
           }
         }
       },
@@ -254,6 +288,11 @@ export class ScheduleComponent implements OnInit {
         console.log("sever error in getting information. Please try again.");
       });
   }
+
+  openDialog(){
+     var newWindow = this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
+     }
+  
 }
 
 

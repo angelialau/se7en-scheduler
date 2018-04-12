@@ -30,13 +30,14 @@ export class CreateCourseComponent implements OnInit {
   profsInvolved : Array<any> = []; // stores selection before passing into final form
   tempInstructors : string;
   tempInstructor_ids : string;
+  showCosNotCapstone: boolean = true;
 
   constructor(
     private formBuilder : FormBuilder,
     private snackBar : MatSnackBar,
     private scheduleService : ScheduleService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute, 
      ) {
     this.schedule_id = route.snapshot.params['schedule_id'];
   }
@@ -57,7 +58,6 @@ export class CreateCourseComponent implements OnInit {
       response => {
         if(response.body.success){
           trimester = response.body.trimester;
-          console.log('trimester:',trimester);
           let currArray = courseDetails;
           let options = [[3,5,7],[1,8],[2,4,6]];
           let index = trimester-1;
@@ -94,7 +94,7 @@ export class CreateCourseComponent implements OnInit {
   createForm(){ // assumes that u just want to add courses from existing database 
     this.newForm = this.formBuilder.group({
       courseDetail: ['', Validators.required], // course object for course number, name, term
-      core: ['', Validators.required],
+      core: ['0', Validators.required],
       no_classes: ['', Validators.required], // 1-12
       class_size: ['', Validators.required], // 1-55
       prof_list: new FormArray([
@@ -104,9 +104,9 @@ export class CreateCourseComponent implements OnInit {
       ]), // to filter the profs for professors later
       sessions: new FormArray([
         new FormGroup({
-          class_types: new FormControl('', Validators.required),
+          class_types: new FormControl('0', Validators.required),
           venue_types: new FormControl('No preference', Validators.required),
-          sessions_hrs: new FormControl('', Validators.required)
+          sessions_hrs: new FormControl('0', Validators.required)
         })
       ]), 
     })
@@ -174,6 +174,7 @@ export class CreateCourseComponent implements OnInit {
     let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
     let course_no = data.courseDetail;
     let course_name = this.queryCourse(course_no, "course_name");
+    let pillar = this.queryCourse(course_no, "pillar");
     let term = this.queryCourse(course_no, "term");
     let core = Number(data.core);
     let no_classes = Number(data.no_classes);
@@ -182,13 +183,20 @@ export class CreateCourseComponent implements OnInit {
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
     let venue_types : string = this.sessionsParser(data.sessions, "venue_types");
-    let split = null;
-    this.prof_listParser();
-    let instructors : string = this.tempInstructors;
-    let instructor_ids : string = this.tempInstructor_ids;
-
+    let split = this.splitGenerator(no_sessions);
+    let instructors : string;
+    let instructor_ids : string;
+    if(data.courseDetail==='01.400'){
+      let instructorsInfo = this.capstoneProf_listParser();
+      instructor_ids = instructorsInfo[0];
+      instructors = instructorsInfo[1];
+    }else{
+      this.prof_listParser();  
+      instructors = this.tempInstructors;
+      instructor_ids = this.tempInstructor_ids;
+    }
     let course: Course = new Course(
-      schedule_id,term,course_no,course_name,core,no_classes,
+      schedule_id,term,course_no,course_name,pillar,core,no_classes,
       class_size,no_sessions,sessions_hrs,class_types,venue_types,instructors,instructor_ids,split); 
     console.log(course);
     return course;
@@ -207,6 +215,8 @@ export class CreateCourseComponent implements OnInit {
           this.snackBar.open(msg, null, { duration: 1000, });  
           // to update list of courses in schedule details
           this.addedCourse.emit(null);
+          this.newForm.reset();
+          this.profsInvolved = new Array; 
         }else{
           console.log("Client error in addCourse via CreateCourseComponent");
           console.log(response);
@@ -281,9 +291,10 @@ export class CreateCourseComponent implements OnInit {
       if (this.instructors[i].id==profId){
         return this.instructors[i].name;
       }
-    } let error = new Error("instructor to be queried not found");
+    }
+    let error = new Error("instructor to be queried not found");
     error.name = 'NoInstructorForQueryException';
-    throw error;
+    throw error;  
   }
 
   updateProfsInvolved(event, sessionIndex: number, profId: number){
@@ -323,6 +334,19 @@ export class CreateCourseComponent implements OnInit {
     this.tempInstructors = nameArray.join("|");
   }
 
+  capstoneProf_listParser(){
+    let idarray : string[] = [];
+    let nameArray : string[] = [];
+    let finalArray : string[] = [];
+    for (let prof of this.prof_list.controls){
+      idarray.push(prof.value.id);
+      nameArray.push(this.queryInstructors(prof.value.id));
+    } 
+    finalArray[0] = idarray.join(",");
+    finalArray[1] = nameArray.join(",");
+    return finalArray
+  }
+
   sessionsParser(sessions: any, param: string): string{
     let array : string[] = [];
     if(param === "sessions_hrs"){
@@ -343,6 +367,23 @@ export class CreateCourseComponent implements OnInit {
       throw error; 
     }
     return array.join();
+  }
+
+  // hides feels that are not relevant to capstone
+  checkCapstone($event){ 
+    if($event.target.value === '01.400'){
+      this.showCosNotCapstone = false;  
+    }else{
+      this.showCosNotCapstone = true;
+    }
+  }
+
+  splitGenerator(num: number){
+    let arr = new Array;
+    for(let i=0; i< num; i++){
+      arr.push("1");
+    }
+    return arr.join(",");
   }
 
   temp(){

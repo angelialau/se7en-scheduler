@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar">
-  <div routerLink="/home"> SE7EN <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor ><span class = "mat-caption" style="margin-left: 5px;">Instructor</span></ng-template> </div> 
+  <div routerLink="/home"> <img src="./../../assets/logo.png" class="scale"> <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor ><span class = "mat-caption" style="margin-left: 5px;">Instructor</span></ng-template> </div> 
   <span class="spacer"></span>
     <!-- sign out -->
     <button mat-icon-button (click)="signOut()" routerLink="/login" id="logoutButton">

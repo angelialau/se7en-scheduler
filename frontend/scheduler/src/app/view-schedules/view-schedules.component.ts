@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -19,7 +19,8 @@ export class ViewSchedulesComponent implements OnInit {
   constructor(
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
      ) { 
   }
 
@@ -27,29 +28,35 @@ export class ViewSchedulesComponent implements OnInit {
     this.getSchedules();
   }
 
-  onSend(){
+  addSchedule(){
     this.scheduleService.createSchedule(this.schedule).subscribe(
-      success => {
-        console.log("created new schedule!");
-        this.snackBar.open("Created schedule!", null, { duration: 1000, });
+      response => {
+        if(JSON.parse(response).success){
+          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.getSchedules();
+        }else{
+          this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1000, });
+          console.log("create schedule client error", response);
+        }
       }, 
       error =>{
-        console.log("could not create schedule!");
-        console.log(error);
+        console.log("create schedule server", error);        
         this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1000, });
       }, 
-      () => {
-        this.getSchedules();
-      }
     );
   }
 
   getSchedules(){
     this.scheduleService.getSchedules()
-      .map((data: any) => this.schedules = data.body)
       .subscribe(
-        allSchedules => {
-          // JSON.stringify(allSchedules); 
+        data => {
+          this.schedules = data.body.sort(function(a,b) {
+            if(a.year - b.year === 0){
+              return a.trimester - b.trimester;
+            } else{
+              return a.year - b.year;
+            }
+          });
         },
         error => console.log("getSchedules error: " + error)
     );
@@ -57,24 +64,27 @@ export class ViewSchedulesComponent implements OnInit {
 
   deleteSchedule(schedule : Schedule){
     this.scheduleService.deleteSchedule(schedule).subscribe(
-      success => {
-        console.log("deleted schedule!");
-        this.snackBar.open("Deleted schedule!", null, { duration: 1000, });
+      response => {
+        if(JSON.parse(response).success){
+          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.getSchedules();
+        }else{
+          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1000, });
+          console.log("delete schedule client error", response);
+        }
       }, 
       error =>{
         console.log("could not trash schedule!");
         console.log(error);
         this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1000, });
-      }, 
-      () => {
-        this.getSchedules();
-      }
-
-      )
+      })
   }
 
   showSchedules() { this.showScheduleList = ! this.showScheduleList }
   showScheduleForm() { this.showAddScheduleForm = ! this.showAddScheduleForm }
   get diagnostic() { return JSON.stringify(this.schedules)};
 
+  viewCalendar(id: number){
+    this.router.navigateByUrl("/viewschedule/id");
+  }
 }

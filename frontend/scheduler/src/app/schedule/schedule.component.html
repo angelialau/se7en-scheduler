@@ -2,10 +2,7 @@
 	<div align="center">
 		<label class="radio-inline"><span *ngIf = "isAdmin">
 			<input type="radio" name="optradio" checked="checked" 
-			(click)="displayASD()">ASD</span></label>
-		<label class="radio-inline"><span *ngIf = "isAdmin">
-			<input type="radio" name="optradio"
-			(click)="displayEPD()">EPD</span></label>
+			(click)="displayASD()">EPD</span></label>
 		<label class="radio-inline"><span *ngIf = "isAdmin">
 			<input type="radio" name="optradio"
 			(click)="displayESD()">ESD</span></label>
@@ -17,7 +14,8 @@
       (click)="displayHASS()">HASS</span></label>
 	</div>
 	<div *ngIf="calendarOptions">
-		<ng-fullcalendar #ucCalendar [options]="calendarOptions"></ng-fullcalendar>
+		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
 	</div>
 	<br>
 

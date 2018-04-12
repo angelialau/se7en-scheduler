@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Schedule } from './../../models/schedule.model';
 import { Course } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
@@ -11,27 +11,30 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./schedule-details.component.css']
 })
 export class ScheduleDetailsComponent implements OnInit {
+  isAdmin: boolean = false;
   schedule_id : number;
   generated : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
+  noItems : boolean = false;
   showCourseList : boolean = true;
   showEventForm : boolean = false;
-  showCourseForm : boolean = false;
+  showCourseForm : boolean = true;
 
   constructor(
     private scheduleService: ScheduleService,
     private route: ActivatedRoute, 
+    private router: Router,
     public snackBar: MatSnackBar, 
     ) { 
     this.schedule_id = route.snapshot.params['schedule_id'];
+    
   }
 
   ngOnInit() {
     this.refreshCourses();
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
       response => {
-        console.log(response);  
         if(response.status == 200){
           if(response.body.success != undefined && response.body.success===false){
             this.snackBar.open("Some error occurred. Please try again later!", null, {duration: 1000,});
@@ -56,8 +59,8 @@ export class ScheduleDetailsComponent implements OnInit {
     .subscribe( 
       response => {
         if(response.status ==200){
-          if(response.body.success != undefined && response.body.success===false){
-            this.courses = new Array;
+          if(response.body.message === "no rows found"){
+            this.noItems = true;
           }else{
             let array : Course[] = response.body;
             this.courses = array;  
@@ -97,4 +100,14 @@ export class ScheduleDetailsComponent implements OnInit {
   showAddEventForm(){ this.showEventForm = !this.showEventForm; }
   showAddCourseForm(){ this.showCourseForm = !this.showCourseForm; }
 
+  generate(){
+    this.scheduleService.generateSchedule(this.schedule_id).subscribe(
+      response =>{
+        while (response.byteLoaded <= response.totalBytes){
+          console.log("loading...");
+        }
+        console.log("Generated!");
+        this.router.navigateByUrl("/schedules");
+      })
+  }
 }

@@ -60,7 +60,7 @@ class NaviTest(unittest.TestCase):
 
         header.click()
         header = driver.find_element_by_id('eventDetailsTitle')
-        self.assertEqual("Event details", header.text)
+        self.assertEqual("Venue booking", header.text)
 
     def test_direct_to_add_course(self): # third schedule
         driver = self.driver
