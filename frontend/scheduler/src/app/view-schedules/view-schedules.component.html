@@ -6,7 +6,7 @@
   <div *ngIf="showScheduleList">
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr>
+        <tr *ngIf="schedule.generated !== 1 || isAdmin">
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
