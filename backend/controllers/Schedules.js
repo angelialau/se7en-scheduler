@@ -119,6 +119,7 @@ router.post('/Generate', function(req, res, next) {
 				child.on('close', function(code) {
 					if (!generatorErr) {
 						// convert output to array
+						console.log(result);
 						var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
 
 						// update SQL table for each generated entry
