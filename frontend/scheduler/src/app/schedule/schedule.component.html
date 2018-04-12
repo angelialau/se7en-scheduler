@@ -1,4 +1,5 @@
 <div class="container mx-auto">
+  <button class="btn btn-light" routerLink="/schedules"><i class="fas fa-long-arrow-alt-left" ></i></button>
 	<div align="center">
 		<label class="radio-inline"><span *ngIf = "isAdmin">
 			<input type="radio" name="optradio" checked="checked" 
@@ -12,15 +13,26 @@
       <label class="radio-inline"><span *ngIf = "isAdmin">
       <input type="radio" name="optradio"
       (click)="displayHASS()">HASS</span></label>
+      <label class="radio-inline"><span *ngIf = "isAdmin">
+      <input type="radio" name="optradio"
+      (click)="displayTech()">Tech Elective</span></label>
+
 	</div>
 	<div *ngIf="calendarOptions">
-		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+		<ng-fullcalendar *ngIf = "haveSchedule; else noSchedule" #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
         (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+
+    <ng-template #noSchedule>
+      <br><br>
+      <p align="center"><b><font size="4"> 
+      You have no allocated schedule for this term. ☹<br>
+      </font></b></p>
+    </ng-template>
 	</div>
 	<br>
 
 	<div align="center">
-	<span *ngIf = "!isAdmin">
+	<span *ngIf = "!isAdmin && haveSchedule">
     <button type="button" (click) = "showForm()" id="appealButton"
     class="btn btn-primary">
     Make an appeal</button>

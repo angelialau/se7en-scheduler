@@ -39,6 +39,7 @@ export class ScheduleComponent implements OnInit {
   displayEvent: any;
   calendarstart: any;
   calendarend: any;
+  haveSchedule: boolean;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -62,8 +63,6 @@ export class ScheduleComponent implements OnInit {
     this.eventService.getDates(this.calendar_id).subscribe(data =>{
       this.calendarstart = data.startDate.substring(0,10);
       this.calendarend = data.endDate.substring(0,10);
-      console.log(this.calendarstart);
-      console.log(this.calendarend);
     });
 
     if (this.cookieService.get('pillar') == "Administrator"){
@@ -72,20 +71,20 @@ export class ScheduleComponent implements OnInit {
 
     this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
-      console.log(data);
       var allschedules: Object[] = [];
       if (this.cookieService.get('pillar') != "Administrator"){
-        console.log("im in instru loop");
         for (let i of data){
           if (i.prof_id == this.cookieService.get('id')){
-            console.log(i.schedule);
             allschedules.push(i.schedule[0]); //remove 0 when rayson update format
           }
         }
         this.scheduledata = allschedules;
+        if (this.scheduledata.length != 0){
+          this.haveSchedule = true;
+        }
       }
       else { // is Administrator
-        console.log("im in admin loop");
+        this.haveSchedule = true;
         for (var i = 0; i < data.length; i++){
           if (data[i].pillar == "EPD"){
             for (let j of data[i].schedule){
@@ -94,8 +93,6 @@ export class ScheduleComponent implements OnInit {
        }
         this.scheduledata = allschedules;
       }
-      
-      console.log(this.scheduledata);
 
       this.calendarOptions = {
         editable: false, //make this true to allow editing of events
@@ -154,9 +151,6 @@ export class ScheduleComponent implements OnInit {
 
       this.listCourses.push(course);
     }
-
-    console.log(this.listCourses);
-
     });}
 
   clickButton(model: any) {
@@ -204,6 +198,10 @@ export class ScheduleComponent implements OnInit {
     }
 
     this.scheduledata = pillarschedules;
+    let emptyMsg : string = "No schedule for this pillar."
+    if (this.scheduledata.length == 0){
+      this.snackBar.open(emptyMsg, null, {duration:2000});
+    }
 
     /* Not elegant but I'll deal with it again
     cus refetchEvents not working... :()
@@ -214,23 +212,23 @@ export class ScheduleComponent implements OnInit {
 
     }
   displayEPD(){
-    console.log("EPD calendar view");
     this.specificPillar = "EPD";
     this.changeView();
   }
   displayESD(){
-    console.log("ESD calendar view");
     this.specificPillar = "ESD";
     this.changeView();
   }
   displayISTD(){
-    console.log("ISTD calendar view");
     this.specificPillar = "ISTD";
     this.changeView();
   }
   displayHASS(){
-    console.log("HASS calendar view");
     this.specificPillar = "HASS";
+    this.changeView();
+  }
+  displayTech(){
+    this.specificPillar = "Tech Elective";
     this.changeView();
   }
 
