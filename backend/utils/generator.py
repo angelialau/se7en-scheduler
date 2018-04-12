@@ -479,7 +479,7 @@ def mutation(lis,rawParams):
                     newParams.append(rawParams[j][k])
             
             if (len(rawParams[i][6])<=4):
-                print(rawParams[i][6])
+                #print(rawParams[i][6])
                 newParams.append(rawParams[i][6])
             else:
                 r=random.randint(0,len(rawParams[i][6])-1)
