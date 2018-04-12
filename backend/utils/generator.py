@@ -103,13 +103,13 @@ def initializeValue():                      #initialize rooms, cohort list, prof
     global proNum
     global claNum
     LinkedThinkTank=[ttt,ttt+1,ttt+2,ttt+3]
-    ISTDterm45={"CC":[cc+12,cc+13],"LT":[lt+1,lt+2],"LAB":[lab+2],"TT":[tt+23,tt+24],"TTT":[tt+23,tt+24]}    #pre-defined rooms for pillar and term
+    ISTDterm45={"CC":[cc+12,cc+13],"LT":[lt+1,lt+2],"LAB":[lab+2],"TT":[tt+15,tt+16,tt+17],"TTT":[tt+23,tt+24]}    #pre-defined rooms for pillar and term
     ISTDterm678={"CC":[cc+10,cc+12,cc+13],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt+15,tt+16,tt+17],"TTT":[tt+23,tt+24],"LAB":[lab+2]}
-    EPDterm45={"CC":[cc+14,cc+15],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt+14],"LAB":[lab,lab+2],"TTT":[tt+21,tt+22]}
-    EPDterm678={"CC":[cc+14,cc+15,cc+16],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5],"LAB":[lab,lab+2],"TTT":[tt+21,tt+22,tt+23,tt+24]}
-    ESDterm45={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+8,tt+9],"LAB":[lab+3],"TTT":[tt+18,tt+19]}
-    ESDterm678={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+6,tt+7,tt+8,tt+9],"LAB":[lab+3],"TTT":[tt+18,tt+19,tt+20]}
-    Hass={"CC":[cc+10,cc+12,cc+13],"LT":[lt+2,lt+3,lt+4],"TT":[tt+6,tt+7,tt+8,tt+9,tt+10,tt+11,tt+15,tt+16,tt+17],"LAB":[lab+4],"TTT":[tt+18,tt+19,tt+20,tt+21,tt+22]}
+    EPDterm45={"CC":[cc+14,cc+15],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5,tt+6,tt+7,tt+8,tt+9],"LAB":[lab,lab+2],"TTT":[tt+21,tt+22]}
+    EPDterm678={"CC":[cc+10,cc+14,cc+15],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5,tt+6,tt+7,tt+8,tt+9],"LAB":[lab,lab+2,lab+3],"TTT":[tt+21,tt+22,tt+23,tt+24]}
+    ESDterm45={"CC":[cc+10,cc+9],"LT":[lt+2,lt+3,lt+4],"TT":[tt+10,tt+11,tt+12,tt+13,tt+14,tt+15],"LAB":[lab+3],"TTT":[tt+18,tt+19]}
+    ESDterm678={"CC":[cc+10,cc+9],"LT":[lt+2,lt+3,lt+4],"TT":[tt+10,tt+11,tt+12,tt+13,tt+14,tt+15],"LAB":[lab+3],"TTT":[tt+18,tt+19,tt+20]}
+    Hass={"CC":[cc+10,cc+12,cc+13],"LT":[lt+2,lt+3,lt+4],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5,tt+6,tt+7,tt+8,tt+9,tt+10,tt+11,tt+15,tt+16,tt+17],"LAB":[lab+4],"TTT":[tt+18,tt+19,tt+20,tt+21,tt+22]}
     for course in courses:
         pillarTerm=dict()
         if course.term in [4,5] and course.courseName[0]=="5":
