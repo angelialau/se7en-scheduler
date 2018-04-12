@@ -13,7 +13,6 @@ export class ViewEventsComponent implements OnInit {
 
   constructor(
     private scheduleService : ScheduleService,
-
     ) { }
 
   ngOnInit() {

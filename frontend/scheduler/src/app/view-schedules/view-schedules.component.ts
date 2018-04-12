@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-view-schedules',
@@ -10,6 +11,7 @@ import { ScheduleService } from './../services/schedule.service';
   styleUrls: ['./view-schedules.component.css']
 })
 export class ViewSchedulesComponent implements OnInit {
+  isAdmin : boolean = false;
   showScheduleList : boolean = true;
   showAddScheduleForm : boolean = false;
   schedule : Schedule = new Schedule(null,null);
@@ -20,11 +22,15 @@ export class ViewSchedulesComponent implements OnInit {
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router, 
+    private cookieService: CookieService,
      ) { 
   }
 
   ngOnInit() {
+    if(this.cookieService.get('pillar')==="Administrator"){
+      this.isAdmin = true;
+    }
     this.getSchedules();
   }
 

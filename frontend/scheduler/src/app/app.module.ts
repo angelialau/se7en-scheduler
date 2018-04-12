@@ -49,7 +49,6 @@ export const ROUTES: Routes = [
   { path: 'password', component: ChangePasswordComponent },
   { path: 'viewschedule', component: ScheduleComponent},
   { path: 'viewschedule/:calendar_id', component: ScheduleComponent},
-  { path: 'event', component: CreateEventComponent},
   { path: 'viewappeal', component: ViewAppealComponent},
   { path: 'appealreply', component: AppealreplyComponent},
   { path: 'events', component: ViewEventsComponent},

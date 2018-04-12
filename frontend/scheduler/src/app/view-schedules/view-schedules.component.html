@@ -13,7 +13,7 @@
           <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
           <span *ngIf="schedule.generated == '1'" class="badge badge-success"> Generated</span>
           <span>
-            <button (click)="deleteSchedule(schedule)" 
+            <button (click)="deleteSchedule(schedule)" *ngIf="isAdmin"
             title="Delete this schedule" 
             style="float: right; margin: 0 5px;"
             class="btn btn-light" ><i class="fas fa-trash-alt"></i></button> 
@@ -30,6 +30,7 @@
   <div class="dropdown-divider"></div>
 
   <!-- form to add a new schedule -->
+  <div *ngIf="isAdmin">
   <div class="card-body" (click)="showScheduleForm()">
     <h5 class="card-title text-center" id="scheduleFormTitle"><i class="fas fa-caret-right"></i> Add a new Schedule</h5>
   </div>
@@ -109,4 +110,5 @@
       </form>
     <!-- <p>{{newScheduleForm.value | json}} </p>
     <p>{{newScheduleForm.status | json}} </p> -->
+  </div>
   </div>

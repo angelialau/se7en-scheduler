@@ -14,7 +14,7 @@
     <div *ngFor="let event of events">
       <div class="card" style="margin: 0 5% 5% 5%;">
         <div class="card-header">{{event.course}}
-          <button class="btn btn-light" style="float: right;"
+          <button class="btn btn-light" style="float: right;" *ngIf="isAdmin"
           (click)="deleteEvent(event.id);" title="Delete this event">
             <i class="fas fa-trash-alt"></i>
           </button>
