@@ -4,6 +4,7 @@ export class Course{
     public term: number, 
     public course_no: string,
     public course_name: string, 
+    public pillar: string, 
     public core: number, // either 1 or 0 
     public no_classes: number,
     public class_size: number,

@@ -109,6 +109,7 @@ export class ScheduleService {
     body.set('term', String(course.term)); 
     body.set('course_no', String(course.course_no)); 
     body.set('course_name', String(course.course_name)); 
+    body.set('pillar', String(course.pillar)); 
     body.set('core', String(course.core)); 
     body.set('no_classes', String(course.no_classes)); 
     body.set('class_size', String(course.class_size)); 

@@ -174,6 +174,7 @@ export class CreateCourseComponent implements OnInit {
     let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
     let course_no = data.courseDetail;
     let course_name = this.queryCourse(course_no, "course_name");
+    let pillar = this.queryCourse(course_no, "pillar");
     let term = this.queryCourse(course_no, "term");
     let core = Number(data.core);
     let no_classes = Number(data.no_classes);
@@ -182,7 +183,7 @@ export class CreateCourseComponent implements OnInit {
     let sessions_hrs : string = this.sessionsParser(data.sessions, "sessions_hrs");
     let class_types : string = this.sessionsParser(data.sessions, "class_types");
     let venue_types : string = this.sessionsParser(data.sessions, "venue_types");
-    let split = null;
+    let split = this.splitGenerator(no_sessions);
     let instructors : string;
     let instructor_ids : string;
     if(data.courseDetail==='01.400'){
@@ -195,7 +196,7 @@ export class CreateCourseComponent implements OnInit {
       instructor_ids = this.tempInstructor_ids;
     }
     let course: Course = new Course(
-      schedule_id,term,course_no,course_name,core,no_classes,
+      schedule_id,term,course_no,course_name,pillar,core,no_classes,
       class_size,no_sessions,sessions_hrs,class_types,venue_types,instructors,instructor_ids,split); 
     console.log(course);
     return course;
@@ -215,6 +216,7 @@ export class CreateCourseComponent implements OnInit {
           // to update list of courses in schedule details
           this.addedCourse.emit(null);
           this.newForm.reset();
+          this.profsInvolved = new Array; 
         }else{
           console.log("Client error in addCourse via CreateCourseComponent");
           console.log(response);
@@ -289,9 +291,10 @@ export class CreateCourseComponent implements OnInit {
       if (this.instructors[i].id==profId){
         return this.instructors[i].name;
       }
-    } let error = new Error("instructor to be queried not found");
+    }
+    let error = new Error("instructor to be queried not found");
     error.name = 'NoInstructorForQueryException';
-    throw error;
+    throw error;  
   }
 
   updateProfsInvolved(event, sessionIndex: number, profId: number){
@@ -373,6 +376,14 @@ export class CreateCourseComponent implements OnInit {
     }else{
       this.showCosNotCapstone = true;
     }
+  }
+
+  splitGenerator(num: number){
+    let arr = new Array;
+    for(let i=0; i< num; i++){
+      arr.push("1");
+    }
+    return arr.join(",");
   }
 
   temp(){

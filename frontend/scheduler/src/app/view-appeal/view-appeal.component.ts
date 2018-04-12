@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from './../services/user.service';
 import { Appeal } from './../../models/appeal.model';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-appeal',
@@ -9,17 +11,27 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./view-appeal.component.css']
 })
 export class ViewAppealComponent implements OnInit {
-	appeals : Appeal[] = [];
+	isAdmin : boolean = false;
+  appeals : Appeal[] = [];
 	columns: string[];
   showhiden: boolean = true;
 
   constructor(
   	private userService: UserService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar, 
+    private cookieService: CookieService,
+    private router : Router,
+    ) { 
+  }
 
   ngOnInit() {
-  	this.columns = this.userService.getAppealColumns();
-    this.refreshAppeals();
+    if(this.cookieService.get('pillar') === "Administrator"){
+      this.isAdmin = true;  
+      this.columns = this.userService.getAppealColumns();
+      this.refreshAppeals();
+    }else{
+      this.router.navigateByUrl('/home');
+    }
   }
 
   refreshAppeals(){
