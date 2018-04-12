@@ -4,7 +4,6 @@ import { Schedule } from './../../models/schedule.model';
 import { Course } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
 import { MatSnackBar } from '@angular/material';
-import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-schedule-details',
@@ -17,6 +16,7 @@ export class ScheduleDetailsComponent implements OnInit {
   generated : boolean = false;
   courseIDs : string[] = [];
   courses: Course[] = [];
+  noItems : boolean = false;
   showCourseList : boolean = true;
   showEventForm : boolean = false;
   showCourseForm : boolean = true;
@@ -24,18 +24,11 @@ export class ScheduleDetailsComponent implements OnInit {
   constructor(
     private scheduleService: ScheduleService,
     private route: ActivatedRoute, 
-<<<<<<< HEAD
-    private snackBar: MatSnackBar, 
-    private cookieService: CookieService,
-=======
     private router: Router,
     public snackBar: MatSnackBar, 
->>>>>>> 22cfdcd64725bec83ed10718e39ff7715eeef2a5
     ) { 
     this.schedule_id = route.snapshot.params['schedule_id'];
-    if(this.cookieService.get('pillar')==='Administrator'){
-      this.isAdmin = true;
-    }
+    
   }
 
   ngOnInit() {
@@ -66,8 +59,8 @@ export class ScheduleDetailsComponent implements OnInit {
     .subscribe( 
       response => {
         if(response.status ==200){
-          if(response.body.success != undefined && response.body.success===false){
-            this.courses = new Array;
+          if(response.body.message === "no rows found"){
+            this.noItems = true;
           }else{
             let array : Course[] = response.body;
             this.courses = array;  

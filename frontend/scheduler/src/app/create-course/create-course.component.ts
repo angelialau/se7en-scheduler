@@ -58,7 +58,6 @@ export class CreateCourseComponent implements OnInit {
       response => {
         if(response.body.success){
           trimester = response.body.trimester;
-          console.log('trimester:',trimester);
           let currArray = courseDetails;
           let options = [[3,5,7],[1,8],[2,4,6]];
           let index = trimester-1;

@@ -8,6 +8,7 @@ import { Course, Session, CourseDetail, courseDetails, class_type,
   durations, venue_type } from './../../models/course.model';
 import { Schedule } from './../../models/schedule.model';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-create-event',
@@ -16,6 +17,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CreateEventComponent implements OnInit {
   // form related vars
+  isAdmin : boolean = false;
   schedule_id : number;
   days = days;
   instructors : User[]= []; 
@@ -29,6 +31,7 @@ export class CreateEventComponent implements OnInit {
   events : Event[] = [];
   searchForm : Search; 
   // views 
+  noItems : boolean = false;
   showEventList : boolean = true;
   showEventForm : boolean = true;
   showDateSelection : boolean = false;
@@ -41,8 +44,11 @@ export class CreateEventComponent implements OnInit {
     private scheduleService: ScheduleService,
     private snackBar : MatSnackBar,
     private route: ActivatedRoute, 
+    private cookieService: CookieService, 
      ) {
-    
+      if(this.cookieService.get('pillar')==='Administrator'){
+        this.isAdmin = true;
+      }
     }
 
   ngOnInit() {
@@ -161,6 +167,8 @@ export class CreateEventComponent implements OnInit {
         if(response.body.success === undefined || response.body.success === true){
           this.events = response.body;
           this.refreshTimeSlots(); // so that it reflects any events that have just been added. 
+        }else if(response.body.message === "no rows found"){
+          this.noItems = true;
         }else{
           this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
           console.log("get events error", response);
