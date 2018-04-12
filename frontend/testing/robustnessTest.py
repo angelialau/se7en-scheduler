@@ -40,8 +40,11 @@ class RobustnessTest(unittest.TestCase):
         driver.get("http://localhost:4200/viewappeal")
 
         headers = driver.find_elements_by_tag_name("h5")
-        self.assertNotIn("Appeals", headers)
-        self.assertIn("Announcements", headers)
+        texts = []
+        for header in headers:
+            texts.append(header.text)
+        self.assertNotIn("Appeals", texts)
+        self.assertIn("Announcements", texts)
 
     # ensure add users form is not accessible
     def test_add_users(self):
@@ -49,8 +52,11 @@ class RobustnessTest(unittest.TestCase):
         driver.get("http://localhost:4200/user")
 
         headers = driver.find_elements_by_tag_name("h5")
-        self.assertNotIn("Create a new Administrator/Instructor", headers)
-        self.assertIn("Announcements", headers)
+        texts = []
+        for header in headers:
+            texts.append(header.text)
+        self.assertNotIn("Create a new Administrator/Instructor", texts)
+        self.assertIn("Announcements", texts)
 
         buttons = driver.find_elements_by_id("submitFormButton")
         self.assertEqual(len(buttons), 0)
@@ -61,8 +67,11 @@ class RobustnessTest(unittest.TestCase):
         driver.get("http://localhost:4200/schedules")
 
         headers = driver.find_elements_by_tag_name("h5")
-        self.assertNotIn("Add a new Schedule", headers)
-        self.assertIn("All Schedules", headers)
+        texts = []
+        for header in headers:
+            texts.append(header.text)
+        self.assertNotIn("Add a new Schedule", texts)
+        self.assertIn("All Schedules", texts)
 
         buttons = driver.find_elements_by_id("addScheduleSubmitButton")
         self.assertEqual(len(buttons), 0)
@@ -125,8 +134,8 @@ class RobustnessTest(unittest.TestCase):
 
         inputs = driver.find_elements_by_tag_name("input")
         types = []
-        for button in buttons:
-            types.append(button.getAttribute('type'))
+        for ip in inputs:
+            types.append(ip.getAttribute('type'))
         self.assertNotIn("radio", types)
 
     def tearDown(self):

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { User } from './../../models/user.model';
 import { MatSnackBar } from '@angular/material';
 import { UserService } from './../services/user.service';
+import { CookieService } from 'ng2-cookies';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -10,13 +12,22 @@ import { UserService } from './../services/user.service';
 })
 export class CreateUserComponent implements OnInit {
   modelNewUser = new User(null,null);
+  isAdmin : boolean = false;
 
   constructor(
     public snackBar: MatSnackBar, 
-    private userService: UserService ) {
+    private userService: UserService,
+    private cookieService: CookieService,
+    private router : Router,
+     ) {
   }
 
   ngOnInit() {
+    if(this.cookieService.get('pillar')==='Administrator'){
+      this.isAdmin = true;
+    }else{
+      this.router.navigateByUrl('/home');
+    }
   }
 
   createUser(name: string){
