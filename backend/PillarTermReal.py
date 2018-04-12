@@ -82,7 +82,7 @@ def referenceRows():
         roomType="Capstone"
         row.append(Room(roomName,roomType))
         
-    for i in range(71,249):
+    for i in range(71,300):
         row.append("")      #cohort classes and professors,71-120 class,121-249 prof
     return row
 """
@@ -101,8 +101,9 @@ def initializeValue():                      #initialize rooms, cohort list, prof
     rowRef=referenceRows()
     global proNum
     global claNum
+    LinkedThinkTank=[ttt,ttt+1,ttt+2,ttt+3]
     ISTDterm45={"CC":[cc+12,cc+13],"LT":[lt+1,lt+2],"LAB":[lab+2],"TT":[tt+23,tt+24],"TTT":[tt+23,tt+24]}    #pre-defined rooms for pillar and term
-    ISTDterm678={"CC":[cc+10,cc+12,cc+13],"LT":[lt+1,lt+2],"TT":[tt+15,tt+16,tt+17],"TTT":[tt+23,tt+24],"LAB":[lab+2]}
+    ISTDterm678={"CC":[cc+10,cc+12,cc+13],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt+15,tt+16,tt+17],"TTT":[tt+23,tt+24],"LAB":[lab+2]}
     EPDterm45={"CC":[cc+14,cc+15],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt+14],"LAB":[lab,lab+2],"TTT":[tt+21,tt+22]}
     EPDterm678={"CC":[cc+14,cc+15,cc+16],"LT":[lt+1,lt+2,lt+3,lt+4],"TT":[tt,tt+1,tt+2,tt+3,tt+4,tt+5],"LAB":[lab,lab+2],"TTT":[tt+21,tt+22,tt+23,tt+24]}
     ESDterm45={"CC":[cc+12],"LT":[lt+2,lt+3,lt+4],"TT":[tt+8,tt+9],"LAB":[lab+3],"TTT":[tt+18,tt+19]}
@@ -119,6 +120,7 @@ def initializeValue():                      #initialize rooms, cohort list, prof
         elif course.term in [4,5] and course.courseName[0]=="3":
             pillarTerm=EPDterm45
             claStart=cla+4
+            
         elif course.term in [6,7,8] and course.courseName[0]=="3":
             pillarTerm=EPDterm678
             claStart=claNum
@@ -128,7 +130,7 @@ def initializeValue():                      #initialize rooms, cohort list, prof
         elif course.term in [6,7,8] and course.courseName[0]=="4":
             pillarTerm=ESDterm678
             claStart=claNum
-        elif course.pillar=="HASS" or course.pillar=="TECHELECT":#hass and tech elective share the same rooms
+        elif course.pillar=="HASS" or course.pillar=="Tech Elective":#hass and tech elective share the same rooms
             pillarTerm=Hass
             claStart=claNum
         elif course.courseName=="01.400":
@@ -164,7 +166,11 @@ def initializeValue():                      #initialize rooms, cohort list, prof
             if comp=="Cohort Classroom":
                 course.sessions[k]["roomList"]=pillarTerm["CC"]        
             if comp=="Think Tank":
-                course.sessions[k]["roomList"]=pillarTerm["TT"]        
+                if classSize<=30:
+                    course.sessions[k]["roomList"]=pillarTerm["TT"]
+                else:
+                    course.sessions[k]["roomList"]=LinkedThinkTank 
+                    
             if comp=="Tiered Think Tank":
                 course.sessions[k]["roomList"]=pillarTerm["TTT"]        
             if comp=="Lab":
@@ -177,6 +183,7 @@ def initializeValue():                      #initialize rooms, cohort list, prof
                 
             if comp=="Lecture Theatre":
                 course.sessions[k]["roomList"]=pillarTerm["LT"]  
+            #print(course.courseName,course.sessions[k]["roomList"])
             lis=[]
             for prof in range(len(course.sessions[k]["instructors"])):
                 newProfName=course.sessions[k]["instructors"][prof]+course.sessions[k]["instructor_ids"][prof]
@@ -187,7 +194,8 @@ def initializeValue():                      #initialize rooms, cohort list, prof
                 else:
                     lis.append(rowRef.index(newProfName))
             course.sessions[k]["proID"]=lis
-            
+            #if (course.pillar=="Tech Elective"):
+            #    print (k,course.sessions[k]["proID"],"room",course.sessions[k]["roomList"])
             
     return rowRef
 
@@ -198,7 +206,7 @@ def timetableInitial(b1,b2):
         temp.append(-1)
     temp[b1]=-500
     temp[b2]=-500
-    for i in range(250):
+    for i in range(300):
         schedule.append(copy.deepcopy(temp))
     return schedule
 
@@ -221,14 +229,14 @@ def checkAllSchedule(schedule,classList,profList,roomList,i,j):# return the room
             return -1
     selectedRoom=-1
     for room in roomList:
-        """if rowRef[room].roomType=="Tiered Think Tank":
+        if rowRef[room].roomType=="Linked Think Tank":
             if checkSchedule(schedule,rowRef[room].relatedRooms[0],i,j) and checkSchedule(schedule,rowRef[room].relatedRooms[1],i,j):
                 selectedRoom=room
                 break
-        else:"""
-        if checkSchedule(schedule,room,i,j):
-            selectedRoom=room
-            break
+        else:
+            if checkSchedule(schedule,room,i,j):
+                selectedRoom=room
+                break
     return selectedRoom
                     
 
@@ -245,12 +253,12 @@ def setAllSchedule(schedule,classList,profList,room,i,j,value):
         schedule=setSchedule(schedule,classList,i,j,value)
     for prof in profList:
         schedule=setSchedule(schedule,prof,i,j,value)
-    """if rowRef[room].roomType=="Tiered Think Tank":
+    if rowRef[room].roomType=="Linked Think Tank":
         schedule=setSchedule(schedule,rowRef[room].relatedRooms[0],i,j,value) 
         schedule=setSchedule(schedule,rowRef[room].relatedRooms[1],i,j,value)
         schedule=setSchedule(schedule,room,i,j,value)
-    else:"""
-    schedule=setSchedule(schedule,room,i,j,value)
+    else:
+        schedule=setSchedule(schedule,room,i,j,value)
     return schedule
     
 
@@ -278,7 +286,7 @@ class Course(object):
         for i in self.sessions:
             if i["class_type"]=="Lecture":
                 lec+=1
-        self.priority= j*c1+self.numSessions*c2+self.classes*c3+lec*c4
+        self.priority= -(j*c1+self.numSessions*c2+self.classes*c3+lec*c4)
 
 def capstoneInitial(schedule,cap):
     global claNum
@@ -308,7 +316,9 @@ def generator(c1,c2,c3,c4,b1,b2,seniorCourse):
         newSche = capstoneInitial(newSche,CapstoneNum)
     Classlist=newClassList(seniorCourse)
     for c in sor:
+        
         count=c[1]
+        #print(count)
         if courses[count].courseName=="01.400":
             continue
         i = courses[count].numSessions
@@ -389,6 +399,7 @@ def randomPillar(lis):
         if lis[rand] not in newlis:
             newlis.append(lis[rand])
             i+=1
+            
     return newlis
 ##newClassList: take in the pillar list(size n),refer to the course list(size m)
 ##output a list of m sublists, each contains the classes(rowRef) for the course
@@ -408,6 +419,7 @@ def newClassList(lis):
                 liscount+=1                    
             else:
                 newlis.append(courses[i].classlist)
+    #print(newlis)
     return newlis
 ##checkScore: check for the score of the current Schedule
 ##output the index of the schedules with minimum score
@@ -466,7 +478,7 @@ def mutation(lis,rawParams):
                     newParams.append(rawParams[j][k])
             
             if (len(rawParams[i][6])<=4):
-                
+                print(rawParams[i][6])
                 newParams.append(rawParams[i][6])
             else:
                 r=random.randint(0,len(rawParams[i][6])-1)
@@ -490,7 +502,7 @@ def formatJson(term,pillar,course,prof,profid,cohort,location,day,start,end):
     response["day"] = day
     response["start"] = start
     response["end"] = end
-    #print(json.dumps(response) + ",")
+    print(json.dumps(response) + ",")
     sys.stdout.flush()
 def intToString(num):
     s="1"
@@ -551,9 +563,9 @@ def formatOutput(schedule):
 main function
 """
 start = time.time()
-courses,seniorCourse = readJson("https://api.myjson.com/bins/fv1pj")
+courses,seniorCourse = readJson("https://api.myjson.com/bins/y52r3")
 
-#courses = readJson("https://api.myjson.com/bins/h2c9v")
+#courses = readJson("https://api.myjson.com/bins/h2c9v")"https://api.myjson.com/bins/fv1pj"
 start1 = time.time()
 rowRef=referenceRows()
 rowRef=initializeValue()
@@ -576,35 +588,43 @@ for i in range(90):
             lastTime=currentTime
             break
         currentTime=time.time()
-        if (currentTime-lastTime>2):
-            print("Took more than two seconds to generate one schedule in the initial round")
+        if (currentTime-lastTime>30):
+            raise ValueError("First round  takes more than 30 seconds")
+
+            #print("Took more than five seconds to generate one schedule in the initial round")
+    #print(i)
     rawSchedules.append(currentSchedule)
     rawParams.append([param1,param2,param3,param4,randBreak1,randBreak2,seniorCourse])
 
 lastTime=time.time()
+if (lastTime-start1>5*60):
+    raise ValueError("First round takes more than 5 minutes in total")
 currentTime=lastTime
 index,score=checkScore(rawSchedules)
 newlist=saveParams(index,rawSchedules)
 rawParams=mutation(index,rawParams)
-
 for i in range(5):
     rawSchedule=[]
+    newParams=[]
     for j in range(81):
         while(True):
             currentSchedule=generator(rawParams[j][0],rawParams[j][1],rawParams[j][2],rawParams[j][3],rawParams[j][4],rawParams[j][5],rawParams[j][6])
             if currentSchedule[0][0]!="Fail":
                 lastTime=currentTime
+                newParams.append(rawParams[j])
+                rawSchedule.append(currentSchedule)
                 break
             currentTime=time.time()
-            if (currentTime-lastTime>2):
-                print("Took more than two seconds to generate one schedule in the",i,"round")
-
-        rawSchedule.append(currentSchedule)
+            if (currentTime-lastTime>10):
+                #print("Took more than 10 seconds to generate one schedule in the",i,"round, delete this")
+                
+                break
+        #print(j)
     newlist.extend(rawSchedule)
     index,score=checkScore(newlist)
     #print("at the loop no.: ",i,"Score is ",score)
     newlist=saveParams(index,newlist)
-    rawParams=mutation(index,rawParams)
+    rawParams=mutation(index,newParams)
 
 formatOutput(rawSchedule[index[0]])
 
