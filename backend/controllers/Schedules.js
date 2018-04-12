@@ -112,7 +112,7 @@ router.post('/Generate', function(req, res, next) {
 				// log error if any
 				child.stderr.on('data', function(data) {
 					console.log("ERR child process: " + data.toString());
-					generatorErr = "Generator Algorithm: "data.toString(); 
+					generatorErr = "Generator Algorithm: " + data.toString(); 
 				});
 
 				// once child process ends, update SQL table
