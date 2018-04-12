@@ -20,6 +20,7 @@ import copy
 import time
 import re
 import sys
+
 tt,cc,lt,lab,ttt,capstone,cla,pro=0,26,42,47,55,61,71,121
 proNum=121
 claNum=83
@@ -89,12 +90,12 @@ def referenceRows():
 Pre-loaded room list:
 TTT: tt19,20,21,22,23,24,25,26
 ISTD term4,5: cc13,cc14,Lt2,Lt3,dsl,tt,ttt
-ISTD term6,7,8: cc11,cc13,cc14,lt2,lt3,lt4,TT16,17,18
-EPD term 4: arms lab1, LT2345, cc15,cc16,tt
-EPD term 5: arms lab1(30.007), LT2345,cc15,cc16,tt1-10,dsl(30.102 EM)
+ISTD term6,7,8: cc11,cc13,cc14,lt2,lt3,TT16,17,18
+EPD term 4: arms lab1, LT2345, cc15,cc16
+EPD term 5: arms lab1(30.007), LT2345,cc15,cc16,tt 15,dsl(30.102 EM)
 EPD term 6,7,8: arms lab 3, LT2345,CC15,CC16,TT
-ESD term4,5:cc13,lt3,lt4,lt5,tt10-15,lab,
-HASS: cc11,cc13,cc14,tt1-17,ltt1617,ltt78,LT3,4,5,Lab:IDiaLab??
+ESD term4,5:cc13,lt3,lt4,lt5,tt9,tt10,lab,
+HASS: cc11,cc13,cc14,tt6,7,8,9,10,11,12,16,17,18,23,24,ltt1617,ltt78,LT3,4,5,Lab:IDiaLab??
 TECHELECT:same as hass
 """
 def initializeValue():                      #initialize rooms, cohort list, professor list
@@ -413,7 +414,7 @@ def newClassList(lis):
         else:
             if i in lis:
                 liss=list()
-                liss.append(courses[lis[liscount//3*3]].classlist[0])
+                liss.append(courses[lis[liscount//4*4]].classlist[0])
                 liss.extend(courses[i].classlist[1:])
                 newlis.append(liss)
                 liscount+=1                    
@@ -478,7 +479,7 @@ def mutation(lis,rawParams):
                     newParams.append(rawParams[j][k])
             
             if (len(rawParams[i][6])<=4):
-                
+                #print(rawParams[i][6])
                 newParams.append(rawParams[i][6])
             else:
                 r=random.randint(0,len(rawParams[i][6])-1)
@@ -563,7 +564,7 @@ def formatOutput(schedule):
 main function
 """
 start = time.time()
-courses,seniorCourse = readJson("https://api.myjson.com/bins/qdsqn")
+courses,seniorCourse = readJson("https://api.myjson.com/bins/y52r3")
 
 #courses = readJson("https://api.myjson.com/bins/h2c9v")"https://api.myjson.com/bins/fv1pj"
 start1 = time.time()
@@ -591,19 +592,18 @@ for i in range(90):
         if (currentTime-lastTime>30):
             raise ValueError("First round  takes more than 30 seconds")
 
+            #print("Took more than five seconds to generate one schedule in the initial round")
+    #print(i)
     rawSchedules.append(currentSchedule)
     rawParams.append([param1,param2,param3,param4,randBreak1,randBreak2,seniorCourse])
 
 lastTime=time.time()
 if (lastTime-start1>5*60):
     raise ValueError("First round takes more than 5 minutes in total")
-
 currentTime=lastTime
 index,score=checkScore(rawSchedules)
 newlist=saveParams(index,rawSchedules)
-newlist1=saveParams(index,rawParams)
 rawParams=mutation(index,rawParams)
-
 for i in range(5):
     rawSchedule=[]
     newParams=[]
@@ -618,18 +618,15 @@ for i in range(5):
             currentTime=time.time()
             if (currentTime-lastTime>10):
                 #print("Took more than 10 seconds to generate one schedule in the",i,"round, delete this")
+                
                 break
         #print(j)
     newlist.extend(rawSchedule)
-    newlist1.extend(newParams)
     index,score=checkScore(newlist)
-    if (i==4):
-        break
-    rawParams=mutation(index,newlist1)
-    newlist1=saveParams(index,newlist1)
-    newlist=saveParams(index,newlist)
     #print("at the loop no.: ",i,"Score is ",score)
-    
+    newlist=saveParams(index,newlist)
+    rawParams=mutation(index,newParams)
+
 formatOutput(rawSchedule[index[0]])
 
 end=time.time()    
