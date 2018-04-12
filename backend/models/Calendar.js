@@ -30,6 +30,16 @@ var Calendar = {
 		start:null,
 		end:null
  	},
+ 	updateNoDateStructure:{
+ 		id:null,
+		pillar:null,
+		course:null,
+		prof:null,
+		prof_id:null,
+		day:null,
+		start:null,
+		end:null
+ 	},
 	createEvent:function(data, callback) {
 		return db.query("INSERT INTO " + 
 			TABLE_NAME + "(`" +
@@ -110,6 +120,13 @@ var Calendar = {
 						[schedule_id],
 						callback);
 	},
+	getNonCourseEvents:function(id, callback) {
+		return db.query("SELECT * FROM " + TABLE_NAME + 
+						" WHERE " + COLUMN_DATE + " IS NOT NULL" + 
+						" AND " + COLUMN_SCHEDULE_ID + "=?",
+						[id],
+						callback);
+	},
 	filterTimeSlots:function(data, schedule_id, callback) {
 		var selectStatement = "SELECT * FROM " + TABLE_NAME + " WHERE ";
 		var tokens = "1";
@@ -148,6 +165,32 @@ var Calendar = {
 
 		selectStatement += tokens;
 		return db.query(selectStatement, params, callback);
+	},
+	deleteEvent:function(id, callback) {
+		return db.query("DELETE FROM " + TABLE_NAME + 
+						" WHERE " + COLUMN_ID + "=?",
+						[id],
+						callback);
+	},
+	updateEventNoDate:function(data, callback) {
+		return db.query("UPDATE " + TABLE_NAME + " SET `" +
+						COLUMN_PILLAR + "` =?, `" +
+						COLUMN_COURSE + "` =?, `" + 
+						COLUMN_PROF + "` =?, `" + 
+						COLUMN_PROF_ID + "` =?, `" +
+						COLUMN_DAY + "` =?, `" + 
+						COLUMN_START + "` =?, `" +
+						COLUMN_END + "` =? " + 
+						" WHERE `" + COLUMN_ID + "` =?",
+						[data.pillar,
+						 data.course,
+						 data.prof,
+						 data.prof_id,
+						 data.day,
+						 data.start,
+						 data.end,
+						 data.id],
+						 callback);
 	}
 };
 

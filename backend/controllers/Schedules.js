@@ -3,6 +3,7 @@ var Schedule = require("../models/Schedule");
 var Course = require("../models/Course");
 var Calendar = require("../models/Calendar");
 var utils = require("../utils/utilities");
+var fecha = require("fecha");
 var spawn = require("child_process").spawn;
 var router = express.Router();
 var options = {
@@ -28,11 +29,19 @@ router.get('/:id(\\d+)', function(req, res, next) {
 
 // defining route for creating a schedule
 router.post('/', function(req, res, next) {
-	if (req.body.year && req.body.trimester) {
+	if (req.body.year && 
+		req.body.trimester &&
+		req.body.startDate &&
+		req.body.endDate) {
+
+		var startDate = fecha.format(new Date(req.body.startDate), 'YYYY-MM-DD HH:mm:ss');
+		var endDate = fecha.format(new Date(req.body.endDate), 'YYYY-MM-DD HH:mm:ss');
 
 		Schedule.createSchedule(
 			req.body.year, 
 			req.body.trimester,
+			startDate,
+			endDate,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
@@ -84,7 +93,9 @@ router.post('/Generate', function(req, res, next) {
 				res.json(err);
 			} else {
 				// change rows to format needed for algo
-				var input = {}
+				var input = {};
+				var generatorErr;
+
 				for (var i = 0; i < Object.keys(rows).length; i++) {
 					input[i] = Course.rowToJSON(JSON.parse(JSON.stringify(rows[i])));
 				}
@@ -101,20 +112,32 @@ router.post('/Generate', function(req, res, next) {
 				// log error if any
 				child.stderr.on('data', function(data) {
 					console.log("ERR child process: " + data.toString());
+					generatorErr = "Generator Algorithm: " + data.toString(); 
 				});
 
 				// once child process ends, update SQL table
 				child.on('close', function(code) {
-					var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
-					output.forEach(function(entry) {
-						Calendar.addGeneratedEvent(req.body.id, entry, function(err, count) {
-							if (err) {
-								console.log(err);
-							}
-						})
-					});
-					Schedule.updateGenerated(req.body.id);
-					res.json(output);
+					if (!generatorErr) {
+						// convert output to array
+						console.log(result);
+						var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
+
+						// update SQL table for each generated entry
+						output.forEach(function(entry) {
+							Calendar.addGeneratedEvent(req.body.id, entry, function(err, count) {
+								if (err) {
+									console.log(err);
+								}
+							})
+						});
+
+						// set generated bit to 1 on schedule
+						Schedule.updateGenerated(req.body.id);
+						output.success = true;
+						res.json(output);
+					} else {
+						res.json({"success":false, "message":generatorErr});
+					}
 				});
 			}
 		});
