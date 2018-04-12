@@ -145,14 +145,14 @@ export class UserService {
     return Observable.throw(errorMessage);
   }
 
-  makeAppeals(appeal: Appeal): Observable<any>{
+  makeAppeals(appeal: Appeal, calendarid: number): Observable<any>{
     let body = new URLSearchParams();
     body.set('title', appeal.title);
     body.set('content', appeal.content);
     body.set('instructor',this.loggedInUser.name);
     body.set('instructorId', String(this.loggedInUser.id));
     body.set('pillar', this.loggedInUser.pillar);
-    body.set('scheduleId', String(this.loggedInUser.id)); //change this to scheduleid
+    body.set('scheduleId', String(calendarid)); //change this to scheduleid
     let extension = this.url + '/Appeals';
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 

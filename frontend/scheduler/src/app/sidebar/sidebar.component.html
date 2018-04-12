@@ -3,10 +3,6 @@
     <a id="sbAnnouncements" class="list-group-item-action" routerLink="/home"><i class="fas fa-bell"></i> Announcements</a>
   </li>
 
-  <li class="list-group-item" >
-    <a id="sbViewCalendar" class="list-group-item-action" routerLink="/viewschedule"><i class="fas fa-calendar"></i> Calendar </a>
-  </li>
-
   <li class="list-group-item">
     <a id="sbViewSchedules" class="list-group-item-action" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Schedules</a>
   </li>
@@ -15,8 +11,12 @@
     <a id="sbViewAppeals" class="list-group-item-action" routerLink="/viewappeal"><i class="fas fa-pencil-alt"></i> Appeals </a>
   </li>
 
+  <li class="list-group-item" *ngIf = "!isAdmin" >
+    <a id="sbViewAppeals" class="list-group-item-action" routerLink="/appealstatus"><i class="fas fa-pencil-alt"></i> Make Appeal </a>
+  </li>
+
   <li class="list-group-item" *ngIf = "isAdmin" >
-    <a id="sbAddEvents" class="list-group-item-action" routerLink="/event"><i class="fas fa-pencil-alt"></i> Events </a>
+    <a id="sbAddEvents" class="list-group-item-action" routerLink="/events"><i class="fas fa-pencil-alt"></i> Events </a>
   </li>
 
   <li class="list-group-item" *ngIf = "isAdmin" >

@@ -6,10 +6,14 @@
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header">
         Appeal for {{appeal.title}}
-        <button (click)="deleteAppeal(appeal.id)" 
-          title="Delete this appeal" 
+        <button (click)="editAppeal(appeal.id,0)" 
+          title="Disapprove this appeal" 
           class="btn btn-light" 
-          style="float: right;"><i class="fas fa-trash-alt"></i></button>
+          style="float: right;"><i class="fas fa-thumbs-down"></i></button>
+        <button (click)="editAppeal(appeal.id,1)" 
+          title="Approve this appeal" 
+          class="btn btn-light" 
+          style="float: right;"><i class="fas fa-thumbs-up"></i></button>
       </h5>
       
       <div id="{{appeal.id}}" class="card-body">
@@ -18,6 +22,10 @@
         </p>
         <p class="card-text">
           {{appeal.content}}
+          <br>
+          <span style="float: right">
+          <a [routerLink] = "['../viewschedule/' + appeal.scheduleId]" ><font size="1"><u>click to edit this schedule </u></font></a>
+          </span>
         </p>
       </div>
     </div>

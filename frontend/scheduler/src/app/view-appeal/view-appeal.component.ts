@@ -38,7 +38,7 @@ export class ViewAppealComponent implements OnInit {
     this.userService.getAppeals()
     .map((data: any) => {
       data.body.sort(function(a,b){
-        return a.date > b.date;
+        return a.date < b.date;
       });
 
       for (let entry of data.body){
@@ -47,9 +47,6 @@ export class ViewAppealComponent implements OnInit {
       }
 
       this.appeals = data.body;
-
-      console.log(this.appeals);
-      console.log(typeof this.appeals);
     } )
     .subscribe(
       response => {
@@ -60,8 +57,7 @@ export class ViewAppealComponent implements OnInit {
       }
     )
   }
-
-   deleteAppeal(id: number){
+  deleteAppeal(id:number){
     let errorMsg = "Something went wrong with deleting appeal, please try again later.";
     this.userService.deleteAppeal(id).subscribe(
       response => {
@@ -81,7 +77,8 @@ export class ViewAppealComponent implements OnInit {
     )
   }
 
-  showContent(id: number){ //deal with this again
-     //document.getElementById(String(id)).innerHTML= "";
+   editAppeal(id: number, integer: number){
+    this.deleteAppeal(id);
+    
   }
 }
