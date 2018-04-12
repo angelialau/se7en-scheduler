@@ -3,7 +3,7 @@ var Course = require('../models/Course')
 
 describe('rowToJSON()', function () {
 	var output;
-	it('transforms course to correct format', function() {
+	it('Constructive Test: transforms course to correct format', function() {
 
 			// Setup
 			course = {
