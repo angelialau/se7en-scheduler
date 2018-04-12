@@ -21,7 +21,7 @@
           style="float: right;"><i class="fas fa-trash-alt"></i></button>
       </h5>
       <div class="card-body">
-        <p class="card-text"><small class="text-muted">on {{announcement.date | date: 'dd/MM/yyyy'}} by {{announcement.sender}}</small></p>
+        <p class="card-text"><small class="text-muted">by {{announcement.sender}} <span style="float: right;"> <i>{{announcement.date | date: 'dd/MM/yyyy'}} </i></span> </small></p>
         <p class="card-text">{{announcement.content}}</p>    
       </div>
     </div>
