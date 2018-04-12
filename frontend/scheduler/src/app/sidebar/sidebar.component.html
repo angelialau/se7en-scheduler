@@ -3,13 +3,12 @@
     <a id="sbAnnouncements" class="list-group-item-action" routerLink="/home"><i class="fas fa-bell"></i> Announcements</a>
   </li>
 
-  <li class="list-group-item" *ngIf = "isAdmin" >
+  <li class="list-group-item" >
     <a id="sbViewCalendar" class="list-group-item-action" routerLink="/viewschedule"><i class="fas fa-calendar"></i> Calendar </a>
   </li>
 
   <li class="list-group-item">
-    <a id="sbViewSchedules" class="list-group-item-action" *ngIf = "isAdmin else userViewSchedule" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Schedules</a>
-    <ng-template #userViewSchedule><a id="sbViewCalendar" class="list-group-item-action" routerLink = "/viewschedule"><i class="fas fa-calendar"></i> View Calendar</a></ng-template>
+    <a id="sbViewSchedules" class="list-group-item-action" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Schedules</a>
   </li>
 
   <li class="list-group-item" *ngIf = "isAdmin" >
@@ -20,9 +19,8 @@
     <a id="sbAddEvents" class="list-group-item-action" routerLink="/event"><i class="fas fa-pencil-alt"></i> Events </a>
   </li>
 
-  <li class="list-group-item">
-    <a id="sbAddUser" class="list-group-item-action" *ngIf = "isAdmin else userSubmitCourse" routerLink="/user"><i class="fas fa-user-plus"></i> Add New User</a>
-    <ng-template #userSubmitCourse><a id="sbAddCourse" class="list-group-item-action" routerLink = "/schedules"><i class="fas fa-plus-circle"></i> Submit Courses </a></ng-template>
+  <li class="list-group-item" *ngIf = "isAdmin" >
+    <a id="sbAddUser" class="list-group-item-action" routerLink="/user"><i class="fas fa-user-plus"></i> Add New User</a>
   </li>
 
   <li class="list-group-item">

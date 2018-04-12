@@ -39,7 +39,7 @@
   </div>  
   
   <!-- form to add an ad hoc event -->
-  <div *ngIf="generated">
+  <div *ngIf="generated && isAdmin">
     <app-create-event></app-create-event>
   </div>
  

@@ -30,7 +30,7 @@ export class CreateEventComponent implements OnInit {
   searchForm : Search; 
   // views 
   showEventList : boolean = true;
-  showEventForm : boolean = false;
+  showEventForm : boolean = true;
   showDateSelection : boolean = false;
   showTimeSelection : boolean = false;
   showEndSelection : boolean = false;

@@ -53,7 +53,7 @@ export const ROUTES: Routes = [
   { path: 'appealreply', component: AppealreplyComponent},
   { path: 'events', component: ViewEventsComponent},
   { path: 'events/:schedule_id', component: CreateEventComponent},
-  { path: 'viewappeal', component: ViewAppealComponent}
+  
 ];
 
 @NgModule({
