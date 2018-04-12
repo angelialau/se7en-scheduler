@@ -4,6 +4,8 @@ import { ScheduleService } from './../services/schedule.service';
 import { Announcement } from './../../models/announcement.model'
 import { User } from './../../models/user.model'
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-announcement',
@@ -11,6 +13,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./create-announcement.component.css']
 })
 export class CreateAnnouncementComponent implements OnInit {
+  isAdmin : boolean = false;
   today : string;
   newAnnouncement : Announcement = new Announcement(this.today);
   
@@ -18,7 +21,14 @@ export class CreateAnnouncementComponent implements OnInit {
     private userService: UserService,
     private scheduleService: ScheduleService,
     private snackBar: MatSnackBar,
+    private cookieService: CookieService, 
+    private router : Router
     ) { 
+    if (this.cookieService.get('pillar') !== 'Administrator'){
+      this.router.navigateByUrl('/home');
+    }else{
+      this.isAdmin = true;
+    }
   }
 
   ngOnInit() {
