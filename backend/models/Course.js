@@ -16,6 +16,7 @@ var COLUMN_INSTRUCTORS = "instructors";
 var COLUMN_INSTRUCTOR_IDS = "instructor_ids";
 var COLUMN_SPLIT = "split";
 var COLUMN_VENUE_PREF = "venue_types";
+var COLUMN_PILLAR = "pillar";
 
 var Course = {
 	createStructure:{
@@ -32,7 +33,8 @@ var Course = {
 		instructors:null,
 		instructor_ids:null,
 		split:null,
-		venue_types:null
+		venue_types:null,
+		pillar:null
  	},
 
  	updateStructure:{
@@ -49,7 +51,8 @@ var Course = {
 		instructors:null,
 		instructor_ids:null,
 		split:null,
-		venue_types:null
+		venue_types:null,
+		pillar:null
  	},
 
 	getAllCourses:function(callback) {
@@ -82,8 +85,9 @@ var Course = {
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_INSTRUCTOR_IDS + "`,`" +
 			COLUMN_SPLIT + "`,`" +
+			COLUMN_PILLAR + "`,`" + 
 			COLUMN_VENUE_PREF + "`)" +  
-			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 			[data.schedule_id,
 			 data.term,
 			 data.course_no,
@@ -97,6 +101,7 @@ var Course = {
 			 data.instructors, 
 			 data.instructor_ids,
 			 data.split,
+			 data.pillar,
 			 data.venue_types],
 			 callback);
 	},
@@ -116,6 +121,7 @@ var Course = {
 						"` =?, `" + COLUMN_INSTRUCTOR_IDS +
 						"` =?, `" + COLUMN_SPLIT +
 						"` =?, `" + COLUMN_VENUE_PREF +
+						"` =?, `" + COLUMN_PILLAR +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
 						[data.term,
@@ -131,6 +137,7 @@ var Course = {
 						 data.instructor_ids,
 						 data.split,
 						 data.venue_types,
+						 data.pillar,
 						 data.id],
 						 callback);
 	},
