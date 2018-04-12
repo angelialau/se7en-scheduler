@@ -34,8 +34,8 @@ def readJson(url):
     courses=[]
     i=0
     newCourse=[]#store the term678 courses
-    #for key,value in wjson.items():
-    for value in wjson:
+    for key,value in wjson.items():
+    #for value in wjson:
         courses.append(Course(value["course_no"],value["core"],len(value["sessions"]),value["term"],value["no_classes"],value["class_size"],value["pillar"]))
         courses[i].sessions=value["sessions"]
         if courses[i].courseName=="01.400":
