@@ -91,6 +91,6 @@ export class ViewSchedulesComponent implements OnInit {
   get diagnostic() { return JSON.stringify(this.schedules)};
 
   viewCalendar(id: number){
-    this.router.navigateByUrl("/viewschedule/id");
+    this.router.navigateByUrl("/viewschedule/" + id);
   }
 }

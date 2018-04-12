@@ -30,6 +30,11 @@ export class EventService {
     this.loggedInUser = this.userService.getLoggedInUser();
   }
 
+  public getDates(id:number): Observable<any>{
+        return this.http.get(this.serverUrl + "/schedules/" + id)
+          .catch(this.handleError);
+  }
+
   public getEvents(id:number): Observable<any> {
       return this.http.get(this.serverUrl + "/Calendars/FullCalendar/" + id)
           .catch(this.handleError);

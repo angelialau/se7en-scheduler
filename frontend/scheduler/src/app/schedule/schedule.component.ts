@@ -37,6 +37,8 @@ export class ScheduleComponent implements OnInit {
   listCourses: any;
   nativeWindow: any;
   displayEvent: any;
+  calendarstart: any;
+  calendarend: any;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -57,29 +59,43 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
     this.initialiseAppeal();
 
+    this.eventService.getDates(this.calendar_id).subscribe(data =>{
+      this.calendarstart = data.startDate.substring(0,10);
+      this.calendarend = data.endDate.substring(0,10);
+      console.log(this.calendarstart);
+      console.log(this.calendarend);
+    });
+
     if (this.cookieService.get('pillar') == "Administrator"){
       this.isAdmin = true;
     }
 
     this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
+      console.log(data);
+      var allschedules: Object[] = [];
       if (this.cookieService.get('pillar') != "Administrator"){
+        console.log("im in instru loop");
         for (let i of data){
-          if (i.instructor == this.cookieService.get('name') && i.id == this.cookieService.get('id')){
-            this.scheduledata = i.schedule;
+          if (i.prof_id == this.cookieService.get('id')){
+            console.log(i.schedule);
+            allschedules.push(i.schedule[0]); //remove 0 when rayson update format
           }
         }
+        this.scheduledata = allschedules;
       }
       else { // is Administrator
-        var allschedules: Object[] = [];
+        console.log("im in admin loop");
         for (var i = 0; i < data.length; i++){
-          if (data[i].pillar == "ASD"){
+          if (data[i].pillar == "EPD"){
             for (let j of data[i].schedule){
               allschedules.push(j);
           }}
        }
         this.scheduledata = allschedules;
       }
+      
+      console.log(this.scheduledata);
 
       this.calendarOptions = {
         editable: false, //make this true to allow editing of events
@@ -90,14 +106,14 @@ export class ScheduleComponent implements OnInit {
         minTime: moment.duration("08:00:00"), //start time
         maxTime: moment.duration("18:00:00"), //end time
         fixedWeekCount: true,
-        /*visibleRange: {
-            start: '2018-03-01',
-            end: '2018-03-15'
+        visibleRange: {
+            start: this.calendarstart,
+            end: this.calendarend
          }, //why is this not working :(
         validRange: {
-            start: '2018-03-01',
-            end: '2018-03-15'
-         }, //set this to blank out parts not involved in the term*/
+            start: this.calendarstart,
+            end: this.calendarend
+         }, //set this to blank out parts not involved in the term
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
@@ -119,7 +135,7 @@ export class ScheduleComponent implements OnInit {
      
      this.listCourses = []
     for (let event of this.scheduledata){
-      var course = event.title.replace(/\n/g, " ") + " from " + event.start + " to " + event.end;
+      var course = event.title.substring(0,6) + " - " + event.start + " to " + event.end;
       if (event.dow == 1){
         course += " on Mondays";
       }
@@ -237,7 +253,7 @@ export class ScheduleComponent implements OnInit {
 
   makeAppeal(){
     let errorMsg : string = "Something went wrong with making appeal, please try again later!";
-    this.userService.makeAppeals(this.newAppeal).subscribe(response =>{
+    this.userService.makeAppeals(this.newAppeal, this.calendar_id).subscribe(response =>{
       if (JSON.parse(response).success){
         this.snackBar.open("Appeal made!", null, {duration:1000});
         this.initialiseAppeal();

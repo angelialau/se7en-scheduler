@@ -15,7 +15,8 @@ var COLUMN_CLASS_TYPES = "class_types";
 var COLUMN_INSTRUCTORS = "instructors";
 var COLUMN_INSTRUCTOR_IDS = "instructor_ids";
 var COLUMN_SPLIT = "split";
-
+var COLUMN_VENUE_PREF = "venue_types";
+var COLUMN_PILLAR = "pillar";
 
 var Course = {
 	createStructure:{
@@ -31,7 +32,9 @@ var Course = {
 		class_types:null,
 		instructors:null,
 		instructor_ids:null,
-		split:null
+		split:null,
+		venue_types:null,
+		pillar:null
  	},
 
  	updateStructure:{
@@ -47,7 +50,9 @@ var Course = {
 		class_types:null,
 		instructors:null,
 		instructor_ids:null,
-		split:null
+		split:null,
+		venue_types:null,
+		pillar:null
  	},
 
 	getAllCourses:function(callback) {
@@ -79,8 +84,10 @@ var Course = {
 			COLUMN_CLASS_TYPES + "`,`" +
 			COLUMN_INSTRUCTORS + "`,`" +
 			COLUMN_INSTRUCTOR_IDS + "`,`" +
-			COLUMN_SPLIT + "`)" +  
-			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+			COLUMN_SPLIT + "`,`" +
+			COLUMN_PILLAR + "`,`" + 
+			COLUMN_VENUE_PREF + "`)" +  
+			" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 			[data.schedule_id,
 			 data.term,
 			 data.course_no,
@@ -93,7 +100,9 @@ var Course = {
 			 data.class_types,  
 			 data.instructors, 
 			 data.instructor_ids,
-			 data.split],
+			 data.split,
+			 data.pillar,
+			 data.venue_types],
 			 callback);
 	},
 
@@ -111,6 +120,8 @@ var Course = {
 						"` =?, `" + COLUMN_INSTRUCTORS +
 						"` =?, `" + COLUMN_INSTRUCTOR_IDS +
 						"` =?, `" + COLUMN_SPLIT +
+						"` =?, `" + COLUMN_VENUE_PREF +
+						"` =?, `" + COLUMN_PILLAR +
 						"` =? WHERE `" + COLUMN_ID +
 						"` =?",
 						[data.term,
@@ -125,6 +136,8 @@ var Course = {
 						 data.instructors, 
 						 data.instructor_ids,
 						 data.split,
+						 data.venue_types,
+						 data.pillar,
 						 data.id],
 						 callback);
 	},
@@ -142,6 +155,7 @@ var Course = {
 		var instructors = row.instructors.split("|");
 		var instructor_ids = row.instructor_ids.split("|");
 		var split = row.split.split(",");
+		var venue_types = row.venue_types.split(",");
 
 		// adding data we need in correct format
 		for (var i = 0; i < row.no_sessions; i++) {
@@ -151,6 +165,7 @@ var Course = {
 			sessions[i].instructors = instructors[i].split(",");
 			sessions[i].instructor_ids = instructor_ids[i].split(",");
 			sessions[i].split = split[i];
+			sessions[i].preference = venue_types[i];
 		}
 
 		row.sessions = sessions;
@@ -162,6 +177,7 @@ var Course = {
 		delete row.class_types;
 		delete row.instructors;
 		delete row.instructor_ids;
+		delete row.venue_types;
 
 		return row;
 	}

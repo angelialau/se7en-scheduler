@@ -86,11 +86,15 @@ var utilities = {
 		var endTime =  new Date(this.zeroTime.getTime() + (event.end+1)*(30*6*10000));
 		
 		output.instructor = event.prof;
-		output.id = event.prof_id.toString();
+		output.id = event.id.toString();
+		output.prof_id = event.prof_id == null ? null : event.prof_id.toString();
 		output.pillar = event.pillar;
 		output.schedule = [];
 
-		details.title = event.course + "\n" + event.location + "\n" + "Cohort " + event.cohort;
+		details.title = event.course + "\n" + event.location;
+		if (event.cohort != null) {
+			details.title += "\n" + "Cohort " + event.cohort;
+		}
 		details.start = fecha.format(startTime, 'HH:mm');
 		details.end = fecha.format(endTime, 'HH:mm');
 		details.dow = event.day.toString();
@@ -193,7 +197,23 @@ var utilities = {
 		// "Lecture Theatre 5"
 	],
 
-	zeroTime: new Date("1995-11-03 08:30")
+	/**
+	 * Our integer 'time' range from 0 to 19, where 0 is 8:30 am
+	 * Every increment is half an hour
+	 * Defining zero here for later use
+	 */
+	zeroTime: new Date("1995-11-03 08:30"),
+	
+	/**
+	 * Converts normal human time to our integer time
+	 * 
+	 * time is a string, eg "09:00" or "12:30". Only in increments of 30mins
+	 * returns an integer
+	 */
+	timeToInt:function(time) {
+		var difference  = new Date("1995-11-03 " + time).getTime() - this.zeroTime.getTime();
+		return difference/30/6/10000
+	}
 }
 
 module.exports=utilities;

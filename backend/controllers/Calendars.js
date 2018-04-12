@@ -8,9 +8,29 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
 	// Check if necessary keys are there
 	if (utils.compareJSONKeys(req.body, Calendar.createStructure)) {
-		// Change date to MySQL date time format
-		req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
+
+		if (req.body.date !== "null") {
+			// Change date to MySQL date time format
+			req.body.date = fecha.format(new Date(req.body.date), 'YYYY-MM-DD HH:mm:ss');
+		}
 		
+		// change null string to null keyword
+		for (var key in req.body) {
+			if (req.body[key] === "null") {
+				req.body[key] = null;
+			}
+		}
+
+		// check if day is proper input
+		if (req.body.day < 1 || req.body.day > 5 || !Number.isInteger(req.body.day)) {
+			if (req.body.date) {
+				req.body.day = new Date(req.body.date).getDay();
+			}
+			else {
+				res.json({"success":false, "message":"need at least date or day to be provided"});
+			}
+		}
+
 		// Create event
 		Calendar.createEvent(req.body, function(err, count) {
 			utils.basicPostCallback(res, err, count);
@@ -44,6 +64,26 @@ router.get('/Pillar/:id(\\d+)/:pillar([A-Z]+)', function(req, res, next) {
 		Calendar.getEventsByPillar(req.params.id, req.params.pillar, function(err, rows) {
 			utils.basicGetCallback(res, err, rows, null);
 		});
+	}
+});
+
+// defining get non-course events route
+router.get('/Events/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		Calendar.getNonCourseEvents(req.params.id, function(err, rows){
+			utils.basicGetCallback(res, err, rows, null);
+		});
+	}
+});
+
+// defining delete event route
+router.post('/Delete/', function(req, res, next) {
+	if (req.body.id) {
+		Calendar.deleteEvent(req.body.id, function(err, count) {
+			utils.basicPostCallback(res, err, count);
+		});
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
 	}
 });
 
@@ -86,10 +126,11 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 					available.push(weekdays);
 				}
 
+				var rowsWithDates = [];
 				// remove unavailable timings
 				for (var i = 0; i < rows.length; i++) {
-					// only care if it concerns current room
-					if (rows[i].location === room) {
+					// only care if it concerns current room and is weekly event
+					if (rows[i].location === room && rows[i].date === 'null') {
 						var j = rows[i].start
 						while (j < rows[i].end) {
 							// go through week by week
@@ -101,7 +142,10 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 							}	
 							j++;
 						}
-					}	
+					} else if (rows[i].location === room && rows[i].date !== 'null') {
+						// save rows with dates for faster loop later
+						rowsWithDates.push(rows[i]);
+					}
 				}
 
 				// remove based on today's day
@@ -118,6 +162,22 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 						roomAvailability[current.toDateString()] = day;
 					});
 				}
+
+				// remove unavailable timings based on dates
+				rowsWithDates.forEach(function(row) {
+					var dateString = new Date(row.date).toDateString();
+					var tempAvailability = roomAvailability[dateString];
+
+					var j = row.start
+					while (j < row.end) {
+						var index = tempAvailability.indexOf(j);	
+						if (index != -1) {
+							tempAvailability.splice(index, 1);
+						}
+						j++;
+					}
+					roomAvailability[dateString] = tempAvailability;
+				});
 
 				output[room] = roomAvailability;
 			});
@@ -172,6 +232,22 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 				res.json(Object.values(output));
 			}
 		});
+	}
+});
+
+// defining update calendar entry endpoint
+router.post('/Update', function(req, res, next) {
+	if (utils.compareJSONKeys(req.body, Calendar.updateNoDateStructure)) {
+		// change time format
+		req.body.start = utils.timeToInt(req.body.start);
+		req.body.end = utils.timeToInt(req.body.end);
+
+		// update
+		Calendar.updateEventNoDate(req.body, function(err, count) {
+			utils.basicPostCallback(res, err, count);
+		});
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
 	}
 });
 
