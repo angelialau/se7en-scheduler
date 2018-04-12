@@ -80,8 +80,6 @@ class FormsTest(unittest.TestCase):
 
         submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'submitFormButton')))
         self.assertEqual(submit.is_enabled(), True, postButtonError)
-            
-        
 
     def test_add_schedule(self):
         driver = self.driver
@@ -101,6 +99,12 @@ class FormsTest(unittest.TestCase):
             if "2023" in option.text:
                 option.click()
 
+        start = driver.find_element_by_id('start')
+        start.send_keys('2018-11-12')
+
+        end = driver.find_element_by_id('end')
+        end.send_keys('2018-11-13')
+
         submit = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "addScheduleSubmitButton")))
         self.assertEqual(submit.is_enabled(), True, "add schedule form button not enabled")
 
@@ -112,8 +116,9 @@ class FormsTest(unittest.TestCase):
 
     def test_add_course(self):
         driver = self.driver
-        driver.get("http://localhost:4200/schedules/31")
-        showFormButton = driver.find_element_by_id("courseFormTitle").click()
+        driver.get("http://localhost:4200/schedules/45")
+        header = driver.find_elements_by_id("courseFormTitle")
+        self.assertEqual(len(header), 1)
 
         submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'addCourseSubmitButton')))
         self.assertEqual(submit.is_enabled(), False, preButtonError)
@@ -151,7 +156,13 @@ class FormsTest(unittest.TestCase):
         class_types = driver.find_element_by_xpath('//select[@formcontrolname="class_types"]')
         class_typesoptions = class_types.find_elements_by_tag_name("option")
         for option in class_typesoptions:
-            if "Lecture" in option.text:
+            if "Cohort Based Learning" in option.text:
+                option.click()  
+
+        venue_types = driver.find_element_by_xpath('//select[@formcontrolname="venue_types"]')
+        venue_typesoptions = class_types.find_elements_by_tag_name("option")
+        for option in venue_typesoptions:
+            if "Tiered Think Tank" in option.text:
                 option.click()  
 
         sessions_hrs = driver.find_element_by_xpath('//select[@formcontrolname="sessions_hrs"]')
@@ -174,20 +185,54 @@ class FormsTest(unittest.TestCase):
     #     driver = self.driver
     #     driver.get('http://localhost:4200/password')
 
+    #     submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'submitChangePasswordFormButton')))
+    #     self.assertEqual(submit.is_enabled(), False, preButtonError)
+
     #     oldP = driver.find_element_by_id('oldPassword')
     #     oldP.send_keys('password')
 
-    #     newP = driver.find_element_by_id('newPassword')
-    #     newP.send_keys('password')
+    #     newP = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'newPassword'))) 
+    #     newP.send_keys('newpassword')
 
-    #     confirmP = driver.find_element_by_id('confirmPassword')
-    #     confirmP.send_keys('password') 
+    #     confirmP = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'confirmPassword'))) 
+    #     confirmP.send_keys('newpassword') 
 
     #     submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'submitChangePasswordFormButton')))
     #     self.assertEqual(submit.is_enabled(), True, postButtonError)
     
-    # add event
-    # add appeal
+    def test_add_event(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/schedules/31")
+        header = driver.find_elements_by_id("schedulesTitle")
+        self.assertEqual(len(header), 1)
+
+        submit = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, 'submitEventButton')))
+        self.assertEqual(submit.is_enabled(), False, preButtonError)
+
+        select = WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.ID,"location")))
+        options = select.find_elements_by_tag_name("option")
+        for option in options:
+            if(option.text.strip()=="Think Tank 1"):
+                option.click()
+                break
+        
+        course = driver.find_element_by_id("course")
+        course.send_keys("Blockchain Seminar 2018")
+
+        instructorId = driver.find_element_by_id("instructorId")
+        instructorIdOptions = instructorId.find_elements_by_tag_name("option")
+        instructorIdOptions[0].click()
+
+        pillar = driver.find_element_by_id("pillar")
+        pillarOptions = pillar.find_elements_by_tag_name("option")
+        pillarOptions[0].click()
+
+        cohort = driver.find_element_by_id("cohort")
+        cohortOptions = cohort.find_elements_by_tag_name("option")
+        cohortOptions[0].click()
+
+        submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'submitEventButton')))
+        self.assertEqual(submit.is_enabled(), True, postButtonError)
 
     def tearDown(self):
         self.driver.close()
