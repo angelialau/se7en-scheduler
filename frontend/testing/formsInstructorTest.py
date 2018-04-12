@@ -4,14 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.support.select import Select 
 from selenium.webdriver.common.by import By
-import unittest, time, pickle
+import unittest, time, pickle, random
 
 preButtonError = "submit button should be disabled before form is filled"
 postButtonError = "submit button should be enabled after form is filled"
 formResetError = "form input fields did not revert to ng-pristine after refreshing "
-
-def broken_function():
-    raise Exception('This is broken')
 
 class FormsInstructorTest(unittest.TestCase):
 
@@ -35,30 +32,23 @@ class FormsInstructorTest(unittest.TestCase):
 
     def test_add_appeal(self):
         driver = self.driver
-        driver.get("http://localhost:4200/schedules")
+        driver.get("http://localhost:4200/viewschedule")
 
-        div = driver.find_element_by_id("scheduleFormTitle").click()
+        appealFormButton = driver.find_elements_by_id("appealButton")
+        self.assertEqual(len(appealFormButton), 1)
+        appealFormButton[0].click()
 
-        trimester = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "trimester")))
-        trimesteroptions = trimester.find_elements_by_tag_name("option")
-        for option in trimesteroptions:
-            if "Trimester 3" in option.text:
-                option.click()
+        submit = WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.ID, "makeAppealButton")))
+        self.assertEqual(submit.is_enabled(), False, preButtonError)
 
-        year = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "year")))
-        yearoptions = year.find_elements_by_tag_name("option")
-        for option in yearoptions:
-            if "2023" in option.text:
-                option.click()
+        title = WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.ID, "title")))
+        title.send_keys(''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)]))
 
-        submit = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "addScheduleSubmitButton")))
-        self.assertEqual(submit.is_enabled(), True, "add schedule form button not enabled")
+        content = driver.find_element_by_id("appealContent")
+        content.send_keys(''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)]))
 
-        #test reset function
-        driver.find_element_by_id("addSchedResetButton").click()
-        #check that input fields revert to the pristine state
-        trimester = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "trimester")))
-        self.assertEqual("ng-pristine" in trimester.get_attribute("class"), True, formResetError) 
+        submit = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "makeAppealButton")))
+        self.assertEqual(submit.is_enabled(), True, postButtonError)
 
     def tearDown(self):
         self.driver.close()

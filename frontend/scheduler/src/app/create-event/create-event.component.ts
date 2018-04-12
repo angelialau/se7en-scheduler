@@ -46,17 +46,18 @@ export class CreateEventComponent implements OnInit {
     private route: ActivatedRoute, 
     private cookieService: CookieService, 
      ) {
-      if(this.cookieService.get('pillar')==='Administrator'){
-        this.isAdmin = true;
-      }
+      
     }
 
   ngOnInit() {
     this.schedule_id = this.route.snapshot.params['schedule_id'];
-    this.searchForm = new Search(this.schedule_id,'', '','','','');
-    this.newEvent = new Event(this.schedule_id);
-    this.getInstructors();
-    this.refreshTimeSlots();
+    if(this.cookieService.get('pillar')==='Administrator'){
+      this.isAdmin = true;
+      this.searchForm = new Search(this.schedule_id,'', '','','','');
+      this.newEvent = new Event(this.schedule_id);
+      this.getInstructors();
+      this.refreshTimeSlots();
+    }
     this.getEvents();
   }
 
@@ -170,12 +171,12 @@ export class CreateEventComponent implements OnInit {
         }else if(response.body.message === "no rows found"){
           this.noItems = true;
         }else{
-          this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
+          this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1200,})
           console.log("get events error", response);
         }
       }, 
       error =>{
-        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1000,})
+        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1200,})
         console.log("get events server error", error);
       })
   }

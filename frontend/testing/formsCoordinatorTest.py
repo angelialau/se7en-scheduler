@@ -8,12 +8,12 @@ import unittest, time, pickle
 
 preButtonError = "submit button should be disabled before form is filled"
 postButtonError = "submit button should be enabled after form is filled"
-formResetError = "form input fields did not revert to ng-pristine after refreshing "
+formResetError = "form input fields did not revert to ng-pristine after refreshing"
 
 def broken_function():
     raise Exception('This is broken')
 
-class FormsTest(unittest.TestCase):
+class FormsCoordinatorTest(unittest.TestCase):
 
     def setUp(self):
         chrome_options = webdriver.ChromeOptions()
