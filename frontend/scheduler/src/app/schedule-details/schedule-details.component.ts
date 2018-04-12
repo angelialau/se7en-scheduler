@@ -28,11 +28,9 @@ export class ScheduleDetailsComponent implements OnInit {
     public snackBar: MatSnackBar, 
     ) { 
     this.schedule_id = route.snapshot.params['schedule_id'];
-    
   }
 
   ngOnInit() {
-    this.refreshCourses();
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
       response => {
         if(response.status == 200){
@@ -41,6 +39,8 @@ export class ScheduleDetailsComponent implements OnInit {
           }else if(response.body.success){
             if(response.body.generated == 1){
               this.generated = true;
+            }else{
+              this.refreshCourses(); // calendar ungenerated, means we can still add courses
             }
           }
         }
