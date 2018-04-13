@@ -244,7 +244,7 @@ describe('CreateCourseComponent', () => {
       let result = component.translateDataToCourse();
       expect(result instanceof Course).toBe(true);
       expect(result).toEqual( new Course(
-        3,4,"50.004","Introduction to Algorithms",1,1,1,1,
+        3,4,"50.004","Introduction to Algorithms","ISTD",1,1,1,1,
         "1.5,2",
         "No preference",
         "Lab",
@@ -289,7 +289,7 @@ describe('CreateCourseComponent', () => {
       let result = component.translateDataToCourse();
       expect(result instanceof Course).toBe(true);
       expect(result).toEqual( new Course(
-        3,4,"50.004","Introduction to Algorithms",1,1,1,1,
+        3,4,"50.004","Introduction to Algorithms","ISTD",1,1,1,1,
         "1.5",
         "No preference",
         "Cohort Based Learning",

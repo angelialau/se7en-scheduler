@@ -17,16 +17,20 @@ import { DatePipe } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule, MatSnackBarConfig, MatSnackBarRef, 
   SimpleSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
+import { CookieService } from 'ng2-cookies';
 
 import { ViewSchedulesComponent } from './view-schedules.component';
 
 export class MockScheduleService extends ScheduleService{}
+export class MockCookieService extends CookieService{}
 
 describe('ViewSchedulesComponent', () => {
   let component: ViewSchedulesComponent;
   let fixture: ComponentFixture<ViewSchedulesComponent>;
   let scheduleServiceStub : MockScheduleService;
   let testBedScheduleService: MockScheduleService;
+  let cookieServiceStub: MockCookieService;
+  let testBedCookieService: MockCookieService;
   let snackBar : MatSnackBar;
 
   beforeEach(async(() => {
@@ -46,6 +50,7 @@ describe('ViewSchedulesComponent', () => {
         DatePipe,
         {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': '4'}}}},
         {provide: ScheduleService, useClass: MockScheduleService },
+        {provide: CookieService, useClass: MockCookieService}, 
        ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -58,6 +63,8 @@ describe('ViewSchedulesComponent', () => {
     snackBar = fixture.debugElement.injector.get(MatSnackBar);
     testBedScheduleService = TestBed.get(ScheduleService);
     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
+    testBedCookieService = TestBed.get(CookieService);
+    cookieServiceStub = fixture.debugElement.injector.get(CookieService);
 
     fixture.detectChanges();
   });
@@ -70,6 +77,13 @@ describe('ViewSchedulesComponent', () => {
     expect(scheduleServiceStub instanceof MockScheduleService).toBeTruthy();
     inject([ScheduleService], (injectService: ScheduleService) => {
       expect(injectService).toBe(testBedScheduleService);
+    });
+  });
+
+  it('should have cookie service injected and instantiated', () => {
+    expect(cookieServiceStub instanceof MockCookieService).toBeTruthy();
+    inject([CookieService], (injectService: CookieService) => {
+      expect(injectService).toBe(testBedCookieService);
     });
   });
 
@@ -104,11 +118,11 @@ describe('ViewSchedulesComponent', () => {
         snackBar.open('msg');
         component.getSchedules();
     })
-    let sendspy = spyOn(component, 'onSend').and.callFake(()=>{
+    let sendspy = spyOn(component, 'addSchedule').and.callFake(()=>{
       scheduleServiceStub.createSchedule(component.schedule);
     });
 
-    component.onSend();
+    component.addSchedule();
 
     expect(sendspy).toHaveBeenCalled();
     expect(servicespy).toHaveBeenCalled();

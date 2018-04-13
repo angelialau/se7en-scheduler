@@ -65,7 +65,9 @@ This test covers all algorithm functions that can be tested separately.
 End to end testing of the website is done using Selenium in Python 3. To run,
 
 ```
-cd frontend/testing
+cd frontend/scheduler/src
+ng serve 
+cd ../../testing
 python3 SystemsTest.py
 ```
 This test covers 

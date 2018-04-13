@@ -25,6 +25,7 @@ import { CreateEventComponent } from './create-event.component';
 
 export class MockUserService extends UserService{}
 export class MockScheduleService extends ScheduleService{}
+export class MockCookieService extends CookieService {}
 
 describe('CreateEventComponent', () => {
   let component: CreateEventComponent;
@@ -33,6 +34,8 @@ describe('CreateEventComponent', () => {
   let testBedUserService : MockUserService;
   let scheduleServiceStub : MockScheduleService;
   let testBedScheduleService: MockScheduleService;
+  let cookieServiceStub: MockCookieService;
+  let testBedCookieService: MockCookieService;
   let snackBar : MatSnackBar;
   let snackBarSpy : jasmine.Spy;
 
@@ -54,7 +57,7 @@ describe('CreateEventComponent', () => {
         {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': 4}}}},
         {provide: UserService, useClass: MockUserService },
         {provide: ScheduleService, useClass: MockScheduleService },
-        CookieService,
+        {provide: CookieService, useClass: MockCookieService}, 
        ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -70,6 +73,9 @@ describe('CreateEventComponent', () => {
     snackBarSpy = spyOn(snackBar, "open").and.returnValue(MatSnackBarRef);
     testBedScheduleService = TestBed.get(ScheduleService);
     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
+    testBedCookieService = TestBed.get(CookieService);
+    cookieServiceStub = fixture.debugElement.injector.get(CookieService);
+
     fixture.detectChanges();
   });
 
@@ -91,18 +97,21 @@ describe('CreateEventComponent', () => {
     });
   });
 
+  it('should have cookie service injected and instantiated', () => {
+    expect(cookieServiceStub instanceof MockCookieService).toBeTruthy();
+    inject([CookieService], (injectService: CookieService) => {
+      expect(injectService).toBe(testBedCookieService);
+    });
+  });
+
   it('should initialise schedule id and form options at ngOnInit', ()=>{
-    fixture.detectChanges()
+    let spy = spyOn(cookieServiceStub, 'get');
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+
     expect(component.schedule_id).toBe(4);
-    expect(component.today).toBe(scheduleServiceStub.getTodayDate());
-
-    expect(component.today).toBeDefined();
     
-    expect(component.searchForm instanceof Search).toBe(true);
-    expect(component.searchForm.schedule_id).toBe(4);
-
-    expect(component.newEvent instanceof Event).toBe(true);
-    expect(component.newEvent.schedule_id).toBe(4);
     
     expect(component.timeslots).toEqual([]); 
     expect(component.venues).toEqual([]); 
@@ -110,6 +119,9 @@ describe('CreateEventComponent', () => {
     expect(component.startTimes).toEqual([]); 
     expect(component.endTimes).toEqual([]); 
 
+    expect(component.noItems).toBe(false);   
+    expect(component.showEventList).toBe(true);   
+    expect(component.showEventForm).toBe(true);   
     expect(component.showDateSelection).toBe(false);   
     expect(component.showTimeSelection).toBe(false);   
     expect(component.showEndSelection).toBe(false);   
@@ -166,19 +178,19 @@ describe('CreateEventComponent', () => {
     expect(ans).toEqual(13);
   })
 
-  it('should reject time that is not between 830 and 1600, and are not at 00' 
+  it('should reject time that is not between 830 and 1800, and are not at 00' 
     + ' or 30 min intervals', ()=>{
     let time = '06:00';
-    expect(function(){component.parseTime(time)}).toThrow(
-      new Error('invalid time given, should be between 0830 to 1600'));
+    expect(function(){component.parseTime(time)}).toThrowError(
+      'invalid time given, should be between 0830 to 1800');
 
-    time = '16:30';
-    expect(function(){component.parseTime(time)}).toThrow(
-      new Error('invalid time given, should be between 0830 to 1600'));
+    time = '18:30';
+    expect(function(){component.parseTime(time)}).toThrowError(
+      'invalid time given, should be between 0830 to 1800');
 
     time = '08:45';
-    expect(function(){component.parseTime(time)}).toThrow(
-      new Error('invalid time given, should be between 0830 to 1600'));
+    expect(function(){component.parseTime(time)}).toThrowError(
+      'invalid time given, should be between 0830 to 1800');
   })
 
   it('should return the correct day given a specific date', ()=>{
@@ -188,6 +200,7 @@ describe('CreateEventComponent', () => {
   })
 
   it('should return the correct index given a specific day', ()=>{
+    component.searchForm = new Search(component.schedule_id,'','','','','');
     component.searchForm.day = 'Monday';
     let ans = component.parseDay();
     expect(ans).toEqual(1);
