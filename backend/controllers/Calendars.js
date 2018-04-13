@@ -168,6 +168,10 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 					var dateString = new Date(row.date).toDateString();
 					var tempAvailability = roomAvailability[dateString];
 
+					if (tempAvailability == null) {
+						continue;
+					}
+
 					var j = row.start
 					while (j < row.end) {
 						var index = tempAvailability.indexOf(j);	
