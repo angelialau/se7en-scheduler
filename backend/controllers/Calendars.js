@@ -169,7 +169,7 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 					var tempAvailability = roomAvailability[dateString];
 
 					if (tempAvailability == null) {
-						continue;
+						return;
 					}
 
 					var j = row.start
