@@ -1,0 +1,18 @@
+<div class="container mx-auto">
+  <div class="card-body">
+    <h5 class="card-title text-center" id="schedulesTitle"> Select the trimester calendar that you would like view </h5>
+  </div>
+  
+  <div>
+    <table class="table table-hover">
+      <tbody *ngFor="let schedule of schedules">
+        <tr *ngIf="schedule.generated == 1">
+          <td [routerLink]="['../viewschedule/' + schedule.id]"
+          title="View calendar for this trimester"
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
+          {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

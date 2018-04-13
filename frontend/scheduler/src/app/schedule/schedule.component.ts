@@ -305,6 +305,15 @@ export class ScheduleComponent implements OnInit {
   openDialog(){
      var newWindow = this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
      }
+
+  return(){
+    if (this.isAdmin){
+      this.router.navigateByUrl("/schedules");
+    }
+    else{
+      this.router.navigateByUrl("/viewcalendar");
+    }
+  }
   
 }
 
