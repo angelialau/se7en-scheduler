@@ -75,7 +75,7 @@ export class ScheduleComponent implements OnInit {
       if (this.cookieService.get('pillar') != "Administrator"){
         for (let i of data){
           if (i.prof_id == this.cookieService.get('id')){
-            allschedules.push(i.schedule[0]); //remove 0 when rayson update format
+            allschedules.push(i.schedule);
           }
         }
         this.scheduledata = allschedules;
@@ -85,11 +85,11 @@ export class ScheduleComponent implements OnInit {
       }
       else { // is Administrator
         this.haveSchedule = true;
+        console.log(data);
         for (var i = 0; i < data.length; i++){
           if (data[i].pillar == "EPD"){
-            for (let j of data[i].schedule){
-              allschedules.push(j);
-          }}
+              allschedules.push(data[i].schedule);
+          }
        }
         this.scheduledata = allschedules;
       }
@@ -191,9 +191,8 @@ export class ScheduleComponent implements OnInit {
     var pillarschedules: Object[] = [];
     for (var i = 0; i < this.fulldataset.length; i++){
       if (this.fulldataset[i].pillar == this.specificPillar){
-        for (let j of this.fulldataset[i].schedule){
-          pillarschedules.push(j);
-        }
+        pillarschedules.push(this.fulldataset[i].schedule);
+        
       }
     }
 

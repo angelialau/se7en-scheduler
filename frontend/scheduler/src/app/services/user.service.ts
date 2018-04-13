@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { User } from './../../models/user.model';
 import { Announcement } from './../../models/announcement.model';
 import { Appeal } from './../../models/appeal.model';
+import { appealReply } from './../../models/appealReply.model';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -175,5 +176,35 @@ export class UserService {
 
   getAppealColumns(): string[]{
     return ["instructor", "pillar", "title", "date"];
+  }
+
+  makeReplies(reply: appealReply, sender: string, senderId: string):Observable<any>{
+    let body = new URLSearchParams();
+    body.set('title', reply.title);
+    body.set('content', reply.content);
+    body.set('instructor', reply.instructor);
+    body.set('instructorId', String(reply.instructorid));
+    body.set('sender', sender);
+    body.set('senderId', senderId);
+    body.set('scheduleId', String(reply.scheduleId));
+
+    let extension = this.url + '/Replies';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  getReplies(instructorid: number): Observable<appealReply[]>{
+    return this.http.get<appealReply[]>(this.url + '/Replies/Instructor/' + instructorid, { observe: 'response'} )
+      .catch(this.handleError);
+  }
+
+  deleteReply(id: number): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    let extension = this.url + '/Replies/Delete';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
   }
 }
