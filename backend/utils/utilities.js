@@ -89,17 +89,16 @@ var utilities = {
 		output.id = event.id.toString();
 		output.prof_id = event.prof_id == null ? null : event.prof_id.toString();
 		output.pillar = event.pillar;
-		output.schedule = [];
+		output.schedule = {};
 
-		details.title = event.course + "\n" + event.location;
+		output.schedule.title = event.course + "\n" + event.location;
 		if (event.cohort != null) {
-			details.title += "\n" + "Cohort " + event.cohort;
+			output.schedule.title += "\n" + "Cohort " + event.cohort;
 		}
-		details.start = fecha.format(startTime, 'HH:mm');
-		details.end = fecha.format(endTime, 'HH:mm');
-		details.dow = event.day.toString();
+		output.schedule.start = fecha.format(startTime, 'HH:mm');
+		output.schedule.end = fecha.format(endTime, 'HH:mm');
+		output.schedule.dow = event.day.toString();
 
-		output.schedule.push(details);
 		return output;
 	},
 

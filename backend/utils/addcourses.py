@@ -9,7 +9,7 @@ with open(jsonFile, 'r') as myfile:
 rafaelaCourses = json.loads(data.decode('ascii'))
 
 endpoint = "http://devostrum.no-ip.info:6666/Courses"
-newCourse = {"schedule_id":45}
+newCourse = {"schedule_id":46}
 
 for entry in rafaelaCourses:
 	newCourse["term"] = entry["term"]
