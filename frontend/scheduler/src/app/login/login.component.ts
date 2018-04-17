@@ -27,10 +27,6 @@ export class LoginComponent implements OnInit {
     if (cookie != undefined && cookie != ''){
       this.router.navigateByUrl('/home');
     }
-    //potential log out bug?
-    // else{
-    //   this.user = this.userService.getLoggedInUser();  
-    // }
   }
 
   login(){

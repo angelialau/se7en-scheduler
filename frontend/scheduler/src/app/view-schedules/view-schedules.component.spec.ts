@@ -130,27 +130,6 @@ describe('ViewSchedulesComponent', () => {
     expect(compspy).toHaveBeenCalled();
   })
 
-  it('should call service, snackbar and refresh scedules after deleting schedule', ()=>{
-    component.schedule = new Schedule(1,2018);
-    let snackbarspy = spyOn(snackBar, 'open');
-    let compspy = spyOn(component, 'getSchedules');
-    let servicespy = spyOn(scheduleServiceStub, 'deleteSchedule').and
-      .callFake((schedule: Schedule)=>{
-        snackBar.open('msg');
-        component.getSchedules();
-    })
-    let deletespy = spyOn(component, 'deleteSchedule').and.callFake(()=>{
-      scheduleServiceStub.deleteSchedule(component.schedule);
-    });
-
-    component.deleteSchedule(component.schedule);
-
-    expect(deletespy).toHaveBeenCalled();
-    expect(servicespy).toHaveBeenCalled();
-    expect(snackbarspy).toHaveBeenCalled();
-    expect(compspy).toHaveBeenCalled();
-  })
-
   it('should toggle schedule list views when clicking on div', ()=>{
     let spy = spyOn(component, 'showSchedules').and.callThrough();
     expect(component.showScheduleList).toBe(true);
@@ -162,14 +141,4 @@ describe('ViewSchedulesComponent', () => {
     expect(spy).toHaveBeenCalled();
   })
 
-  it('should toggle schedule form views when clicking on div', ()=>{
-    let spy = spyOn(component, 'showScheduleForm').and.callThrough();
-    expect(component.showAddScheduleForm).toBe(false);
-    component.showScheduleForm();
-    expect(component.showAddScheduleForm).toBe(true);
-    expect(spy).toHaveBeenCalled();
-    component.showScheduleForm();
-    expect(component.showAddScheduleForm).toBe(false);
-    expect(spy).toHaveBeenCalled();
-  })
 });
