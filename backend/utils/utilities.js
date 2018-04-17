@@ -149,7 +149,7 @@ var utilities = {
 
 		// move to correct date
 		console.log("start date: " + startDate.getDay());
-		console.log("event day: " + event.day;
+		console.log("event day: " + event.day);
 		while (startDate.getDay() !== event.day) {
 			this.incrementDate(startDate);
 		}
