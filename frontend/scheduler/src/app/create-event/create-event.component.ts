@@ -59,7 +59,7 @@ export class CreateEventComponent implements OnInit {
       this.newEvent = new Event(this.schedule_id);
       this.scheduleService.getSchedule(this.schedule_id).subscribe(
         response => {
-          if(response.body.finalized == "0"){ // schedule not finalized
+          if(response.body.finalized == "0" || response.body.generated == "0"){ // schedule not finalized
             this.router.navigateByUrl('/events');
           }else if(response.body.finalized == "1"){
             this.finalized = true;
@@ -69,6 +69,7 @@ export class CreateEventComponent implements OnInit {
           }
         },
         error => {
+          this.snackBar.open("Something went wrong with the server. Please try again later!", null, {duration: 1200,})
           console.log("getSchedule server error", error);
         }
       )
