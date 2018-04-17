@@ -12,6 +12,7 @@ import { CookieService } from 'ng2-cookies';
 })
 export class ViewSchedulesComponent implements OnInit {
   isAdmin : boolean = false;
+  available : boolean = true;
   years : number[] =[]
   showScheduleList : boolean = true;
   showAddScheduleForm : boolean = false;
@@ -45,21 +46,26 @@ export class ViewSchedulesComponent implements OnInit {
   }
 
   addSchedule(){
-    this.scheduleService.createSchedule(this.schedule).subscribe(
-      response => {
-        if(JSON.parse(response).success){
-          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
-          this.getSchedules();
-        }else{
-          this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1000, });
-          console.log("create schedule client error", response);
-        }
-      }, 
-      error =>{
-        console.log("create schedule server", error);        
-        this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1000, });
-      }, 
-    );
+    if(this.available){
+      this.scheduleService.createSchedule(this.schedule).subscribe(
+        response => {
+          if(JSON.parse(response).success){
+            this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+            this.getSchedules();
+          }else{
+            this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1200, });
+            console.log("create schedule client error", response);
+          }
+        }, 
+        error =>{
+          console.log("create schedule server", error);        
+          this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1200, });
+        }, 
+      );  
+    }else{
+      this.snackBar.open("The year and trimester of this schedule is already created!", null, {duration: 1200,})
+    }
+    
   }
 
   getSchedules(){
@@ -85,15 +91,26 @@ export class ViewSchedulesComponent implements OnInit {
           this.snackBar.open("Created schedule!", null, { duration: 1000, });  
           this.getSchedules();
         }else{
-          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1000, });
+          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1200, });
           console.log("delete schedule client error", response);
         }
       }, 
       error =>{
         console.log("could not trash schedule!");
         console.log(error);
-        this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1000, });
+        this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1200, });
       })
+  }
+
+  checkAvailability(){
+    for(let s of this.schedules){
+      if(s.year == this.schedule.year && s.trimester == this.schedule.trimester){
+        this.available = false;
+        return;
+      }
+    }
+    this.available = true;
+    console.log(this.available);
   }
 
   showSchedules() { this.showScheduleList = ! this.showScheduleList }
