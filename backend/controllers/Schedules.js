@@ -72,13 +72,25 @@ router.post('/Update', function(req, res, next) {
 // defining route for deleting a schedule
 router.post('/Delete', function(req, res, next) {
 	if (req.body.id) {
-
 		Schedule.deleteSchedule(
 			req.body.id,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
 		);
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for finalizing a schedule
+router.post('/Finalized', function(req, res, next) {
+	if (req.body.id) {
+		Schedule.updateFinalized(
+			req.body.id,
+			function(err, count) {
+				utils.basicPostCallback(res, err, count);
+			});
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
 	}
@@ -145,5 +157,6 @@ router.post('/Generate', function(req, res, next) {
 		res.json({success:false, message: "incomplete params"});
 	}
 });
+
 
 module.exports = router;

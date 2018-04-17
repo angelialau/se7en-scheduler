@@ -9,6 +9,7 @@ var COLUMN_TRIMESTER = "trimester";
 var COLUMN_GENERATED = "generated";
 var COLUMN_START_DATE = "startDate";
 var COLUMN_END_DATE = "endDate";
+var COLUMN_FINALIZED = "finalized";
 
 var Schedule = {
 	getAllSchedules:function(callback) {
@@ -85,6 +86,15 @@ var Schedule = {
 	updateGenerated:function(id, callback) {
 		return db.query("UPDATE " + TABLE_NAME +
 						" SET `" + COLUMN_GENERATED + 
+						"` =1 WHERE `" + COLUMN_ID + 
+						"`=?",
+						[id],
+						callback);
+	},
+
+	updateFinalized:function(id, callback) {
+		return db.query("UPDATE " + TABLE_NAME +
+						" SET `" + COLUMN_FINALIZED + 
 						"` =1 WHERE `" + COLUMN_ID + 
 						"`=?",
 						[id],
