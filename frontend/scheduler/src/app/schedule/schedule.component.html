@@ -39,7 +39,7 @@
     <button type="button" (click) = "downloadCalendar()" id="downloadButton"
     class="btn btn-primary">
     Download Calendar</button></span>
-
+  <button *ngIf = "isAdmin && !isFinalised" type="button" (click) = "finaliseCalendar()" id="finaliseButton" class="btn btn-danger">Finalise Calendar</button>
 
     <span *ngIf = "show">
     <form #AppealForm="ngForm">
@@ -76,8 +76,9 @@
       (click)="makeAppeal()">
         <i class="fas fa-bullhorn"></i> Make Appeal
       </button>
-      
     </form>
 </span>
+
+
 </div>
     
