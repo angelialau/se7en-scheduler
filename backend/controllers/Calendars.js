@@ -238,6 +238,7 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 
 // Get calendar entries in editable json format
 router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
+	console.log("api called");
 	if (req.params.id) {
 		// get events
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
@@ -246,12 +247,14 @@ router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 				res.json(err);
 			} else {
 				// get schedule details
+				console.log("i'm here");
 				Schedule.getScheduleById(req.params.id, function(schedule_err, schedule) {
 					if (schedule_err) {
 						schedule_err.success = false;
 						res.json(schedule_err);
 					} else {
 						// format correctly
+						console.log("got the schedule");
 						var formatted;
 						var output = {};
 						var startDateString = fecha.format(new Date(schedule[0].startDate), 'YYYY-MM-DD[T0830]');
