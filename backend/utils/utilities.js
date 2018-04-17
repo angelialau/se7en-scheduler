@@ -163,6 +163,7 @@ var utilities = {
 		output.pillar = event.pillar;
 		output.schedule = {};
 
+		output.schedule.id = event.id.toString();
 		output.schedule.title = event.course + "\n" + event.location;
 		if (event.cohort != null) {
 			output.schedule.title += "\n" + "Cohort " + event.cohort;
