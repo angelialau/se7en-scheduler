@@ -65,7 +65,7 @@
                 </div>
                 <select class="form-control" id="year" required
                  [(ngModel)]="schedule.year" name="year">
-                 <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
+                 <option *ngFor="let i of years"
                   value={{i}}>{{i}}</option>
                 </select>
               </div>

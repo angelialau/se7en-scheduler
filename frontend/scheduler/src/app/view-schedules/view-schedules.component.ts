@@ -12,6 +12,7 @@ import { CookieService } from 'ng2-cookies';
 })
 export class ViewSchedulesComponent implements OnInit {
   isAdmin : boolean = false;
+  years : number[] =[]
   showScheduleList : boolean = true;
   showAddScheduleForm : boolean = false;
   schedule : Schedule = new Schedule(null,null);
@@ -30,8 +31,17 @@ export class ViewSchedulesComponent implements OnInit {
   ngOnInit() {
     if(this.cookieService.get('pillar')==="Administrator"){
       this.isAdmin = true;
+      this.populateYears();
     }
     this.getSchedules();
+  }
+
+  populateYears(){
+    let today = new Date;
+    let year = today.getFullYear();
+    for(let i = 0; i< 5; i++){
+      this.years.push(year + i);
+    }
   }
 
   addSchedule(){
