@@ -1,7 +1,10 @@
 <mat-toolbar class="toolbar">
-  <div routerLink="/home"> <img src="./../../assets/logo.png" class="scale"> <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px;">Administrator</span> <ng-template #instructor ><span class = "mat-caption" style="margin-left: 5px;">Instructor</span></ng-template> </div> 
+  <div routerLink="/home"> <img src="./../../assets/logo.png" class="scale"> <span *ngIf="administrator else instructor" class="mat-caption" style="margin-left: 5px; font-family: Trebuchet MS;">Administrator</span> 
+  	<ng-template #instructor ><span class = "mat-caption" style="margin-left: 5px; font-family: Trebuchet MS;">Instructor</span></ng-template> 
+  </div> 
   <span class="spacer"></span>
     <!-- sign out -->
+    <span class = "mat-caption" style="margin-right: 10px;font-family: Trebuchet MS;"> {{name}} </span>
     <button mat-icon-button (click)="signOut()" routerLink="/login" id="logoutButton">
       <i class="fas fa-sign-out-alt"></i>
     </button>

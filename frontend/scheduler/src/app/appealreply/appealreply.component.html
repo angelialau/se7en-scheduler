@@ -1,20 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title> fullscreen image background </title>
-<style>
-html{
-	background-color: yellow;
-	-webkit- background-size:cover;
-	-moz- background-size:cover;
-	-o- background-size: cover;
-	background-size:cover;
+<div class="container mx-auto" *ngIf="!isAdmin; else notAuthorised">
+	<div class = "card-body">
+		<h5 class="card-title text-center">Appeal Results</h5>
+  </div>
+  <div *ngFor = "let reply of replies">
+    <div class="card" style="margin: 0 5% 5% 5%;">
+      <h5 class="card-header">
+      	{{reply.title}}
+      	 <button (click)="deleteReply(reply.id)" 
+          title="Delete this" 
+          class="btn btn-light" 
+          style="float: right;"><i class="fas fa-trash-alt"></i></button>
+      </h5>
 
-}
-</style>
-</head>
+      <div id="{{reply.id}}" class="card-body">
+      	<p class="card-text">
+      		<small class = "text-muted"> by Administrator {{reply.sender}} <span style="float: right"><i> {{reply.date}} </i></span> </small>     
+      	</p>
+      	<p class="card-text">
+          {{reply.content}}
+          <br>
+          <span style="float: right">
+          <a [routerLink] = "['../viewschedule/' + reply.scheduleId]" ><font size="1"><u>view calendar/make another appeal</u></font></a>
+          </span>
+          </p>
+      </div>
+    </div>
+  </div>
+</div>
 
-<body>
-</body>
-
-</html>
+<ng-template #notAuthorised>
+  <div class="outer-div">
+    <div class="inner-div">
+       <h3><i class="fas fa-exclamation-triangle"></i> Sorry, you're not authorised!</h3>
+    </div>
+  </div>
+  
+</ng-template>

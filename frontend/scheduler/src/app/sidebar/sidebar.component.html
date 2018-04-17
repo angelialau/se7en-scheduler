@@ -7,12 +7,16 @@
     <a id="sbViewSchedules" class="list-group-item-action" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Schedules</a>
   </li>
 
+  <li class="list-group-item" *ngIf = "!isAdmin">
+    <a id="sbViewCalendars" class="list-group-item-action" routerLink="/viewcalendar"><i class="fas fa-calendar-alt"></i> Calendars </a>
+  </li>
+
   <li class="list-group-item" *ngIf = "isAdmin" >
     <a id="sbViewAppeals" class="list-group-item-action" routerLink="/viewappeal"><i class="fas fa-pencil-alt"></i> Appeals </a>
   </li>
 
   <li class="list-group-item" *ngIf = "!isAdmin" >
-    <a id="sbViewAppeals" class="list-group-item-action" routerLink="/appealstatus"><i class="fas fa-pencil-alt"></i> Make Appeal </a>
+    <a id="sbViewAppeals" class="list-group-item-action" routerLink="/appealstatus"><i class="fas fa-inbox"></i> Appeal Results </a>
   </li>
 
   <li class="list-group-item" *ngIf = "isAdmin" >
