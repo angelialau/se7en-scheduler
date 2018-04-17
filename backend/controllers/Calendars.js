@@ -236,7 +236,7 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 });
 
 // Get calendar entries in editable json format
-router.get('EditCalendar/:id(\\d+)', function(req, res, next) {
+router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
 			if (err) {
