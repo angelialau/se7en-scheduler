@@ -258,7 +258,6 @@ router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 						var startDate = new Date(startDateString);
 
 						rows.forEach(function(entry) {
-							console.log("stuck here")
 							formatted = utils.eventToEditCalendar(entry, startDate);
 							output[formatted.id] = formatted;
 						});
