@@ -1,5 +1,6 @@
 var express = require("express");
 var Calendar = require("../models/Calendar");
+var Schedule = require("../models/Schedule");
 var utils = require("../utils/utilities");
 var fecha = require("fecha");
 var router = express.Router();
@@ -238,18 +239,31 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 // Get calendar entries in editable json format
 router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
+		// get events
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
 			if (err) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var formatted;
-				var output = {}
-				rows.forEach(function(entry) {
-					formatted = utils.eventToEditCalendar(entry);
-					output[formatted.id] = formatted;
+				// get schedule details
+				Schedule.getScheduleById(req.params.id, function(err, schedule) {
+					if (err) {
+						err.success = false;
+						res.json(err);
+					} else {
+						// format correctly
+						var formatted;
+						var output = {}
+						var startDateString = fecha.format(new Date(schedule.startDate), 'YYYY-MM-DD[T0830]');
+						var startDate = new Date(startDateString);
+
+						rows.forEach(function(entry) {
+							formatted = utils.eventToEditCalendar(entry, startDate);
+							output[formatted.id] = formatted;
+						});
+						res.json(Object.values(output));
+					}
 				});
-				res.json(Object.values(output));
 			}
 		});
 	} 
