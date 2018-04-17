@@ -246,10 +246,10 @@ router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 				res.json(err);
 			} else {
 				// get schedule details
-				Schedule.getScheduleById(req.params.id, function(err, schedule) {
-					if (err) {
-						err.success = false;
-						res.json(err);
+				Schedule.getScheduleById(req.params.id, function(schedule_err, schedule) {
+					if (schedule_err) {
+						schedule_err.success = false;
+						res.json(schedule_err);
 					} else {
 						// format correctly
 						var formatted;
