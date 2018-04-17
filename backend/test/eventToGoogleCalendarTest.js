@@ -33,8 +33,8 @@ describe('eventToGoogleCalendar()', function () {
 		                "Description": "Cohort 1",
 		                "Start Time": "08:30 AM",
 		                "End Time": "10:00 AM",
-		                "Start Date": "2018/04/16",
-		                "End Date": "2018/04/16",
+		                "Start Date": "2018/04/23",
+		                "End Date": "2018/04/23",
 		                "Private": true
 		            }
 		        ]

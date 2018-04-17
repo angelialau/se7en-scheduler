@@ -239,6 +239,8 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 	}
 });
 
+// Get calendar entries in editable json format
+
 // defining update calendar entry endpoint
 router.post('/Update', function(req, res, next) {
 	if (utils.compareJSONKeys(req.body, Calendar.updateNoDateStructure)) {

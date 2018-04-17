@@ -143,6 +143,37 @@ var utilities = {
 		return output;
 	},
 
+	eventToEditCalendar:function(event, startDate){
+		var output = {};
+		var details = {};
+
+		// move to correct date
+		while (startDate.getDay() !== event.day) {
+			this.incrementDate(startDate);
+		}
+
+		// set time
+		var startTime = new Date(startDate.getTime() + event.start*(30*6*10000));
+		var endTime =  new Date(startDate.getTime() + (event.end+1)*(30*6*10000));
+		
+		// put to correct format
+		output.instructor = event.prof;
+		output.id = event.id.toString();
+		output.prof_id = event.prof_id == null ? null : event.prof_id.toString();
+		output.pillar = event.pillar;
+		output.schedule = {};
+
+		output.schedule.title = event.course + "\n" + event.location;
+		if (event.cohort != null) {
+			output.schedule.title += "\n" + "Cohort " + event.cohort;
+		}
+
+		output.schedule.start = fecha.format(startTime, 'YYYYMMDD[T]HHmm');
+		output.schedule.end = fecha.format(endTime, 'YYYYMMDD[T]HHmm');
+
+		return output;
+	},
+
 	/**
 	 * List of all possible rooms within SUTD
 	 */
