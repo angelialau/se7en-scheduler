@@ -9,8 +9,8 @@
         <tr *ngIf="schedule.generated !== 1 || isAdmin">
           <td [routerLink]="['./',schedule.id]"
           title="View courses enrolled and add a course or event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
-          <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
           <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
           <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
           <span>

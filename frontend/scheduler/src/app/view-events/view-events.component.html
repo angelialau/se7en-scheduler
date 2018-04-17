@@ -7,7 +7,7 @@
         <tr>
           <td [routerLink]="['./',schedule.id]" 
           title="Add event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          >Year {{schedule.year}} Trimester {{schedule.trimester}}  ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})
           </td>
         </tr>
       </tbody>

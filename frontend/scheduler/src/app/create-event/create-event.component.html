@@ -1,3 +1,10 @@
+<div class="container mx-auto" *ngIf="!finalized; else view">
+  <div class="alert alert-info" role="alert">
+    This schedule is not finalized yet, so adding events is prohibited!
+  </div>
+</div>
+
+<ng-template #view>
 <div class="container mx-auto" >  
   <!-- view & header -->
   <div class="card-body" (click)="showListOfEvents()">
@@ -194,4 +201,5 @@
   <br><br>
 
 </div>
+</ng-template>
   

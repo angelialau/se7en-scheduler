@@ -3,7 +3,7 @@ import { UserService } from './../services/user.service';
 import { ScheduleService } from './../services/schedule.service';
 import { User } from './../../models/user.model';
 import { Event, Search, days} from './../../models/event.model';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
 import { Schedule } from './../../models/schedule.model';
@@ -18,6 +18,7 @@ import { CookieService } from 'ng2-cookies';
 export class CreateEventComponent implements OnInit {
   // form related vars
   isAdmin : boolean = false;
+  finalized : boolean = false;
   schedule_id : number;
   days = days;
   instructors : User[]= []; 
@@ -44,6 +45,7 @@ export class CreateEventComponent implements OnInit {
     private scheduleService: ScheduleService,
     private snackBar : MatSnackBar,
     private route: ActivatedRoute, 
+    private router: Router, 
     private cookieService: CookieService, 
      ) {
       
@@ -55,8 +57,21 @@ export class CreateEventComponent implements OnInit {
       this.isAdmin = true;
       this.searchForm = new Search(this.schedule_id,'', '','','','');
       this.newEvent = new Event(this.schedule_id);
-      this.getInstructors();
-      this.refreshTimeSlots();
+      this.scheduleService.getSchedule(this.schedule_id).subscribe(
+        response => {
+          if(response.body.finalized == "0"){ // schedule not finalized
+            this.router.navigateByUrl('/events');
+          }else if(response.body.finalized == "1"){
+            this.finalized = true;
+            // expensive calls
+            this.getInstructors();
+            this.refreshTimeSlots();
+          }
+        },
+        error => {
+          console.log("getSchedule server error", error);
+        }
+      )
     }
     this.getEvents();
   }
