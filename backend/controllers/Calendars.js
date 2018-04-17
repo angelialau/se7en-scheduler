@@ -203,11 +203,6 @@ router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
 				var output = {}
 				rows.forEach(function(entry) {
 					formatted = utils.eventToFullCalendar(entry);
-					if (output[formatted.id]) {
-						output[formatted.id].schedule.push(formatted.schedule[0]);
-					} else {
-						output[formatted.id] = formatted;
-					}
 				});
 				res.json(Object.values(output));
 			}
@@ -240,6 +235,23 @@ router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 });
 
 // Get calendar entries in editable json format
+router.get('EditCalendar/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				var formatted;
+				var output = {}
+				rows.forEach(function(entry) {
+					formatted = utils.eventToEditCalendar(entry);
+				});
+				res.json(Object.values(output));
+			}
+		});
+	} 
+});
 
 // defining update calendar entry endpoint
 router.post('/Update', function(req, res, next) {
