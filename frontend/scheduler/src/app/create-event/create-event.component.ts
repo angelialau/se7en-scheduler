@@ -77,7 +77,7 @@ export class CreateEventComponent implements OnInit {
     this.getEvents();
   }
 
-  // updates list of all time slots
+  // get list of all available timeslots
   refreshTimeSlots(){
     this.scheduleService.getTimeSlots(this.searchForm).subscribe(
       response=>{
@@ -97,7 +97,7 @@ export class CreateEventComponent implements OnInit {
     )   
   }
 
-  // helper funcs
+  // helper functions for displaying the available time slots to user
   getVenues(){
     let array : string[] = [];
     for(let venue in this.timeslots){
@@ -143,6 +143,7 @@ export class CreateEventComponent implements OnInit {
     return this.endTimes;
   }
 
+  // calls http POST to add a new event to database
   addEvent(){
     this.newEvent.start = String(this.parseTime(this.newEvent.start));
     this.newEvent.end = String(this.parseTime(this.newEvent.end));
@@ -178,6 +179,7 @@ export class CreateEventComponent implements OnInit {
     )
   }
 
+  // calls http GET to get all events added to this schedule in the database
   getEvents(){
     this.scheduleService.getEvents(this.schedule_id).subscribe(
       response => {
@@ -197,6 +199,7 @@ export class CreateEventComponent implements OnInit {
       })
   }
 
+  // http POST to delete event of specified id
   deleteEvent(index: number){
     this.scheduleService.deleteEvent(index).subscribe(
       response =>{
@@ -214,6 +217,7 @@ export class CreateEventComponent implements OnInit {
     )
   }
 
+  // http GET to get instructors for form option
   getInstructors(){
     this.userService.getAllInstructors()
     .map((data: any) => {
@@ -233,6 +237,8 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
+  // return associated name of prof id 
+  // used in translating form data into Event object
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){
       if (this.instructors[i].id==profId){
@@ -243,7 +249,8 @@ export class CreateEventComponent implements OnInit {
     throw error;
   }
 
-  // from hours to index e.g. 08:30 = 0, 18:00 = 19
+  // gets index from time e.g. 08:30 = 0, 18:00 = 19
+  // used in translating form data into Event object
   parseTime(time: string): number{
     let ans = -1;
     let hour : number = Number(time.substring(0,2));
@@ -261,6 +268,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   // from index to hours
+  // used in translating api to form option
   reverseParseTime(n: number): string {
     if(n<0 || n> 19){
       let error = new Error('To reverse parse time, n must be between 0 and 19');
