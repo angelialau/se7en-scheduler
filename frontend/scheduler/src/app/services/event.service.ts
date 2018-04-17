@@ -55,4 +55,13 @@ export class EventService {
     console.error(errorMessage);
     return Observable.throw(errorMessage);
   }
+
+  public finalizeSchedule(id:number): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    let extension = this.serverUrl + '/Schedules/Finalized';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
 }

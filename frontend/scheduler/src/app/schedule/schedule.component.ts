@@ -14,6 +14,7 @@ import { Appeal} from './../../models/appeal.model';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from 'ng2-cookies';
 import { EventObject } from 'fullcalendar';
+import { ScheduleService } from './../services/schedule.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class ScheduleComponent implements OnInit {
   calendarstart: any;
   calendarend: any;
   haveSchedule: boolean;
+  isFinalised: boolean = false;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -52,13 +54,20 @@ export class ScheduleComponent implements OnInit {
     private snackBar: MatSnackBar,
     private cookieService: CookieService,
     private dialog: MatDialog,
-    private windowService: WindowService) {
+    private windowService: WindowService,
+    private scheduleService: ScheduleService,) {
     this.nativeWindow = windowService.getNativeWindow();
     this.calendar_id = route.snapshot.params['calendar_id'];
   }
 
   ngOnInit() {
     this.initialiseAppeal();
+
+    this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
+      if (data.body.finalized == 1){
+        this.isFinalised = true;
+      }
+    });
 
     this.eventService.getDates(this.calendar_id).subscribe(data =>{
       this.calendarstart = data.startDate.substring(0,10);
@@ -85,7 +94,6 @@ export class ScheduleComponent implements OnInit {
       }
       else { // is Administrator
         this.haveSchedule = true;
-        console.log(data);
         for (var i = 0; i < data.length; i++){
           if (data[i].pillar == "EPD"){
               allschedules.push(data[i].schedule);
@@ -313,6 +321,18 @@ export class ScheduleComponent implements OnInit {
     else{
       this.router.navigateByUrl("/viewcalendar");
     }
+  }
+
+  finaliseCalendar(){
+    let errorMsg : string = "Something went wrong with finalizing, please try again later!";
+    this.eventService.finalizeSchedule(this.calendar_id).subscribe(
+      response =>{
+        while (response.byteLoaded <= response.totalBytes){
+          console.log("loading...");
+        }
+        this.snackBar.open("Finalized",null,{duration:1000});
+        this.router.navigateByUrl("/schedules");
+      })
   }
   
 }

@@ -120,4 +120,14 @@ export class ViewSchedulesComponent implements OnInit {
   viewCalendar(id: number){
     this.router.navigateByUrl("/viewschedule/" + id);
   }
+
+  selectView(schedule: Schedule){
+    console.log(schedule);
+    if (schedule.generated == 1){ // generated, hence go to calendar view
+      this.router.navigateByUrl("/viewschedule/" + schedule.id);
+    }
+    else{
+      this.router.navigateByUrl("/schedules/" + schedule.id);
+    }
+  }
 }
