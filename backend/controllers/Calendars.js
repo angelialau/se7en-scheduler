@@ -203,6 +203,7 @@ router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
 				var output = {}
 				rows.forEach(function(entry) {
 					formatted = utils.eventToFullCalendar(entry);
+					output[formatted.id] = formatted;
 				});
 				res.json(Object.values(output));
 			}
@@ -246,6 +247,7 @@ router.get('EditCalendar/:id(\\d+)', function(req, res, next) {
 				var output = {}
 				rows.forEach(function(entry) {
 					formatted = utils.eventToEditCalendar(entry);
+					output[formatted.id] = formatted;
 				});
 				res.json(Object.values(output));
 			}
