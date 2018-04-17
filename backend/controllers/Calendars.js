@@ -254,9 +254,7 @@ router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
 						// format correctly
 						var formatted;
 						var output = {};
-						console.log(schedule.startDate);
-						console.log(new Date(schedule.startDate).toDateString());
-						var startDateString = fecha.format(new Date(schedule.startDate), 'YYYY-MM-DD[T0830]');
+						var startDateString = fecha.format(new Date(schedule[0].startDate), 'YYYY-MM-DD[T0830]');
 						var startDate = new Date(startDateString);
 
 						rows.forEach(function(entry) {
