@@ -6,7 +6,7 @@
   <div *ngIf="showScheduleList">
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr *ngIf="schedule.generated !== 1 || isAdmin">
+        <tr *ngIf="schedule.generated !== 1 || isAdmin" class="clickable">
           <td (click) = "selectView(schedule)"
           title="View courses enrolled and add a course or event to this schedule"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} 
@@ -29,7 +29,9 @@
 
   <!-- form to add a new schedule -->
   <div *ngIf="isAdmin">
-  <div class="card-body" (click)="showScheduleForm()">
+  <div class="card-body" (click)="showScheduleForm()" 
+    title="Click to add a new term schedule" 
+    class="clickable">
     <h5 class="card-title text-center" id="scheduleFormTitle"><i class="fas fa-caret-right"></i> Add a new Schedule</h5>
   </div>
   <div *ngIf="showAddScheduleForm">
