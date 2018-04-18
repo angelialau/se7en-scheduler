@@ -37,7 +37,8 @@ import { CreateAnnouncementComponent } from './create-announcement/create-announ
 import { ViewAppealComponent } from './view-appeal/view-appeal.component';
 import { AppealreplyComponent } from './appealreply/appealreply.component';
 import { ViewEventsComponent } from './view-events/view-events.component';
-import { ViewCalendarComponent } from './view-calendar/view-calendar.component'
+import { ViewCalendarComponent } from './view-calendar/view-calendar.component';
+import { ChangecalendarComponent } from './changecalendar/changecalendar.component'
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -53,7 +54,8 @@ export const ROUTES: Routes = [
   { path: 'appealstatus', component: AppealreplyComponent},
   { path: 'events', component: ViewEventsComponent},
   { path: 'events/:schedule_id', component: CreateEventComponent},
-  { path: 'viewcalendar', component: ViewCalendarComponent}
+  { path: 'viewcalendar', component: ViewCalendarComponent},
+  { path: 'changecalendar/:calendar_id', component: ChangecalendarComponent}
 
 ];
 
@@ -75,7 +77,8 @@ export const ROUTES: Routes = [
     ViewAppealComponent,
     AppealreplyComponent,
     ViewEventsComponent,
-    ViewCalendarComponent
+    ViewCalendarComponent,
+    ChangecalendarComponent
   ],
   imports: [
     BrowserModule, 

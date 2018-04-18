@@ -20,7 +20,7 @@ export class ViewEventsComponent implements OnInit {
       .map((data: any) => {
         let temp : Schedule[] = data.body;
         for(let s of temp){
-          if (s.finalized == 1){
+          if (s.finalized == 1 && s.generated != 0){
             this.schedules.push(s);
           }
         }

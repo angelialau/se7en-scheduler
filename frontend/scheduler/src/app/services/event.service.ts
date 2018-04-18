@@ -64,4 +64,21 @@ export class EventService {
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
   }
+
+  public getEditEvents(id:number): Observable<any>{
+        return this.http.get(this.serverUrl + "/Calendars/EditCalendar/" + id)
+          .catch(this.handleError);
+  }
+
+  public updateEvent(id: number, day:number, start: string, end:string): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    body.set('day', String(day));
+    body.set('start', start);
+    body.set('end', end);
+    let extension = this.serverUrl + '/Calendars/Update';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
 }

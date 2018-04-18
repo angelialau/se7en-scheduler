@@ -20,7 +20,7 @@
 	</div>
 	<div *ngIf="calendarOptions">
 		<ng-fullcalendar *ngIf = "haveSchedule; else noSchedule" #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
-        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+        (eventResize)="updateEvent($event.detail)"></ng-fullcalendar>
 
     <ng-template #noSchedule>
       <br><br>
