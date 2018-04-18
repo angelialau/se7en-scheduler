@@ -215,22 +215,35 @@ router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
 // Get calendar entries in google calendar json format
 router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
+		// get events
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
 			if (err) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var formatted;
-				var output = {}
-				rows.forEach(function(entry) {
-					formatted = utils.eventToGoogleCalendar(entry);
-					if (output[formatted.id]) {
-						output[formatted.id].schedule.push(formatted.schedule[0]);
+				// get schedule details
+				Schedule.getScheduleById(req.params.id, function(schedule_err, schedule) {
+					if (schedule_err) {
+						schedule_err.success = false;
+						res.json(schedule_err);
 					} else {
-						output[formatted.id] = formatted;
+						// format correctly
+						var formatted;
+						var output = {}
+						var startDateString = fecha.format(new Date(schedule[0].startDate), 'YYYY-MM-DD[T08:30:00]');
+
+						rows.forEach(function(entry) {
+							var startDate = new Date(startDateString);
+							formatted = utils.eventToGoogleCalendar(entry, startDate);
+							if (output[formatted.id]) {
+								output[formatted.id].schedule.push(formatted.schedule[0]);
+							} else {
+								output[formatted.id] = formatted;
+							}
+						});
+						res.json(Object.values(output));
 					}
 				});
-				res.json(Object.values(output));
 			}
 		});
 	}

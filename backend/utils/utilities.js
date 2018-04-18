@@ -79,7 +79,7 @@ var utilities = {
 	 *
 	 * Returns a JSONObject
 	 */
-	eventToFullCalendar:function(event){
+	eventToFullCalendar:function(event, startDate){
 		var output = {};
 		var details = {};
 		var startTime = new Date(this.zeroTime.getTime() + event.start*(30*6*10000));
@@ -95,6 +95,7 @@ var utilities = {
 		if (event.cohort != null) {
 			output.schedule.title += "\n" + "Cohort " + event.cohort;
 		}
+
 		output.schedule.start = fecha.format(startTime, 'HH:mm');
 		output.schedule.end = fecha.format(endTime, 'HH:mm');
 		output.schedule.dow = event.day.toString();
@@ -108,20 +109,19 @@ var utilities = {
 	 *
 	 * Returns a JSONObject
 	 */
-	eventToGoogleCalendar:function(event){
+	eventToGoogleCalendar:function(event, startDate){
 		var output = {};
 		var details = {};
 		var startTime = new Date(this.zeroTime.getTime() + event.start*(30*6*10000));
 		var endTime =  new Date(this.zeroTime.getTime() + (event.end+1)*(30*6*10000));
-		var current = new Date();
 
 		// move current to monday
-		while (current.getDay() != 1) {
+		while (startDate.getDay() != 1) {
 			this.incrementDate(current);
 		}
 		
 		// move current to day of event
-		while (current.getDay() != event.day) {
+		while (startDate.getDay() != event.day) {
 			this.incrementDate(current);
 		}
 
@@ -135,8 +135,8 @@ var utilities = {
 		details.Description = "Cohort " + event.cohort;
 		details["Start Time"] = fecha.format(startTime, 'hh:mm A');
 		details["End Time"] = fecha.format(endTime, 'hh:mm A');
-		details["Start Date"] = fecha.format(current, 'YYYY/MM/DD');
-		details["End Date"] = fecha.format(current, 'YYYY/MM/DD');
+		details["Start Date"] = fecha.format(startDate, 'YYYY/MM/DD');
+		details["End Date"] = fecha.format(startDate, 'YYYY/MM/DD');
 		details.Private = true;
 
 		output.schedule.push(details);
