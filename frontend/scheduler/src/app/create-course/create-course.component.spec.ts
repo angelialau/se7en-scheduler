@@ -98,11 +98,29 @@ describe('CreateCourseComponent', () => {
     });
   });
 
-  it('should instantiate form and list of instructors at ngOnInit', () => {
+  it('should instantiate form at ngOnInit', () => {
+    let creatFormSpy = spyOn(component, 'createForm');
+    component.ngOnInit();
+
     expect(component.newForm instanceof FormGroup).toBe(true);
+    expect(component.sessions instanceof FormArray).toBe(true);
+    expect(component.prof_list instanceof FormArray).toBe(true);
+    expect(component.newForm).toBeDefined();
+    expect(creatFormSpy).toHaveBeenCalled();
+  })
+
+  it('should instantiate list of instructors for form at ngOnInit', () => {
     expect(component.instructors).toEqual(new Array);
 
-    let creatFormSpy = spyOn(component, 'createForm');
+    let getInstructorsSpy = spyOn(component, 'getInstructors').and.callThrough();
+    component.ngOnInit()
+    
+    expect(component.instructors).toBeDefined();
+    expect(getInstructorsSpy).toHaveBeenCalled();
+  })
+
+  it('should filter for trimester specific courses for form at ngOnInit', () => {
+
     let getInstructorsSpy = spyOn(component, 'getInstructors').and.callThrough();
     let schedSpy = spyOn(scheduleServiceStub, 'getSchedule').and.callFake(()=>{
       let options, currArray;
@@ -116,16 +134,10 @@ describe('CreateCourseComponent', () => {
 
     component.ngOnInit()
     
-    expect(component.newForm).toBeDefined();
-    expect(component.instructors).toBeDefined();
-    expect(creatFormSpy).toHaveBeenCalled();
     expect(getInstructorsSpy).toHaveBeenCalled();
     expect(filterSpy).toHaveBeenCalled();
     expect(filterHelperSpy).toHaveBeenCalled();
     expect(schedSpy).toHaveBeenCalled();
-    // expect(serviceSpy).toHaveBeenCalled();
-    expect(component.sessions instanceof FormArray).toBe(true);
-    expect(component.prof_list instanceof FormArray).toBe(true);
   })
 
   it('should initialise schedule id and form options at ngOnInit', () => {

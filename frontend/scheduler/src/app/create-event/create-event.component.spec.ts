@@ -178,9 +178,13 @@ describe('CreateEventComponent', () => {
     expect(ans).toEqual(13);
   })
 
-  it('should reject time that is not between 830 and 1800, and are not at 00' 
+  fit('should reject time that is not between 830 and 1800, and are not at 00' 
     + ' or 30 min intervals', ()=>{
-    let time = '06:00';
+    let time = '08:00';
+    expect(function(){component.parseTime(time)}).toThrowError(
+      'invalid time given, should be between 0830 to 1800');
+
+    time = '-08:00';
     expect(function(){component.parseTime(time)}).toThrowError(
       'invalid time given, should be between 0830 to 1800');
 
