@@ -11,14 +11,17 @@
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header">
         Appeal for {{appeal.title}}
+        
         <button (click)="editAppeal(appeal,0)" 
           title="Disapprove this appeal" 
-          class="btn btn-light" 
+          class="btn btn-outline-secondary" 
           style="float: right;"> Deny </button>
+        
         <button (click)="editAppeal(appeal,1)" 
+          style=""
           title="Approve this appeal" 
-          class="btn btn-light" 
-          style="float: right;"> Approve </button>
+          class="btn btn-outline-secondary" 
+          style="float: right; margin: 0 5px;"> Approve </button>
       </h5>
       
       <div id="{{appeal.id}}" class="card-body">
