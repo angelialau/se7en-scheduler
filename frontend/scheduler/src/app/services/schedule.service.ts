@@ -46,6 +46,11 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  getProfsFromSchedule(schedule_id : number, prof_id: number): Observable<any>{
+    return this.http.get<Schedule>(this.url + '/Calendars/Prof/' + schedule_id + "/" + prof_id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
   getGeneratedStatus(id:number) : boolean{
     this.getSchedule(id).subscribe(response => {
       if(response.body.success){

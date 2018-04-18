@@ -13,7 +13,8 @@ import { CookieService } from 'ng2-cookies';
 export class ViewCalendarComponent implements OnInit {
 	isAdmin: boolean = false;
 	schedules : Schedule[];
-  	schedule_id: number;
+	schedule_id: number;
+  prof_id : number;
 
   constructor(
   	public snackBar: MatSnackBar,
@@ -29,7 +30,9 @@ export class ViewCalendarComponent implements OnInit {
       this.router.navigateByUrl('/home');
     }
     else{
-    	this.getSchedules();
+    	this.prof_id = Number(this.cookieService.get('id'));
+      this.getSchedules();
+
     }
   }
 
@@ -44,9 +47,30 @@ export class ViewCalendarComponent implements OnInit {
               return a.year - b.year;
             }
           });
+          this.filterInvolvedSchedules();
         },
         error => console.log("getSchedules error: " + error)
     );
+  }
+
+  filterInvolvedSchedules(){
+    let backupSchedules : Schedule[] = this.schedules;
+    let newSchedules : Schedule[] = [];
+    
+    for(let schedule of this.schedules){
+      this.scheduleService.getProfsFromSchedule(schedule.id, this.prof_id).subscribe(
+        response => {
+          if(response.status === 200 && response.body.message!=="no rows found" && schedule.generated == 1){
+            newSchedules.push(schedule);
+          }
+        }, error => {
+          this.schedules = backupSchedules;
+          console.log("server error checking whether prof is involved in a particular calendar");
+          console.log(error);
+        }
+      )
+    }
+    this.schedules = newSchedules;
   }
 
 }
