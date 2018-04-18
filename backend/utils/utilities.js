@@ -117,12 +117,12 @@ var utilities = {
 
 		// move current to monday
 		while (startDate.getDay() != 1) {
-			this.incrementDate(current);
+			this.incrementDate(startDate);
 		}
 		
 		// move current to day of event
 		while (startDate.getDay() != event.day) {
-			this.incrementDate(current);
+			this.incrementDate(startDate);
 		}
 
 		output.instructor = event.prof;
