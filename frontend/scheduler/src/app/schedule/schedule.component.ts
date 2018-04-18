@@ -29,7 +29,7 @@ export class ScheduleComponent implements OnInit {
   isAdmin: boolean = false;
   scheduledata: any ;
   fulldataset: any;
-  specificPillar: string = "EPD"; //default ASD view for admins
+  specificPillar: string = "EPD"; //default EPD view for admins
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
@@ -37,7 +37,6 @@ export class ScheduleComponent implements OnInit {
   googleSchedule: any;
   listCourses: any;
   nativeWindow: any;
-  displayEvent: any;
   calendarstart: any;
   calendarend: any;
   haveSchedule: boolean;
@@ -160,40 +159,6 @@ export class ScheduleComponent implements OnInit {
       this.listCourses.push(course);
     }
     });}
-
-  clickButton(model: any) {
-    this.displayEvent = model;
-  }
-  eventClick(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title,
-        allDay: model.event.allDay
-        // other params
-      },
-      duration: {}
-    }
-    this.displayEvent = model;
-  }
-  updateEvent(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title
-        // other params
-      },
-      duration: {
-        _data: model.duration._data
-      }
-    }
-    this.displayEvent = model;
-  }
-
 
   changeView(){
     var pillarschedules: Object[] = [];

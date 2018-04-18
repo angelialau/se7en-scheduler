@@ -1,0 +1,23 @@
+<div class="container mx-auto">
+	<div align="center">
+		<label class="radio-inline">
+			<input type="radio" name="optradio" checked="checked" 
+			(click)="displayEPD()">EPD</label>
+		<label class="radio-inline">
+			<input type="radio" name="optradio"
+			(click)="displayESD()">ESD</label>
+		<label class="radio-inline">
+			<input type="radio" name="optradio"
+			(click)="displayISTD()">ISTD</label>
+      <label class="radio-inline">
+      <input type="radio" name="optradio"
+      (click)="displayHASS()">HASS</label>
+      <label class="radio-inline">
+      <input type="radio" name="optradio"
+      (click)="displayTech()">Tech Elective</label>
+
+	</div>
+<div *ngIf="calendarOptions">
+		<ng-fullcalendar #ucCalendar [options]="calendarOptions" (eventClick)="eventClick($event.detail)" (eventDrop)="updateEvent($event.detail)"
+        (eventResize)="updateEvent($event.detail)" (clickButton)="clickButton($event.detail)"></ng-fullcalendar>
+    </div>
