@@ -64,8 +64,9 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    userServiceStub = fixture.debugElement.injector.get(UserService);
-    cookieServiceStub = fixture.debugElement.injector.get(CookieService);
+    
+    userServiceStub = TestBed.get(UserService);
+    cookieServiceStub = TestBed.get(CookieService);
     router = fixture.debugElement.injector.get(Router);
     snackBar = fixture.debugElement.injector.get(MatSnackBar);
     

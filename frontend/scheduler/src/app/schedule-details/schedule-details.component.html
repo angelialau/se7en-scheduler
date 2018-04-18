@@ -32,12 +32,14 @@
     </div>
 
     <!-- form to add a new course -->
-    <div class="dropdown-divider"></div>
-    <br>
-    <div style="text-align: center;">
-      <button type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+    <div *ngIf="isAdmin">
+      <div class="dropdown-divider"></div>
+      <br>
+      <div style="text-align: center;">
+        <button type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+      </div>
+      <br>
     </div>
-    <br>
     <div class="dropdown-divider"></div>
     <div class="card-body" (click)="showAddCourseForm()">
       <h5 class="card-title text-center"
