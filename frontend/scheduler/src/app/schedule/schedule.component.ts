@@ -40,6 +40,7 @@ export class ScheduleComponent implements OnInit {
   calendarstart: any;
   calendarend: any;
   haveSchedule: boolean;
+  generated:boolean = false;
   isFinalised: boolean = false;
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
@@ -63,6 +64,10 @@ export class ScheduleComponent implements OnInit {
     this.initialiseAppeal();
 
     this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
+      console.log("calendar id is ", this.calendar_id);
+      if (data.body.generated == 1){
+        this.generated = true;
+      }
       if (data.body.finalized == 1){
         this.isFinalised = true;
       }

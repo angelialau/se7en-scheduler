@@ -10,7 +10,9 @@
           <td [routerLink]="['../viewschedule/' + schedule.id]"
           title="View calendar for this trimester"
           >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
-          {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}
+          <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
+          <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
+          <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
           </td>
         </tr>
       </tbody>

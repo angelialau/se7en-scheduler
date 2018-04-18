@@ -2,6 +2,11 @@
   <div class="card-body">
     <h5 class="card-title text-center">Appeals</h5>
   </div>
+
+  <div class="alert alert-info" role="alert" *ngIf="appeals.length===0">
+    Yay! There are no appeals so far 😊
+  </div>
+
   <div *ngFor = "let appeal of appeals">
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header">
@@ -9,11 +14,11 @@
         <button (click)="editAppeal(appeal,0)" 
           title="Disapprove this appeal" 
           class="btn btn-light" 
-          style="float: right;"><i class="fas fa-thumbs-down"></i></button>
+          style="float: right;"> Deny </button>
         <button (click)="editAppeal(appeal,1)" 
           title="Approve this appeal" 
           class="btn btn-light" 
-          style="float: right;"><i class="fas fa-thumbs-up"></i></button>
+          style="float: right;"> Approve </button>
       </h5>
       
       <div id="{{appeal.id}}" class="card-body">
