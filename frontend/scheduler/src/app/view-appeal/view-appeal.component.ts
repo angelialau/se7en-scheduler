@@ -113,15 +113,15 @@ export class ViewAppealComponent implements OnInit {
           }else if(integer == 1){
             this.snackBar.open("Accepted the appeal!", null, {duration:1200});    
           }        
-        this.refreshAppeals();
         this.newReply = new appealReply(this.today);
+        this.refreshAppeals();
       }
       else{
-        this.snackBar.open(errorMsg,null,{duration:1000});
+        this.snackBar.open(errorMsg,null,{duration:1200});
       }
       }, 
       error => {
-       this.snackBar.open(errorMsg, null, {duration:1000});
+       this.snackBar.open(errorMsg, null, {duration:1200});
        console.log("sever error in making reply");
      }
       )
