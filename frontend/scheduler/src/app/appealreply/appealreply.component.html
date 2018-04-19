@@ -2,6 +2,11 @@
 	<div class = "card-body">
 		<h5 class="card-title text-center">Appeal Results</h5>
   </div>
+
+  <div class="alert alert-info" role="alert" *ngIf="replies.length===0">
+    There are no replies yet. 
+  </div>
+
   <div *ngFor = "let reply of replies">
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header">

@@ -34,7 +34,7 @@
 	<div align="center">
 	<span *ngIf = "!isAdmin && haveSchedule">
     <button type="button" (click) = "showForm()" id="appealButton"
-    *ngIf="!generated"
+    *ngIf="!generated && !isFinalised"
     class="btn btn-primary">
     Make an appeal</button>
     <button type="button" (click) = "downloadCalendar()" id="downloadButton"

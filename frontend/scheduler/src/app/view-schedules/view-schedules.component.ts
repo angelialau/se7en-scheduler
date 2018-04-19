@@ -88,7 +88,7 @@ export class ViewSchedulesComponent implements OnInit {
     this.scheduleService.deleteSchedule(schedule).subscribe(
       response => {
         if(JSON.parse(response).success){
-          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.snackBar.open("Deleted schedule!", null, { duration: 1200, });  
           this.getSchedules();
         }else{
           this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1200, });

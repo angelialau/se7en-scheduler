@@ -63,6 +63,10 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {
     this.initialiseAppeal();
 
+    if (this.cookieService.get('pillar') == "Administrator"){
+      this.isAdmin = true;
+    }
+
     this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
       if (data.body.generated === 1){
         this.generated = true;
@@ -77,14 +81,10 @@ export class ScheduleComponent implements OnInit {
       this.calendarend = data.endDate.substring(0,10);
     });
 
-    if (this.cookieService.get('pillar') == "Administrator"){
-      this.isAdmin = true;
-    }
-
     this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
       var allschedules: Object[] = [];
-      if (this.cookieService.get('pillar') != "Administrator"){
+      if (this.isAdmin){
         for (let i of data){
           if (i.prof_id == this.cookieService.get('id')){
             allschedules.push(i.schedule);
