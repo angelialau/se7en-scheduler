@@ -96,14 +96,17 @@ var utilities = {
 			output.schedule.title += "\n" + "Cohort " + event.cohort;
 		}
 
-		var startTimeString = fecha.format(startTime, 'HHmm');
-		var endTimeString = fecha.format(endTime, 'HHmm');
-
 		if (!event.date) {
+			var startTimeString = fecha.format(startTime, 'HH:mm');
+			var endTimeString = fecha.format(endTime, 'HH:mm');
+			
 			output.schedule.start = startTimeString;
 			output.schedule.end = endTimeString;
 			output.schedule.dow = event.day.toString();
 		} else {
+			var startTimeString = fecha.format(startTime, 'HHmm');
+			var endTimeString = fecha.format(endTime, 'HHmm');
+
 			var date = new Date(event.date);
 			output.schedule.start = fecha.format(date, 'YYYYMMDD[T' + startTimeString + "]");
 			output.schedule.end = fecha.format(date, 'YYYYMMDD[T' + endTimeString + "]");
