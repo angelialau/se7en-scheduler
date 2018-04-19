@@ -32,18 +32,20 @@
 	<br>
 
 	<div align="center">
-	<span *ngIf = "!isAdmin && haveSchedule">
+	<div *ngIf = "!isAdmin">
     <button type="button" (click) = "showForm()" id="appealButton"
-    *ngIf="!generated && !isFinalised"
+    *ngIf="generated && !isFinalised"
     class="btn btn-primary">
     Make an appeal</button>
     <button type="button" (click) = "downloadCalendar()" id="downloadButton"
     *ngIf="generated && isFinalised"
     class="btn btn-primary">
-    Download Calendar</button></span>
+    Download Calendar</button>
+  </div>
+  
   <button *ngIf = "isAdmin && !isFinalised" type="button" (click) = "finaliseCalendar()" id="finaliseButton" class="btn btn-danger">Finalise Calendar</button>
 
-    <span *ngIf = "show">
+  <span *ngIf = "show">
     <form #AppealForm="ngForm">
     	<br>
       <!-- title of announcement -->
