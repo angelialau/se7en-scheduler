@@ -17,11 +17,9 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
   	if (this.cookieService.get('pillar') == "Administrator"){
-  		console.log("This is an administrator account.")
   		this.isAdmin = true;
   	}
   	else if (this.cookieService.get('pillar') != undefined){
-  		console.log("This is an instructor account.")
   	} 
   }
 }

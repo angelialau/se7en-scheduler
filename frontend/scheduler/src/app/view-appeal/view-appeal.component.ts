@@ -93,9 +93,9 @@ export class ViewAppealComponent implements OnInit {
     let approveMsg: string = "We refer to your appeal and we are pleased to inform you that your appeal is successful. Please refer to the new calendar for more information.";
     let disapproveMsg: string = "We refer to your appeal and we regret to inform you that your appeal has failed. Please try making an appeal with a different preferred time slot again.";
     this.deleteAppeal(appeal.id);
-    console.log(appeal.id);
+    // console.log(appeal.id);
     this.newReply.title = "RE: Appeal for " + appeal.title;
-    console.log(appeal);
+    // console.log(appeal);
     if (integer == 0){
       this.newReply.content = disapproveMsg;
     }
@@ -108,7 +108,12 @@ export class ViewAppealComponent implements OnInit {
     this.userService.makeReplies(this.newReply,this.cookieService.get('name'), this.cookieService.get('id')).subscribe(
       response =>{
         if (JSON.parse(response).success){
-        this.snackBar.open("Reply made!", null, {duration:1000});
+          if(integer == 0){
+            this.snackBar.open("Rejected the appeal!", null, {duration:1200});    
+          }else if(integer == 1){
+            this.snackBar.open("Accepted the appeal!", null, {duration:1200});    
+          }        
+        this.refreshAppeals();
         this.newReply = new appealReply(this.today);
       }
       else{

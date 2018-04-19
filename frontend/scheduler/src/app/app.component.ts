@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { User } from './../models/user.model';
 import { UserService } from './services/user.service';
 import { CookieService } from 'ng2-cookies';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -17,18 +18,18 @@ export class AppComponent {
   	public router: Router,
     private cookieService: CookieService,
   	private userService: UserService,
+    private snackBar : MatSnackBar,
     ) {
     router.events.subscribe((data:any) => { this.location = data.url; });
   }
   ngOnInit(){
   	if (this.cookieService.get('pillar').length > 1 ){
-  		console.log(this.cookieService.get('pillar'));
-      // this.userService.getLoggedInUser(); //potential log out bug?
       this.loggedin = true;
   	}
   	else{
   		this.loggedin = false;
       this.router.navigateByUrl('/login');
+      this.snackBar.open("Please log in with your email and password", null, { duration : 1200, })
       console.log("App: User is not logged in. Please login.");
   	}
 
