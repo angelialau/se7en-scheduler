@@ -540,7 +540,7 @@ courses,seniorCourse = readJson()                                               
 rowRef=referenceRows()                                                          # initialize row reference table
 rowRef=initializeValue()
 
-
+start1=time.time()
 rawSchedules = []
 rawParams=[]
 lastTime=time.time()
