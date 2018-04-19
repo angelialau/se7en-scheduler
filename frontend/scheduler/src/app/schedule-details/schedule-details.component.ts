@@ -4,6 +4,7 @@ import { Schedule } from './../../models/schedule.model';
 import { Course } from './../../models/course.model';
 import { ScheduleService } from './../services/schedule.service';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-schedule-details',
@@ -25,12 +26,18 @@ export class ScheduleDetailsComponent implements OnInit {
     private scheduleService: ScheduleService,
     private route: ActivatedRoute, 
     private router: Router,
-    public snackBar: MatSnackBar, 
+    public snackBar: MatSnackBar,
+    private cookieService: CookieService, 
     ) { 
     this.schedule_id = route.snapshot.params['schedule_id'];
   }
 
   ngOnInit() {
+
+    if (this.cookieService.get('pillar') == "Administrator"){
+      this.isAdmin = true;
+    }
+
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
       response => {
         if(response.status == 200){
