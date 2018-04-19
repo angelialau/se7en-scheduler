@@ -145,7 +145,7 @@ router.post('/Generate', function(req, res, next) {
 						// set generated bit to 1 on schedule
 						Schedule.updateGenerated(req.body.id);
 						output.success = true;
-						res.json("success":true, "message":"RAFAELA BOLEH");
+						res.json({"success":true, "message":"RAFAELA BOLEH"});
 					} else {
 						res.json({"success":false, "message":generatorErr});
 					}
