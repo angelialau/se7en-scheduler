@@ -95,9 +95,18 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 			err.success = false;
 			res.json(err);
 		} else {
+			var startDate = new Date(req.params.sDate);
+			var endDate = new Date(req.params.eDate);
 			var todaysDate = new Date();
-			var todaysDay = todaysDate.getDay()%6;
-			var num_weeks = 3;
+
+			if (todaysDate > startDate) {
+				var dateToUse = todaysDate;
+			} else {
+				var dateToUse = startDate;
+			}
+
+			var todaysDay = dateToUse.getDay()%6;
+			var num_weeks = utils.calculateWeeksBetween(dateToUse, endDate);
 			var startTime = 0;
 			var endTime = 19;
 			var output = {};
@@ -155,7 +164,7 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 				}
 				
 				// add dates
-				var current = new Date();
+				var current = dateToUse;
 				var roomAvailability = {}
 				for (var week = 0; week < num_weeks; week++) {
 					available[week].forEach(function(day) {
