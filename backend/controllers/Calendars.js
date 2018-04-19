@@ -164,7 +164,7 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 				}
 				
 				// add dates
-				var current = dateToUse;
+				var current = new Date(dateToUse);
 				var roomAvailability = {}
 				for (var week = 0; week < num_weeks; week++) {
 					available[week].forEach(function(day) {
