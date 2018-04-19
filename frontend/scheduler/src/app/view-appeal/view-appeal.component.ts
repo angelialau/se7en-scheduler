@@ -92,7 +92,22 @@ export class ViewAppealComponent implements OnInit {
     let errorMsg : string = "Something went wrong with making appeal reply, please try again later!";
     let approveMsg: string = "We refer to your appeal and we are pleased to inform you that your appeal is successful. Please refer to the new calendar for more information.";
     let disapproveMsg: string = "We refer to your appeal and we regret to inform you that your appeal has failed. Please try making an appeal with a different preferred time slot again.";
-    this.deleteAppeal(appeal.id);
+    this.userService.deleteAppeal(appeal.id).subscribe(
+      response => {
+        if(JSON.parse(response).success){
+          console.log("Appeal deleted");
+          this.refreshAppeals();
+        }else{
+          this.snackBar.open(errorMsg, null, {duration: 3000});
+          console.log(response);
+        }
+      }, 
+      error => {
+        this.snackBar.open(errorMsg, null, {duration: 3000});
+        console.log("Server error deleting appeals");
+        console.log(error);
+      }
+    )
     // console.log(appeal.id);
     this.newReply.title = "RE: Appeal for " + appeal.title;
     // console.log(appeal);

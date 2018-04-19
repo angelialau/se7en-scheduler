@@ -36,7 +36,9 @@
       <div class="dropdown-divider"></div>
       <br>
       <div style="text-align: center;">
-        <button type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+        <button *ngIf="!generating" type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+      </div>
+      <div style="text-align: center;" *ngIf="generating" class="fa-3x"><i class="fas fa-sync fa-spin"></i>
       </div>
       <br>
     </div>

@@ -20,7 +20,8 @@ export class ScheduleDetailsComponent implements OnInit {
   noItems : boolean = false;
   showCourseList : boolean = true;
   showEventForm : boolean = false;
-  showCourseForm : boolean = true;
+  showCourseForm : boolean = false;
+  generating: boolean = false;
 
   constructor(
     private scheduleService: ScheduleService,
@@ -42,7 +43,7 @@ export class ScheduleDetailsComponent implements OnInit {
       response => {
         if(response.status == 200){
           if(response.body.success != undefined && response.body.success===false){
-            this.snackBar.open("Some error occurred. Please try again later!", null, {duration: 1000,});
+            this.snackBar.open("Some error occurred. Please try again later!", null, {duration: 2000,});
           }else if(response.body.success){
             if(response.body.generated == 1){
               this.generated = true;
@@ -88,15 +89,15 @@ export class ScheduleDetailsComponent implements OnInit {
     this.scheduleService.deleteCourse(courseId, this.schedule_id)
       .subscribe(response => {
         if (JSON.parse(response).success){
-          this.snackBar.open("Course deleted!", null, {duration: 1000, });
+          this.snackBar.open("Course deleted!", null, {duration: 2000, });
           this.refreshCourses();
         }else{
-          this.snackBar.open(errorMessage, null, {duration: 1000, });
+          this.snackBar.open(errorMessage, null, {duration: 2000, });
           console.log(response);
         }
       },
       error => {
-        this.snackBar.open(errorMessage, null, {duration: 1000, });
+        this.snackBar.open(errorMessage, null, {duration: 2000, });
         console.log(error);
       } 
     );
@@ -108,13 +109,23 @@ export class ScheduleDetailsComponent implements OnInit {
   showAddCourseForm(){ this.showCourseForm = !this.showCourseForm; }
 
   generate(){
+    this.generating = true;
+     let errorMessage : string = "There's some problem generating this schedule. Please try again later!";
     this.scheduleService.generateSchedule(this.schedule_id).subscribe(
       response =>{
-        while (response.byteLoaded <= response.totalBytes){
-          console.log("loading...");
+        if (!JSON.parse(response).success){
+          this.snackBar.open(errorMessage, null, {duration: 2000, });
+          console.log(response);
+       }
+       else{
+          console.log("Generated!");
+          this.snackBar.open("Schedule is generated!", null, {duration: 2000});
+          this.router.navigateByUrl("/schedules");
         }
-        console.log("Generated!");
-        this.router.navigateByUrl("/schedules");
+      },
+      error => {
+        this.snackBar.open(errorMessage, null, {duration:2000,});
+        console.log(error);
       })
   }
 }

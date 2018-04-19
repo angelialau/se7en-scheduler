@@ -64,7 +64,7 @@ export class ChangecalendarComponent implements OnInit {
             end: moment(this.calendarstart).add(7,'d'),
          },
         header: {
-        	left: '',
+        	left: 'prev,next',
           center: 'title',
           right: 'agendaWeek,agendaDay'
         },
