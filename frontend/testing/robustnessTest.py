@@ -64,16 +64,27 @@ class RobustnessTest(unittest.TestCase):
     # ensure events form is not accessible
     def test_add_events(self):
         driver = self.driver
-        driver.get("http://localhost:4200/schedules/31")
+        driver.get("http://localhost:4200/events")
 
         headers = driver.find_elements_by_tag_name("h5")
         texts = []
         for header in headers:
             texts.append(header.text)
-        self.assertNotIn("Create a new Administrator/Instructor", texts)
+        self.assertNotIn("Select the Schedule you want to add event to", texts)
         self.assertIn("Announcements", texts)
 
-        buttons = driver.find_elements_by_id("submitFormButton")
+    def test_add_events_to_schedule(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/events/31")
+
+        headers = driver.find_elements_by_tag_name("h5")
+        texts = []
+        for header in headers:
+            texts.append(header.text)
+        self.assertNotIn("Create a new event", texts)
+        self.assertIn("Announcements", texts)
+
+        buttons = driver.find_elements_by_id("submitEventButton")
         self.assertEqual(len(buttons), 0)
 
     # ensure add schedule form is not accessible
@@ -92,7 +103,7 @@ class RobustnessTest(unittest.TestCase):
         self.assertEqual(len(buttons), 0)
 
     # ensure add schedule form is not accessible
-    def test_delete_schedules(self):
+    def test_schedules_permissions(self):
         driver = self.driver
         driver.get("http://localhost:4200/schedules")
 
@@ -124,19 +135,6 @@ class RobustnessTest(unittest.TestCase):
 
         buttons = driver.find_elements_by_id("makeAnnouncementBtn")
         self.assertEqual(len(buttons), 0)
-
-    
-
-    # ensure delete events button is not accessible
-    def test_delete_events(self):
-        driver = self.driver
-        driver.get("http://localhost:4200/events/25")
-
-        buttons = driver.find_elements_by_tag_name("button")
-        titles = []
-        for button in buttons:
-            titles.append(button.getAttribute('title'))
-        self.assertNotIn("Delete this event", titles)
 
     def test_calendar_radio_buttons(self):
         driver = self.driver
