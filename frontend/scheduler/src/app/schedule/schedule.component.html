@@ -31,6 +31,29 @@
 	</div>
 	<br>
 
+  <div *ngIf="!isAdmin">
+    <div class="dropdown-divider"></div>
+
+    <div class="card-body">
+      <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-eye"></i> Appeals you have submitted</h5>
+    </div>
+    <div *ngIf="appealsSubmitted.length === 0 ">
+      <div class="alert alert-info" role="alert">
+        You have not submitted any appeals
+      </div>
+    </div>
+
+    <div *ngFor="let appeal of appealsSubmitted">
+      <div class="card" style="margin: 0 5% 5% 5%;">
+        <div class="card-header"> Appeal: {{appeal.title}} </div>
+        <div class="card-body">
+          {{appeal.content}}
+        </div>
+      </div>
+    </div>
+    <div class="dropdown-divider"></div>
+  </div>
+<br>
 	<div align="center">
 	<div *ngIf = "!isAdmin">
     <button type="button" (click) = "showForm()" id="appealButton"

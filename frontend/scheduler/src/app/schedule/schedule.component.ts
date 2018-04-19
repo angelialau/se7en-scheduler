@@ -42,6 +42,7 @@ export class ScheduleComponent implements OnInit {
   haveSchedule: boolean;
   generated:boolean = false;
   isFinalised: boolean = false;
+  appealsSubmitted: Appeal[] = [];
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -75,6 +76,8 @@ export class ScheduleComponent implements OnInit {
         this.isFinalised = true;
       }
     });
+
+    this.getAppealsSubmitted();
 
     this.eventService.getDates(this.calendar_id).subscribe(data =>{
       this.calendarstart = data.startDate.substring(0,10);
@@ -231,6 +234,7 @@ export class ScheduleComponent implements OnInit {
       if (JSON.parse(response).success){
         this.snackBar.open("Appeal made!", null, {duration:1000});
         this.initialiseAppeal();
+        this.getAppealsSubmitted();
       }
       else{
         this.snackBar.open(errorMsg,null,{duration:1000});
@@ -302,6 +306,26 @@ export class ScheduleComponent implements OnInit {
         this.snackBar.open("Finalized",null,{duration:1000});
         this.router.navigateByUrl("/schedules");
       })
+  }
+
+  getAppealsSubmitted(){
+    this.scheduleService.getAppealsSubmitted(Number(this.cookieService.get('id')), this.calendar_id)
+    .subscribe(
+      response => {
+        console.log(response)
+        if(response.status === 200){
+          if(response.body.message === "no rows found"){
+            console.log("no appeals made");
+          }else{
+            this.appealsSubmitted = response.body;
+          }
+        }
+      },error =>{
+        this.snackBar.open("Something wrong with server in displaying the appeals you have submitted, please check back again later!", 
+          null, {duration: 1200,});
+        console.log("error getting appeals submitted by prof", error);
+      }
+    )
   }
   
 }
