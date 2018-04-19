@@ -32,7 +32,7 @@ class FormsInstructorTest(unittest.TestCase):
 
     def test_add_appeal(self):
         driver = self.driver
-        driver.get("http://localhost:4200/viewschedule")
+        driver.get("http://localhost:4200/viewschedule/46")
 
         appealFormButton = driver.find_elements_by_id("appealButton")
         self.assertEqual(len(appealFormButton), 1)
@@ -42,10 +42,10 @@ class FormsInstructorTest(unittest.TestCase):
         self.assertEqual(submit.is_enabled(), False, preButtonError)
 
         title = WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.ID, "title")))
-        title.send_keys(''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)]))
+        title.send_keys("Hello")
 
         content = driver.find_element_by_id("appealContent")
-        content.send_keys(''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(32)]))
+        content.send_keys("Hello")
 
         submit = WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.ID, "makeAppealButton")))
         self.assertEqual(submit.is_enabled(), True, postButtonError)

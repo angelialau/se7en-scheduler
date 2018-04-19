@@ -44,35 +44,42 @@ class NaviTest(unittest.TestCase):
         header = driver.find_element_by_tag_name('h5')
         self.assertEqual("All Schedules", header.text)
 
-    def test_direct_to_a_course(self):
+    def test_direct_to_add_event(self): # stale element
         driver = self.driver
         driver.find_element_by_id("sbViewSchedules").click()
-        driver.find_elements_by_tag_name("td")[2].click()
-        header = driver.find_element_by_tag_name('h5')
-        self.assertEqual("Courses under this Schedule", header.text)
+        time.sleep(1)
 
-    def test_direct_to_add_event(self): # first schedule
-        driver = self.driver
-        driver.find_element_by_id("sbViewSchedules").click()
-        driver.find_elements_by_tag_name('td')[0].click()
-        header = driver.find_element_by_id("eventFormTitle")
-        self.assertEqual("Add an Event", header.text.strip())
+        buttons = driver.find_elements_by_tag_name("button")
+        title = "Click to add an event to this schedule"
+        for button in buttons:
+            if title in button.get_attribute('title'):
+                button.click()
+                time.sleep(2)
+                header = WebDriverWait(driver,10).until(
+                    EC.visibility_of_element_located((By.ID, 'schedulesTitle')))
+                self.assertEqual("Create a new event", header.text.strip())
 
-        header.click()
-        header = driver.find_element_by_id('eventDetailsTitle')
-        self.assertEqual("Venue booking", header.text)
+                header = driver.find_element_by_id('eventDetailsTitle')
+                self.assertEqual("Venue booking", header.text.strip())
+                break
 
     def test_direct_to_add_course(self): # third schedule
         driver = self.driver
         driver.find_element_by_id("sbViewSchedules").click()
-        driver.find_elements_by_tag_name("td")[2].click()
-        driver.refresh()
-        header = driver.find_element_by_id("courseFormTitle")
-        self.assertEqual("Add a Course", header.text.strip())
+        time.sleep(1)
 
-        header.click()
-        header = driver.find_element_by_id('profDeetsTitle')
-        self.assertEqual("Details of Teaching Professors", header.text.strip())
+        buttons = driver.find_elements_by_tag_name("button")
+        title = "Click to add courses or generate an alternative schedule"
+        for button in buttons:
+            if title in button.get_attribute('title'):
+                button.click()
+                header = WebDriverWait(driver,10).until(
+                    EC.visibility_of_element_located((By.ID, 'courseFormTitle')))
+                self.assertEqual("Add a Course", header.text.strip())
+
+                header = driver.find_element_by_id('profDeetsTitle')
+                self.assertEqual("Details of Teaching Professors", header.text.strip())
+                break
 
     # should default back to home page with announcements
     def test_direct_to_login(self):
@@ -83,9 +90,19 @@ class NaviTest(unittest.TestCase):
 
     def test_direct_to_view_calendar(self):
         driver = self.driver
-        driver.find_element_by_id("sbViewCalendar").click()
-        header = driver.find_element_by_tag_name("h2")
-        self.assertIn("2018", header.text)
+        # driver.get("http://localhost:4200/viewschedule/31")
+        driver.find_element_by_id("sbViewSchedules").click()
+        time.sleep(1)
+
+        buttons = driver.find_elements_by_tag_name("button")
+        title = "Click to view this term schedule"
+        for button in buttons:
+            if title in button.get_attribute('title'):
+                button.click()
+                time.sleep(1)
+                header = driver.find_element_by_tag_name("h2")
+                self.assertIn("2018", header.text)
+                break
 
     def test_direct_to_change_password(self):
         driver = self.driver
@@ -96,14 +113,14 @@ class NaviTest(unittest.TestCase):
     def test_direct_to_view_appeals(self):
         driver = self.driver
         driver.find_element_by_id("sbViewAppeals").click()
-        header = driver.find_element_by_tag_name("h2")
+        header = driver.find_element_by_tag_name("h5")
         self.assertIn("Appeals", header.text)
 
     def test_logout(self):
         driver = self.driver
         logoutbutton = driver.find_element_by_id("logoutButton").click()
-        header = driver.find_element_by_tag_name("h1")
-        self.assertIn("Login to Se7enScheduler", header.text)
+        header = driver.find_elements_by_id("email")
+        self.assertEqual(len(header),1)
 
     def tearDown(self):
         self.driver.close()
