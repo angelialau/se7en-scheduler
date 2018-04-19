@@ -64,10 +64,10 @@ export class ScheduleComponent implements OnInit {
     this.initialiseAppeal();
 
     this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
-      if (data.body.generated === "1"){
+      if (data.body.generated === 1){
         this.generated = true;
       }
-      if (data.body.finalized === "1"){
+      if (data.body.finalized === 1){
         this.isFinalised = true;
       }
     });
