@@ -25,7 +25,7 @@ class RobustnessTest(unittest.TestCase):
         self.driver.get("http://localhost:4200/login")
     
         email = self.driver.find_element_by_id("email")
-        email.send_keys("oka_kurniawan@sutd.edu.sg")
+        email.send_keys("Braun@gmail.com")
 
         password = self.driver.find_element_by_id("password")
         password.send_keys("password")
@@ -50,6 +50,21 @@ class RobustnessTest(unittest.TestCase):
     def test_add_users(self):
         driver = self.driver
         driver.get("http://localhost:4200/user")
+
+        headers = driver.find_elements_by_tag_name("h5")
+        texts = []
+        for header in headers:
+            texts.append(header.text)
+        self.assertNotIn("Create a new Administrator/Instructor", texts)
+        self.assertIn("Announcements", texts)
+
+        buttons = driver.find_elements_by_id("submitFormButton")
+        self.assertEqual(len(buttons), 0)
+
+    # ensure events form is not accessible
+    def test_add_events(self):
+        driver = self.driver
+        driver.get("http://localhost:4200/schedules/31")
 
         headers = driver.find_elements_by_tag_name("h5")
         texts = []
@@ -86,6 +101,10 @@ class RobustnessTest(unittest.TestCase):
         for button in buttons:
             titles.append(button.getAttribute('title'))
         self.assertNotIn("Delete this schedule", titles)
+        self.assertNotIn("Click to add an event to this schedule", titles)
+        self.assertNotIn("Click to view this term schedule", titles)
+        self.assertNotIn("Click to add courses or generate an alternative schedule", titles)
+        self.assertIn("Click to add courses" , titles)
 
     # ensure delete announcements button is not accessible
     def test_delete_announcements(self):
@@ -106,16 +125,7 @@ class RobustnessTest(unittest.TestCase):
         buttons = driver.find_elements_by_id("makeAnnouncementBtn")
         self.assertEqual(len(buttons), 0)
 
-    # ensure events form is not accessible
-    def test_add_events(self):
-        driver = self.driver
-        driver.get("http://localhost:4200/schedules/31")
-
-        buttons = driver.find_elements_by_id("schedulesTitle")
-        self.assertEqual(len(buttons), 0)
-
-        buttons = driver.find_elements_by_id("submitEventButton")
-        self.assertEqual(len(buttons), 0)
+    
 
     # ensure delete events button is not accessible
     def test_delete_events(self):

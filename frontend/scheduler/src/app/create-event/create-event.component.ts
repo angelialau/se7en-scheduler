@@ -73,8 +73,11 @@ export class CreateEventComponent implements OnInit {
           console.log("getSchedule server error", error);
         }
       )
+      this.getEvents();
+    }else{
+      this.router.navigateByUrl('/home');
     }
-    this.getEvents();
+    
   }
 
   // get list of all available timeslots
