@@ -30,6 +30,7 @@ describe('eventToEditCalendar()', function () {
 		        "pillar": "ISTD",
 		        "schedule": 
 	            {
+	            	"id": "273",
 	                "title": "50.021\nCohort Classroom 11\nCohort 1",
 	                "start": "20180417T0830",
 	                "end": "20180417T1000"

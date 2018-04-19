@@ -79,7 +79,7 @@ var utilities = {
 	 *
 	 * Returns a JSONObject
 	 */
-	eventToFullCalendar:function(event, startDate){
+	eventToFullCalendar:function(event){
 		var output = {};
 		var details = {};
 		var startTime = new Date(this.zeroTime.getTime() + event.start*(30*6*10000));
@@ -96,9 +96,18 @@ var utilities = {
 			output.schedule.title += "\n" + "Cohort " + event.cohort;
 		}
 
-		output.schedule.start = fecha.format(startTime, 'HH:mm');
-		output.schedule.end = fecha.format(endTime, 'HH:mm');
-		output.schedule.dow = event.day.toString();
+		var startTimeString = fecha.format(startTime, 'HHmm');
+		var endTimeString = fecha.format(endTime, 'HHmm');
+
+		if (!event.date) {
+			output.schedule.start = startTimeString;
+			output.schedule.end = endTimeString;
+			output.schedule.dow = event.day.toString();
+		} else {
+			var date = new Date(event.date);
+			output.schedule.start = fecha.format(date, 'YYYYMMDD[T' + startTimeString + "]");
+			output.schedule.end = fecha.format(date, 'YYYYMMDD[T' + endTimeString + "]");
+		}
 
 		return output;
 	},
@@ -115,16 +124,6 @@ var utilities = {
 		var startTime = new Date(this.zeroTime.getTime() + event.start*(30*6*10000));
 		var endTime =  new Date(this.zeroTime.getTime() + (event.end+1)*(30*6*10000));
 
-		// move current to monday
-		while (startDate.getDay() != 1) {
-			this.incrementDate(startDate);
-		}
-		
-		// move current to day of event
-		while (startDate.getDay() != event.day) {
-			this.incrementDate(startDate);
-		}
-
 		output.instructor = event.prof;
 		output.id = event.prof_id;
 		output.pillar = event.pillar;
@@ -135,9 +134,29 @@ var utilities = {
 		details.Description = "Cohort " + event.cohort;
 		details["Start Time"] = fecha.format(startTime, 'hh:mm A');
 		details["End Time"] = fecha.format(endTime, 'hh:mm A');
-		details["Start Date"] = fecha.format(startDate, 'YYYY/MM/DD');
-		details["End Date"] = fecha.format(startDate, 'YYYY/MM/DD');
 		details.Private = true;
+
+		// if it is not a custom event
+		if (!event.date) {
+			// move current to monday
+			while (startDate.getDay() != 1) {
+				this.incrementDate(startDate);
+			}
+			
+			// move current to day of event
+			while (startDate.getDay() != event.day) {
+				this.incrementDate(startDate);
+			}
+
+			details["Start Date"] = fecha.format(startDate, 'YYYY/MM/DD');
+			details["End Date"] = fecha.format(startDate, 'YYYY/MM/DD');
+
+		// if it is a custom event
+		} else {
+			var tempDate = new Date(event.date);
+			details["Start Date"] = fecha.format(tempDate, 'YYYY/MM/DD');
+			details["End Date"] = fecha.format(tempDate, 'YYYY/MM/DD');
+		}
 
 		output.schedule.push(details);
 		return output;

@@ -30,8 +30,8 @@ describe('eventToFullCalendar()', function () {
 		        "schedule": 
 	            {
 	                "title": "50.021\nCohort Classroom 11\nCohort 1",
-	                "start": "08:30",
-	                "end": "10:00",
+	                "start": "0830",
+	                "end": "1000",
 	                "dow": "1"
 	            }
 		    }
@@ -70,9 +70,8 @@ describe('eventToFullCalendar()', function() {
 		        "schedule": 
 	            {
 	                "title": "Capstone Briefing\nThink Tank 1",
-	                "start": "13:00",
-	                "end": "18:30",
-	                "dow": "5"
+	                "start": "20180420T1300",
+	                "end": "20180420T1830",
 	            }
 		    }
 
