@@ -6,21 +6,50 @@
   <div *ngIf="showScheduleList">
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr *ngIf="schedule.generated !== 1 || isAdmin" class="clickable">
+        <tr *ngIf="schedule.generated !== 1 || isAdmin">
           <td 
-          title="View courses enrolled and add a course or event to this schedule"
-          ><span (click) = "selectView(schedule)">
+          title="Hover over buttons for more details"
+          >
             Year {{schedule.year}} Trimester {{schedule.trimester}} 
             <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
             <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
             <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
-          </span>
+          
           <span>
             <button (click)="deleteSchedule(schedule)" *ngIf="isAdmin"
             title="Delete this schedule" 
             style="float: right; margin: 0 5px;"
             class="btn btn-light" ><i class="fas fa-trash-alt"></i></button> 
           </span>
+          <span>
+            <!-- if schedule is finalised -->
+            <button (click) = "redirectTo('/events/',schedule.id)" *ngIf="schedule.finalized===1"
+            title="Click to add an event to this schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit"></i>
+            </button> 
+            <button (click) = "selectView(schedule)" *ngIf="schedule.finalized===1"
+            title="Click to view this term schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-eye" ></i>
+            </button> 
+            <!-- if schedule is not finalised  -->
+            <button (click) = "selectView(schedule)"*ngIf="schedule.finalized!==1 && isAdmin"
+            title="Click to add courses or generate an alternative schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit" ></i>
+            </button> 
+            <button (click) = "selectView(schedule)"*ngIf="schedule.finalized!==1 && !isAdmin"
+            title="Click to add courses" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit" ></i>
+            </button> 
+          </span>
+
           </td>
         </tr>
       </tbody>

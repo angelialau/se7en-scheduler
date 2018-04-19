@@ -67,6 +67,7 @@ export class ScheduleComponent implements OnInit {
     if (this.cookieService.get('pillar') == "Administrator"){
       this.isAdmin = true;
     }
+    console.log(this.isAdmin);
 
     this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
       if (data.body.generated === 1){
@@ -87,7 +88,7 @@ export class ScheduleComponent implements OnInit {
     this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
       var allschedules: Object[] = [];
-      if (this.isAdmin){
+      if (!this.isAdmin){
         for (let i of data){
           if (i.prof_id == this.cookieService.get('id')){
             allschedules.push(i.schedule);
@@ -120,7 +121,7 @@ export class ScheduleComponent implements OnInit {
         visibleRange: {
             start: this.calendarstart,
             end: this.calendarend
-         }, //why is this not working :(
+         },
         validRange: {
             start: this.calendarstart,
             end: this.calendarend
@@ -312,7 +313,6 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.getAppealsSubmitted(Number(this.cookieService.get('id')), this.calendar_id)
     .subscribe(
       response => {
-        console.log(response)
         if(response.status === 200){
           if(response.body.message === "no rows found"){
             console.log("no appeals made");

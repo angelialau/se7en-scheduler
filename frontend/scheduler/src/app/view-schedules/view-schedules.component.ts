@@ -121,8 +121,11 @@ export class ViewSchedulesComponent implements OnInit {
     this.router.navigateByUrl("/viewschedule/" + id);
   }
 
+  redirectTo(path: string, param : string){
+   this.router.navigateByUrl(path + param); 
+  }
+
   selectView(schedule: Schedule){
-    console.log(schedule);
     if (schedule.generated == 1){ // generated, hence go to calendar view
       this.router.navigateByUrl("/viewschedule/" + schedule.id);
     }
