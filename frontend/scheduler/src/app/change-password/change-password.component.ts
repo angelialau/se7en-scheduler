@@ -19,23 +19,27 @@ export class ChangePasswordComponent implements OnInit {
   changePassword(oldPassword : string, newPassword : string, confirmPassword: string){
     let errorMsg : string = "Something went wrong with changing your password," + 
     " please try again later!";
-    if(newPassword===confirmPassword){
-      this.userService.changePassword(oldPassword, newPassword)
-      .subscribe(
-        response => {
-          if(JSON.parse(response).success){
-            this.snackBar.open("Password changed!", null, {duration: 1000});
-          }else{
-            this.snackBar.open(errorMsg, null, {duration: 1000});
-            console.log(response);
-          }
-        }, error => {
-          this.snackBar.open(errorMsg, null, {duration: 1000});
-          console.log(error);
-        }
-        )
+    if(oldPassword === newPassword || oldPassword === confirmPassword){
+      this.snackBar.open("Your new password cannot be the same as the old one! Please pick a different new password.", null, {duration : 1800,});
     }else{
-      this.snackBar.open("The new passwords do not match, please try again.", null, {duration: 3000});
+      if(newPassword===confirmPassword){
+        this.userService.changePassword(oldPassword, newPassword)
+        .subscribe(
+          response => {
+            if(JSON.parse(response).success){
+              this.snackBar.open("Password changed!", null, {duration: 1000});
+            }else{
+              this.snackBar.open(errorMsg, null, {duration: 1000});
+              console.log(response);
+            }
+          }, error => {
+            this.snackBar.open(errorMsg, null, {duration: 1000});
+            console.log(error);
+          }
+          )
+      }else{
+        this.snackBar.open("The new passwords do not match, please try again.", null, {duration: 3000});
+      }
     }
   }
 }
