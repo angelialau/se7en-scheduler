@@ -6,20 +6,26 @@
   <div *ngIf="showScheduleList">
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr *ngIf="schedule.generated !== 1 || isAdmin" class="clickable">
+        <tr *ngIf="schedule.generated !== 1 || isAdmin">
           <td 
           title="View courses enrolled and add a course or event to this schedule"
-          ><span (click) = "selectView(schedule)">
+          >
             Year {{schedule.year}} Trimester {{schedule.trimester}} 
             <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
             <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
             <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
-          </span>
+          
           <span>
             <button (click)="deleteSchedule(schedule)" *ngIf="isAdmin"
             title="Delete this schedule" 
             style="float: right; margin: 0 5px;"
             class="btn btn-light" ><i class="fas fa-trash-alt"></i></button> 
+          </span>
+          <span>
+            <button (click) = "selectView(schedule)"
+            title="Click to view associated calendar, courses or events" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" ><i class="fas fa-edit"></i></button> 
           </span>
           </td>
         </tr>
