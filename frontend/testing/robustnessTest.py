@@ -107,10 +107,11 @@ class RobustnessTest(unittest.TestCase):
         driver = self.driver
         driver.get("http://localhost:4200/schedules")
 
-        buttons = driver.find_elements_by_tag_name("buttons") 
+        buttons = driver.find_elements_by_tag_name("button") 
         titles = []
         for button in buttons:
-            titles.append(button.getAttribute('title'))
+            titles.append(button.get_attribute('title'))
+        
         self.assertNotIn("Delete this schedule", titles)
         self.assertNotIn("Click to add an event to this schedule", titles)
         self.assertNotIn("Click to view this term schedule", titles)
@@ -125,7 +126,7 @@ class RobustnessTest(unittest.TestCase):
         buttons = driver.find_elements_by_tag_name("button")
         titles = []
         for button in buttons:
-            titles.append(button.getAttribute('title'))
+            titles.append(button.get_attribute('title'))
         self.assertNotIn("Delete this announcement", titles)
 
     # ensure make announcements button is not accessible
