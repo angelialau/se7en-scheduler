@@ -38,6 +38,9 @@ export class CreateEventComponent implements OnInit {
   showDateSelection : boolean = false;
   showTimeSelection : boolean = false;
   showEndSelection : boolean = false;
+  // for api
+  startDate : string;
+  endDate : string;
   
 
   constructor(
@@ -55,8 +58,6 @@ export class CreateEventComponent implements OnInit {
     this.schedule_id = this.route.snapshot.params['schedule_id'];
     if(this.cookieService.get('pillar')==='Administrator'){
       this.isAdmin = true;
-      this.searchForm = new Search(this.schedule_id,'', '','','','');
-      this.newEvent = new Event(this.schedule_id);
       this.scheduleService.getSchedule(this.schedule_id).subscribe(
         response => {
           if(response.body.finalized == "0" || response.body.generated == "0"){ // schedule not finalized
@@ -64,6 +65,10 @@ export class CreateEventComponent implements OnInit {
           }else if(response.body.finalized == "1"){
             this.finalized = true;
             // expensive calls
+            this.startDate = response.body.startDate.substring(0,10);
+            this.endDate = response.body.endDate.substring(0,10);
+            this.searchForm = new Search(this.schedule_id,this.startDate, this.endDate,'','','');
+            this.newEvent = new Event(this.schedule_id);
             this.getInstructors();
             this.refreshTimeSlots();
           }
