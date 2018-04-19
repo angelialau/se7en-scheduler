@@ -62,6 +62,7 @@ class NaviTest(unittest.TestCase):
 
                 header = driver.find_element_by_id('profDeetsTitle')
                 self.assertEqual("Details of Teaching Professors", header.text.strip())
+                break
 
     def test_direct_to_view_calendar(self):
         driver = self.driver
