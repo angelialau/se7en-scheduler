@@ -46,14 +46,13 @@
               <label class="input-group-text" for="year"> Year</label>
             </div>
             <select class="form-control" id="year" required
-             [(ngModel)]="schedule.year" name="year">
+             [(ngModel)]="schedule.year" name="year"
+             (change)="checkAvailability()" >
              <option *ngFor="let i of years"
               value={{i}}>{{i}}</option>
             </select>
           </div>
         </div>
-      
-
       
         <div class="form-group">
           <div class="input-group">
@@ -74,8 +73,6 @@
         <div class="alert alert-danger" role="alert" *ngIf="!available">
           The schedule of this year and trimester has already been created. Please check your inputs!
         </div>
-          
-        
 
         <div class="row">
           <div class="col">
