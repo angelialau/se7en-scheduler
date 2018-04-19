@@ -39,8 +39,9 @@
     </div>
     <div *ngIf="appealsSubmitted.length === 0 ">
       <div class="alert alert-info" role="alert">
-        You have not submitted any appeals
+        You have no outstanding appeals ☺  <span style="float: right;"><a style="font-size: x-small;" href="/appealstatus"> click to view replies to your previous appeals </a></span>
       </div>
+      
     </div>
 
     <div *ngFor="let appeal of appealsSubmitted">

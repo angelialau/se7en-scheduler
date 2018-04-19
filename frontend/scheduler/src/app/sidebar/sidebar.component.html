@@ -3,8 +3,12 @@
     <a id="sbAnnouncements" class="list-group-item-action" routerLink="/home"><i class="fas fa-bell"></i> Announcements</a>
   </li>
 
-  <li class="list-group-item">
+  <li class="list-group-item" *ngIf = "isAdmin">
     <a id="sbViewSchedules" class="list-group-item-action" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Schedules</a>
+  </li>
+
+  <li class="list-group-item" *ngIf = "!isAdmin">
+    <a id="sbViewSchedules" class="list-group-item-action" routerLink="/schedules"><i class="fas fa-pencil-alt"></i> Submit Courses</a>
   </li>
 
   <li class="list-group-item" *ngIf = "!isAdmin">
