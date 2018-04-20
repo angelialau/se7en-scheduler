@@ -18,16 +18,18 @@
 //   SimpleSnackBar } from '@angular/material';
 // import { Course } from './../../models/course.model';
 // import { Schedule } from './../../models/schedule.model';
+// import { CookieService } from 'ng2-cookies';
 
 // import { ScheduleDetailsComponent } from './schedule-details.component';
 
 // export class MockScheduleService extends ScheduleService{}
+// export class MockCookieService extends CookieService{}
 
 // describe('ScheduleDetailsComponent', () => {
 //   let component: ScheduleDetailsComponent;
 //   let fixture: ComponentFixture<ScheduleDetailsComponent>;
 //   let scheduleServiceStub : MockScheduleService;
-//   let testBedScheduleService: MockScheduleService;
+//   let cookieServiceStub : MockCookieService;
 //   let snackBar : MatSnackBar;
 
 //   beforeEach(async(() => {
@@ -47,6 +49,7 @@
 //         DatePipe,
 //         {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': 3}}}},
 //         {provide: ScheduleService, useClass: MockScheduleService },
+//         {provide: CookieService, useClass: MockCookieService}, 
 //        ],
 //       schemas: [ NO_ERRORS_SCHEMA ]
 //     })
@@ -57,9 +60,8 @@
 //     fixture = TestBed.createComponent(ScheduleDetailsComponent);
 //     component = fixture.componentInstance;
 //     snackBar = fixture.debugElement.injector.get(MatSnackBar);
-//     testBedScheduleService = TestBed.get(ScheduleService);
-//     scheduleServiceStub = fixture.debugElement.injector.get(ScheduleService);
-
+//     scheduleServiceStub = TestBed.get(ScheduleService);
+//     cookieServiceStub = TestBed.get(CookieService);
 //     fixture.detectChanges();
 //   });
 
@@ -80,22 +82,23 @@
 
 //   it('should have schedule service injected and instantiated', () => {
 //     expect(scheduleServiceStub instanceof MockScheduleService).toBeTruthy();
-//     inject([ScheduleService], (injectService: ScheduleService) => {
-//       expect(injectService).toBe(testBedScheduleService);
-//     });
+//   });
+
+//   it('should have cookie service injected and instantiated', () => {
+//     expect(cookieServiceStub instanceof MockCookieService).toBeTruthy();
 //   });
 
 //   it('should instantiate courses given valid http response at ngOnInit', ()=>{
-//     let validCourse = new Course(1,1,'1','1',1,1,1,1,'1','1','1','1','1','1',1);
+//     let validCourse = new Course(1,1,'1','1','1',1,1,1,1,'1','1','1','1','1','1');
 //     let response = {
 //       body: [validCourse, validCourse, validCourse],
 //       status: 200,
 //     }
-//     let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
-//       component.getCourses(component.schedule_id);
-//     });
-//     let coursespy = spyOn(component, 'getCourses').and.callFake(()=>{
-//       scheduleServiceStub.getCoursesInSchedule(component.schedule_id);
+//     // let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
+//     //   component.getCourses(component.schedule_id);
+//     // });
+//     let coursespy = spyOn(component, 'getCourses').and.callFake((a)=>{
+//       scheduleServiceStub.getCoursesInSchedule(a);
 //     });
 //     let servicespy = spyOn(scheduleServiceStub,'getCoursesInSchedule').and
 //       .callFake((id: number)=>{
@@ -107,10 +110,10 @@
 //         }
 //       }
 //     )
-//     component.ngOnInit();
-//     fixture.autoDetectChanges();
+//     component.getCourses(component.schedule_id);
+//     fixture.detectChanges();
 //     fixture.whenStable().then(()=>{
-//       expect(spy).toHaveBeenCalled();
+//       // expect(spy).toHaveBeenCalled();
 //       expect(coursespy).toHaveBeenCalled();
 //       expect(servicespy).toHaveBeenCalled();
 //       expect(component.courses).toEqual([validCourse, validCourse, validCourse]);
@@ -126,12 +129,7 @@
 //       },
 //       status: 200,
 //     }
-//     let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
-//       component.getCourses(component.schedule_id);
-//     });
-//     let coursespy = spyOn(component, 'getCourses').and.callFake(()=>{
-//       scheduleServiceStub.getCoursesInSchedule(component.schedule_id);
-//     });
+    
 //     let servicespy = spyOn(scheduleServiceStub,'getCoursesInSchedule').and
 //       .callFake((id: number)=>{
 //         if(response.status ==200){
@@ -143,6 +141,23 @@
 //         }
 //       }
 //     )
+
+//     let coursespy = spyOn(component, 'getCourses').and.callFake((a)=>{
+//       scheduleServiceStub.getCoursesInSchedule(a);
+//     });
+
+//     let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
+//       component.getCourses(component.schedule_id);
+//     });
+    
+//     let getSchedSpy = spyOn(scheduleServiceStub, 'getSchedule').and.callFake((a)=>{
+//       component.refreshCourses();
+//     });
+
+//     let initSpy = spyOn(component, 'ngOnInit').and.callFake((a)=>{
+//       scheduleServiceStub.getSchedule(component.schedule_id);
+//     });
+
 //     component.ngOnInit();
 //     fixture.autoDetectChanges();
 //     fixture.whenStable().then(()=>{
@@ -162,12 +177,6 @@
 //       },
 //       status: 404,
 //     }
-//     let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
-//       component.getCourses(component.schedule_id);
-//     });
-//     let coursespy = spyOn(component, 'getCourses').and.callFake(()=>{
-//       scheduleServiceStub.getCoursesInSchedule(component.schedule_id);
-//     });
 //     let servicespy = spyOn(scheduleServiceStub,'getCoursesInSchedule').and
 //       .callFake((id: number)=>{
 //         if(response.status ==200){
@@ -179,6 +188,23 @@
 //         }
 //       }
 //     )
+
+//     let coursespy = spyOn(component, 'getCourses').and.callFake((a)=>{
+//       scheduleServiceStub.getCoursesInSchedule(a);
+//     });
+
+//     let spy = spyOn(component, 'refreshCourses').and.callFake(()=>{
+//       component.getCourses(component.schedule_id);
+//     });
+    
+//     let getSchedSpy = spyOn(scheduleServiceStub, 'getSchedule').and.callFake((a)=>{
+//       component.refreshCourses();
+//     });
+
+//     let initSpy = spyOn(component, 'ngOnInit').and.callFake((a)=>{
+//       scheduleServiceStub.getSchedule(component.schedule_id);
+//     });
+
 //     component.ngOnInit();
 //     fixture.autoDetectChanges();
 //     fixture.whenStable().then(()=>{
@@ -188,11 +214,4 @@
 //       expect(component.courses).toEqual([]);
 //     })
 //   })
-
-//   // test delete courses 
-
-//   // test clicks
-//   // it('should toggle event form when clicked', ()=>{
-
-//   // })
 // });
