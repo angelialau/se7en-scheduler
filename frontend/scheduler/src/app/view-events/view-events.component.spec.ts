@@ -13,10 +13,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ScheduleService } from './../services/schedule.service';
 import { Schedule } from './../../models/schedule.model';
 import { DatePipe } from '@angular/common';
+import { CookieService } from 'ng2-cookies';
 
 import { ViewEventsComponent } from './view-events.component';
 
 export class MockScheduleService extends ScheduleService{}
+export class MockCookieService extends CookieService{}
 
 describe('ViewEventsComponent', () => {
   let component: ViewEventsComponent;
@@ -40,6 +42,7 @@ describe('ViewEventsComponent', () => {
         DatePipe,
         {provide: ActivatedRoute, useValue: {snapshot: {params: {'schedule_id': '25'}}}},
         {provide: ScheduleService, useClass: MockScheduleService },
+        {provide: CookieService, useClass: MockCookieService}, 
        ],
     })
     .compileComponents();

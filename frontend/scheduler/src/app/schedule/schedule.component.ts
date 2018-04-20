@@ -275,6 +275,7 @@ export class ScheduleComponent implements OnInit {
             link.setAttribute('href',googledata);
             link.setAttribute('download',filename);
             link.click();
+            this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
           }
         }
       },

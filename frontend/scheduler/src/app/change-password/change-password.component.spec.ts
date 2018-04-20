@@ -83,12 +83,15 @@ describe('ChangePasswordComponent', () => {
   });
 
   it('should invoke service when changing password', () => {
-    const spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
+    let spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
       Observable.of(HttpResponse)
     );
+    
+    let functionSpy = spyOn(component, "changePassword").and.callFake((a, b, c)=>{
+      userServiceStub.changePassword(a, b);
+    });
 
-    let button = fixture.debugElement.query(By.css("#submitChangePasswordFormButton"));    
-    button.triggerEventHandler("click", null);
+    component.changePassword("p","np","np");
 
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
@@ -104,7 +107,17 @@ describe('ChangePasswordComponent', () => {
 
   it('should not invoke service when new passwords dont match', () => {
     component.changePassword('password', 'passwordNew', 'passwordNewWrong');
-    const spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
+    let spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
+      Observable.of(HttpResponse)
+    );
+
+    fixture.detectChanges();
+    expect(spy).not.toHaveBeenCalled();
+  })
+
+  it('should not invoke service when old and new passwords are the same', () => {
+    component.changePassword('password', 'password', 'password');
+    let spy = spyOn(userServiceStub, 'changePassword').and.returnValue(
       Observable.of(HttpResponse)
     );
 
