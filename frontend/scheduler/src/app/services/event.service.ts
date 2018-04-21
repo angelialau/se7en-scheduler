@@ -30,6 +30,11 @@ export class EventService {
     this.loggedInUser = this.userService.getLoggedInUser();
   }
 
+  public getDates(id:number): Observable<any>{
+        return this.http.get(this.serverUrl + "/schedules/" + id)
+          .catch(this.handleError);
+  }
+
   public getEvents(id:number): Observable<any> {
       return this.http.get(this.serverUrl + "/Calendars/FullCalendar/" + id)
           .catch(this.handleError);
@@ -49,5 +54,31 @@ export class EventService {
     }
     console.error(errorMessage);
     return Observable.throw(errorMessage);
+  }
+
+  public finalizeSchedule(id:number): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    let extension = this.serverUrl + '/Schedules/Finalized';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
+  }
+
+  public getEditEvents(id:number): Observable<any>{
+        return this.http.get(this.serverUrl + "/Calendars/EditCalendar/" + id)
+          .catch(this.handleError);
+  }
+
+  public updateEvent(id: number, day:number, start: string, end:string): Observable<any>{
+    let body = new URLSearchParams();
+    body.set('id', String(id));
+    body.set('day', String(day));
+    body.set('start', start);
+    body.set('end', end);
+    let extension = this.serverUrl + '/Calendars/Update';
+    return this.http.post(extension, body.toString(),
+      { headers: this.headers, responseType: 'text' }) 
+      .catch(this.handleError); 
   }
 }

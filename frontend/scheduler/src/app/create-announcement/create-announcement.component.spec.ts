@@ -109,22 +109,27 @@ describe('CreateAnnouncementComponent', () => {
   })
 
   it('should call announcement initialiser at ngOnInit', () => {
-    const spy = spyOn(component, 'initialiseAnnouncement');
+    let spy = spyOn(component, 'initialiseAnnouncement');
 
     component.ngOnInit();
     expect(spy).toHaveBeenCalled();
   })
 
   it('should invoke service when making announcement', () => {
-    const spy = spyOn(userServiceStub, 'makeAnnouncements').and.returnValue(
+    let spy = spyOn(userServiceStub, 'makeAnnouncements').and.returnValue(
       Observable.of(HttpResponse)
     );
+    
+    let send = spyOn(component, 'makeAnnouncement').and.callFake(()=>{
+      userServiceStub.makeAnnouncements(announcement);
+    });
 
-    let button = fixture.debugElement.query(By.css("#announcementButton"));    
-    button.triggerEventHandler("click", null);
+    let announcement : Announcement = new Announcement("2018-04-13");
+    component.makeAnnouncement();
 
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
+    expect(send).toHaveBeenCalled();
   })
 
 });

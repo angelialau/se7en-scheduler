@@ -1,20 +1,20 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-// import { AppealreplyComponent } from './appealreply.component';
+// import { ViewCalendarComponent } from './view-calendar.component';
 
-// describe('AppealreplyComponent', () => {
-//   let component: AppealreplyComponent;
-//   let fixture: ComponentFixture<AppealreplyComponent>;
+// describe('ViewCalendarComponent', () => {
+//   let component: ViewCalendarComponent;
+//   let fixture: ComponentFixture<ViewCalendarComponent>;
 
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
-//       declarations: [ AppealreplyComponent ]
+//       declarations: [ ViewCalendarComponent ]
 //     })
 //     .compileComponents();
 //   }));
 
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(AppealreplyComponent);
+//     fixture = TestBed.createComponent(ViewCalendarComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
 //   });

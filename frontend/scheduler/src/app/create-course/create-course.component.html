@@ -115,15 +115,6 @@
               <option *ngFor='let i of venue_type' [value]='i' selected="true">{{i}}</option>
             </select>
           </div>
-          <div class="input-group mb-3" [hidden]="class.value!='Lab' ">
-            <div class="input-group-prepend">
-              <label class="input-group-text"> Preferred Venue </label>
-            </div>
-            <select class="custom-select" 
-              formControlName="venue_types">
-              <option *ngFor='let i of ["Biology Lab", "Physics Lab", "Computer Lab", "Chemistry Lab"]' [value]='i' selected="true">{{i}}</option>
-            </select>
-          </div>
           <!-- duration of each lesson in hours -->
           <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -137,15 +128,17 @@
 
           <!-- profs involved -->  
           <div *ngIf="prof_list.dirty">
-            <p>Professors involved</p>
+            <p>Professors teaching this session * </p>
             <div class="form-inline no-ugly-red-line">
               <div *ngFor='let p of prof_list.controls'>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="checkbox"
-                  (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
-                  <span class="form-check-label">
-                    {{queryInstructors(p.controls['id'].value)}}
-                  </span>
+                <div *ngIf="p.status!=='INVALID'">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="checkbox" 
+                    (change)="updateProfsInvolved($event, b, p.controls['id'].value)">
+                    <span class="form-check-label">
+                      {{queryInstructors(p.controls['id'].value)}}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -4,10 +4,10 @@
     </div>
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr>
+        <tr style="cursor: pointer;">
           <td [routerLink]="['./',schedule.id]" 
-          title="Add event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} 
+          title="Click to add an event to this schedule"
+          >Year {{schedule.year}} Trimester {{schedule.trimester}}  ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})
           </td>
         </tr>
       </tbody>

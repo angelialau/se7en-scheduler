@@ -44,7 +44,7 @@ export class CreateAnnouncementComponent implements OnInit {
         if(JSON.parse(response).success){
           //snackbar
           this.snackBar.open("Announcement made!", null, {duration: 1000});
-          this.initialiseAnnouncement(); 
+          this.router.navigateByUrl('/home');
         }else {
           console.log(this.newAnnouncement);
           this.snackBar.open(errorMsg, null, {duration: 1000});

@@ -3,7 +3,7 @@ import { UserService } from './../services/user.service';
 import { ScheduleService } from './../services/schedule.service';
 import { User } from './../../models/user.model';
 import { Event, Search, days} from './../../models/event.model';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Course, Session, CourseDetail, courseDetails, class_type, 
   durations, venue_type } from './../../models/course.model';
 import { Schedule } from './../../models/schedule.model';
@@ -18,6 +18,7 @@ import { CookieService } from 'ng2-cookies';
 export class CreateEventComponent implements OnInit {
   // form related vars
   isAdmin : boolean = false;
+  finalized : boolean = false;
   schedule_id : number;
   days = days;
   instructors : User[]= []; 
@@ -37,6 +38,9 @@ export class CreateEventComponent implements OnInit {
   showDateSelection : boolean = false;
   showTimeSelection : boolean = false;
   showEndSelection : boolean = false;
+  // for api
+  startDate : string;
+  endDate : string;
   
 
   constructor(
@@ -44,23 +48,44 @@ export class CreateEventComponent implements OnInit {
     private scheduleService: ScheduleService,
     private snackBar : MatSnackBar,
     private route: ActivatedRoute, 
+    private router: Router, 
     private cookieService: CookieService, 
      ) {
-      if(this.cookieService.get('pillar')==='Administrator'){
-        this.isAdmin = true;
-      }
+      
     }
 
   ngOnInit() {
     this.schedule_id = this.route.snapshot.params['schedule_id'];
-    this.searchForm = new Search(this.schedule_id,'', '','','','');
-    this.newEvent = new Event(this.schedule_id);
-    this.getInstructors();
-    this.refreshTimeSlots();
-    this.getEvents();
+    if(this.cookieService.get('pillar')==='Administrator'){
+      this.isAdmin = true;
+      this.scheduleService.getSchedule(this.schedule_id).subscribe(
+        response => {
+          if(response.body.finalized == "0" || response.body.generated == "0"){ // schedule not finalized
+            this.router.navigateByUrl('/events');
+          }else if(response.body.finalized == "1"){
+            this.finalized = true;
+            // expensive calls
+            this.startDate = response.body.startDate.substring(0,10);
+            this.endDate = response.body.endDate.substring(0,10);
+            this.searchForm = new Search(this.schedule_id,this.startDate, this.endDate,'','','');
+            this.newEvent = new Event(this.schedule_id);
+            this.getInstructors();
+            this.refreshTimeSlots();
+          }
+        },
+        error => {
+          this.snackBar.open("Something went wrong with the server. Please try again later!", null, {duration: 1200,})
+          console.log("getSchedule server error", error);
+        }
+      )
+      this.getEvents();
+    }else{
+      this.router.navigateByUrl('/home');
+    }
+    
   }
 
-  // updates list of all time slots
+  // get list of all available timeslots
   refreshTimeSlots(){
     this.scheduleService.getTimeSlots(this.searchForm).subscribe(
       response=>{
@@ -80,7 +105,7 @@ export class CreateEventComponent implements OnInit {
     )   
   }
 
-  // helper funcs
+  // helper functions for displaying the available time slots to user
   getVenues(){
     let array : string[] = [];
     for(let venue in this.timeslots){
@@ -126,6 +151,7 @@ export class CreateEventComponent implements OnInit {
     return this.endTimes;
   }
 
+  // calls http POST to add a new event to database
   addEvent(){
     this.newEvent.start = String(this.parseTime(this.newEvent.start));
     this.newEvent.end = String(this.parseTime(this.newEvent.end));
@@ -161,6 +187,7 @@ export class CreateEventComponent implements OnInit {
     )
   }
 
+  // calls http GET to get all events added to this schedule in the database
   getEvents(){
     this.scheduleService.getEvents(this.schedule_id).subscribe(
       response => {
@@ -170,16 +197,17 @@ export class CreateEventComponent implements OnInit {
         }else if(response.body.message === "no rows found"){
           this.noItems = true;
         }else{
-          this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1000,})
+          this.snackBar.open("There's some problem grabbing the events. Please try again later!", null, {duration: 1200,})
           console.log("get events error", response);
         }
       }, 
       error =>{
-        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1000,})
+        this.snackBar.open("There's some problem with the server. Please try again later!", null, {duration: 1200,})
         console.log("get events server error", error);
       })
   }
 
+  // http POST to delete event of specified id
   deleteEvent(index: number){
     this.scheduleService.deleteEvent(index).subscribe(
       response =>{
@@ -197,6 +225,7 @@ export class CreateEventComponent implements OnInit {
     )
   }
 
+  // http GET to get instructors for form option
   getInstructors(){
     this.userService.getAllInstructors()
     .map((data: any) => {
@@ -216,6 +245,8 @@ export class CreateEventComponent implements OnInit {
       });
   }
 
+  // return associated name of prof id 
+  // used in translating form data into Event object
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){
       if (this.instructors[i].id==profId){
@@ -226,7 +257,8 @@ export class CreateEventComponent implements OnInit {
     throw error;
   }
 
-  // from hours to index e.g. 08:30 = 0, 18:00 = 19
+  // gets index from time e.g. 08:30 = 0, 18:00 = 19
+  // used in translating form data into Event object
   parseTime(time: string): number{
     let ans = -1;
     let hour : number = Number(time.substring(0,2));
@@ -244,6 +276,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   // from index to hours
+  // used in translating api to form option
   reverseParseTime(n: number): string {
     if(n<0 || n> 19){
       let error = new Error('To reverse parse time, n must be between 0 and 19');

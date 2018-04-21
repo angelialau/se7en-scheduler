@@ -2,22 +2,37 @@
   <div class="card-body">
     <h5 class="card-title text-center">Appeals</h5>
   </div>
+
+  <div class="alert alert-info" role="alert" *ngIf="appeals.length===0">
+    Yay! There are no appeals so far 😊
+  </div>
+
   <div *ngFor = "let appeal of appeals">
     <div class="card" style="margin: 0 5% 5% 5%;">
       <h5 class="card-header">
         Appeal for {{appeal.title}}
-        <button (click)="deleteAppeal(appeal.id)" 
-          title="Delete this appeal" 
-          class="btn btn-light" 
-          style="float: right;"><i class="fas fa-trash-alt"></i></button>
+        
+        <button (click)="editAppeal(appeal,0)" 
+          title="Sends a pre-generated message to reject this appeal" 
+          class="btn btn-outline-secondary" 
+          style="float: right;"> Deny </button>
+        
+        <button (click)="editAppeal(appeal,1)" 
+          title="Sends a pre-generated message to accept this appeal" 
+          class="btn btn-outline-secondary" 
+          style="float: right; margin: 0 5px;"> Approve </button>
       </h5>
       
       <div id="{{appeal.id}}" class="card-body">
         <p class="card-text">
-          <small class="text-muted">by {{appeal.instructor}}, {{appeal.pillar}} <span style="float: right" *ngIf = "showhiden"><i> {{appeal.date}} </i></span> </small>          
+          <small class="text-muted">by {{appeal.instructor}}, {{appeal.pillar}} <span style="float: right" ><i> {{appeal.date}} </i></span> </small>          
         </p>
         <p class="card-text">
           {{appeal.content}}
+          <br>
+          <span style="float: right">
+          <a [routerLink] = "['../changecalendar/' + appeal.scheduleId]" ><font size="1"><u>click to edit this schedule </u></font></a>
+          </span>
         </p>
       </div>
     </div>

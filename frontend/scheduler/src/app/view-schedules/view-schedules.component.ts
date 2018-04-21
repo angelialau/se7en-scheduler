@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material';
 import { Schedule } from './../../models/schedule.model';
 import { ScheduleService } from './../services/schedule.service';
+import { CookieService } from 'ng2-cookies';
 
 @Component({
   selector: 'app-view-schedules',
@@ -10,6 +11,9 @@ import { ScheduleService } from './../services/schedule.service';
   styleUrls: ['./view-schedules.component.css']
 })
 export class ViewSchedulesComponent implements OnInit {
+  isAdmin : boolean = false;
+  available : boolean = true;
+  years : number[] =[]
   showScheduleList : boolean = true;
   showAddScheduleForm : boolean = false;
   schedule : Schedule = new Schedule(null,null);
@@ -20,30 +24,48 @@ export class ViewSchedulesComponent implements OnInit {
     public snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router, 
+    private cookieService: CookieService,
      ) { 
   }
 
   ngOnInit() {
+    if(this.cookieService.get('pillar')==="Administrator"){
+      this.isAdmin = true;
+      this.populateYears();
+    }
     this.getSchedules();
   }
 
+  populateYears(){
+    let today = new Date;
+    let year = today.getFullYear();
+    for(let i = 0; i< 5; i++){
+      this.years.push(year + i);
+    }
+  }
+
   addSchedule(){
-    this.scheduleService.createSchedule(this.schedule).subscribe(
-      response => {
-        if(JSON.parse(response).success){
-          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
-          this.getSchedules();
-        }else{
-          this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1000, });
-          console.log("create schedule client error", response);
-        }
-      }, 
-      error =>{
-        console.log("create schedule server", error);        
-        this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1000, });
-      }, 
-    );
+    if(this.available){
+      this.scheduleService.createSchedule(this.schedule).subscribe(
+        response => {
+          if(JSON.parse(response).success){
+            this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+            this.getSchedules();
+          }else{
+            this.snackBar.open("Something went wrong with adding schedule. Please try again later!", null, { duration: 1200, });
+            console.log("create schedule client error", response);
+          }
+        }, 
+        error =>{
+          console.log("create schedule server", error);        
+          this.snackBar.open("Whoops something went wrong with creating schedule!", null, { duration: 1200, });
+        }, 
+      );  
+    }else{
+      this.snackBar.open("The year and trimester of this schedule is already created!", null, {duration: 1200,})
+    }
+    
   }
 
   getSchedules(){
@@ -66,18 +88,29 @@ export class ViewSchedulesComponent implements OnInit {
     this.scheduleService.deleteSchedule(schedule).subscribe(
       response => {
         if(JSON.parse(response).success){
-          this.snackBar.open("Created schedule!", null, { duration: 1000, });  
+          this.snackBar.open("Deleted schedule!", null, { duration: 1200, });  
           this.getSchedules();
         }else{
-          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1000, });
+          this.snackBar.open("Something went wrong with deleting schedule. Please try again later!", null, { duration: 1200, });
           console.log("delete schedule client error", response);
         }
       }, 
       error =>{
         console.log("could not trash schedule!");
         console.log(error);
-        this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1000, });
+        this.snackBar.open("Whoops something went wrong with deleting schedule!", null, { duration: 1200, });
       })
+  }
+
+  checkAvailability(){
+    for(let s of this.schedules){
+      if(s.year == this.schedule.year && s.trimester == this.schedule.trimester){
+        this.available = false;
+        return;
+      }
+    }
+    this.available = true;
+    console.log(this.available);
   }
 
   showSchedules() { this.showScheduleList = ! this.showScheduleList }
@@ -85,6 +118,19 @@ export class ViewSchedulesComponent implements OnInit {
   get diagnostic() { return JSON.stringify(this.schedules)};
 
   viewCalendar(id: number){
-    this.router.navigateByUrl("/viewschedule/id");
+    this.router.navigateByUrl("/viewschedule/" + id);
+  }
+
+  redirectTo(path: string, param : string){
+   this.router.navigateByUrl(path + param); 
+  }
+
+  selectView(schedule: Schedule){
+    if (schedule.generated == 1){ // generated, hence go to calendar view
+      this.router.navigateByUrl("/viewschedule/" + schedule.id);
+    }
+    else{
+      this.router.navigateByUrl("/schedules/" + schedule.id);
+    }
   }
 }

@@ -1,0 +1,20 @@
+<div class="container mx-auto">
+  <div class="card-body">
+    <h5 class="card-title text-center" id="schedulesTitle"> Select the trimester calendar that you would like view </h5>
+  </div>
+  
+  <div>
+    <table class="table table-hover">
+      <tbody *ngFor="let schedule of schedules">
+        <tr *ngIf="schedule.generated == 1">
+          <td [routerLink]="['../viewschedule/' + schedule.id]"
+          title="View calendar for this trimester"
+          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
+          <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
+          <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
+          <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -236,49 +236,49 @@ export const courseDetails = [
     course_no: "01.101",
     course_name: "Global Health Technologies (SUTD TAE)", 
     term : 7,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.106",
     course_name: "Engineering Management (EPD)", 
     term : 7,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.104",
     course_name: "Networked Life (ESD)", 
     term : 7,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.111",
     course_name: "Culture Formation and Innovative Product Design (ZJU TAE) (EPD)", 
     term : 7,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.105",
     course_name: "Design & Manufacturing (EPD)", 
     term : 8,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.107",
     course_name: "Urban Transportion (ESD)", 
     term : 8,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.102",
     course_name: "Energy Systems (ESD)", 
     term : 8,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "01.110",
     course_name: "Computational Fabrication (ISTD)", 
     term : 8,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "30.117",
@@ -338,7 +338,7 @@ export const courseDetails = [
     course_no: "01.104",
     course_name: "Advanced Topics in Optimization", 
     term : 7,
-    pillar: "TECHELECT"
+    pillar: "Tech Elective"
   }, 
   {
     course_no: "40.004",

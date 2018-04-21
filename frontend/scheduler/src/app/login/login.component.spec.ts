@@ -33,9 +33,8 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let userServiceStub: MockUserService;
-  let testBedUserService: MockUserService;
   let cookieServiceStub: MockCookieService;
-  let testBedCookieService: MockCookieService;
+  
   let router : Router;
   let snackBar : MatSnackBar;
 
@@ -65,10 +64,9 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    testBedUserService = TestBed.get(UserService);
-    userServiceStub = fixture.debugElement.injector.get(UserService);
-    testBedCookieService = TestBed.get(CookieService);
-    cookieServiceStub = fixture.debugElement.injector.get(CookieService);
+    
+    userServiceStub = TestBed.get(UserService);
+    cookieServiceStub = TestBed.get(CookieService);
     router = fixture.debugElement.injector.get(Router);
     snackBar = fixture.debugElement.injector.get(MatSnackBar);
     
@@ -81,16 +79,10 @@ describe('LoginComponent', () => {
 
   it('should have user service injected and instantiated', () => {
     expect(userServiceStub instanceof MockUserService).toBeTruthy();
-    inject([UserService], (injectService: UserService) => {
-      expect(injectService).toBe(testBedUserService);
-    });
   });
 
   it('should have cookie service injected and instantiated', () => {
     expect(cookieServiceStub instanceof MockCookieService).toBeTruthy();
-    inject([CookieService], (injectService: CookieService) => {
-      expect(injectService).toBe(testBedCookieService);
-    });
   });
 
   it("should have variables initialised at ngOnInit", () => {

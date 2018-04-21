@@ -5,6 +5,7 @@ import { Schedule } from './../../models/schedule.model'
 import { Observable } from 'rxjs/Rx';
 import { DatePipe } from '@angular/common';
 import { Event, Search } from './../../models/event.model';
+import { Appeal} from './../../models/appeal.model';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
@@ -43,6 +44,11 @@ export class ScheduleService {
   // getting a specific schedule
   getSchedule(id : number): Observable<any>{
     return this.http.get<Schedule>(this.url + '/Schedules/' + id, { observe: 'response' })
+      .catch(this.handleError);
+  }
+
+  getProfsFromSchedule(schedule_id : number, prof_id: number): Observable<any>{
+    return this.http.get<Schedule>(this.url + '/Calendars/Prof/' + schedule_id + "/" + prof_id, { observe: 'response' })
       .catch(this.handleError);
   }
 
@@ -212,6 +218,11 @@ export class ScheduleService {
     return this.http.post(extension, body.toString(),
       { headers: this.headers, responseType: 'text' }) 
       .catch(this.handleError); 
+  }
+
+  getAppealsSubmitted(instructorId: number, schedule_id): Observable<any>{
+    return this.http.get<Appeal>(this.url + '/Appeals/Instructor/' + instructorId + "/" + schedule_id, { observe: 'response' })
+      .catch(this.handleError);
   }
 
 }

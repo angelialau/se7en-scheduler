@@ -4,28 +4,25 @@
 This project is a web-based platform for SUTD instructors and coordinators to generate and manage academic schedules. It seeks to minimise clunky communication by email by providing a common platform for instructors to enrol courses for the upcoming schedule, allow coordinators to utilise a smart event scheduling algorithm to generate the term's schedule and for both end-users to communicate with each other based on the tasks at hand. Furthermore, coordinators will be able to ad-hoc events while all users will be able to view and integrate the respective schedules into their personal calendars (e.g. Google Calendar).
 
 #### The Algorithm
-The algorithm generates a conflict-minimising schedule using genetic algorithms. Once the Coordinator click the generate schedule button, the courses details are passed to the algorithm. The algorithm then record course data and generate schedules that ensure no conflict between professors, rooms and classes. All generated schedules then pass through a checkScore function to calculate the conflicts between different terms (e.g. term 7 and term 5). The algorithm will then mutate the params(genes) of the top 10 schedules with minimal scores. In the next round, the schedule is generated using the mutated params. After 5 rounds, the schedule with the highest score(minimal conflict)will be output to the backend.
+The algorithm generates a conflict-minimising schedule using genetic algorithm. Once the Coordinator click the generate schedule button, the courses details are passed to the algorithm. The algorithm then records course data and generate schedules that ensure no conflict between professors, rooms and classes. All generated schedules then pass through a checkScore function to calculate the number of conflicts between different terms (e.g. term 7 and term 5). The algorithm will then mutate the parameters (genes: priority, presence of lunch breaks) of the top 10 schedules with minimal scores. In the next round, the schedule is generated using the mutated params. After 5 rounds, the schedule with the minimal conflict will be sent to the backend.
 
 #### Features implemented 
-* Schedule generator using smart scheduling algorithm
+* Schedule generator using smart scheduling genetic algorithm (supports Capstone, ISTD, EPD, ESD, HASS)
+* GUI implementation to generate schedule
 * Display, delete generated master schedule
+* Allows Coordinators to edit by dragging and dropping
 * Display generated schedule based on pillars 
 * Add, display, delete Schedule Information (includes term and year of schedule) 
 * Add, display, delete Courses in a particular schedule (includes hard constraints) 
 * Add, display, delete ad hoc Events in a particular schedule (by Coordinator) 
 * Add, display, delete Announcements (from Coordinator to Instructor) 
 * Add, display, delete Appeals to generated schedule (from Instructor to Coordinator) 
+* Reply appeals (from Coordinator to Instructor)
 * Add new user (by Coordinator)
 * Log in and log out functionality 
 * Change password (protection against misuse cases)
-
-#### To be integrated 
-* Upload calendar to Google Calendar automatically
-* Add button to generate calendar
-* Support replying to appeals
-* Algorithm needs to support capstone
-* Algorithm needs to support error handling
-* Calendar needs allow manual editing
+* Download calendar in CSV format for integration to Google Calendar
+* Algorithm supports error handling (returns message when it takes too long to run)
 
 ## Getting Started
 
@@ -39,7 +36,7 @@ npm install @angular/cli
 ```
 
 ### Installing
-After cloning the project,
+After cloning/forking the project,
 
 ``` 
 cd frontend/scheduler/src
@@ -62,15 +59,18 @@ This test covers all algorithm functions that can be tested separately.
 
 ### Frontend - System Testing
 
-End to end testing of the website is done using Selenium in Python 3. To run,
+End to end testing of the website, done using Selenium in Python 3. To run,
 
 ```
-cd frontend/testing
+cd frontend/scheduler/src
+ng serve 
+cd ../../testing
 python3 SystemsTest.py
 ```
 This test covers 
 * Test of login and logout functionality
 * Test of page navigations
+* Test of user rights (instructors cannot access features requiring administrative rights)
 * Test of forms (e.g. adding a new schedule)
 
 ### Frontend - Unit Testing
@@ -81,10 +81,10 @@ Unit tests of Angular2 components in Jasmine framework. To run,
 cd frontend/schedule/src
 np test
 ```
-This test isolated tests of components (includes child components): 
+This test involves isolated tests of components (includes child components): 
 * Authentication, Announcement, Schedules, Courses, Events, Changing password, Adding users
 
-It tests logical methods and dependency injections. 
+It tests dependency injections, instantiation of variables, objects and forms, as well as (at least) black box testing of helper functions for the forms.
 
 ### Backend Testing 
 
@@ -148,6 +148,7 @@ This test covers
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [FullCalendar](https://fullcalendar.io/docs/typescript/) - Calendar Viewer 
 * [Jasmine](https://jasmine.github.io/) - Frontend unit testing framework
+* [Karma](https://karma-runner.github.io/2.0/index.html) - Frontend unit testing test runner
 * [Selenium](http://www.seleniumhq.org/) - System testing tool
 * [MySQL](https://www.mysql.com) - Database system 
 * [phpMyAdmin](https://www.phpmyadmin.net) - Database management
@@ -165,4 +166,5 @@ This test covers
 
 * StackOverflow always...
 * Countless tutorials...
+* Sleepless nights...
 

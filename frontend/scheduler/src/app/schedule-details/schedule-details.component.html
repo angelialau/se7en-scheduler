@@ -1,7 +1,7 @@
 <div class="container mx-auto">
   <button class="btn btn-light" routerLink="/schedules"><i class="fas fa-long-arrow-alt-left" ></i></button>
   <div *ngIf="!generated">
-    <div class="card-body" (click)="showListOfCourses()">
+    <div class="card-body" (click)="showListOfCourses()" class="clickable">
       <h5 class="card-title text-center" id="pageTitle"><i class="fas fa-eye"></i> Courses under this Schedule</h5>
     </div>
     <div *ngIf="noItems">
@@ -22,9 +22,9 @@
             Size of each class: {{course.class_size}} <br>
             Instructors: {{course.instructors.split(',').join(', ')}} <br>
             <div *ngIf="course.course_no !== '01.400'">
-            Course type: {{course.core}} <br>
-            Sessions: {{course.class_types}} <br>
-            Hours for each session: {{course.sessions_hrs}}<br>  
+              Course type: {{course.core}} <br>
+              Sessions: {{course.class_types}} <br>
+              Hours for each session: {{course.sessions_hrs}}<br>  
             </div>
           </div>
         </div>
@@ -32,14 +32,18 @@
     </div>
 
     <!-- form to add a new course -->
-    <div class="dropdown-divider"></div>
-    <br>
-    <div style="text-align: center;">
-      <button type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+    <div *ngIf="isAdmin">
+      <div class="dropdown-divider"></div>
+      <br>
+      <div style="text-align: center;">
+        <button *ngIf="!generating" type="button" class="btn btn-success" (click)="generate()">Generate Schedule</button>
+      </div>
+      <div style="text-align: center;" *ngIf="generating" class="fa-3x"><i class="fas fa-sync fa-spin"></i>
+      </div>
+      <br>
     </div>
-    <br>
     <div class="dropdown-divider"></div>
-    <div class="card-body" (click)="showAddCourseForm()">
+    <div class="card-body" (click)="showAddCourseForm()" class="clickable">
       <h5 class="card-title text-center"
       title="Click to enrol a course"
       id="courseFormTitle"><i class="fas fa-plus-circle" ></i> Add a Course</h5>

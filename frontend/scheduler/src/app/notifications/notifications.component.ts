@@ -23,7 +23,6 @@ export class NotificationsComponent implements OnInit {
   ngOnInit() {
     this.refreshAnnouncements();
     if (this.cookieService.get('pillar') == "Administrator"){
-      console.log("This is an administrator account.")
       this.isAdmin = true;
     }
   }

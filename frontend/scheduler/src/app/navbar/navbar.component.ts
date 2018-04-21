@@ -10,6 +10,7 @@ import { User } from './../../models/user.model';
 })
 export class NavbarComponent implements OnInit {
   administrator : boolean = false;  
+  name: any;
 
   constructor(
     private userService: UserService, 
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
     if (this.cookieService.get('pillar') == "Administrator"){
       this.administrator = true;
     }
+    this.name = this.cookieService.get('name');
   }
 
   signOut(){

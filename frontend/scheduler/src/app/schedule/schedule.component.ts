@@ -14,6 +14,7 @@ import { Appeal} from './../../models/appeal.model';
 import { MatSnackBar, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from 'ng2-cookies';
 import { EventObject } from 'fullcalendar';
+import { ScheduleService } from './../services/schedule.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class ScheduleComponent implements OnInit {
   isAdmin: boolean = false;
   scheduledata: any ;
   fulldataset: any;
-  specificPillar: string = "EPD"; //default ASD view for admins
+  specificPillar: string = "EPD"; //default EPD view for admins
   show: boolean = false; //to show Appeal form
   today: string = this.transformDate(Date.now()).toString();
   newAppeal: Appeal = new Appeal(this.today);
@@ -36,7 +37,12 @@ export class ScheduleComponent implements OnInit {
   googleSchedule: any;
   listCourses: any;
   nativeWindow: any;
-  displayEvent: any;
+  calendarstart: any;
+  calendarend: any;
+  haveSchedule: boolean;
+  generated:boolean = false;
+  isFinalised: boolean = false;
+  appealsSubmitted: Appeal[] = [];
   
    @ViewChild(CalendarComponent) ucCalendar: CalendarComponent;
 
@@ -49,7 +55,8 @@ export class ScheduleComponent implements OnInit {
     private snackBar: MatSnackBar,
     private cookieService: CookieService,
     private dialog: MatDialog,
-    private windowService: WindowService) {
+    private windowService: WindowService,
+    private scheduleService: ScheduleService,) {
     this.nativeWindow = windowService.getNativeWindow();
     this.calendar_id = route.snapshot.params['calendar_id'];
   }
@@ -60,23 +67,44 @@ export class ScheduleComponent implements OnInit {
     if (this.cookieService.get('pillar') == "Administrator"){
       this.isAdmin = true;
     }
+    console.log(this.isAdmin);
+
+    this.scheduleService.getSchedule(this.calendar_id).subscribe(data =>{
+      if (data.body.generated === 1){
+        this.generated = true;
+      }
+      if (data.body.finalized === 1){
+        this.isFinalised = true;
+      }
+    });
+
+    this.getAppealsSubmitted();
+
+    this.eventService.getDates(this.calendar_id).subscribe(data =>{
+      this.calendarstart = data.startDate.substring(0,10);
+      this.calendarend = data.endDate.substring(0,10);
+    });
 
     this.eventService.getEvents(this.calendar_id).subscribe(data => {
       this.fulldataset = data;
-      if (this.cookieService.get('pillar') != "Administrator"){
+      var allschedules: Object[] = [];
+      if (!this.isAdmin){
         for (let i of data){
-          if (i.instructor == this.cookieService.get('name') && i.id == this.cookieService.get('id')){
-            this.scheduledata = i.schedule;
+          if (i.prof_id == this.cookieService.get('id')){
+            allschedules.push(i.schedule);
           }
+        }
+        this.scheduledata = allschedules;
+        if (this.scheduledata.length != 0){
+          this.haveSchedule = true;
         }
       }
       else { // is Administrator
-        var allschedules: Object[] = [];
+        this.haveSchedule = true;
         for (var i = 0; i < data.length; i++){
-          if (data[i].pillar == "ASD"){
-            for (let j of data[i].schedule){
-              allschedules.push(j);
-          }}
+          if (data[i].pillar == "EPD"){
+              allschedules.push(data[i].schedule);
+          }
        }
         this.scheduledata = allschedules;
       }
@@ -90,14 +118,14 @@ export class ScheduleComponent implements OnInit {
         minTime: moment.duration("08:00:00"), //start time
         maxTime: moment.duration("18:00:00"), //end time
         fixedWeekCount: true,
-        /*visibleRange: {
-            start: '2018-03-01',
-            end: '2018-03-15'
-         }, //why is this not working :(
+        visibleRange: {
+            start: this.calendarstart,
+            end: this.calendarend
+         },
         validRange: {
-            start: '2018-03-01',
-            end: '2018-03-15'
-         }, //set this to blank out parts not involved in the term*/
+            start: this.calendarstart,
+            end: this.calendarend
+         }, //set this to blank out parts not involved in the term
         allDaySlot: false, //remove the all day slot
         defaultView: 'agendaWeek', //show the week view first
         eventLimit: false, // make true for the plus sign on month view
@@ -119,7 +147,7 @@ export class ScheduleComponent implements OnInit {
      
      this.listCourses = []
     for (let event of this.scheduledata){
-      var course = event.title.replace(/\n/g, " ") + " from " + event.start + " to " + event.end;
+      var course = event.title.substring(0,6) + " - " + event.start + " to " + event.end;
       if (event.dow == 1){
         course += " on Mondays";
       }
@@ -138,56 +166,22 @@ export class ScheduleComponent implements OnInit {
 
       this.listCourses.push(course);
     }
-
-    console.log(this.listCourses);
-
     });}
-
-  clickButton(model: any) {
-    this.displayEvent = model;
-  }
-  eventClick(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title,
-        allDay: model.event.allDay
-        // other params
-      },
-      duration: {}
-    }
-    this.displayEvent = model;
-  }
-  updateEvent(model: any) {
-    model = {
-      event: {
-        id: model.event.id,
-        start: model.event.start,
-        end: model.event.end,
-        title: model.event.title
-        // other params
-      },
-      duration: {
-        _data: model.duration._data
-      }
-    }
-    this.displayEvent = model;
-  }
-
 
   changeView(){
     var pillarschedules: Object[] = [];
     for (var i = 0; i < this.fulldataset.length; i++){
       if (this.fulldataset[i].pillar == this.specificPillar){
-        for (let j of this.fulldataset[i].schedule){
-          pillarschedules.push(j);
-        }
+        pillarschedules.push(this.fulldataset[i].schedule);
+        
       }
     }
 
     this.scheduledata = pillarschedules;
+    let emptyMsg : string = "No schedule for this pillar."
+    if (this.scheduledata.length == 0){
+      this.snackBar.open(emptyMsg, null, {duration:2000});
+    }
 
     /* Not elegant but I'll deal with it again
     cus refetchEvents not working... :()
@@ -198,23 +192,23 @@ export class ScheduleComponent implements OnInit {
 
     }
   displayEPD(){
-    console.log("EPD calendar view");
     this.specificPillar = "EPD";
     this.changeView();
   }
   displayESD(){
-    console.log("ESD calendar view");
     this.specificPillar = "ESD";
     this.changeView();
   }
   displayISTD(){
-    console.log("ISTD calendar view");
     this.specificPillar = "ISTD";
     this.changeView();
   }
   displayHASS(){
-    console.log("HASS calendar view");
     this.specificPillar = "HASS";
+    this.changeView();
+  }
+  displayTech(){
+    this.specificPillar = "Tech Elective";
     this.changeView();
   }
 
@@ -237,10 +231,11 @@ export class ScheduleComponent implements OnInit {
 
   makeAppeal(){
     let errorMsg : string = "Something went wrong with making appeal, please try again later!";
-    this.userService.makeAppeals(this.newAppeal).subscribe(response =>{
+    this.userService.makeAppeals(this.newAppeal, this.calendar_id).subscribe(response =>{
       if (JSON.parse(response).success){
         this.snackBar.open("Appeal made!", null, {duration:1000});
         this.initialiseAppeal();
+        this.getAppealsSubmitted();
       }
       else{
         this.snackBar.open(errorMsg,null,{duration:1000});
@@ -280,6 +275,7 @@ export class ScheduleComponent implements OnInit {
             link.setAttribute('href',googledata);
             link.setAttribute('download',filename);
             link.click();
+            this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
           }
         }
       },
@@ -292,6 +288,46 @@ export class ScheduleComponent implements OnInit {
   openDialog(){
      var newWindow = this.nativeWindow.open("https://calendar.google.com/calendar/r/settings/export");
      }
+
+  return(){
+    if (this.isAdmin){
+      this.router.navigateByUrl("/schedules");
+    }
+    else{
+      this.router.navigateByUrl("/viewcalendar");
+    }
+  }
+
+  finaliseCalendar(){
+    let errorMsg : string = "Something went wrong with finalizing, please try again later!";
+    this.eventService.finalizeSchedule(this.calendar_id).subscribe(
+      response =>{
+        while (response.byteLoaded <= response.totalBytes){
+          console.log("loading...");
+        }
+        this.snackBar.open("Finalized",null,{duration:1000});
+        this.router.navigateByUrl("/schedules");
+      })
+  }
+
+  getAppealsSubmitted(){
+    this.scheduleService.getAppealsSubmitted(Number(this.cookieService.get('id')), this.calendar_id)
+    .subscribe(
+      response => {
+        if(response.status === 200){
+          if(response.body.message === "no rows found"){
+            console.log("no appeals made");
+          }else{
+            this.appealsSubmitted = response.body;
+          }
+        }
+      },error =>{
+        this.snackBar.open("Something wrong with server in displaying the appeals you have submitted, please check back again later!", 
+          null, {duration: 1200,});
+        console.log("error getting appeals submitted by prof", error);
+      }
+    )
+  }
   
 }
 

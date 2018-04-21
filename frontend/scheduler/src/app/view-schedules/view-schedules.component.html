@@ -6,21 +6,50 @@
   <div *ngIf="showScheduleList">
     <table class="table table-hover">
       <tbody *ngFor="let schedule of schedules">
-        <tr>
-          <td [routerLink]="['./',schedule.id]"
-          title="View courses enrolled and add a course or event to this schedule"
-          >Year {{schedule.year}} Trimester {{schedule.trimester}} - 
-          <span *ngIf="schedule.generated == '0'"> {{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}}</span>
-          <span *ngIf="schedule.generated == '1'" class="badge badge-success"> Generated</span>
+        <tr *ngIf="schedule.generated !== 1 || isAdmin">
+          <td 
+          title="Hover over buttons for more details"
+          >
+            Year {{schedule.year}} Trimester {{schedule.trimester}} 
+            <span *ngIf="schedule.generated == '0'"> ({{schedule.startDate | date:'shortDate'}} to {{schedule.endDate | date:'shortDate'}})</span>
+            <span *ngIf="schedule.finalized == '1' && schedule.generated == '1'" class="badge badge-warning"> Finalized</span>
+            <span *ngIf="schedule.finalized == '0' && schedule.generated == '1' " class="badge badge-success"> Generated</span>
+          
           <span>
-            <button (click)="deleteSchedule(schedule)" 
+            <button (click)="deleteSchedule(schedule)" *ngIf="isAdmin"
             title="Delete this schedule" 
             style="float: right; margin: 0 5px;"
             class="btn btn-light" ><i class="fas fa-trash-alt"></i></button> 
-            <button *ngIf="schedule.generated == '1'" (click)="viewCalendar(schedule.id)"
-            title="View this calendar" style="float: right; margin: 0 5px;"
-            class="btn btn-light"><i class="fas fa-eye"></i></button>
           </span>
+          <span>
+            <!-- if schedule is finalised -->
+            <button (click) = "redirectTo('/events/',schedule.id)" *ngIf="schedule.finalized===1"
+            title="Click to add an event to this schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit"></i>
+            </button> 
+            <button (click) = "selectView(schedule)" *ngIf="schedule.finalized===1"
+            title="Click to view this term schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-eye" ></i>
+            </button> 
+            <!-- if schedule is not finalised  -->
+            <button (click) = "selectView(schedule)"*ngIf="schedule.finalized!==1 && isAdmin"
+            title="Click to add courses or generate an alternative schedule" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit" ></i>
+            </button> 
+            <button (click) = "selectView(schedule)"*ngIf="schedule.finalized!==1 && !isAdmin"
+            title="Click to add courses" 
+            style="float: right; margin: 0 5px;"
+            class="btn btn-light" >
+              <i class="fas fa-edit" ></i>
+            </button> 
+          </span>
+
           </td>
         </tr>
       </tbody>
@@ -30,45 +59,50 @@
   <div class="dropdown-divider"></div>
 
   <!-- form to add a new schedule -->
-  <div class="card-body" (click)="showScheduleForm()">
+  <div *ngIf="isAdmin">
+  <div class="card-body" (click)="showScheduleForm()" 
+    title="Click to add a new term schedule" 
+    class="clickable">
     <h5 class="card-title text-center" id="scheduleFormTitle"><i class="fas fa-caret-right"></i> Add a new Schedule</h5>
   </div>
   <div *ngIf="showAddScheduleForm">
     
       <form #newScheduleForm="ngForm">
         <!-- trimester type -->
-        <div class="">
-          <div class="">
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="trimester"> Academic Term </label>
-                </div>
-                <select class="form-control" id="trimester"
-                required
-                 [(ngModel)]="schedule.trimester" name="trimester">
-                  <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
-                  <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
-                  <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
-                </select>
-              </div>
+        
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="year"> Year</label>
             </div>
+            <select class="form-control" id="year" required
+             [(ngModel)]="schedule.year" name="year"
+             (change)="checkAvailability()" >
+             <option *ngFor="let i of years"
+              value={{i}}>{{i}}</option>
+            </select>
           </div>
+        </div>
+      
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="trimester"> Academic Term </label>
+            </div>
+            <select class="form-control" id="trimester"
+            required
+            [(ngModel)]="schedule.trimester" name="trimester"
+            (change)="checkAvailability()" >
+              <option value="1">Trimester 1 (Terms 3, 5, 7 and 9)</option>
+              <option value="2">Trimester 2 (Terms 1, 8 and 10)</option>
+              <option value="3">Trimester 3 (Terms 2, 4 and 6)</option>
+            </select>
+          </div>
+        </div>
           
-          <div class="">
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="year"> Year</label>
-                </div>
-                <select class="form-control" id="year" required
-                 [(ngModel)]="schedule.year" name="year">
-                 <option *ngFor="let i of [2018, 2019, 2020, 2021, 2022, 2023]"
-                  value={{i}}>{{i}}</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        <div class="alert alert-danger" role="alert" *ngIf="!available">
+          The schedule of this year and trimester has already been created. Please check your inputs!
         </div>
 
         <div class="row">
@@ -109,4 +143,5 @@
       </form>
     <!-- <p>{{newScheduleForm.value | json}} </p>
     <p>{{newScheduleForm.status | json}} </p> -->
+  </div>
   </div>

@@ -52,6 +52,8 @@ export class CreateCourseComponent implements OnInit {
     
   }
 
+  // gets the trimester of the schedule at hand
+  // to the trimester
   filterCourseDetails(){
     let trimester = 0;
     this.scheduleService.getSchedule(this.schedule_id).subscribe(
@@ -70,6 +72,8 @@ export class CreateCourseComponent implements OnInit {
     )
   }
 
+  // filters out the courses that belong in the indicated trimester
+  // eg trimester 1 contains courses for terms 3, 5, 7 
   filterHelper(options: Array<number>, currArray: Array<any>){
     let newArray = [];
     for(let course of currArray){
@@ -91,17 +95,18 @@ export class CreateCourseComponent implements OnInit {
     return newArray;
   }
 
-  createForm(){ // assumes that u just want to add courses from existing database 
+  // for initialising the form
+  createForm(){ 
     this.newForm = this.formBuilder.group({
-      courseDetail: ['', Validators.required], // course object for course number, name, term
+      courseDetail: ['', Validators.required], // object for course number, name, term
       core: ['0', Validators.required],
-      no_classes: ['', Validators.required], // 1-12
-      class_size: ['', Validators.required], // 1-55
-      prof_list: new FormArray([
+      no_classes: ['', Validators.required], // of range 1-12
+      class_size: ['', Validators.required], // of range 1-55
+      prof_list: new FormArray([ // necessary for to filter the profs for professors later
         new FormGroup({
           id: new FormControl('', Validators.required)
         })
-      ]), // to filter the profs for professors later
+      ]), 
       sessions: new FormArray([
         new FormGroup({
           class_types: new FormControl('0', Validators.required),
@@ -126,6 +131,7 @@ export class CreateCourseComponent implements OnInit {
     return this.newForm.get('prof_list') as FormArray;
   }
 
+  // dynamically adds a new session to the form
   addSessionToCourse(){
     this.sessions.push(
       new FormGroup({
@@ -136,12 +142,15 @@ export class CreateCourseComponent implements OnInit {
     );
   }
 
+  // dynamically adds a new prof to the form
   addProfToCourse(){
     this.prof_list.push(this.formBuilder.group({
       id: ['', Validators.required]
     }));
   }
   
+  // dynamically deletes specified prof from the form
+  // also removes the prof from the radio button options
   deleteProf(index : number){ 
     let profId = this.prof_list.at(index).get('id').value;
     for (let session in this.profsInvolved){
@@ -154,6 +163,7 @@ export class CreateCourseComponent implements OnInit {
     }
     this.prof_list.removeAt(index); 
   }
+
   deleteSession(index : number){ this.sessions.removeAt(index); }
 
   //for editting courses
@@ -168,7 +178,7 @@ export class CreateCourseComponent implements OnInit {
   //   this.newForm.setControl('prof_list', profsFormArray);
   // }  
 
-  // turning form into Course
+  // turns form data into a Course object
   translateDataToCourse() : Course{
     let data = this.newForm.value;
     let schedule_id = this.schedule_id; // TODO port courses to schedule and pass over schedule details
@@ -202,7 +212,7 @@ export class CreateCourseComponent implements OnInit {
     return course;
   }
   
-  // http push to add course
+  // calls http PUSH method to add course into database
   onSend(){ 
     let msg : string = "Submitted new course!";
     let errorMsg : string = "Hhm, something went wrong. Really sorry but please try again later!";
@@ -230,7 +240,8 @@ export class CreateCourseComponent implements OnInit {
       }
     );
   }
-  // helper functions
+  
+  // helper function for generating range, used as a form option 
   createRange(n : number) : number[]{
     let x=[];
     if(n<1){
@@ -243,6 +254,8 @@ export class CreateCourseComponent implements OnInit {
     return x;  
   }
 
+  // helper function for extracting the value of key 'param' from the courseDetails database
+  // used for translating form data into Course object
   queryCourse(course_no, param: string): any{
     for(let course of courseDetails){
       if( course.course_no=== course_no){
@@ -267,6 +280,7 @@ export class CreateCourseComponent implements OnInit {
     throw error;   
   }
 
+  // calls http GET to get all instructors, used as a form option
   getInstructors(){
     this.userService.getAllInstructors()
     .map((data: any) => {
@@ -286,6 +300,9 @@ export class CreateCourseComponent implements OnInit {
       });
   }
 
+  // helper function for extracting the name of prof with the specified id
+  // used as a form option
+  // also used for translating form data into Course object
   queryInstructors(profId:number){
     for(let i=0; i<this.instructors.length; i++){
       if (this.instructors[i].id==profId){
@@ -297,6 +314,7 @@ export class CreateCourseComponent implements OnInit {
     throw error;  
   }
 
+  // helper function to display form options for radio buttons
   updateProfsInvolved(event, sessionIndex: number, profId: number){
     if(event.target.checked === true){
       // if initially the array is empty and uninitialised
@@ -314,9 +332,10 @@ export class CreateCourseComponent implements OnInit {
     console.log("profs involved changed:", this.profsInvolved)
   }
 
-  // translates into format eg 51|55|51,55
+  // translates form data into format eg 51|55|51,55
   // sessions delimited by pipe
   // profs within session delimited by commas
+  // used for translating form data into Course object
   prof_listParser(){
     let array : string[] = [];
     let nameArray : string[] = [];
@@ -334,6 +353,8 @@ export class CreateCourseComponent implements OnInit {
     this.tempInstructors = nameArray.join("|");
   }
 
+  // returns id and name of professors added to teach capstone course
+  // used for translating form data into Course object
   capstoneProf_listParser(){
     let idarray : string[] = [];
     let nameArray : string[] = [];
@@ -347,6 +368,8 @@ export class CreateCourseComponent implements OnInit {
     return finalArray
   }
 
+  // returns array of 'param', each session delimited by a comma
+  // used for translating form data into Course object
   sessionsParser(sessions: any, param: string): string{
     let array : string[] = [];
     if(param === "sessions_hrs"){
@@ -369,7 +392,7 @@ export class CreateCourseComponent implements OnInit {
     return array.join();
   }
 
-  // hides feels that are not relevant to capstone
+  // hides fields that are not relevant to capstone
   checkCapstone($event){ 
     if($event.target.value === '01.400'){
       this.showCosNotCapstone = false;  
@@ -378,6 +401,7 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 
+  // used for translating form data into Course object
   splitGenerator(num: number){
     let arr = new Array;
     for(let i=0; i< num; i++){
@@ -386,6 +410,7 @@ export class CreateCourseComponent implements OnInit {
     return arr.join(",");
   }
 
+  // for testing
   temp(){
     console.log(this.sessionsParser(this.newForm.value.sessions, "venue_types"));
   }

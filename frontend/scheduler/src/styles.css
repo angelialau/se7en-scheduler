@@ -10,6 +10,7 @@ html{
   -o-background-size: cover;
   background-size: cover;
   background-attachment: fixed;
+  font-family: Trebuchet MS;
 }
 
 body {
@@ -17,6 +18,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  font-family: Trebuchet MS;
 }
 
 div.container {
