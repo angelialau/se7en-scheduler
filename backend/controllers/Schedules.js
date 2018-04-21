@@ -72,13 +72,25 @@ router.post('/Update', function(req, res, next) {
 // defining route for deleting a schedule
 router.post('/Delete', function(req, res, next) {
 	if (req.body.id) {
-
 		Schedule.deleteSchedule(
 			req.body.id,
 			function(err, count) {
 				utils.basicPostCallback(res, err, count);
 			}
 		);
+	} else {
+		res.json({"success":false, "message":"post params incomplete"});
+	}
+});
+
+// defining route for finalizing a schedule
+router.post('/Finalized', function(req, res, next) {
+	if (req.body.id) {
+		Schedule.updateFinalized(
+			req.body.id,
+			function(err, count) {
+				utils.basicPostCallback(res, err, count);
+			});
 	} else {
 		res.json({"success":false, "message":"post params incomplete"});
 	}
@@ -119,7 +131,6 @@ router.post('/Generate', function(req, res, next) {
 				child.on('close', function(code) {
 					if (!generatorErr) {
 						// convert output to array
-						console.log(result);
 						var output = JSON.parse("[" + result.substring(0, result.length - 2) + "]");
 
 						// update SQL table for each generated entry
@@ -134,7 +145,7 @@ router.post('/Generate', function(req, res, next) {
 						// set generated bit to 1 on schedule
 						Schedule.updateGenerated(req.body.id);
 						output.success = true;
-						res.json(output);
+						res.json({"success":true, "message":"RAFAELA BOLEH"});
 					} else {
 						res.json({"success":false, "message":generatorErr});
 					}
@@ -145,5 +156,6 @@ router.post('/Generate', function(req, res, next) {
 		res.json({success:false, message: "incomplete params"});
 	}
 });
+
 
 module.exports = router;

@@ -1,5 +1,6 @@
 var express = require("express");
 var Calendar = require("../models/Calendar");
+var Schedule = require("../models/Schedule");
 var utils = require("../utils/utilities");
 var fecha = require("fecha");
 var router = express.Router();
@@ -94,9 +95,18 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 			err.success = false;
 			res.json(err);
 		} else {
+			var startDate = new Date(req.params.sDate);
+			var endDate = new Date(req.params.eDate);
 			var todaysDate = new Date();
-			var todaysDay = todaysDate.getDay()%6;
-			var num_weeks = 3;
+
+			if (todaysDate > startDate) {
+				var dateToUse = todaysDate;
+			} else {
+				var dateToUse = startDate;
+			}
+
+			var todaysDay = dateToUse.getDay()%6;
+			var num_weeks = utils.calculateWeeksBetween(dateToUse, endDate);
 			var startTime = 0;
 			var endTime = 19;
 			var output = {};
@@ -154,7 +164,7 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 				}
 				
 				// add dates
-				var current = new Date();
+				var current = new Date(dateToUse);
 				var roomAvailability = {}
 				for (var week = 0; week < num_weeks; week++) {
 					available[week].forEach(function(day) {
@@ -167,6 +177,10 @@ router.get('/Filter/:schedule_id(\\d+)/?:day(\\d)?/?:sDate(\\d{4}-\\d{2}-\\d{2})
 				rowsWithDates.forEach(function(row) {
 					var dateString = new Date(row.date).toDateString();
 					var tempAvailability = roomAvailability[dateString];
+
+					if (tempAvailability == null) {
+						return;
+					}
 
 					var j = row.start
 					while (j < row.end) {
@@ -199,11 +213,7 @@ router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
 				var output = {}
 				rows.forEach(function(entry) {
 					formatted = utils.eventToFullCalendar(entry);
-					if (output[formatted.id]) {
-						output[formatted.id].schedule.push(formatted.schedule[0]);
-					} else {
-						output[formatted.id] = formatted;
-					}
+					output[formatted.id] = formatted;
 				});
 				res.json(Object.values(output));
 			}
@@ -214,25 +224,71 @@ router.get('/FullCalendar/:id(\\d+)', function(req, res, next) {
 // Get calendar entries in google calendar json format
 router.get('/GoogleCalendar/:id(\\d+)', function(req, res, next) {
 	if (req.params.id) {
+		// get events
 		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
 			if (err) {
 				err.success = false;
 				res.json(err);
 			} else {
-				var formatted;
-				var output = {}
-				rows.forEach(function(entry) {
-					formatted = utils.eventToGoogleCalendar(entry);
-					if (output[formatted.id]) {
-						output[formatted.id].schedule.push(formatted.schedule[0]);
+				// get schedule details
+				Schedule.getScheduleById(req.params.id, function(schedule_err, schedule) {
+					if (schedule_err) {
+						schedule_err.success = false;
+						res.json(schedule_err);
 					} else {
-						output[formatted.id] = formatted;
+						// format correctly
+						var formatted;
+						var output = {}
+						var startDateString = fecha.format(new Date(schedule[0].startDate), 'YYYY-MM-DD[T08:30:00]');
+
+						rows.forEach(function(entry) {
+							var startDate = new Date(startDateString);
+							formatted = utils.eventToGoogleCalendar(entry, startDate);
+							if (output[formatted.id]) {
+								output[formatted.id].schedule.push(formatted.schedule[0]);
+							} else {
+								output[formatted.id] = formatted;
+							}
+						});
+						res.json(Object.values(output));
 					}
 				});
-				res.json(Object.values(output));
 			}
 		});
 	}
+});
+
+// Get calendar entries in editable json format
+router.get('/EditCalendar/:id(\\d+)', function(req, res, next) {
+	if (req.params.id) {
+		// get events
+		Calendar.getEventsByScheduleId(req.params.id, function(err, rows) {
+			if (err) {
+				err.success = false;
+				res.json(err);
+			} else {
+				// get schedule details
+				Schedule.getScheduleById(req.params.id, function(schedule_err, schedule) {
+					if (schedule_err) {
+						schedule_err.success = false;
+						res.json(schedule_err);
+					} else {
+						// format correctly
+						var formatted;
+						var output = {};
+						var startDateString = fecha.format(new Date(schedule[0].startDate), 'YYYY-MM-DD[T08:30:00]');
+
+						rows.forEach(function(entry) {
+							var startDate = new Date(startDateString);
+							formatted = utils.eventToEditCalendar(entry, startDate);
+							output[formatted.id] = formatted;
+						});
+						res.json(Object.values(output));
+					}
+				});
+			}
+		});
+	} 
 });
 
 // defining update calendar entry endpoint

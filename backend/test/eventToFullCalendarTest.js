@@ -27,14 +27,13 @@ describe('eventToFullCalendar()', function () {
 		        "id": "273",
 		        "prof_id": "59",
 		        "pillar": "ISTD",
-		        "schedule": [
-		            {
-		                "title": "50.021\nCohort Classroom 11\nCohort 1",
-		                "start": "08:30",
-		                "end": "10:00",
-		                "dow": "1"
-		            }
-		        ]
+		        "schedule": 
+	            {
+	                "title": "50.021\nCohort Classroom 11\nCohort 1",
+	                "start": "0830",
+	                "end": "1000",
+	                "dow": "1"
+	            }
 		    }
 
 		    // Assert
@@ -68,14 +67,12 @@ describe('eventToFullCalendar()', function() {
 		        "id": "324",
 		        "prof_id": null,
 		        "pillar": null,
-		        "schedule": [
-		            {
-		                "title": "Capstone Briefing\nThink Tank 1",
-		                "start": "13:00",
-		                "end": "18:30",
-		                "dow": "5"
-		            }
-		        ]
+		        "schedule": 
+	            {
+	                "title": "Capstone Briefing\nThink Tank 1",
+	                "start": "20180420T1300",
+	                "end": "20180420T1830",
+	            }
 		    }
 
 		    // Assert

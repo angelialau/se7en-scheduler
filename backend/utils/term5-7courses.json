@@ -490,21 +490,21 @@
 		"sessions": 
 			[{  "class_type": "Cohort Based Learning",
 				"time": "1.5",
-				"instructors":["Franklin Anariba", "Ang Lay Kee, Ricky", "Avinash Baji"],
+				"instructors":["Franklin Anariba", "Ang Lay Kee Ricky", "Avinash Baji"],
 				"instructor_ids": ["112","113","114"],
 				"preference": "Think Tank",
 				"split": "1" },
 
 			{   "class_type": "Cohort Based Learning",
 				"time": "1.5",
-				"instructors":["Franklin Anariba", "Ang Lay Kee, Ricky", "Avinash Baji"],
+				"instructors":["Franklin Anariba", "Ang Lay Kee Ricky", "Avinash Baji"],
 				"instructor_ids": ["112","113","114"],
 				"preference": "Think Tank",
 				"split": "1" },
 
 			{   "class_type": "Cohort Based Learning",
 				"time": "2",
-				"instructors":["Franklin Anariba", "Ang Lay Kee, Ricky", "Avinash Baji"],
+				"instructors":["Franklin Anariba", "Ang Lay Kee Ricky", "Avinash Baji"],
 				"instructor_ids": ["112","113","114"],
 				"preference": "Think Tank",
 				"split": "1" }
@@ -618,21 +618,21 @@
 		"sessions": 
 			[{  "class_type": "Cohort Based Learning",
 				"time": "1.5",
-				"instructors":["Chen Zaichun, Herman", "Chen Lujie"],
+				"instructors":["Chen Zaichun Herman", "Chen Lujie"],
 				"instructor_ids": ["123", "124"],
 				"preference": "Think Tank",
 				"split": "1" },
 
 			{   "class_type": "Cohort Based Learning",
 				"time": "1.5",
-				"instructors":["Chen Zaichun, Herman", "Chen Lujie"],
+				"instructors":["Chen Zaichun Herman", "Chen Lujie"],
 				"instructor_ids": ["123", "124"],
 				"preference": "Think Tank",
 				"split": "1" },
 
 			{   "class_type": "Lab",
 				"time": "2",
-				"instructors":["Chen Zaichun, Herman", "Chen Lujie"],
+				"instructors":["Chen Zaichun Herman", "Chen Lujie"],
 				"instructor_ids": ["123", "124"],
 				"preference": "No preference",
 				"split": "1" }
@@ -797,6 +797,8 @@
 				"preference": "No preference",
 				"split": "1" }
 		    ] 
+	},
+	{
+		
 	}
-
 ]
