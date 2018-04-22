@@ -6,18 +6,29 @@ Created on Fri Mar 16 04:37:14 2018
 """
 
 import unittest
-import generator as algo
+from unittest import mock
 import random 
+import sys
 
 tt,cc,lt,lab,ttt,capstone,cla,pro=0,26,42,47,55,61,71,121
 proNum=121
 claNum=83
 class TestAlgo(unittest.TestCase):
     def setUp(self):
-        
-        self.courses=algo.readJson("https://api.myjson.com/bins/h2c9v")
-        self.rowRef=algo.referenceRows()
-        self.rowRef,self.courses=algo.initializeValue(self.rowRef,self.courses)
+
+        filename = "./fake_data/testAlgoData.json"
+        file = open(filename, 'r')
+        jsonString = file.read()
+    
+        testargs = ["prog", jsonString]
+
+        with mock.patch('sys.argv', testargs):
+            import generator as algo
+            print(sys.argv[1])
+            self.courses=algo.readJson()
+            self.rowRef=algo.referenceRows()
+
+            self.rowRef,self.courses=algo.initializeValue(self.rowRef,self.courses)
 
         
     def test_a_referenceRows(self): 
