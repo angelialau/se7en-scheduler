@@ -169,15 +169,24 @@ var utilities = {
 		var output = {};
 		var details = {};
 
-		// move to correct date
-		while (startDate.getDay() !== event.day) {
-			this.incrementDate(startDate);
+		// move to correct date if nonevent
+		if (event.date === null) {
+			while (startDate.getDay() !== event.day) {
+				this.incrementDate(startDate);
+			}
+			var dateToUse = startDate;
+
+		// else just use date of event
+		} else {
+			var dateString = fecha.format(new Date(event.date), 'YYYY-MM-DD [08:30]');
+			var dateToUse = new Date(dateString);
 		}
+		
 
 		// set time
-		var startTime = new Date(startDate.getTime() + event.start*(30*6*10000));
-		var endTime =  new Date(startDate.getTime() + (event.end+1)*(30*6*10000));
-		
+		var startTime = new Date(dateToUse.getTime() + event.start*(30*6*10000));
+		var endTime =  new Date(dateToUse.getTime() + (event.end+1)*(30*6*10000));
+
 		// put to correct format
 		output.instructor = event.prof;
 		output.id = event.id.toString();
